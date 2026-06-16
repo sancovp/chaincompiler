@@ -1,5 +1,5 @@
-<svg viewBox="0 0 1812 436" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
-<rect x="0" y="0" width="1812" height="436" rx="14" fill="#ffffff"/>
+<svg viewBox="0 0 2062 436" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+<rect x="0" y="0" width="2062" height="436" rx="14" fill="#ffffff"/>
 <text x="40" y="44" font-size="22" font-weight="800" fill="#15151a">ChainCompiler — roadmap</text>
 <text x="40" y="68" font-size="13" fill="#5e5e66">A compiler-compiler for cognition.  ·  updated 2026-06-16</text>
 <rect x="40" y="96" width="232" height="300" rx="11" fill="#e9f7ef" stroke="#16a34a" stroke-width="1.6"/>
@@ -92,5 +92,17 @@
 <text x="1556" y="274" font-size="11" fill="#15151a">•  Analytics: skill-usage tracking (…</text>
 <text x="1556" y="294" font-size="11" fill="#15151a">•  Frontend: tree + analytics + prob…</text>
 <text x="1556" y="314" font-size="11" fill="#15151a">•  Improve loop: reports → agent → s…</text>
+<path d="M1770 126 h20" stroke="#c4c4bf" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<rect x="1790" y="96" width="232" height="300" rx="11" fill="#f6f6f5" stroke="#c4c4bf" stroke-width="1.6"/>
+<text x="1806" y="126" font-size="12" font-weight="800" letter-spacing=".08em" fill="#9a9a96">P7</text>
+<rect x="1918" y="112" width="88" height="20" rx="10" fill="#9a9a96"/>
+<text x="1962" y="126" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">○ planned</text>
+<text x="1806" y="154" font-size="16" font-weight="800" fill="#15151a">Plugin</text>
+<text x="1806" y="176" font-size="11.5" fill="#5e5e66">Bundle the whole thing as ONE</text>
+<text x="1806" y="192" font-size="11.5" fill="#5e5e66">installable Claude Code plugin.</text>
+<text x="1806" y="218" font-size="11" fill="#15151a">•  plugin.json bundling skills + com…</text>
+<text x="1806" y="238" font-size="11" fill="#15151a">•  the SI MCP + agents in the plugin</text>
+<text x="1806" y="258" font-size="11" fill="#15151a">•  one-command install / distribute</text>
+<text x="1806" y="278" font-size="11" fill="#15151a">•  ships report-missed-skill + the r…</text>
 <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c4c4bf"/></marker></defs>
 </svg>

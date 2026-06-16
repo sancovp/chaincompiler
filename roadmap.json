@@ -91,6 +91,18 @@
         "Frontend: tree + analytics + problem-marking, launched from the root skill",
         "Improve loop: reports → agent → skill-improver / create"
       ]
+    },
+    {
+      "id": "P7",
+      "title": "Plugin",
+      "status": "planned",
+      "blurb": "Bundle the whole thing as ONE installable Claude Code plugin.",
+      "items": [
+        "plugin.json bundling skills + commands + hooks",
+        "the SI MCP + agents in the plugin",
+        "one-command install / distribute",
+        "ships report-missed-skill + the root skill tree by default"
+      ]
     }
   ]
 }

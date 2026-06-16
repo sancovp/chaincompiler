@@ -91,9 +91,28 @@
         "Frontend: tree + analytics + problem-marking, launched from the root skill",
         "Improve loop: reports \u2192 agent \u2192 skill-improver / create"
       ]
+    },
+    {
+      "id": "P7",
+      "title": "Plugin",
+      "status": "planned",
+      "blurb": "Bundle the whole thing as ONE installable Claude Code plugin.",
+      "items": [
+        "plugin.json bundling skills + commands + hooks",
+        "the SI MCP + agents in the plugin",
+        "one-command install / distribute",
+        "ships report-missed-skill + the root skill tree by default"
+      ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.1.13",
+      "date": "2026-06-16",
+      "changes": [
+        "**Roadmap P7 \u2014 Plugin** (bundle the whole thing as one Claude Code plugin) + a living **[BACKLOG.md](BACKLOG.md)** tracking the concrete tasks under each phase (P6 analytics-hook / frontend / improve-loop, P7 plugin, the aspirational tails, and \"tree-ify the real ~/.claude/skills library\")."
+      ]
+    },
     {
       "version": "v0.1.12",
       "date": "2026-06-16",
