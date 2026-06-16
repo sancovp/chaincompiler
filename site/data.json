@@ -107,6 +107,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.14",
+      "date": "2026-06-16",
+      "changes": [
+        "**`.claude/rules` + `.claude/skills`** in the repo. Rules: `00-keeping-roadmap-and-backlog-current` (the enforced discipline), `10-architecture-components` (mermaid component diagrams \u2014 full stack, the closed algebra, the Skill OS rings, the package graph), `20-architecture-flows` (mermaid sequence diagrams \u2014 the compiler loop, `construct_language`, SkillTree surface\u2192cat, the contribution gate, the federation walk, the Skill OS loop). Skills: a `chaincompiler` repo-orientation skill + `report-missed-skill` surfaced."
+      ]
+    },
+    {
       "version": "v0.1.13",
       "date": "2026-06-16",
       "changes": [

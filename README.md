@@ -253,6 +253,9 @@ SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
 
 ## Changelog
 
+### v0.1.14 — 2026-06-16
+- **`.claude/rules` + `.claude/skills`** in the repo. Rules: `00-keeping-roadmap-and-backlog-current` (the enforced discipline), `10-architecture-components` (mermaid component diagrams — full stack, the closed algebra, the Skill OS rings, the package graph), `20-architecture-flows` (mermaid sequence diagrams — the compiler loop, `construct_language`, SkillTree surface→cat, the contribution gate, the federation walk, the Skill OS loop). Skills: a `chaincompiler` repo-orientation skill + `report-missed-skill` surfaced.
+
 ### v0.1.13 — 2026-06-16
 - **Roadmap P7 — Plugin** (bundle the whole thing as one Claude Code plugin) + a living **[BACKLOG.md](BACKLOG.md)** tracking the concrete tasks under each phase (P6 analytics-hook / frontend / improve-loop, P7 plugin, the aspirational tails, and "tree-ify the real ~/.claude/skills library").
 
