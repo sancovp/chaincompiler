@@ -82,6 +82,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.6",
+      "date": "2026-06-16",
+      "changes": [
+        "**Public + Pages live** \u2014 the repo is public and the roadmap site deploys to GitHub Pages at https://sancovp.github.io/chaincompiler/. The `deploy` job now runs (it was skipped while private); the changelog-gated, self-regenerating pipeline is live end-to-end."
+      ]
+    },
+    {
       "version": "v0.1.5",
       "date": "2026-06-16",
       "changes": [
