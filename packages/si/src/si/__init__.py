@@ -12,8 +12,9 @@ __version__ = "0.1.0"
 from .interp import interpret, make_env
 from .mcp_tree import build_tree_server, tree_to_mcp
 from .runtime import reachable, read_skill, walk
+from .scaffold import scaffold_repo, validate_node
 
 __all__ = [
     "interpret", "make_env", "walk", "reachable", "read_skill",
-    "build_tree_server", "tree_to_mcp", "__version__",
+    "build_tree_server", "tree_to_mcp", "scaffold_repo", "validate_node", "__version__",
 ]

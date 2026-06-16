@@ -253,6 +253,9 @@ SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
 
 ## Changelog
 
+### v0.1.5 — 2026-06-16
+- **P5.1 repo scaffolder** — `si.scaffold_repo`: stamp a ChainCompiler-shaped *node repo* from a skill tree (the tree + a federated `registry.json` + a runnable `serve_mcp.py` + README) with `validate_node`. The fractal made real: each emitted MCP becomes a repo whose marketplace federates under the parent. (3 tests.)
+
 ### v0.1.4 — 2026-06-16
 - **Monorepo + published** — consolidated the 8 packages under `packages/` (rulecatcher stays an external dep), `install.sh`, and pushed to a private GitHub repo. 117 tests green post-move.
 - **Deploy workflow decoupled** — split into a `validate` job (changelog gate + regenerate + staleness, runs on every push) and a `deploy` job gated on public visibility (Pages needs a public repo), so private pushes stay green.

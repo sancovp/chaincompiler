@@ -69,10 +69,10 @@
     {
       "id": "P5",
       "title": "Federation",
-      "status": "planned",
+      "status": "in_progress",
       "blurb": "Each emitted MCP becomes a repo; marketplaces federate. Plan: FEDERATION.md.",
       "items": [
-        "Repo scaffolder (MCP \u2192 ChainCompiler-shaped repo)",
+        "Repo scaffolder (MCP \u2192 node repo) \u2713",
         "Marketplace IS a git repo (registry.json + PRs)",
         "Contribution = validate + queue + gated promote",
         "Untrusted-by-default; sandboxed CI; provenance",
@@ -81,6 +81,13 @@
     }
   ],
   "changelog": [
+    {
+      "version": "v0.1.5",
+      "date": "2026-06-16",
+      "changes": [
+        "**P5.1 repo scaffolder** \u2014 `si.scaffold_repo`: stamp a ChainCompiler-shaped *node repo* from a skill tree (the tree + a federated `registry.json` + a runnable `serve_mcp.py` + README) with `validate_node`. The fractal made real: each emitted MCP becomes a repo whose marketplace federates under the parent. (3 tests.)"
+      ]
+    },
     {
       "version": "v0.1.4",
       "date": "2026-06-16",

@@ -69,10 +69,10 @@
     {
       "id": "P5",
       "title": "Federation",
-      "status": "planned",
+      "status": "in_progress",
       "blurb": "Each emitted MCP becomes a repo; marketplaces federate. Plan: FEDERATION.md.",
       "items": [
-        "Repo scaffolder (MCP → ChainCompiler-shaped repo)",
+        "Repo scaffolder (MCP → node repo) ✓",
         "Marketplace IS a git repo (registry.json + PRs)",
         "Contribution = validate + queue + gated promote",
         "Untrusted-by-default; sandboxed CI; provenance",
