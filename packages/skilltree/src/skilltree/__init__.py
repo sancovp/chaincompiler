@@ -13,7 +13,7 @@ from .exchange import build as build_exchange
 from .exchange import is_valid as exchange_is_valid
 from .exchange import validate as validate_exchange
 from .materialize import materialize
-from .model import SkillTree, TreeNode, assign_coords, skill_name
+from .model import SkillTree, TreeNode, assign_coords, compose_summary, skill_name, assign_coords, skill_name
 from .registry import (
     Entry,
     load_registry,

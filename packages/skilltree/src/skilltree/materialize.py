@@ -17,7 +17,7 @@ from __future__ import annotations
 from pathlib import Path
 import shutil
 
-from .model import SkillTree, TreeNode, assign_coords, skill_name
+from .model import SkillTree, TreeNode, assign_coords, compose_summary, skill_name
 
 # A breadcrumb line is parseable by validate.py: `- <name> (<kind>): cat <abspath>`
 _CRUMB = "- {name} ({kind}): `cat {path}`"
@@ -45,18 +45,24 @@ def _write_node(node: TreeNode, node_dir: Path, root: Path) -> None:
     else:
         base = f"SkillTree {node.kind} node `{node.name}`."
         desc = node.description or f"{node.kind} node {node.name} in a SkillTree."
-    if node.coord:
-        desc = f"[{node.coord}] {desc}"
-
     if node.children:
+        # index (branch) node: a deterministic subtree summary makes it retrievable
+        # by any descendant's terms (the RAPTOR win, no LLM).
+        if not node.description:
+            desc = compose_summary(node, full=False)
+        summary = compose_summary(node, full=True)
         crumbs = [_CRUMB.format(name=skill_name(c), kind=c.kind,
                                 path=node_skill_md(node_dir / c.name, skill_name(c)).resolve())
                   for c in node.children]
-        body = (f"{base}\n\n## Descend — the next layer ({len(node.children)})\n"
+        body = (f"{base}\n\n## Index summary\n{summary}\n\n"
+                f"## Descend — the next layer ({len(node.children)})\n"
                 "Auto-load stops here (nested `.claude` will not load). To go deeper, "
                 "run the `cat` for the child you want:\n\n" + "\n".join(crumbs))
     else:
         body = base + "\n\n_(leaf — this is an actual skill.)_"
+
+    if node.coord:
+        desc = f"[{node.coord}] {desc}"
 
     skill_md.write_text(_front(sname, desc, body), encoding="utf-8")
 

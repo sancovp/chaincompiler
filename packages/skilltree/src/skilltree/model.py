@@ -48,6 +48,25 @@ def skill_name(node: "TreeNode") -> str:
     return f"{node.coord}-{node.name}" if node.coord else node.name
 
 
+def compose_summary(node: "TreeNode", *, full: bool = False) -> str:
+    """A DETERMINISTIC semantic summary of an index (branch) node — a template
+    filled with its coordinate, children, and reachable descendants.
+
+    This is the RAPTOR "internal nodes carry a summary" retrieval-win, gotten for
+    free (no LLM): the branch's body becomes dense with its subtree's vocabulary,
+    so a query about any descendant matches the branch that leads to it. `full`
+    adds the flattened reachable-leaf list (for the indexed body); the short form
+    (for the description) lists just the immediate children.
+    """
+    kids = ", ".join(f"{c.name} ({c.kind})" for c in node.children) or "(none)"
+    short = f"opens to {len(node.children)} branch(es): {kids}"
+    if not full:
+        return short
+    reachable = [d.name for d in node.walk() if d is not node]
+    return (f"[{node.coord or '?'}] {node.name} — a {node.kind} index node; {short}. "
+            f"Reachable below: {', '.join(reachable)}.")
+
+
 def assign_coords(root: "TreeNode", base: str = "0") -> "TreeNode":
     """Give every node a hierarchical coordinate: root=base, child i (1-based)=parent.i."""
     def walk(n: "TreeNode", coord: str) -> None:
