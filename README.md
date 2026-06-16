@@ -8,7 +8,7 @@
 
 <br/>
 
-![tests](https://img.shields.io/badge/tests-107%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
+![tests](https://img.shields.io/badge/tests-120%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
 
 <br/>
 
@@ -253,6 +253,9 @@ SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
 
 ## Changelog
 
+### v0.1.7 — 2026-06-16
+- **MIT license** — `LICENSE` added (open-core stance: the pattern/library is MIT; monetization belongs to the moat-bearing layer, e.g. a hosted federated marketplace).
+
 ### v0.1.6 — 2026-06-16
 - **Public + Pages live** — the repo is public and the roadmap site deploys to GitHub Pages at https://sancovp.github.io/chaincompiler/. The `deploy` job now runs (it was skipped while private); the changelog-gated, self-regenerating pipeline is live end-to-end.
 
@@ -297,4 +300,10 @@ SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
 ### Not done yet (honestly)
 
 - **`execute` / `search`** — the bandit's other two arms. `construct` is end-to-end; a programmatic `skilltree walk` is sketched, not built.
-- **Global install** — everything lives in `~/fable_test`. Nothing auto-loads into real sessions until a tree/language lands in `~/.claude/skills`.
+- **Global install** — nothing auto-loads into real sessions until a tree/language lands in `~/.claude/skills`.
+
+---
+
+## License
+
+**MIT** — see [LICENSE](LICENSE). The pattern is the gift; the code is free to use, fork, and build on.

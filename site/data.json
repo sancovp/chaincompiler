@@ -82,6 +82,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.7",
+      "date": "2026-06-16",
+      "changes": [
+        "**MIT license** \u2014 `LICENSE` added (open-core stance: the pattern/library is MIT; monetization belongs to the moat-bearing layer, e.g. a hosted federated marketplace)."
+      ]
+    },
+    {
       "version": "v0.1.6",
       "date": "2026-06-16",
       "changes": [
