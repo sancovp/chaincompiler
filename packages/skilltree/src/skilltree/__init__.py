@@ -22,6 +22,7 @@ from .registry import (
     validate_registry,
 )
 from .registry import search as registry_search
+from .forest import build_forest, link_tree, list_links, unlink
 from .federation import (
     flatten_federation,
     local_resolver,
@@ -38,5 +39,6 @@ __all__ = [
     "Entry", "load_registry", "validate_registry", "validate_contribution",
     "promote", "registry_search",
     "walk_federation", "flatten_federation", "validate_federation",
-    "register_child", "local_resolver", "__version__",
+    "register_child", "local_resolver",
+    "link_tree", "build_forest", "list_links", "unlink", "__version__",
 ]

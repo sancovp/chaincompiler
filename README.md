@@ -253,6 +253,9 @@ SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
 
 ## Changelog
 
+### v0.1.10 — 2026-06-16
+- **Surface trees from the top** — `skilltree.forest`: `link_tree` symlinks a tree's root + first-layer branches into the top-level `~/.claude/skills` (so it's visible in every session; deeper levels stay behind `cat` = progressive disclosure), `build_forest` makes one forest-root over many trees, plus `list_links`/`unlink`. Verified the auto-load rule empirically (probe): a `.claude/skills` *inside a skill dir* is NOT scanned (non-recursive), so the `cat`-breadcrumb tree is the right workaround — confirmed, not redundant. (3 tests.)
+
 ### v0.1.9 — 2026-06-16
 - **P5.4 federation walk** — `skilltree.federation`: a child marketplace joins by a `registry`-kind entry pointing at its `registry.json`; `walk_federation` / `flatten_federation` traverse the tree of marketplaces under a root (pluggable `resolve`, so it works offline), `validate_federation` catches cycles + unresolved children + parent-backref mismatches, and `register_child` adds a federation link (unverified). **P5 Federation complete** (reputation/hosted-discovery remain aspirational). (5 tests.)
 

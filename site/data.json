@@ -82,6 +82,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.10",
+      "date": "2026-06-16",
+      "changes": [
+        "**Surface trees from the top** \u2014 `skilltree.forest`: `link_tree` symlinks a tree's root + first-layer branches into the top-level `~/.claude/skills` (so it's visible in every session; deeper levels stay behind `cat` = progressive disclosure), `build_forest` makes one forest-root over many trees, plus `list_links`/`unlink`. Verified the auto-load rule empirically (probe): a `.claude/skills` *inside a skill dir* is NOT scanned (non-recursive), so the `cat`-breadcrumb tree is the right workaround \u2014 confirmed, not redundant. (3 tests.)"
+      ]
+    },
+    {
       "version": "v0.1.9",
       "date": "2026-06-16",
       "changes": [
