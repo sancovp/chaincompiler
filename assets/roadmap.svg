@@ -1,5 +1,5 @@
-<svg viewBox="0 0 1562 436" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
-<rect x="0" y="0" width="1562" height="436" rx="14" fill="#ffffff"/>
+<svg viewBox="0 0 1812 436" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+<rect x="0" y="0" width="1812" height="436" rx="14" fill="#ffffff"/>
 <text x="40" y="44" font-size="22" font-weight="800" fill="#15151a">ChainCompiler — roadmap</text>
 <text x="40" y="68" font-size="13" fill="#5e5e66">A compiler-compiler for cognition.  ·  updated 2026-06-16</text>
 <rect x="40" y="96" width="232" height="300" rx="11" fill="#e9f7ef" stroke="#16a34a" stroke-width="1.6"/>
@@ -78,5 +78,19 @@
 <text x="1306" y="274" font-size="11" fill="#15151a">•  Contribution gate: validate + que…</text>
 <text x="1306" y="294" font-size="11" fill="#15151a">•  Untrusted-by-default; sandboxed C…</text>
 <text x="1306" y="314" font-size="11" fill="#15151a">•  Child marketplaces federate under…</text>
+<path d="M1520 126 h20" stroke="#c4c4bf" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<rect x="1540" y="96" width="232" height="300" rx="11" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.6"/>
+<text x="1556" y="126" font-size="12" font-weight="800" letter-spacing=".08em" fill="#3b6fd4">P6</text>
+<rect x="1668" y="112" width="88" height="20" rx="10" fill="#3b6fd4"/>
+<text x="1712" y="126" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">▸ in progress</text>
+<text x="1556" y="154" font-size="16" font-weight="800" fill="#15151a">Skill OS</text>
+<text x="1556" y="176" font-size="11.5" fill="#5e5e66">Organize → observe → improve</text>
+<text x="1556" y="192" font-size="11.5" fill="#5e5e66">the global skill namespace.</text>
+<text x="1556" y="208" font-size="11.5" fill="#5e5e66">Shared human/agent interface.</text>
+<text x="1556" y="234" font-size="11" fill="#15151a">•  Organize: coord/metadata/schema o…</text>
+<text x="1556" y="254" font-size="11" fill="#15151a">•  report-missed-skill + reports sto…</text>
+<text x="1556" y="274" font-size="11" fill="#15151a">•  Analytics: skill-usage tracking (…</text>
+<text x="1556" y="294" font-size="11" fill="#15151a">•  Frontend: tree + analytics + prob…</text>
+<text x="1556" y="314" font-size="11" fill="#15151a">•  Improve loop: reports → agent → s…</text>
 <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c4c4bf"/></marker></defs>
 </svg>

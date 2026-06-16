@@ -78,9 +78,29 @@
         "Untrusted-by-default; sandboxed CI; provenance \u2713",
         "Child marketplaces federate under the parent \u2713 (reputation: aspirational)"
       ]
+    },
+    {
+      "id": "P6",
+      "title": "Skill OS",
+      "status": "in_progress",
+      "blurb": "Organize \u2192 observe \u2192 improve the global skill namespace. Shared human/agent interface.",
+      "items": [
+        "Organize: coord/metadata/schema over ~/.claude/skills (coords \u2713)",
+        "report-missed-skill + reports store \u2713",
+        "Analytics: skill-usage tracking (a hook)",
+        "Frontend: tree + analytics + problem-marking, launched from the root skill",
+        "Improve loop: reports \u2192 agent \u2192 skill-improver / create"
+      ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.1.12",
+      "date": "2026-06-16",
+      "changes": [
+        "**P6 Skill OS \u2014 the keystone: `report-missed-skill`** + the reports store (`skilltree.reports`): `report_missed` / `mark_problem` / `list_reports` / `summary` / `resolve`, CLI (`skilltree report-missed` / `mark-problem` / `reports`), and the shipped `report-missed-skill` skill (installed live). The agent (or the user) files missing/expected-but-unused skills into `~/.claude/skill-reports.json`; an improver agent reads the open queue and creates/improves skills. The system grows from its own gaps. (3 tests.)"
+      ]
+    },
     {
       "version": "v0.1.11",
       "date": "2026-06-16",

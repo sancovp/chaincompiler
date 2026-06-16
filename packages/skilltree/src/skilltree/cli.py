@@ -17,6 +17,46 @@ def main() -> None:
     """SkillTree — a nested tree of skill dirs wired by `cat`-breadcrumbs (validated)."""
 
 
+@main.command(name="report-missed")
+@click.option("--needed", required=True, help="the skill/capability that was needed")
+@click.option("--happened", required=True, help="what you did instead / what went wrong")
+@click.option("--suggests", default=None, help="proposed skill name + one-line purpose")
+@click.option("--by", default="agent")
+@click.option("--reports", "reports_path", default=None, help="reports store (default ~/.claude/skill-reports.json)")
+def report_missed_cmd(needed, happened, suggests, by, reports_path):
+    """File a missed-skill report (a needed skill didn't exist)."""
+    from .reports import DEFAULT_REPORTS, report_missed
+    e = report_missed(reports_path or DEFAULT_REPORTS, needed=needed, happened=happened, suggests=suggests, by=by)
+    click.echo(f"✓ filed {e['id']} (missed_skill) — needed: {needed!r}")
+
+
+@main.command(name="mark-problem")
+@click.option("--skill", required=True, help="the skill that should have fired")
+@click.option("--expected", required=True, help="what you expected it to do")
+@click.option("--happened", required=True, help="what happened instead")
+@click.option("--by", default="user")
+@click.option("--reports", "reports_path", default=None)
+def mark_problem_cmd(skill, expected, happened, by, reports_path):
+    """Mark 'expected this skill to be used, but it wasn't'."""
+    from .reports import DEFAULT_REPORTS, mark_problem
+    e = mark_problem(reports_path or DEFAULT_REPORTS, skill=skill, expected=expected, happened=happened, by=by)
+    click.echo(f"✓ filed {e['id']} (expected_not_used) — skill: {skill!r}")
+
+
+@main.command(name="reports")
+@click.option("--reports", "reports_path", default=None)
+@click.option("--kind", default=None)
+def reports_cmd(reports_path, kind):
+    """Show the open skill reports (the improver's queue)."""
+    from .reports import DEFAULT_REPORTS, list_reports, summary
+    rp = reports_path or DEFAULT_REPORTS
+    s = summary(rp)
+    click.echo(f"reports: {s['open']} open / {s['total']} total  {s['open_by_kind']}")
+    for r in list_reports(rp, kind=kind):
+        head = r.get("needed") or r.get("skill") or "?"
+        click.echo(f"  {r['id']} [{r['kind']}] by {r['by']}: {head}")
+
+
 @main.command(name="build")
 @click.argument("manifest", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.argument("root", type=click.Path(path_type=Path))

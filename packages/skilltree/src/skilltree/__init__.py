@@ -23,6 +23,13 @@ from .registry import (
 )
 from .registry import search as registry_search
 from .forest import build_forest, link_tree, list_links, unlink
+from .reports import (
+    list_reports,
+    mark_problem,
+    report_missed,
+    resolve,
+    summary as reports_summary,
+)
 from .federation import (
     flatten_federation,
     local_resolver,
@@ -41,5 +48,7 @@ __all__ = [
     "walk_federation", "flatten_federation", "validate_federation",
     "register_child", "local_resolver",
     "link_tree", "build_forest", "list_links", "unlink",
-    "assign_coords", "skill_name", "__version__",
+    "assign_coords", "skill_name",
+    "report_missed", "mark_problem", "list_reports", "resolve", "reports_summary",
+    "__version__",
 ]

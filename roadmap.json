@@ -78,6 +78,19 @@
         "Untrusted-by-default; sandboxed CI; provenance ✓",
         "Child marketplaces federate under the parent ✓ (reputation: aspirational)"
       ]
+    },
+    {
+      "id": "P6",
+      "title": "Skill OS",
+      "status": "in_progress",
+      "blurb": "Organize → observe → improve the global skill namespace. Shared human/agent interface.",
+      "items": [
+        "Organize: coord/metadata/schema over ~/.claude/skills (coords ✓)",
+        "report-missed-skill + reports store ✓",
+        "Analytics: skill-usage tracking (a hook)",
+        "Frontend: tree + analytics + problem-marking, launched from the root skill",
+        "Improve loop: reports → agent → skill-improver / create"
+      ]
     }
   ]
 }

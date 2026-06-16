@@ -253,6 +253,9 @@ SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
 
 ## Changelog
 
+### v0.1.12 — 2026-06-16
+- **P6 Skill OS — the keystone: `report-missed-skill`** + the reports store (`skilltree.reports`): `report_missed` / `mark_problem` / `list_reports` / `summary` / `resolve`, CLI (`skilltree report-missed` / `mark-problem` / `reports`), and the shipped `report-missed-skill` skill (installed live). The agent (or the user) files missing/expected-but-unused skills into `~/.claude/skill-reports.json`; an improver agent reads the open queue and creates/improves skills. The system grows from its own gaps. (3 tests.)
+
 ### v0.1.11 — 2026-06-16
 - **Coordinate addressing** — `assign_coords` gives every node a hierarchical address (root `0`, children `0.1`/`0.2`, grandchildren `0.1.1`…). `materialize(..., coords=True)` prefixes the coord onto each skill's **frontmatter `name` + dir** (`0.1-reason`), so the flat `~/.claude/skills` list is coord-sorted, reveals the tree, and every node is addressable by its coordinate. `link_tree` surfaces the coord-named symlinks at the top. Coords off by default (backward-compatible). (4 tests.)
 
