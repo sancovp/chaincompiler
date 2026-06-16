@@ -107,6 +107,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.17",
+      "date": "2026-06-16",
+      "changes": [
+        "**Backlog** \u2014 recorded the next search-arm direction (**anchor-based dynamic embedding geometry**, to be specified) and a re-materialize note for the live tree (to carry the new branch summaries)."
+      ]
+    },
+    {
       "version": "v0.1.16",
       "date": "2026-06-16",
       "changes": [

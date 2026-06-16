@@ -18,6 +18,8 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [ ] **Organize, full** — metadata/schema enforcement (domain/subdomain, name compression) over `~/.claude/skills`, on top of coords
 - [x] **Search arm** — `skilltree.search` (SQLite FTS5/BM25 + **coordinate-scoped subtree** filtering) + `si_search` MCP tool + `skilltree search` CLI
 - [ ] **Search: dense/vector layer** — *later, evidence-driven*. Add embeddings (e.g. `all-MiniLM-L6-v2`, brute-force cosine) fused via **RRF (k=60)** ONLY when logged BM25 misses are semantic (synonym/paraphrase), not lexical. Overkill at small scale.
+- [ ] **Search: anchor-based dynamic embedding geometry** — Isaac to teach the mechanism next convo: a dynamically-reshaped embedding space driven by *anchors* (not a static embedding). Ask him to explain the anchor scheme before building; likely ties to the coordinate/CB worldview. The real plan for the dense layer above.
+- [ ] **Re-materialize the live tree** — `cc_tree_test` (+ its `~/.claude/skills` symlinks) predates `compose_summary`; re-`materialize(coords=True)` + re-link so the live tree carries its branch summaries.
 - [x] **Search: internal-node summaries** — `compose_summary`: every branch gets a *deterministic, template-composed* subtree summary (coord + children + reachable descendants) baked into its body, so branches are retrievable by descendant terms. RAPTOR's win, no LLM. (Optional later: LLM-written abstractive summaries when the template isn't rich enough.)
 - [ ] **MCTS over the tree** — for skill *composition* (SCCC choosing what to chain), NOT for lookup (LATS 2310.04406). Defer until composition needs it.
 

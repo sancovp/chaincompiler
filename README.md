@@ -253,6 +253,9 @@ SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
 
 ## Changelog
 
+### v0.1.17 — 2026-06-16
+- **Backlog** — recorded the next search-arm direction (**anchor-based dynamic embedding geometry**, to be specified) and a re-materialize note for the live tree (to carry the new branch summaries).
+
 ### v0.1.16 — 2026-06-16
 - **Template node-summaries** (`skilltree.model.compose_summary`) — every index/branch node gets a *deterministic* subtree summary (its coord + children + reachable descendants) baked into its body + used as its description. This is RAPTOR's "internal nodes carry a summary" retrieval-win **with no LLM**: a branch is now retrievable by any descendant's terms (search "symptom-localizer" surfaces the `debug` branch that leads to it). Closes the search-arm caveat from the research.
 
