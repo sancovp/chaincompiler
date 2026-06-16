@@ -17,7 +17,7 @@ from __future__ import annotations
 from pathlib import Path
 import shutil
 
-from .model import SkillTree, TreeNode
+from .model import SkillTree, TreeNode, assign_coords, skill_name
 
 # A breadcrumb line is parseable by validate.py: `- <name> (<kind>): cat <abspath>`
 _CRUMB = "- {name} ({kind}): `cat {path}`"
@@ -32,7 +32,8 @@ def _front(name: str, description: str, body: str) -> str:
 
 
 def _write_node(node: TreeNode, node_dir: Path, root: Path) -> None:
-    skill_md = node_skill_md(node_dir, node.name)
+    sname = skill_name(node)                      # coord-prefixed identity (or plain name)
+    skill_md = node_skill_md(node_dir, sname)
     skill_md.parent.mkdir(parents=True, exist_ok=True)
 
     # base body: the node's own skill content (from src) or a stub
@@ -44,10 +45,12 @@ def _write_node(node: TreeNode, node_dir: Path, root: Path) -> None:
     else:
         base = f"SkillTree {node.kind} node `{node.name}`."
         desc = node.description or f"{node.kind} node {node.name} in a SkillTree."
+    if node.coord:
+        desc = f"[{node.coord}] {desc}"
 
     if node.children:
-        crumbs = [_CRUMB.format(name=c.name, kind=c.kind,
-                                path=node_skill_md(node_dir / c.name, c.name).resolve())
+        crumbs = [_CRUMB.format(name=skill_name(c), kind=c.kind,
+                                path=node_skill_md(node_dir / c.name, skill_name(c)).resolve())
                   for c in node.children]
         body = (f"{base}\n\n## Descend — the next layer ({len(node.children)})\n"
                 "Auto-load stops here (nested `.claude` will not load). To go deeper, "
@@ -55,15 +58,18 @@ def _write_node(node: TreeNode, node_dir: Path, root: Path) -> None:
     else:
         body = base + "\n\n_(leaf — this is an actual skill.)_"
 
-    skill_md.write_text(_front(node.name, desc, body), encoding="utf-8")
+    skill_md.write_text(_front(sname, desc, body), encoding="utf-8")
 
-    # recurse: each child's dir is a sibling of this node's .claude
+    # recurse: each child's dir is a sibling of this node's .claude (tree-path uses plain name)
     for child in node.children:
         _write_node(child, node_dir / child.name, root)
 
 
-def materialize(tree: SkillTree, root: str | Path, *, overwrite: bool = True) -> Path:
+def materialize(tree: SkillTree, root: str | Path, *, overwrite: bool = True,
+                coords: bool = False, base: str = "0") -> Path:
     root = Path(root)
+    if coords:
+        assign_coords(tree.root, base)            # address every node before writing
     if overwrite and root.exists():
         shutil.rmtree(root)
     root.mkdir(parents=True, exist_ok=True)

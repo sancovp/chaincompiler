@@ -82,6 +82,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.11",
+      "date": "2026-06-16",
+      "changes": [
+        "**Coordinate addressing** \u2014 `assign_coords` gives every node a hierarchical address (root `0`, children `0.1`/`0.2`, grandchildren `0.1.1`\u2026). `materialize(..., coords=True)` prefixes the coord onto each skill's **frontmatter `name` + dir** (`0.1-reason`), so the flat `~/.claude/skills` list is coord-sorted, reveals the tree, and every node is addressable by its coordinate. `link_tree` surfaces the coord-named symlinks at the top. Coords off by default (backward-compatible). (4 tests.)"
+      ]
+    },
+    {
       "version": "v0.1.10",
       "date": "2026-06-16",
       "changes": [

@@ -20,10 +20,11 @@ KINDS = ("ac", "cor", "sc", "skill")
 
 @dataclass
 class TreeNode:
-    name: str                       # slug; also the skill dir name
+    name: str                       # slug; also the tree-path dir name
     kind: str = "skill"             # ac | cor | sc | skill
     skill_src: str | None = None    # existing `<name>/SKILL.md` dir to carry as content (else a stub)
     description: str | None = None   # SKILL.md description (so it auto-loads / is searchable)
+    coord: str | None = None         # hierarchical address (e.g. "0.1.2"); set by assign_coords
     children: list["TreeNode"] = field(default_factory=list)
 
     def walk(self):
@@ -37,6 +38,26 @@ class TreeNode:
             yield from child.edges()
 
 
+def skill_name(node: "TreeNode") -> str:
+    """The skill's identity (frontmatter name + skill-dir name).
+
+    With a coord, it is `<coord>-<name>` — so the flat skills list is coord-sorted,
+    reveals the tree, and each node is addressable by its coordinate. The tree-PATH
+    dir stays the plain `name`; only the skill identity carries the coord.
+    """
+    return f"{node.coord}-{node.name}" if node.coord else node.name
+
+
+def assign_coords(root: "TreeNode", base: str = "0") -> "TreeNode":
+    """Give every node a hierarchical coordinate: root=base, child i (1-based)=parent.i."""
+    def walk(n: "TreeNode", coord: str) -> None:
+        n.coord = coord
+        for i, child in enumerate(n.children, 1):
+            walk(child, f"{coord}.{i}")
+    walk(root, base)
+    return root
+
+
 @dataclass
 class SkillTree:
     root: TreeNode
@@ -45,7 +66,8 @@ class SkillTree:
     def to_manifest(self) -> dict:
         def enc(n: TreeNode) -> dict:
             return {"name": n.name, "kind": n.kind, "skill_src": n.skill_src,
-                    "description": n.description, "children": [enc(c) for c in n.children]}
+                    "description": n.description, "coord": n.coord,
+                    "children": [enc(c) for c in n.children]}
         return {"skilltree": enc(self.root)}
 
     @staticmethod
@@ -53,6 +75,7 @@ class SkillTree:
         def dec(d: dict) -> TreeNode:
             return TreeNode(name=d["name"], kind=d.get("kind", "skill"),
                             skill_src=d.get("skill_src"), description=d.get("description"),
+                            coord=d.get("coord"),
                             children=[dec(c) for c in d.get("children", [])])
         return SkillTree(dec(data["skilltree"]))
 

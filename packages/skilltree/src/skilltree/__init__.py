@@ -13,7 +13,7 @@ from .exchange import build as build_exchange
 from .exchange import is_valid as exchange_is_valid
 from .exchange import validate as validate_exchange
 from .materialize import materialize
-from .model import SkillTree, TreeNode
+from .model import SkillTree, TreeNode, assign_coords, skill_name
 from .registry import (
     Entry,
     load_registry,
@@ -40,5 +40,6 @@ __all__ = [
     "promote", "registry_search",
     "walk_federation", "flatten_federation", "validate_federation",
     "register_child", "local_resolver",
-    "link_tree", "build_forest", "list_links", "unlink", "__version__",
+    "link_tree", "build_forest", "list_links", "unlink",
+    "assign_coords", "skill_name", "__version__",
 ]

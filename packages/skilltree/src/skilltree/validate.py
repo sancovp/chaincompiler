@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import re
 
-from .model import KINDS, SkillTree, TreeNode
+from .model import KINDS, SkillTree, TreeNode, skill_name
 
 _CAT_RE = re.compile(r"`cat (.+?)`")
 
@@ -42,7 +42,7 @@ def _skill_md(node_dir: Path, name: str) -> Path:
 
 
 def _walk(node: TreeNode, node_dir: Path, out: list[Violation]) -> None:
-    skill_md = _skill_md(node_dir, node.name)
+    skill_md = _skill_md(node_dir, skill_name(node))
     if node.kind not in KINDS:
         out.append(Violation("warning", node.name, f"unknown kind {node.kind!r}"))
     if not skill_md.is_file():
@@ -58,7 +58,7 @@ def _walk(node: TreeNode, node_dir: Path, out: list[Violation]) -> None:
     if node.children:
         text = skill_md.read_text(encoding="utf-8")
         found = {Path(m).resolve() for m in _CAT_RE.findall(text)}
-        expected = {_skill_md(node_dir / c.name, c.name).resolve() for c in node.children}
+        expected = {_skill_md(node_dir / c.name, skill_name(c)).resolve() for c in node.children}
         for missing in expected - found:
             out.append(Violation("error", node.name, f"no `cat` breadcrumb for child → {missing}"))
         for p in found:

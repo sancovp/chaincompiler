@@ -13,7 +13,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from .model import SkillTree
+from .model import SkillTree, skill_name
 
 _CRUMB = "- {name} ({kind}): `cat {path}`"
 
@@ -44,10 +44,12 @@ def link_tree(tree_dir: str | Path, *, user_skills_dir: str | Path,
     user = Path(user_skills_dir)
     links: list[Path] = []
     if include_root:
-        links.append(_symlink(user / tree.root.name, _skill_dir(tree_dir, tree.root.name)))
+        rn = skill_name(tree.root)
+        links.append(_symlink(user / rn, _skill_dir(tree_dir, rn)))
     if branches:
         for child in tree.root.children:
-            links.append(_symlink(user / child.name, _skill_dir(tree_dir / child.name, child.name)))
+            cn = skill_name(child)
+            links.append(_symlink(user / cn, _skill_dir(tree_dir / child.name, cn)))
     return links
 
 
@@ -64,9 +66,10 @@ def build_forest(name: str, members: list[str | Path], *, user_skills_dir: str |
     for tdir in members:
         tdir = Path(tdir)
         tree = SkillTree.load(tdir / "skilltree.json")
-        md = _skill_dir(tdir, tree.root.name) / "SKILL.md"
-        crumbs.append(_CRUMB.format(name=tree.root.name, kind=tree.root.kind, path=md.resolve()))
-        roots.append(tree.root.name)
+        rn = skill_name(tree.root)
+        md = _skill_dir(tdir, rn) / "SKILL.md"
+        crumbs.append(_CRUMB.format(name=rn, kind=tree.root.kind, path=md.resolve()))
+        roots.append(rn)
     desc = description or f"Forest of {len(members)} skill tree(s): {', '.join(roots)}."
     body = (f"Forest **{name}** — {len(members)} skill tree(s). "
             "Pick one and `cat` into its root (then follow its breadcrumbs):\n\n" + "\n".join(crumbs))

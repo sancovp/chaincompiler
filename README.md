@@ -253,6 +253,9 @@ SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
 
 ## Changelog
 
+### v0.1.11 — 2026-06-16
+- **Coordinate addressing** — `assign_coords` gives every node a hierarchical address (root `0`, children `0.1`/`0.2`, grandchildren `0.1.1`…). `materialize(..., coords=True)` prefixes the coord onto each skill's **frontmatter `name` + dir** (`0.1-reason`), so the flat `~/.claude/skills` list is coord-sorted, reveals the tree, and every node is addressable by its coordinate. `link_tree` surfaces the coord-named symlinks at the top. Coords off by default (backward-compatible). (4 tests.)
+
 ### v0.1.10 — 2026-06-16
 - **Surface trees from the top** — `skilltree.forest`: `link_tree` symlinks a tree's root + first-layer branches into the top-level `~/.claude/skills` (so it's visible in every session; deeper levels stay behind `cat` = progressive disclosure), `build_forest` makes one forest-root over many trees, plus `list_links`/`unlink`. Verified the auto-load rule empirically (probe): a `.claude/skills` *inside a skill dir* is NOT scanned (non-recursive), so the `cat`-breadcrumb tree is the right workaround — confirmed, not redundant. (3 tests.)
 
