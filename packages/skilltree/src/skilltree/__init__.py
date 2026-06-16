@@ -30,6 +30,7 @@ from .reports import (
     resolve,
     summary as reports_summary,
 )
+from .search import build_index, search, search_tree
 from .federation import (
     flatten_federation,
     local_resolver,

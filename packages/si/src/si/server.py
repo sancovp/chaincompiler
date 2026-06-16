@@ -49,8 +49,14 @@ def si_tree_to_mcp(root_dir: str, root_name: str, out_path: str) -> str:
     return str(tree_to_mcp(root_dir, root_name, out_path))
 
 
+def si_search(root_dir: str, query: str, scope_coord: str | None = None, limit: int = 10) -> list[dict]:
+    """Search the skill tree (BM25), optionally scoped to a coordinate subtree (e.g. '0.1')."""
+    from skilltree import search_tree
+    return search_tree(root_dir, query, scope_coord=scope_coord, limit=limit)
+
+
 # Register as MCP tools without rebinding the names (keep them plain callables).
-for _fn in (si_interpret, si_walk, si_reachable, si_read_skill, si_tree_to_mcp):
+for _fn in (si_interpret, si_walk, si_reachable, si_read_skill, si_tree_to_mcp, si_search):
     mcp.tool()(_fn)
 
 

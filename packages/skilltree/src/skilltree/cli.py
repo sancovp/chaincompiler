@@ -17,6 +17,23 @@ def main() -> None:
     """SkillTree — a nested tree of skill dirs wired by `cat`-breadcrumbs (validated)."""
 
 
+@main.command(name="search")
+@click.argument("root", type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.argument("query")
+@click.option("--scope", "scope_coord", default=None, help="restrict to a coordinate subtree, e.g. 0.1")
+@click.option("--limit", default=10, type=int)
+def search_cmd(root, query, scope_coord, limit):
+    """BM25 search over a materialized tree, optionally scoped to a coordinate subtree."""
+    from .search import search_tree
+    hits = search_tree(root, query, scope_coord=scope_coord, limit=limit)
+    if not hits:
+        click.echo("(no matches)")
+        return
+    for h in hits:
+        coord = f"[{h['coord']}] " if h["coord"] else ""
+        click.echo(f"  {coord}{h['name']} — {h['description']}")
+
+
 @main.command(name="report-missed")
 @click.option("--needed", required=True, help="the skill/capability that was needed")
 @click.option("--happened", required=True, help="what you did instead / what went wrong")

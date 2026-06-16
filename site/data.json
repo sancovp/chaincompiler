@@ -107,6 +107,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.15",
+      "date": "2026-06-16",
+      "changes": [
+        "**Search arm** (the bandit's third arm) \u2014 `skilltree.search`: SQLite **FTS5/BM25** over the skill corpus + **coordinate-scoped subtree** search (rank within any `0.1`-rooted region), exposed as `skilltree search` and the **`si_search` MCP tool**. Research-scoped (3 arxiv scouts): FTS5+coord-scope now; dense/vector (RRF) + MCTS deferred as evidence-driven \u2014 see BACKLOG."
+      ]
+    },
+    {
       "version": "v0.1.14",
       "date": "2026-06-16",
       "changes": [

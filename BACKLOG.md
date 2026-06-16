@@ -16,6 +16,12 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [ ] **Frontend** — a dashboard (reuse the site infra) showing the tree + usage analytics + open reports, with problem-marking; launched from the canonical root skill
 - [ ] **Improve loop** — an agent that reads the open report queue (`skilltree reports`), runs Anthropic's skill-improver or creates the missing skill, then `resolve`s the report
 - [ ] **Organize, full** — metadata/schema enforcement (domain/subdomain, name compression) over `~/.claude/skills`, on top of coords
+- [x] **Search arm** — `skilltree.search` (SQLite FTS5/BM25 + **coordinate-scoped subtree** filtering) + `si_search` MCP tool + `skilltree search` CLI
+- [ ] **Search: dense/vector layer** — *later, evidence-driven*. Add embeddings (e.g. `all-MiniLM-L6-v2`, brute-force cosine) fused via **RRF (k=60)** ONLY when logged BM25 misses are semantic (synonym/paraphrase), not lexical. Overkill at small scale.
+- [ ] **Search: abstractive internal-node summaries** — RAPTOR's measured tree-win comes from *summaries at internal nodes*, not path addressing; give internal nodes a subtree summary so they compete in ranking.
+- [ ] **MCTS over the tree** — for skill *composition* (SCCC choosing what to chain), NOT for lookup (LATS 2310.04406). Defer until composition needs it.
+
+> **Research (2026-06-16, 3 scouts):** hybrid BM25+dense = standard (RRF, Cormack 2009; BEIR 2104.08663 — BM25 strong baseline). Tree-RAG helps via summaries (RAPTOR 2401.18059), coord/prefix scoping is a legit sublinear *filter* (Retreever 2502.07971; probabilistic label trees 2009.11218). Agent memory: "Hermes memory" = Nous Hermes agent (flat MEMORY.md + **SQLite FTS5** — we're a superset); category established (Voyager, H-MEM 2507.22925, MemGPT 2310.08560). **Differentiated bit = the human-meaningful coordinate as address + provenance + retrieval-scope.** Verdict: FTS5+coord-scope now ✓; vectors/MCTS later by evidence.
 
 ## P7 — Plugin  `○`
 
