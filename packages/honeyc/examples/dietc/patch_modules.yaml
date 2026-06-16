@@ -1,0 +1,80 @@
+# Example patch modules — NOT authoritative nutrition data.
+modules:
+  - id: protein_fiber_bar
+    name: Protein Fiber Bar
+    category: bar
+    contributes:
+      calories: 220
+      protein_g: 20
+      fiber_g: 10
+    matrix:
+      satiety_score: 0.6
+      gut_tolerance_risk: 0.2
+    avoids: [high_sodium]
+    dose_min: 0
+    dose_max: 2
+    dose_step: 1
+    unit: bar
+    adherence_score: 0.5
+    warnings:
+      - Increase fiber gradually.
+      - Sugar alcohols may cause GI discomfort in some people.
+
+  - id: electrolyte_water
+    name: Electrolyte Water
+    category: drink
+    contributes:
+      potassium_mg: 500
+      magnesium_mg: 100
+    matrix:
+      water_content_score: 1
+    avoids: [added_sugar]
+    dose_min: 0
+    dose_max: 3
+    dose_step: 1
+    unit: bottle
+    adherence_score: 0.6
+
+  - id: omega3_capsule
+    name: Omega-3 Capsule
+    category: capsule
+    contributes:
+      omega3_g: 1
+    matrix: {}
+    dose_min: 0
+    dose_max: 2
+    dose_step: 1
+    unit: capsule
+    adherence_score: 0.7
+
+  - id: berry_thing
+    name: Berry Thing
+    category: matrix_food
+    contributes:
+      carbs_g: 15
+      fiber_g: 4
+    matrix:
+      plant_diversity_score: 1
+      color_diversity_score: 1
+      berry_count: 1
+      polyphenol_score: 1
+    dose_min: 0
+    dose_max: 2
+    dose_step: 1
+    unit: serving
+
+  - id: green_thing
+    name: Green Thing
+    category: matrix_food
+    contributes:
+      fiber_g: 3
+      magnesium_mg: 40
+    matrix:
+      plant_diversity_score: 1
+      color_diversity_score: 1
+      green_leafy_count: 1
+      whole_food_score: 1
+    dose_min: 0
+    dose_max: 2
+    dose_step: 1
+    unit: serving

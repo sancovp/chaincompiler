@@ -1,0 +1,30 @@
+id: default_example
+name: Default Example Profile
+
+targets:
+  calories: 2200
+  protein_g: 120
+  fiber_g: 30
+  omega3_g: 1
+  potassium_mg: 3500
+  magnesium_mg: 350
+  calcium_mg: 1000
+
+upper_limits:
+  sodium_mg: 2300
+  added_sugar_g: 50
+  saturated_fat_g: 25
+
+minimum_matrix:
+  plant_diversity_score: 3
+  color_diversity_score: 2
+  berry_count: 1
+  green_leafy_count: 1
+  polyphenol_score: 1
+
+preferences:
+  prefer_drinks: true
+  prefer_low_prep: true
+  avoid_high_sodium_patches: true
+
+constraints: {}

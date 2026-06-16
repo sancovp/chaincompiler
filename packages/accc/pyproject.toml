@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "accc"
+version = "0.1.0"
+description = "Attention-Chain Compiler-Compiler — the atom of the cognition-chain stack"
+requires-python = ">=3.11"
+dependencies = ["chaincompiler", "honeyc", "rulecatcher", "click"]
+
+[project.scripts]
+accc = "accc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

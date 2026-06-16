@@ -1,0 +1,74 @@
+<svg viewBox="0 0 780 600" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="780" height="600" rx="14" fill="#ffffff"/>
+  <style>
+    .band{fill:#f6f6f5;stroke:#e4e4e1;stroke-width:1.5}
+    .box{fill:#ffffff;stroke:#d2d2cc;stroke-width:1.5}
+    .lyr{font-size:11px;font-weight:700;letter-spacing:.10em;fill:#9a9a96}
+    .t{font-size:14px;font-weight:700;fill:#15151a}
+    .s{font-size:11.5px;fill:#5e5e66}
+    .arrow{stroke:#b9b9b4;stroke-width:1.6;fill:none;marker-end:url(#a)}
+    .type{fill:#16a34a}
+  </style>
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#b9b9b4"/>
+    </marker>
+  </defs>
+
+  <rect x="24" y="20" width="560" height="74" rx="9" class="band"/>
+  <text x="40" y="40" class="lyr">ORGANIZATION</text>
+  <rect x="40" y="48" width="528" height="36" rx="7" class="box"/>
+  <text x="56" y="64" class="t">SkillTree</text>
+  <text x="56" y="78" class="s">tree of skill dirs · cat-breadcrumbs · JSON-driven · validated · progressive disclosure</text>
+
+  <rect x="24" y="108" width="560" height="116" rx="9" class="band"/>
+  <text x="40" y="128" class="lyr">COMPILER LAYERS — each emits a skill dir, each composes the one below</text>
+  <rect x="40" y="138" width="170" height="74" rx="7" class="box"/>
+  <text x="54" y="160" class="t">ACCC</text><text x="54" y="178" class="s">attention chain</text><text x="54" y="193" class="s">how to think (silent)</text>
+  <rect x="225" y="138" width="170" height="74" rx="7" class="box"/>
+  <text x="239" y="160" class="t">CORCC</text><text x="239" y="178" class="s">reasoning → decision</text><text x="239" y="193" class="s">spoken · HAS an AC</text>
+  <rect x="410" y="138" width="158" height="74" rx="7" class="box"/>
+  <text x="424" y="160" class="t">SCCC</text><text x="424" y="178" class="s">skill chain</text><text x="424" y="193" class="s">HAS CoR, AC, skills</text>
+  <path class="arrow" d="M210 175 H225"/>
+  <path class="arrow" d="M395 175 H410"/>
+
+  <rect x="24" y="238" width="560" height="90" rx="9" class="band"/>
+  <text x="40" y="258" class="lyr">SUBSTRATE</text>
+  <rect x="40" y="266" width="378" height="52" rx="7" class="box"/>
+  <text x="56" y="288" class="t">ChainCompiler</text>
+  <text x="56" y="304" class="s">learn → gate → compile loop · SKILL.md packager · construct_language()</text>
+  <rect x="430" y="266" width="138" height="52" rx="7" class="box"/>
+  <text x="446" y="288" class="t">skillchain</text><text x="446" y="304" class="s">rolls up skill dirs</text>
+
+  <rect x="24" y="342" width="560" height="90" rx="9" class="band"/>
+  <text x="40" y="362" class="lyr">ENGINE — does the work</text>
+  <rect x="40" y="370" width="258" height="52" rx="7" class="box"/>
+  <text x="56" y="392" class="t">rulecatcher</text><text x="56" y="408" class="s">linter · catch grammar · lint (the gate)</text>
+  <rect x="310" y="370" width="258" height="52" rx="7" class="box"/>
+  <text x="326" y="392" class="t">honeyc</text><text x="326" y="408" class="s">compiler · notation → triples/prose (dietc rides on it)</text>
+
+  <path class="arrow" d="M300 108 V94"/>
+  <path class="arrow" d="M300 238 V224"/>
+  <path class="arrow" d="M300 342 V328"/>
+
+  <rect x="608" y="20" width="148" height="412" rx="10" fill="#e9f7ef" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="682" y="48" text-anchor="middle" class="lyr" fill="#16a34a">THE ONE TYPE</text>
+  <text x="682" y="92" text-anchor="middle" class="t type">skill dir</text>
+  <text x="682" y="112" text-anchor="middle" class="s">&lt;name&gt;/SKILL.md</text>
+  <text x="682" y="150" text-anchor="middle" class="s">every layer</text><text x="682" y="166" text-anchor="middle" class="s">PRODUCES it</text>
+  <text x="682" y="200" text-anchor="middle" class="s">skillchain</text><text x="682" y="216" text-anchor="middle" class="s">COMPOSES it</text>
+  <text x="682" y="250" text-anchor="middle" class="s">SkillTree</text><text x="682" y="266" text-anchor="middle" class="s">ORGANIZES it</text>
+  <text x="682" y="312" text-anchor="middle" class="s" font-style="italic">closed +</text>
+  <text x="682" y="328" text-anchor="middle" class="s" font-style="italic">recursive:</text>
+  <text x="682" y="346" text-anchor="middle" class="s" font-style="italic">SC chains SC</text>
+  <text x="682" y="392" text-anchor="middle" class="s">auto-loads</text><text x="682" y="408" text-anchor="middle" class="s">everywhere</text>
+
+  <rect x="24" y="452" width="732" height="120" rx="9" class="band"/>
+  <text x="40" y="474" class="lyr">RUNTIME — Compilero Bandito: one bandit, one type, three arms</text>
+  <rect x="40" y="486" width="230" height="68" rx="7" class="box"/>
+  <text x="56" y="510" class="t">construct</text><text x="56" y="528" class="s">mint a new language</text><text x="56" y="544" class="s">(AC + CoR + SC)</text>
+  <rect x="285" y="486" width="230" height="68" rx="7" class="box"/>
+  <text x="301" y="510" class="t">execute</text><text x="301" y="528" class="s">run a chain</text><text x="301" y="544" class="s">(walk the tree)</text>
+  <rect x="530" y="486" width="226" height="68" rx="7" class="box"/>
+  <text x="546" y="510" class="t">search</text><text x="546" y="528" class="s">find chains</text><text x="546" y="544" class="s">(over skill dirs)</text>
+</svg>

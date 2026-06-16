@@ -1,0 +1,3 @@
+[Observe] ⇒ [Frame] ⇒ [Integrate] ⇒ [Authenticate] ⇒ |Predict|
+[Observe] ⇒ [Frame] ⇒ [Cohere] ⇒ [Authenticate] ⇒ |Predict|
+[Observe] ⇒ [Frame] ⇒ [Integrate] ⇒ [Lever] ⇒ |Predict|

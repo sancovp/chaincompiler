@@ -1,0 +1,36 @@
+# Example values for testing only — NOT authoritative nutrition data.
+items:
+  - id: potato_base
+    name: Potato Base
+    category: whole_food
+    serving_size: 1
+    serving_unit: potato
+    nutrient_vector:
+      calories: 160
+      protein_g: 4
+      carbs_g: 37
+      fiber_g: 4
+      potassium_mg: 900
+    matrix_vector:
+      whole_food_score: 1
+      plant_diversity_score: 1
+      satiety_score: 0.7
+      chewing_score: 0.8
+    safety_vector: {}
+    tags: [base, starch, cheap]
+
+  - id: oil_sugar_sauce
+    name: Oil Sugar Sauce
+    category: sauce
+    serving_size: 1
+    serving_unit: serving
+    nutrient_vector:
+      calories: 200
+      fat_g: 14
+      added_sugar_g: 15
+      sodium_mg: 200
+    matrix_vector:
+      processing_score: 0.8
+    safety_vector:
+      added_sugar_excess_risk: 0.3
+    tags: [sauce, calories, watch_sugar]

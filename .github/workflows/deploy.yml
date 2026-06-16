@@ -1,0 +1,58 @@
+name: deploy-site
+
+# Publishes the ChainCompiler roadmap site to GitHub Pages.
+# GATE: the README changelog must carry a NEW entry, or the deploy fails.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2          # need HEAD~1 for the changelog diff
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Changelog gate (require a new README entry)
+        run: python3 scripts/check_changelog.py --require-new
+
+      - name: Regenerate site + roadmap SVG from sources
+        run: python3 scripts/update_site.py
+
+      - name: Fail if generated site is stale (not committed)
+        run: |
+          if ! git diff --quiet -- site/data.json assets/roadmap.svg; then
+            echo "::error::site/data.json or assets/roadmap.svg is stale — run scripts/update_site.py and commit."
+            git --no-pager diff --stat -- site/data.json assets/roadmap.svg
+            exit 1
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

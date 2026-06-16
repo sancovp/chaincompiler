@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# venvs
+.venv/
+venv/
+
+# ChainCompiler runtime artifacts (generated, not source)
+*.rulecatcher.db
+*.chainpress.db
+*.cc.db
+.accc.db
+.chaincompiler-registry.json
+**/exchange.lock.json
+
+# OS
+.DS_Store

@@ -1,0 +1,83 @@
+{
+  "project": "ChainCompiler",
+  "tagline": "A compiler-compiler for cognition.",
+  "updated": "2026-06-16",
+  "phases": [
+    {
+      "id": "P0",
+      "title": "Foundation",
+      "status": "done",
+      "blurb": "The closed algebra over one type — the skill dir.",
+      "items": [
+        "rulecatcher — the linter / gate",
+        "honeyc — the compiler (+ dietc domain proof)",
+        "ChainCompiler — substrate + construct_language()",
+        "ACCC / CORCC / SCCC — the three layers",
+        "SkillTree — cat-breadcrumb organization",
+        "107 tests green"
+      ]
+    },
+    {
+      "id": "P1",
+      "title": "Project Surface",
+      "status": "done",
+      "blurb": "Make it visible, publishable, and self-updating.",
+      "items": [
+        "Roadmap (this) — SVG, regenerated from data",
+        "Website — renders the roadmap dynamically",
+        "Changelog in the README",
+        "update_site.py — regenerates site + SVG",
+        "Deploy workflow — gated on changelog"
+      ]
+    },
+    {
+      "id": "P2",
+      "title": "Exchange",
+      "status": "done",
+      "blurb": "Many skill trees in one repo, under a master.",
+      "items": [
+        "YAML/JSON exchange format",
+        "Multiple skill trees per repo",
+        "A master system over the trees",
+        "Loader + validator"
+      ]
+    },
+    {
+      "id": "P3",
+      "title": "Self-Hosting & Self-Interpreter",
+      "status": "done",
+      "blurb": "The literal self-interpreter — an SI for the chain dialect.",
+      "items": [
+        "Self-interpreter (a Python dialect; defers to native ops)",
+        "SI MCP that is ALSO a skill",
+        "Turn trees / masters into MCPs",
+        "ChainCompiler compiles itself"
+      ]
+    },
+    {
+      "id": "P4",
+      "title": "Marketplace",
+      "status": "in_progress",
+      "blurb": "Programmatic publish; opt-in public; notify + grow.",
+      "items": [
+        "Registry + publish/search ✓ (local)",
+        "Opt-in public + notify hook ✓",
+        "Hosted endpoint (aspirational)",
+        "Cross-user discovery (aspirational)"
+      ]
+    },
+    {
+      "id": "P5",
+      "title": "Federation",
+      "status": "planned",
+      "blurb": "Each emitted MCP becomes a repo; marketplaces federate. Plan: FEDERATION.md.",
+      "items": [
+        "Repo scaffolder (MCP → ChainCompiler-shaped repo)",
+        "Marketplace IS a git repo (registry.json + PRs)",
+        "Contribution = validate + queue + gated promote",
+        "Untrusted-by-default; sandboxed CI; provenance",
+        "Child marketplaces federate under the parent"
+      ]
+    }
+  ]
+}

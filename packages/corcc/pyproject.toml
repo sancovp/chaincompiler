@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "corcc"
+version = "0.1.0"
+description = "Chain-of-Reasoning Compiler-Compiler — spoken reasoning + persona-melt gauge"
+requires-python = ">=3.11"
+dependencies = ["accc", "chaincompiler", "honeyc", "rulecatcher", "click"]
+
+[project.scripts]
+corcc = "corcc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

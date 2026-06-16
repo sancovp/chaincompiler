@@ -1,0 +1,11 @@
+name: offer_builder
+description: pick a market, build a grand-slam offer for it, then design a webinar to sell it
+# '>' skill step (skill : args) · '=' capture last result · '~' CoR / AttentionChain bridge
+
+> hormozi-market-selection : the target market and constraints
+= market
+~ Given {market}, state the single most painful problem and the dream outcome; carry both into the offer.
+> hormozi-grand-slam-offer : build the offer for {market} around that problem and dream outcome
+= offer
+~ Given {offer}, identify the ONE big-domino belief the sale hinges on.
+> expert-secrets-perfect-webinar : design a webinar to sell {offer}, leading with that big-domino belief

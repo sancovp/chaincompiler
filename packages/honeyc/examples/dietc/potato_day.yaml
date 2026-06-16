@@ -1,0 +1,10 @@
+label: PotatoDay
+items_file: items.yaml
+
+events:
+  - item_id: potato_base
+    amount: 2
+    unit: potato
+  - item_id: oil_sugar_sauce
+    amount: 1
+    unit: serving

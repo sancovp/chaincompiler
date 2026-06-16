@@ -1,0 +1,58 @@
+<svg viewBox="0 0 760 360" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="760" height="360" rx="14" fill="#ffffff"/>
+  <style>
+    .node{fill:#ffffff;stroke:#d2d2cc;stroke-width:1.5}
+    .root{fill:#eef4ff;stroke:#3b6fd4;stroke-width:2}
+    .leaf{fill:#e9f7ef;stroke:#16a34a;stroke-width:1.5}
+    .t{font-size:12.5px;font-weight:700;fill:#15151a}
+    .s{font-size:10px;fill:#5e5e66}
+    .cat{font-size:10px;fill:#8a8a86;font-family:ui-monospace,Menlo,monospace}
+    .edge{stroke:#c4c4bf;stroke-width:1.5;fill:none;marker-end:url(#m)}
+  </style>
+  <defs>
+    <marker id="m" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c4c4bf"/></marker>
+  </defs>
+
+  <text x="24" y="30" font-size="12" font-weight="700" letter-spacing=".08em" fill="#9a9a96">SKILLTREE — only the root auto-loads; cat-breadcrumbs reach the rest</text>
+
+  <!-- root -->
+  <rect x="300" y="48" width="170" height="50" rx="9" class="root"/>
+  <text x="312" y="70" class="t">cc-skill-tree</text>
+  <text x="312" y="86" class="s">root · AUTO-LOADS ✓</text>
+
+  <!-- edges to children -->
+  <path class="edge" d="M360 98 C320 130, 250 130, 210 158"/>
+  <path class="edge" d="M410 98 C450 130, 520 130, 560 158"/>
+  <text x="250" y="128" class="cat">cat …/reason/…/SKILL.md</text>
+  <text x="470" y="128" class="cat">cat …/debug/…/SKILL.md</text>
+
+  <!-- children -->
+  <rect x="120" y="160" width="180" height="50" rx="9" class="node"/>
+  <text x="132" y="182" class="t">reason  (cor)</text>
+  <text x="132" y="198" class="s">how to reason</text>
+  <rect x="470" y="160" width="180" height="50" rx="9" class="node"/>
+  <text x="482" y="182" class="t">debug  (cor)</text>
+  <text x="482" y="198" class="s">how to debug</text>
+
+  <!-- edges to leaves -->
+  <path class="edge" d="M170 210 C150 245, 120 245, 110 270"/>
+  <path class="edge" d="M240 210 C270 245, 300 245, 315 270"/>
+  <path class="edge" d="M560 210 V270"/>
+  <text x="60"  y="245" class="cat">cat …/thinklikeeinstein</text>
+  <text x="300" y="262" class="cat">cat …/simplify-attn</text>
+  <text x="575" y="245" class="cat">cat …/debug-attn</text>
+
+  <!-- leaves -->
+  <rect x="30" y="272" width="170" height="54" rx="9" class="leaf"/>
+  <text x="42" y="294" class="t">thinklikeeinstein</text>
+  <text x="42" y="310" class="s">CoR leaf · real skill</text>
+  <rect x="230" y="272" width="160" height="54" rx="9" class="leaf"/>
+  <text x="242" y="294" class="t">simplify-attn</text>
+  <text x="242" y="310" class="s">AC leaf</text>
+  <rect x="480" y="272" width="160" height="54" rx="9" class="leaf"/>
+  <text x="492" y="294" class="t">debug-attn</text>
+  <text x="492" y="310" class="s">AC leaf · real skill</text>
+
+  <text x="668" y="300" font-size="11" fill="#16a34a" font-weight="700">leaves =</text>
+  <text x="668" y="316" font-size="11" fill="#16a34a" font-weight="700">real skills</text>
+</svg>

@@ -1,0 +1,75 @@
+// Dense Rune-Chain grammar for HoneyC.
+// Permissive by design: accept broad Unicode, validate later (see check.py).
+start: statement*
+
+?statement: chain
+          | assignment
+          | term
+
+scope_body: statement (_SEP? statement)*
+
+assignment: term ":=" term
+
+chain: term (connector term)+
+
+?term: scoped
+     | typed
+     | bounded
+     | entity
+     | xform
+     | placeholder
+     | glyph
+     | symbol
+     | group
+
+scoped: scope_head ":{" scope_body? "}"
+?scope_head: typed | entity | glyph | symbol
+typed: atom ":" symbol
+bounded: "|" term "|"
+entity: "[" NAME "]"
+xform: "${" (chain | term) "}"
+group: "{" scope_body? "}"
+placeholder: PLACEHOLDER
+
+?atom: entity | glyph | symbol
+
+connector: REL_FWD -> rel_fwd
+         | REL_REV -> rel_rev
+         | REL_BI  -> rel_bi
+         | EQUIV    -> equiv
+         | PRODUCES -> produces
+         | COMPILES -> compiles
+         | MAPS     -> maps
+         | ARROW    -> arrow
+         | TRANS    -> trans
+         | RUNTIME  -> runtime
+
+// --- terminals ---
+// Relation markers captured whole so the inner name can't eat the delimiter.
+REL_FWD: /-[A-Za-z_][A-Za-z0-9_]*->/
+REL_REV: /<[A-Za-z_][A-Za-z0-9_]*-/
+REL_BI:  /<[A-Za-z_][A-Za-z0-9_]*>/
+
+EQUIV: "⇔"
+PRODUCES: "⇒"
+COMPILES: "⇢"
+MAPS: "↦"
+ARROW: "→"
+TRANS: "⟶"
+RUNTIME: "⟼"
+
+PLACEHOLDER: "📃"
+
+_SEP: ","
+
+// Symbols/types: ASCII identifiers, allow * . + for M*Boundary, Nn+1, etc.
+NAME: /[A-Za-z_][A-Za-z0-9_*.+]*/
+symbol: NAME
+
+// Glyphs: any run of non-structural, non-ASCII-identifier characters
+// (emoji incl. ZWJ sequences). Lower priority than the literal connectors above.
+GLYPH.-1: /[^\s\[\]{}|:;,()$⇔⇒⇢↦→⟶⟼📃<>-]+/
+glyph: GLYPH
+
+%import common.WS
+%ignore WS

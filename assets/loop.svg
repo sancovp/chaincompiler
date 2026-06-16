@@ -1,0 +1,35 @@
+<svg viewBox="0 0 760 230" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="760" height="230" rx="14" fill="#ffffff"/>
+  <style>
+    .box{fill:#ffffff;stroke:#d2d2cc;stroke-width:1.5}
+    .t{font-size:13px;font-weight:700;fill:#15151a}
+    .s{font-size:10.5px;fill:#5e5e66}
+    .a{stroke:#b9b9b4;stroke-width:1.8;fill:none;marker-end:url(#m)}
+    .lp{stroke:#16a34a;stroke-width:1.8;fill:none;stroke-dasharray:5 4;marker-end:url(#mg)}
+  </style>
+  <defs>
+    <marker id="m" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#b9b9b4"/></marker>
+    <marker id="mg" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#16a34a"/></marker>
+  </defs>
+
+  <text x="24" y="34" font-size="12" font-weight="700" letter-spacing=".08em" fill="#9a9a96">THE LOOP — every *CC runs this</text>
+
+  <rect x="24"  y="56" width="128" height="64" rx="8" class="box"/>
+  <text x="40" y="84" class="t">examples</text><text x="40" y="102" class="s">a notation, by example</text>
+  <rect x="184" y="56" width="128" height="64" rx="8" class="box"/>
+  <text x="200" y="84" class="t">catch</text><text x="200" y="102" class="s">learn the grammar</text>
+  <rect x="344" y="56" width="128" height="64" rx="8" class="box"/>
+  <text x="360" y="84" class="t">lint / gate</text><text x="360" y="102" class="s">keep it well-formed</text>
+  <rect x="504" y="56" width="120" height="64" rx="8" class="box"/>
+  <text x="520" y="84" class="t">compile</text><text x="520" y="102" class="s">→ markdown</text>
+  <rect x="656" y="56" width="92" height="64" rx="8" class="box"/>
+  <text x="672" y="80" class="t">package</text><text x="672" y="98" class="s">&lt;name&gt;/</text><text x="672" y="111" class="s">SKILL.md</text>
+
+  <path class="a" d="M152 88 H184"/>
+  <path class="a" d="M312 88 H344"/>
+  <path class="a" d="M472 88 H504"/>
+  <path class="a" d="M624 88 H656"/>
+
+  <path class="lp" d="M702 120 V160 H226 V120"/>
+  <text x="430" y="178" text-anchor="middle" font-size="11" fill="#16a34a" font-style="italic">re-feed the compiled skill as the prime — the model now thinks in the notation</text>
+</svg>

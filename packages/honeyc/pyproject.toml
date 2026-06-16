@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "honeyc"
+version = "0.1.0"
+description = "A compiler and CLI for Dense Rune-Chain Notation"
+requires-python = ">=3.11"
+dependencies = ["lark>=1.1", "click>=8.0", "pyyaml>=6.0"]
+
+[project.scripts]
+honeyc = "honeyc.cli:main"
+dietc = "dietc.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=7"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+honeyc = ["grammar.lark"]

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sccc"
+version = "0.1.0"
+description = "Skillchain Compiler-Compiler — chains ACs + CoRs + skills into one SKILL.md"
+requires-python = ">=3.11"
+dependencies = ["accc", "corcc", "chaincompiler", "rulecatcher", "skillchain", "click"]
+
+[project.scripts]
+sccc = "sccc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

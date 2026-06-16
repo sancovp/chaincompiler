@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "si"
+version = "0.1.0"
+description = "Self-Interpreter for the ChainCompiler chain dialect — an MCP that is also a skill"
+requires-python = ">=3.11"
+dependencies = ["chaincompiler", "accc", "corcc", "sccc", "skilltree", "fastmcp"]
+
+[project.scripts]
+si-server = "si.server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+si = ["skill/SKILL.md"]
