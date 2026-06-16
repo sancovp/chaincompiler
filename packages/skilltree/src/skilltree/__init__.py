@@ -14,10 +14,20 @@ from .exchange import is_valid as exchange_is_valid
 from .exchange import validate as validate_exchange
 from .materialize import materialize
 from .model import SkillTree, TreeNode
+from .registry import (
+    Entry,
+    load_registry,
+    promote,
+    validate_contribution,
+    validate_registry,
+)
+from .registry import search as registry_search
 from .validate import Violation, is_valid, validate
 
 __all__ = [
     "SkillTree", "TreeNode", "materialize", "validate", "is_valid", "Violation",
     "Exchange", "Member", "load_exchange", "build_exchange", "validate_exchange",
-    "exchange_is_valid", "__version__",
+    "exchange_is_valid",
+    "Entry", "load_registry", "validate_registry", "validate_contribution",
+    "promote", "registry_search", "__version__",
 ]

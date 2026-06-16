@@ -1,0 +1,15 @@
+{
+  "name": "chaincompiler",
+  "parent": null,
+  "entries": [
+    {
+      "name": "self-interpreter",
+      "kind": "skill",
+      "repo": "github:sancovp/chaincompiler",
+      "manifest": "packages/si/src/si/skill/SKILL.md",
+      "version": "0.1.0",
+      "trust": "verified",
+      "provenance": { "by": "sancovp", "at": "2026-06-16" }
+    }
+  ]
+}

@@ -73,14 +73,21 @@
       "blurb": "Each emitted MCP becomes a repo; marketplaces federate. Plan: FEDERATION.md.",
       "items": [
         "Repo scaffolder (MCP \u2192 node repo) \u2713",
-        "Marketplace IS a git repo (registry.json + PRs)",
-        "Contribution = validate + queue + gated promote",
-        "Untrusted-by-default; sandboxed CI; provenance",
+        "Marketplace IS a git repo (registry.json) \u2713",
+        "Contribution gate: validate + queue + gated promote \u2713",
+        "Untrusted-by-default; sandboxed CI; provenance \u2713",
         "Child marketplaces federate under the parent"
       ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.1.8",
+      "date": "2026-06-16",
+      "changes": [
+        "**P5.2 contribution flow** \u2014 the marketplace is now a git repo: `registry.json` (root, `parent: null`), `skilltree.registry` (schema + `validate_contribution` + maintainer-only `promote` + trust-floor `search`), `scripts/validate_registry.py` (self-contained CI gate) and `scripts/promote.py`, plus `.github/workflows/contribute.yml` \u2014 fork-safe `pull_request` (read-only, no secrets), runs the **base** gate against the PR's data. Contributions may only ADD `unverified` entries with provenance; trust changes / removals / re-parenting are blocked. (7 tests.)"
+      ]
+    },
     {
       "version": "v0.1.7",
       "date": "2026-06-16",

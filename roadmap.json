@@ -73,9 +73,9 @@
       "blurb": "Each emitted MCP becomes a repo; marketplaces federate. Plan: FEDERATION.md.",
       "items": [
         "Repo scaffolder (MCP → node repo) ✓",
-        "Marketplace IS a git repo (registry.json + PRs)",
-        "Contribution = validate + queue + gated promote",
-        "Untrusted-by-default; sandboxed CI; provenance",
+        "Marketplace IS a git repo (registry.json) ✓",
+        "Contribution gate: validate + queue + gated promote ✓",
+        "Untrusted-by-default; sandboxed CI; provenance ✓",
         "Child marketplaces federate under the parent"
       ]
     }

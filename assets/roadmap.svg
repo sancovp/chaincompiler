@@ -75,7 +75,7 @@
 <text x="1306" y="208" font-size="11.5" fill="#5e5e66">Plan: FEDERATION.md.</text>
 <text x="1306" y="234" font-size="11" fill="#15151a">•  Repo scaffolder (MCP → node repo)…</text>
 <text x="1306" y="254" font-size="11" fill="#15151a">•  Marketplace IS a git repo (regist…</text>
-<text x="1306" y="274" font-size="11" fill="#15151a">•  Contribution = validate + queue +…</text>
+<text x="1306" y="274" font-size="11" fill="#15151a">•  Contribution gate: validate + que…</text>
 <text x="1306" y="294" font-size="11" fill="#15151a">•  Untrusted-by-default; sandboxed C…</text>
 <text x="1306" y="314" font-size="11" fill="#15151a">•  Child marketplaces federate under…</text>
 <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c4c4bf"/></marker></defs>

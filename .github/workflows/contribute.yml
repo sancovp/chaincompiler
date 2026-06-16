@@ -1,0 +1,35 @@
+name: contribute
+
+# Validates a marketplace contribution (a PR that edits registry.json).
+# SECURITY: this is `pull_request` (NOT pull_request_target) — fork PRs get a
+# read-only token and no secrets. Contributions are DATA (pointers), never code
+# we execute. The gate is run from the BASE branch (a PR cannot swap out its own
+# gate), against the PR's registry.json only.
+on:
+  pull_request:
+    paths:
+      - registry.json
+
+permissions:
+  contents: read          # read-only; no secrets
+
+jobs:
+  validate-contribution:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run the BASE gate against the PR's registry.json
+        env:
+          BASE: origin/${{ github.base_ref }}
+        run: |
+          git fetch -q origin "${{ github.base_ref }}"
+          # use the TRUSTED (base) copy of the gate — never the PR's version
+          git show "${BASE}:scripts/validate_registry.py" > /tmp/gate.py
+          python3 /tmp/gate.py --base "${BASE}"
