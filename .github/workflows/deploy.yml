@@ -1,7 +1,9 @@
 name: deploy-site
 
-# Publishes the ChainCompiler roadmap site to GitHub Pages.
-# GATE: the README changelog must carry a NEW entry, or the deploy fails.
+# Validates every push (changelog gate + regenerate + staleness check), and
+# publishes the roadmap site to GitHub Pages — but only when the repo is PUBLIC
+# (Pages isn't available on a private repo without a paid plan, so the deploy job
+# is skipped on private and the run stays green).
 on:
   push:
     branches: [main]
@@ -17,7 +19,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -42,17 +44,19 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: site
-
   deploy:
-    needs: build
+    needs: validate
+    # Pages requires a public repo (or paid private Pages). Skip on private.
+    if: github.event.repository.visibility == 'public'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
       - id: deployment
         uses: actions/deploy-pages@v4
