@@ -69,14 +69,14 @@
     {
       "id": "P5",
       "title": "Federation",
-      "status": "in_progress",
+      "status": "done",
       "blurb": "Each emitted MCP becomes a repo; marketplaces federate. Plan: FEDERATION.md.",
       "items": [
         "Repo scaffolder (MCP → node repo) ✓",
         "Marketplace IS a git repo (registry.json) ✓",
         "Contribution gate: validate + queue + gated promote ✓",
         "Untrusted-by-default; sandboxed CI; provenance ✓",
-        "Child marketplaces federate under the parent"
+        "Child marketplaces federate under the parent ✓ (reputation: aspirational)"
       ]
     }
   ]

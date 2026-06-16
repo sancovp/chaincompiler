@@ -19,7 +19,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-KINDS = ("skill", "tree", "exchange", "mcp")
+KINDS = ("skill", "tree", "exchange", "mcp", "registry")   # `registry` = a federated child marketplace
 TRUST = ("unverified", "verified", "featured")
 _REQUIRED = ("name", "kind", "repo")
 

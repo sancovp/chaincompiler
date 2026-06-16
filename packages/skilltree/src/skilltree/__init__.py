@@ -22,6 +22,13 @@ from .registry import (
     validate_registry,
 )
 from .registry import search as registry_search
+from .federation import (
+    flatten_federation,
+    local_resolver,
+    register_child,
+    validate_federation,
+    walk_federation,
+)
 from .validate import Violation, is_valid, validate
 
 __all__ = [
@@ -29,5 +36,7 @@ __all__ = [
     "Exchange", "Member", "load_exchange", "build_exchange", "validate_exchange",
     "exchange_is_valid",
     "Entry", "load_registry", "validate_registry", "validate_contribution",
-    "promote", "registry_search", "__version__",
+    "promote", "registry_search",
+    "walk_federation", "flatten_federation", "validate_federation",
+    "register_child", "local_resolver", "__version__",
 ]

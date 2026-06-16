@@ -18,7 +18,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-KINDS = ("skill", "tree", "exchange", "mcp")
+KINDS = ("skill", "tree", "exchange", "mcp", "registry")
 TRUST = ("unverified", "verified", "featured")
 _REQUIRED = ("name", "kind", "repo")
 

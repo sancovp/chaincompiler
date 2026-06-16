@@ -69,18 +69,25 @@
     {
       "id": "P5",
       "title": "Federation",
-      "status": "in_progress",
+      "status": "done",
       "blurb": "Each emitted MCP becomes a repo; marketplaces federate. Plan: FEDERATION.md.",
       "items": [
         "Repo scaffolder (MCP \u2192 node repo) \u2713",
         "Marketplace IS a git repo (registry.json) \u2713",
         "Contribution gate: validate + queue + gated promote \u2713",
         "Untrusted-by-default; sandboxed CI; provenance \u2713",
-        "Child marketplaces federate under the parent"
+        "Child marketplaces federate under the parent \u2713 (reputation: aspirational)"
       ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.1.9",
+      "date": "2026-06-16",
+      "changes": [
+        "**P5.4 federation walk** \u2014 `skilltree.federation`: a child marketplace joins by a `registry`-kind entry pointing at its `registry.json`; `walk_federation` / `flatten_federation` traverse the tree of marketplaces under a root (pluggable `resolve`, so it works offline), `validate_federation` catches cycles + unresolved children + parent-backref mismatches, and `register_child` adds a federation link (unverified). **P5 Federation complete** (reputation/hosted-discovery remain aspirational). (5 tests.)"
+      ]
+    },
     {
       "version": "v0.1.8",
       "date": "2026-06-16",
