@@ -1,0 +1,51 @@
+{
+  "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+  "neutral": "The report summarizes the status of the project.",
+  "glyphs": [
+    {
+      "glyph": "😊",
+      "axis": "positive",
+      "cos_aligned": 0.6495271921157837,
+      "cos_unrelated": 0.19761911034584045,
+      "Q1_separation": 0.45190808176994324,
+      "Q2_delta_cos": 0.08616560697555542,
+      "Q3_steered_delta": 0.17233121395111084
+    },
+    {
+      "glyph": "😡",
+      "axis": "negative",
+      "cos_aligned": 0.5616009831428528,
+      "cos_unrelated": 0.1733301281929016,
+      "Q1_separation": 0.38827085494995117,
+      "Q2_delta_cos": 0.06976711750030518,
+      "Q3_steered_delta": 0.13953423500061035
+    },
+    {
+      "glyph": "🔥",
+      "axis": "urgent",
+      "cos_aligned": 0.5608502626419067,
+      "cos_unrelated": 0.2115209400653839,
+      "Q1_separation": 0.3493293225765228,
+      "Q2_delta_cos": 0.022198081016540527,
+      "Q3_steered_delta": 0.044396162033081055
+    },
+    {
+      "glyph": "❓",
+      "axis": "question",
+      "cos_aligned": 0.8066185712814331,
+      "cos_unrelated": 0.22760158777236938,
+      "Q1_separation": 0.5790169835090637,
+      "Q2_delta_cos": -0.03406095504760742,
+      "Q3_steered_delta": -0.06812191009521484
+    },
+    {
+      "glyph": "⚠️",
+      "axis": "caution",
+      "cos_aligned": 0.4937279522418976,
+      "cos_unrelated": 0.21521151065826416,
+      "Q1_separation": 0.2785164415836334,
+      "Q2_delta_cos": 0.07603996992111206,
+      "Q3_steered_delta": 0.15207993984222412
+    }
+  ]
+}

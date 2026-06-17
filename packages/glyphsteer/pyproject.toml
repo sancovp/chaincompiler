@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "glyphsteer"
+version = "0.1.0"
+description = "Dual-regime retrieval steering via compiled in-band glyph annotations"
+requires-python = ">=3.11"
+dependencies = ["click", "numpy"]
+
+[project.optional-dependencies]
+# the light local ONNX backend (no torch); the container uses the same runtime
+dense = ["fastembed"]
+# the heavy local backend (pulls torch) — only if you want sentence-transformers
+st = ["sentence-transformers"]
+# build the embedding sidecar locally (normally you just `docker compose up`)
+serve = ["fastapi", "uvicorn", "fastembed"]
+# syntax gating via rulecatcher — needs the sibling `chaincompiler` package (lint/gate
+# engine) installed too: `pip install -e packages/chaincompiler`
+grammar = ["rulecatcher"]
+
+[project.scripts]
+glyphsteer = "glyphsteer.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

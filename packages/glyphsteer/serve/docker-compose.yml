@@ -1,0 +1,13 @@
+services:
+  glyphsteer-serve:
+    build:
+      context: .
+      args:
+        GLYPHSTEER_MODEL: ${GLYPHSTEER_MODEL:-BAAI/bge-small-en-v1.5}
+    image: glyphsteer-serve:latest
+    container_name: glyphsteer-serve
+    ports:
+      - "8088:8088"
+    environment:
+      GLYPHSTEER_MODEL: ${GLYPHSTEER_MODEL:-BAAI/bge-small-en-v1.5}
+    restart: unless-stopped

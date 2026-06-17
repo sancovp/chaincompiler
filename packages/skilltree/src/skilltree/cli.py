@@ -21,17 +21,27 @@ def main() -> None:
 @click.argument("root", type=click.Path(exists=True, file_okay=False, path_type=Path))
 @click.argument("query")
 @click.option("--scope", "scope_coord", default=None, help="restrict to a coordinate subtree, e.g. 0.1")
+@click.option("--facet", default=None, help="GlyphSteer glyph to facet on, e.g. 🏆 (needs --legend)")
+@click.option("--legend", type=click.Path(exists=True, path_type=Path), default=None,
+              help="path to a GlyphSteer legend.json (glyph↔meaning↔tag)")
 @click.option("--limit", default=10, type=int)
-def search_cmd(root, query, scope_coord, limit):
-    """BM25 search over a materialized tree, optionally scoped to a coordinate subtree."""
+def search_cmd(root, query, scope_coord, facet, legend, limit):
+    """BM25 search over a materialized tree, optionally scoped to a coordinate subtree
+    and/or faceted by a GlyphSteer glyph (with --legend)."""
     from .search import search_tree
-    hits = search_tree(root, query, scope_coord=scope_coord, limit=limit)
+    vocab = None
+    if legend:
+        from glyphsteer import load_legend, render_legend
+        vocab = load_legend(legend)
+        click.echo(render_legend(vocab))
+    hits = search_tree(root, query, scope_coord=scope_coord, facet=facet, vocab=vocab, limit=limit)
     if not hits:
         click.echo("(no matches)")
         return
     for h in hits:
         coord = f"[{h['coord']}] " if h["coord"] else ""
-        click.echo(f"  {coord}{h['name']} — {h['description']}")
+        badge = f"{h.get('glyphs')} " if h.get("glyphs") else ""
+        click.echo(f"  {badge}{coord}{h['name']} — {h['description']}")
 
 
 @main.command(name="report-missed")

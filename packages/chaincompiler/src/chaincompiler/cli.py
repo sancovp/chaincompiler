@@ -62,5 +62,25 @@ def demo() -> None:
                    "That is the bandit's 'construct-chain-language' move.")
 
 
+@main.command()
+@click.argument("prompt_file", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option("--out", "out_dir", default="dist", type=click.Path(path_type=Path),
+              help="output dir for the compiled <cogid>/ skill")
+def persona(prompt_file: Path, out_dir: Path) -> None:
+    """Compile a glyph-persona-program (e.g. BizziBee) → <cogid>/SKILL.md + legend.json.
+
+    Parses the three layers — [VarDefs] legend, ⚙️ workflow, [ROLE] wrapper — into the
+    artifacts the rest of ChainCompiler eats. Gates a legend chain via rulecatcher.
+    """
+    from .persona import compile_persona
+    res = compile_persona(prompt_file.read_text(encoding="utf-8"), out_dir)
+    click.echo(f"══ compiled persona '{res['name']}' ══")
+    click.echo(f"  legend : {res['axes']} glyph axes → {res['legend']}")
+    click.echo(f"  workflow: {res['steps']} ⚙️ steps")
+    click.echo(f"  skill  : {res['skill']}")
+    if res["gate"]:
+        click.echo(f"  gate   : chain {res['gate']['chain']} → {res['gate']['verdict']} (rulecatcher)")
+
+
 if __name__ == "__main__":
     main()
