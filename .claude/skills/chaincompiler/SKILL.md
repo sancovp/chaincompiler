@@ -13,10 +13,10 @@ A compiler-compiler for cognition: a **closed algebra over one type, the skill d
 ```
 README · ROADMAP · FEDERATION · BACKLOG · roadmap.json   # project surface
 assets/ · site/ · scripts/ · .github/                    # roadmap SVG, site, generators, deploy
-packages/  chaincompiler · accc · corcc · sccc · skilltree · si · honeyc · skillchain-compiler
+packages/  rulecatcher · chaincompiler · accc · corcc · sccc · skilltree · si · honeyc · skillchain-compiler · glyphsteer · steward
 .claude/rules/                                           # architecture diagrams + the discipline
 ```
-`rulecatcher` is an **external** dep (its own repo at `~/Documents/New project/rulecatcher`).
+`rulecatcher` (the gate) is vendored at `packages/rulecatcher` — zero deps; `./install.sh` wires everything.
 
 ## The stack (bottom → top)
 

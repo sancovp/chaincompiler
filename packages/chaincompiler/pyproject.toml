@@ -7,7 +7,7 @@ name = "chaincompiler"
 version = "0.1.0"
 description = "The printing press for agent cognition chains: learn → gate → compile → prime"
 requires-python = ">=3.11"
-# honeyc and rulecatcher are installed editable from their own repos.
+# honeyc and rulecatcher are vendored in this monorepo (packages/); install.sh wires them.
 dependencies = ["honeyc", "rulecatcher"]
 
 [project.scripts]

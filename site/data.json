@@ -122,6 +122,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.28",
+      "date": "2026-06-17",
+      "changes": [
+        "**rulecatcher is now vendored \u2014 the gate ships with the repo.** It was the one package referenced as an *external dependency* (and the README leaked a local path to it), so a fresh clone could `./install.sh` but then hit `ImportError` the moment the gate ran \u2014 the `*CC` constructors, the bridge, and the persona compiler were dead for anyone but the author. `packages/rulecatcher` (zero deps, 43 tests) is now in the monorepo; `install.sh` installs it first, and `chaincompiler demo` runs end-to-end from a clean clone. Removed the external-dependency framing and the local path from the README + `install.sh` + `chaincompiler/pyproject.toml`."
+      ]
+    },
+    {
       "version": "v0.1.27",
       "date": "2026-06-17",
       "changes": [

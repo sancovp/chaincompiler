@@ -76,7 +76,7 @@ Learns a notation's grammar from examples (`catch`), then lints text against it 
 - **`orthogonal`** — a known token in the wrong slot → *steerable* (rotate it).
 - **`syntax_break`** — a token foreign to the language → *fatal*.
 
-This is the gate that keeps the model writing valid custom syntax. *(Lives at `~/Documents/New project/rulecatcher`.)*
+This is the gate that keeps the model writing valid custom syntax. *(Vendored at [`packages/rulecatcher`](packages/rulecatcher) — zero deps, 43 tests.)*
 
 ```bash
 rulecatcher catch examples.txt --scope mydsl
@@ -254,8 +254,8 @@ The manifest is the org chart — **edit it however you want, rebuild, and every
 ## Quickstart
 
 ```bash
-# install every package in the monorepo, editable. rulecatcher is an EXTERNAL
-# dependency (its own repo) — install it first, then run this.
+# install every package in the monorepo, editable — rulecatcher included.
+# one clone, one command, no external setup.
 ./install.sh            # pip install -e packages/* (no-deps)
 
 chaincompiler demo      # construct a 'triage' language: AC + CoR + SC in one call
@@ -283,11 +283,12 @@ chaincompiler/                 # the monorepo (this repo)
   README · ROADMAP · FEDERATION · roadmap.json   # project surface
   assets/ · site/ · scripts/ · .github/          # roadmap SVG, site, generators, deploy
   packages/
+    rulecatcher/                                   # the gate (vendored; zero deps)
     chaincompiler/   accc/   corcc/   sccc/       # substrate + the three layers
-    skilltree/   si/   honeyc/   skillchain-compiler/
+    skilltree/   si/   honeyc/   skillchain-compiler/   glyphsteer/   steward/
 ```
 
-`rulecatcher` is an **external dependency** (its own repo) — install it first, then `./install.sh`.
+Everything is vendored in `packages/` — `./install.sh` wires it all editable, no external setup.
 
 ---
 
@@ -306,6 +307,9 @@ SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
 ---
 
 ## Changelog
+
+### v0.1.28 — 2026-06-17
+- **rulecatcher is now vendored — the gate ships with the repo.** It was the one package referenced as an *external dependency* (and the README leaked a local path to it), so a fresh clone could `./install.sh` but then hit `ImportError` the moment the gate ran — the `*CC` constructors, the bridge, and the persona compiler were dead for anyone but the author. `packages/rulecatcher` (zero deps, 43 tests) is now in the monorepo; `install.sh` installs it first, and `chaincompiler demo` runs end-to-end from a clean clone. Removed the external-dependency framing and the local path from the README + `install.sh` + `chaincompiler/pyproject.toml`.
 
 ### v0.1.27 — 2026-06-17
 - **Landing-page funnel + GitHub links.** Rebuilt `site/index.html` as a long-scroll **benefit funnel** (what each tool *gets you*, not just what it is): a hero, a problem→dream turn, a benefit section per layer (engine · rulecatcher · honeyc · SkillTree · Steward · marketplace), a measured proof bar, then the existing **roadmap + changelog** (still rendered dynamically from `data.json`, now defensive in `app.js`) and a final CTA. A sticky top-nav and footer link straight to **[github.com/sancovp/chaincompiler](https://github.com/sancovp/chaincompiler)** and the Hive Log — the site previously linked to neither. New funnel styling in `site/style.css` (kept the dark theme; the blog is untouched).

@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rulecatcher"
+version = "0.1.0"
+description = "SQLite-backed rule catcher for emergent LLM DSLs."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+rulecatcher = "rulecatcher.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
