@@ -103,6 +103,21 @@
         "one-command install / distribute",
         "ships report-missed-skill + the root skill tree by default"
       ]
+    },
+    {
+      "id": "P8",
+      "title": "GlyphSteer (research)",
+      "status": "in_progress",
+      "blurb": "Dual-regime retrieval steering: an LLM annotates a corpus with a compiled glyph vocabulary that steers search (lexical facet + dense direction) and is hidden at return time. HoneyC pointed at the index.",
+      "items": [
+        "The sidecar split (indexed-form ≠ returned-form) + HIDE invariant ✓",
+        "One axis, two renderings (emoji=dense, ASCII tag=lexical) — FTS5 drops emoji ✓",
+        "Lexical regime: FTS5 facet, MRR 0.417→1.000 on the toy corpus ✓",
+        "Bilinear anchor reshape (steer.sim_eff) — pure numpy ✓",
+        "Dense sidecar: ONNX/fastembed Docker image, no torch, /embed over HTTP ✓",
+        "Dense Q1-Q3 measured: emoji-direction real but model-dependent (bge-en collapses, XLM-R doesn't) ✓",
+        "Dense Q4 on a real corpus + arXiv short paper (aspirational)"
+      ]
     }
   ]
 }

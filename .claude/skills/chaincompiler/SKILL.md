@@ -25,6 +25,13 @@ packages/  chaincompiler · accc · corcc · sccc · skilltree · si · honeyc �
 - **ACCC → CORCC → SCCC** = attention chains → chains of reasoning → skill chains (each emits a skill dir).
 - **skilltree** = organize (cat-breadcrumb trees, coords, forest, exchange, federation, marketplace registry, reports).
 - **si** = the self-interpreter MCP (also a skill): execute, `tree_to_mcp`, `scaffold_repo`.
+- **persona** (`chaincompiler.persona`, CLI `cc persona FILE`) = the front-end that compiles a
+  glyph-persona-program (BizziBee-style: `[VarDefs]` legend + `⚙️` workflow + `[ROLE]` wrapper)
+  into `<cogid>/SKILL.md` + `legend.json` + a rulecatcher-gated chain. Example:
+  `packages/chaincompiler/examples/bizzibee.txt`. (Executing the ⚙️ workflow via the SI = aspirational.)
+- **glyphsteer** (`packages/glyphsteer`) = dual-regime retrieval steering (lexical tag facet +
+  dense emoji direction), legend authoring, grading; `grammar.py` gates codes via rulecatcher.
+  See the `glyphsteer` / `glyphsteer-dense` skills.
 
 See `.claude/rules/10-architecture-components.md` and `20-architecture-flows.md` for diagrams.
 

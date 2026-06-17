@@ -23,3 +23,6 @@ venv/
 
 # OS
 .DS_Store
+
+# dev-local preview config (not source)
+/.claude/launch.json

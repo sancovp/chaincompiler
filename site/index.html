@@ -3,30 +3,245 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>ChainCompiler — roadmap</title>
+  <title>ChainCompiler — teach your AI a language it can never break</title>
+  <meta name="description" content="Invent a notation, lock it so the model can't malform it, and turn it into a skill any agent loads on demand. Your agents stop drifting. What you teach, stays taught."/>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <header>
-    <h1 id="project">ChainCompiler</h1>
-    <p id="tagline" class="tagline"></p>
-    <p id="updated" class="updated"></p>
+
+  <nav class="topnav">
+    <a class="brand" href="index.html">⛓️ ChainCompiler</a>
+    <div class="topnav-links">
+      <a href="#glyphsteer">GlyphSteer</a>
+      <a href="#roadmap-sec">Roadmap</a>
+      <a href="blog.html">🌼 Hive Log</a>
+      <a class="gh" href="https://github.com/sancovp/chaincompiler" target="_blank" rel="noopener">★ GitHub</a>
+    </div>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────────────── -->
+  <header class="hero">
+    <p class="eyebrow">A compiler-compiler for cognition · open source · MIT</p>
+    <h1 class="hero-h1">Teach your AI a language<br/>it can <span class="grad">never break</span>.</h1>
+    <p class="hero-sub">
+      Invent a notation. Lock it so the model can't malform it. Turn it into a skill any agent
+      loads on demand. Your agents stop drifting — your prompts stop rotting —
+      <b>everything you teach, stays taught.</b>
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="https://github.com/sancovp/chaincompiler" target="_blank" rel="noopener">★ Get it on GitHub</a>
+      <a class="btn btn-ghost" href="#what-you-get">See what it gets you ↓</a>
+    </div>
+    <p class="proof-line">120 tests passing · Python 3.11+ · one type: the skill dir · content never judged, only syntax</p>
   </header>
 
   <main>
-    <section>
-      <h2>Roadmap</h2>
+
+    <!-- ── THE TURN (problem → dream) ───────────────────────────── -->
+    <section class="band turn" id="what-you-get">
+      <p class="kicker">The problem you already feel</p>
+      <h2 class="band-h">Every prompt you write quietly rots.</h2>
+      <p class="lede">
+        The model paraphrases your format. Forgets your conventions. Melts your careful structure
+        back into mush three turns later. You re-explain the same scaffold for the hundredth time.
+      </p>
+      <p class="lede big">
+        ChainCompiler makes the structure <b>load-bearing</b> — checked by code at every seam — so
+        the way you taught your AI to think becomes a thing it <i>owns</i>, not a thing it drifts away from.
+      </p>
+    </section>
+
+    <!-- ── ENGINE ───────────────────────────────────────────────── -->
+    <section class="feat">
+      <div class="feat-text">
+        <p class="kicker">The engine</p>
+        <h2>Build a thinking-tool once.<br/>Reuse it forever.</h2>
+        <p>
+          Mint a whole cognition-language — how to attend, how to reason, how to chain skills together
+          — in a <b>single call</b>. It compiles into a skill dir any Claude agent auto-loads. Compose
+          them. Stack them. Organize them into a tree.
+        </p>
+        <p class="benefit-tag">→ Nothing you make is ever a dead end. The algebra closes, so every piece composes with every other.</p>
+      </div>
+      <div class="feat-code">
+<pre><code>chaincompiler demo
+<span class="cmt"># mints a whole 'triage' cognition-language —</span>
+<span class="cmt"># attention chain + chain-of-reasoning + skill</span>
+<span class="cmt"># chain — in one call, as loadable skills.</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ── GLYPHSTEER (the dedicated funnel) ─────────────────────── -->
+    <section class="glyph-band" id="glyphsteer">
+      <div class="glyph-inner">
+        <p class="kicker gold">🐝 GlyphSteer · the flagship</p>
+        <h2 class="glyph-h">Search that reads your mind —<br/>and never shows its work.</h2>
+        <p class="glyph-lede">
+          Tag your corpus with a tiny glyph vocabulary, and your search suddenly finds the
+          <b>exact right thing on the first try.</b> The same markers steer keyword search and
+          semantic search <i>at once</i> — then vanish before a single character reaches the reader.
+        </p>
+
+        <div class="glyph-stat">
+          <div class="stat-num">0.42 → 1.00</div>
+          <div class="stat-lbl">retrieval accuracy (MRR) on the test corpus —<br/>from "buried in the results" to "top hit, every time"</div>
+        </div>
+
+        <div class="glyph-cards">
+          <div class="gcard">
+            <div class="gc-top">You get the precision</div>
+            <p>An invisible facet pins the result you actually want to the top — without you writing a smarter query.</p>
+          </div>
+          <div class="gcard">
+            <div class="gc-top">Two regimes, one tag</div>
+            <p>The marker nudges both the keyword index <i>and</i> the embedding direction. Steer everything from one place.</p>
+          </div>
+          <div class="gcard">
+            <div class="gc-top">Your output stays clean</div>
+            <p>The glyphs steer matching only — they're stripped before the text is handed back. A hard, tested invariant.</p>
+          </div>
+        </div>
+
+        <p class="benefit-tag gold">→ The dream: a retrieval layer that quietly knows what you meant, and a generation layer that never sees the machinery.</p>
+        <a class="btn btn-gold" href="https://github.com/sancovp/chaincompiler/tree/main/packages/glyphsteer" target="_blank" rel="noopener">Read the GlyphSteer code →</a>
+      </div>
+    </section>
+
+    <!-- ── GATE ─────────────────────────────────────────────────── -->
+    <section class="feat alt">
+      <div class="feat-text">
+        <p class="kicker">rulecatcher · the gate</p>
+        <h2>Your AI never speaks<br/>malformed again.</h2>
+        <p>
+          Show it a handful of examples and it learns the grammar. From then on, anything off-format
+          is caught: a wrong-order token gets rotated back into place; a foreign token is rejected outright.
+        </p>
+        <p class="benefit-tag">→ The gate that keeps the model inside its own syntax — so the structure you designed is the structure you get.</p>
+      </div>
+      <div class="feat-code">
+<pre><code>rulecatcher catch examples.txt --scope mydsl
+rulecatcher lint  newtext.txt  --scope mydsl
+<span class="cmt"># non-zero exit on a violation → CI-gateable</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ── COMPILER ─────────────────────────────────────────────── -->
+    <section class="feat">
+      <div class="feat-text">
+        <p class="kicker">honeyc · the compiler</p>
+        <h2>Write it once.<br/>Read it as anything.</h2>
+        <p>
+          Express an idea in one compact glyph chain, then render it as prose, triples, Prolog, or a
+          database query — whichever the moment needs.
+        </p>
+        <p class="benefit-tag">→ One source of truth, every shape. Stop maintaining the same idea in four formats by hand.</p>
+      </div>
+      <div class="feat-code">
+<pre><code>honeyc render examples/mbr.rune --as prose
+honeyc render examples/mbr.rune --as cypher
+<span class="cmt"># 🌸‍💧 → 🍯 → 🍹  becomes whatever you need</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ── SKILLTREE ────────────────────────────────────────────── -->
+    <section class="feat alt">
+      <div class="feat-text">
+        <p class="kicker">SkillTree · the organization</p>
+        <h2>Give your agent a thousand skills<br/>without drowning it.</h2>
+        <p>
+          A tree you <code>cat</code> your way down: load one root, walk to the exact leaf you need,
+          and nothing else pollutes the context window.
+        </p>
+        <p class="benefit-tag">→ Progressive disclosure built into the filesystem — and validated, so no breadcrumb ever breaks.</p>
+      </div>
+      <div class="feat-code">
+<pre><code>skilltree build tree.manifest.json mytree
+skilltree validate mytree
+<span class="cmt"># load the root; walk to the one leaf you need</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ── STEWARD ──────────────────────────────────────────────── -->
+    <section class="feat">
+      <div class="feat-text">
+        <p class="kicker">Steward · the loop-runner</p>
+        <h2>Automation that only acts<br/>when it's earned the right.</h2>
+        <p>
+          A loop that observes, frames, integrates — then <b>locks on a warrant</b> before it commits.
+          Present one steward, run many underneath.
+        </p>
+        <p class="benefit-tag">→ Headless, gated, and honest about what it's allowed to do. The opposite of an agent that just runs off.</p>
+      </div>
+      <div class="feat-code">
+<pre><code><span class="cmt"># O → F → I → A → P</span>
+<span class="cmt"># the A-stage is the LOCK:</span>
+<span class="cmt"># warrant-freeze → admit, or reject.</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ── MARKETPLACE ──────────────────────────────────────────── -->
+    <section class="feat alt">
+      <div class="feat-text">
+        <p class="kicker">Marketplace · Federation</p>
+        <h2>Share what you built.<br/>Build on what others share.</h2>
+        <p>
+          Publish a skill with one call; opt it public when you're ready. Every tool can become its
+          own repo, and marketplaces federate under one another.
+        </p>
+        <p class="benefit-tag">→ A growing commons of cognition tools — untrusted by default, gated on the way in.</p>
+      </div>
+      <div class="feat-code">
+<pre><code><span class="cmt"># each emitted MCP becomes a repo;</span>
+<span class="cmt"># the marketplace IS a git repo;</span>
+<span class="cmt"># contribute = a gated pull request.</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ── PROOF ────────────────────────────────────────────────── -->
+    <section class="band proof">
+      <div class="proof-grid">
+        <div><div class="pf-num">120</div><div class="pf-lbl">tests passing</div></div>
+        <div><div class="pf-num">1</div><div class="pf-lbl">type — the skill dir</div></div>
+        <div><div class="pf-num">MIT</div><div class="pf-lbl">free to use &amp; fork</div></div>
+        <div><div class="pf-num">0</div><div class="pf-lbl">content judged — syntax only</div></div>
+      </div>
+    </section>
+
+    <!-- ── ROADMAP (dynamic) ────────────────────────────────────── -->
+    <section id="roadmap-sec">
+      <div class="sec-head">
+        <h2 class="sec-title">Where it's going</h2>
+        <span id="updated" class="updated"></span>
+      </div>
       <div id="roadmap" class="roadmap"></div>
     </section>
 
+    <!-- ── CHANGELOG (dynamic) ──────────────────────────────────── -->
     <section>
-      <h2>Changelog</h2>
+      <h2 class="sec-title">What's shipped</h2>
       <div id="changelog" class="changelog"></div>
     </section>
+
+    <!-- ── FINAL CTA ────────────────────────────────────────────── -->
+    <section class="band finalcta">
+      <h2 class="band-h">It's open source. Take it.</h2>
+      <p class="lede">Clone it, read it, build your own cognition-languages on it. The pattern is the gift.</p>
+      <pre class="install"><code>git clone https://github.com/sancovp/chaincompiler
+./install.sh &amp;&amp; chaincompiler demo</code></pre>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://github.com/sancovp/chaincompiler" target="_blank" rel="noopener">★ Star it on GitHub</a>
+        <a class="btn btn-ghost" href="blog.html">🌼 Read the Hive Log</a>
+      </div>
+    </section>
+
   </main>
 
   <footer>
-    <p>Rendered dynamically from <code>data.json</code> · regenerated by <code>scripts/update_site.py</code></p>
+    <p>
+      <span id="project">ChainCompiler</span> — <span id="tagline"></span><br/>
+      <a href="https://github.com/sancovp/chaincompiler" target="_blank" rel="noopener">github.com/sancovp/chaincompiler</a>
+      · roadmap + changelog rendered from <code>data.json</code> (regenerated by <code>scripts/update_site.py</code>)
+    </p>
   </footer>
 
   <script src="app.js"></script>

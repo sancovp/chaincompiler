@@ -11,6 +11,7 @@ function el(tag, cls, html) {
 
 function renderRoadmap(phases) {
   const root = document.getElementById("roadmap");
+  if (!root) return;
   root.innerHTML = "";
   for (const p of phases) {
     const card = el("div", `card s-${p.status}`);
@@ -27,6 +28,7 @@ function renderRoadmap(phases) {
 
 function renderChangelog(entries) {
   const root = document.getElementById("changelog");
+  if (!root) return;
   root.innerHTML = "";
   if (!entries || !entries.length) { root.appendChild(el("p", "blurb", "No entries yet.")); return; }
   for (const e of entries) {
@@ -39,17 +41,22 @@ function renderChangelog(entries) {
   }
 }
 
+function setText(id, text) {
+  const e = document.getElementById(id);
+  if (e) e.textContent = text;
+}
+
 async function main() {
   try {
     const data = await (await fetch("data.json", { cache: "no-store" })).json();
-    document.getElementById("project").textContent = data.project;
-    document.getElementById("tagline").textContent = data.tagline || "";
-    document.getElementById("updated").textContent = data.updated ? `updated ${data.updated}` : "";
-    document.title = `${data.project} — roadmap`;
+    setText("project", data.project);
+    setText("tagline", data.tagline || "");
+    setText("updated", data.updated ? `updated ${data.updated}` : "");
     renderRoadmap(data.phases || []);
     renderChangelog(data.changelog || []);
   } catch (err) {
-    document.getElementById("roadmap").innerHTML =
+    const root = document.getElementById("roadmap");
+    if (root) root.innerHTML =
       `<p class="blurb">Could not load <code>data.json</code> — run <code>python3 scripts/update_site.py</code>. (${err})</p>`;
   }
 }
