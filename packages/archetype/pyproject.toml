@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "archetype"
+version = "0.1.0"
+description = "The Archetype Compiler — archetype as state machine (Persona/Shadow/Self/Odyssey/Becoming), compiled to the one type"
+requires-python = ">=3.11"
+dependencies = ["chaincompiler", "click"]
+
+[project.scripts]
+archetype = "archetype.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

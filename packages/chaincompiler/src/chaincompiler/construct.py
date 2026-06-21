@@ -29,13 +29,18 @@ def construct_language(
     domain: str,
     *,
     ac_chain: str,
-    cor_persona: PersonaSpec,
+    cor_persona: PersonaSpec | None = None,
     db: str,
     skills_dir: str,
     out_dir: str,
     sequence: str | None = None,
 ) -> LanguageBundle:
-    """Mint a domain's AC + CoR + SC. Returns the three SKILL.md package paths."""
+    """Mint a domain's AC + CoR + SC. Returns the three SKILL.md package paths.
+
+    `cor_persona` defaults to `corcc.BANDIT` — the ChainSelector. A flavored
+    persona (Einstein/Feynman) is a single constructed chain; the default is the
+    selector that decides exploit (reuse a chain) vs explore (construct one)."""
+    cor_persona = cor_persona or corcc.BANDIT
     ac_name = f"{domain}-attention"
     accc.forge(ac_name, [ac_chain], db=db)
     ac = accc.package(ac_name, ac_chain, out_dir=skills_dir)

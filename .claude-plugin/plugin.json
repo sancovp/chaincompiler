@@ -1,0 +1,13 @@
+{
+  "name": "chaincompiler",
+  "description": "A compiler-compiler for cognition: invent a notation, gate it so the model can't malform it, compile it into a loadable skill, compose and organize them. Bundles the capability skills (bandit-chain-system, glyphsteer, glyphsteer-dense, report-missed-skill) and the Self-Interpreter MCP. Requires the Python packages: ./install.sh, then `pip install fastmcp` for the MCP.",
+  "version": "0.1.0",
+  "author": {
+    "name": "sancovp",
+    "url": "https://github.com/sancovp"
+  },
+  "homepage": "https://github.com/sancovp/chaincompiler",
+  "repository": "https://github.com/sancovp/chaincompiler",
+  "license": "MIT",
+  "keywords": ["cognition", "skills", "compiler", "rag", "retrieval", "glyphsteer", "dsl", "gate"]
+}

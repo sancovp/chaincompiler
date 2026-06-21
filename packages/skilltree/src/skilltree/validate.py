@@ -5,8 +5,8 @@ guarantees the tree is traversable — this validator is that guarantee. It chec
 the things the filesystem won't:
 
   - every node has a loadable SKILL.md (name + description frontmatter)
-  - every non-leaf node's body has a `cat` breadcrumb for EACH of its children
-  - every `cat` breadcrumb path actually resolves to a file (no dead ends)
+  - every non-leaf node's body has a Read breadcrumb for EACH of its children
+  - every breadcrumb path actually resolves to a file (no dead ends)
   - sibling names are unique (their dirs collide otherwise)
 
 A non-empty error list is a kill-criterion: someone walking the tree hits a dead
@@ -20,7 +20,9 @@ import re
 
 from .model import KINDS, SkillTree, TreeNode, skill_name
 
-_CAT_RE = re.compile(r"`cat (.+?)`")
+# a breadcrumb is `- <name> (<kind>): Read `<abspath>`` — match the backticked SKILL.md path
+# (verb-agnostic, so it survives wording tweaks; the verb is the Read tool, never `cat`)
+_CRUMB_RE = re.compile(r"`([^`]+/SKILL\.md)`")
 
 
 @dataclass
@@ -57,15 +59,15 @@ def _walk(node: TreeNode, node_dir: Path, out: list[Violation]) -> None:
 
     if node.children:
         text = skill_md.read_text(encoding="utf-8")
-        found = {Path(m).resolve() for m in _CAT_RE.findall(text)}
+        found = {Path(m).resolve() for m in _CRUMB_RE.findall(text)}
         expected = {_skill_md(node_dir / c.name, skill_name(c)).resolve() for c in node.children}
         for missing in expected - found:
-            out.append(Violation("error", node.name, f"no `cat` breadcrumb for child → {missing}"))
+            out.append(Violation("error", node.name, f"no Read breadcrumb for child → {missing}"))
         for p in found:
             if not Path(p).is_file():
-                out.append(Violation("error", node.name, f"dead breadcrumb: `cat {p}` does not resolve"))
+                out.append(Violation("error", node.name, f"dead breadcrumb: `{p}` does not resolve"))
             elif p not in expected:
-                out.append(Violation("warning", node.name, f"breadcrumb `cat {p}` is not a declared child"))
+                out.append(Violation("warning", node.name, f"breadcrumb `{p}` is not a declared child"))
 
     for child in node.children:
         _walk(child, node_dir / child.name, out)

@@ -19,10 +19,11 @@ from .forge import (
     package,
     prime,
 )
-from .notation import Move, PersonaSpec
+from .notation import BANDIT, DEFAULT, EINSTEIN, FEYNMAN, SEED_PERSONAS, Move, PersonaSpec
 
 __all__ = [
     "forge_persona", "Persona", "inner_template", "outer_template",
     "lint", "package", "prime", "cor_chain",
-    "Move", "PersonaSpec", "__version__",
+    "Move", "PersonaSpec", "BANDIT", "DEFAULT", "EINSTEIN", "FEYNMAN",
+    "SEED_PERSONAS", "__version__",
 ]

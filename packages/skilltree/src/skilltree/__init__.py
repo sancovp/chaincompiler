@@ -31,6 +31,10 @@ from .reports import (
     summary as reports_summary,
 )
 from .search import build_index, search, search_tree
+from .cohere import (
+    Finding, cohere, discover, emit, unemit,
+    render_notifications, write_notifications, watch, NOTIFY_RULE,
+)
 from .federation import (
     flatten_federation,
     local_resolver,
@@ -50,6 +54,8 @@ __all__ = [
     "register_child", "local_resolver",
     "link_tree", "build_forest", "list_links", "unlink",
     "assign_coords", "skill_name",
+    "discover", "cohere", "emit", "unemit", "Finding",
+    "render_notifications", "write_notifications", "watch", "NOTIFY_RULE",
     "report_missed", "mark_problem", "list_reports", "resolve", "reports_summary",
     "__version__",
 ]

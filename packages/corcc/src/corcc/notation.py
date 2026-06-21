@@ -32,6 +32,34 @@ class PersonaSpec:
         return self.moves[-1]
 
 
+# ── THE DEFAULT persona: the agent IS the bandit ────────────────────────────
+# Einstein/Feynman below are *flavors* — each is a single proven chain, i.e. a
+# ChainConstruct OUTPUT. The DEFAULT persona is the thing that sits ABOVE the
+# flavors and decides whether to construct one at all: the ChainSelector. Given a
+# task it picks an arm —
+#     ChainSelect    (exploit): reuse a proven / "golden" chain
+#     ChainConstruct (explore): assemble a NEW chain
+# This is compoctopus's `router.py` Bandit (Link→Chain→Compiler→Bandit) rendered
+# as a CoR: in ChainCompiler the LLM, shaped by the gate, IS the selector — so the
+# bandit policy is a persona the model reads and performs, not a separate engine.
+BANDIT = PersonaSpec(
+    name="BanditChain",
+    blurb="frame the task, recall a proven chain, choose exploit (select) vs explore (construct), execute it, record the reward",
+    moves=(
+        Move("Task", ("the task is", "what's being asked", "given the task",
+                      "the goal here", "what I need to do")),
+        Move("Recall", ("have I done this", "a proven chain", "golden chain",
+                        "already have one", "seen this before", "in the registry")),
+        Move("Decide", ("exploit", "reuse the existing", "explore", "no chain exists yet",
+                        "reward is high enough", "construct a new", "select vs construct",
+                        "so I'll select", "so I'll construct")),
+        Move("Execute", ("run the chain", "execute it", "apply it", "run it on", "now I run")),
+        Move("Reward", ("the result is", "which worked", "record the reward",
+                        "update the golden", "so the outcome", "the answer is")),
+    ),
+)
+
+
 # The worked example: think like Einstein.
 EINSTEIN = PersonaSpec(
     name="ThinkLikeEinstein",
@@ -59,4 +87,6 @@ FEYNMAN = PersonaSpec(
     ),
 )
 
-SEED_PERSONAS = {p.name: p for p in (EINSTEIN, FEYNMAN)}
+# DEFAULT = the selector; the flavors are what it constructs.
+DEFAULT = BANDIT
+SEED_PERSONAS = {p.name: p for p in (BANDIT, EINSTEIN, FEYNMAN)}

@@ -95,13 +95,13 @@
     {
       "id": "P7",
       "title": "Plugin",
-      "status": "planned",
+      "status": "in_progress",
       "blurb": "Bundle the whole thing as ONE installable Claude Code plugin.",
       "items": [
-        "plugin.json bundling skills + commands + hooks",
-        "the SI MCP + agents in the plugin",
-        "one-command install / distribute",
-        "ships report-missed-skill + the root skill tree by default"
+        "plugin.json + marketplace.json manifests (done)",
+        "bundles the capability skills + the SI MCP (done)",
+        "commands + agents in the plugin (pending)",
+        "one-command install / distribute (pending: commit + install-verify)"
       ]
     },
     {

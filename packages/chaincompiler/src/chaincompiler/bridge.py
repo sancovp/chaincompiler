@@ -8,15 +8,55 @@ a prompt-DSL from examples, enforce it, and compile it into a re-injectable prim
 from __future__ import annotations
 
 import json
+from dataclasses import dataclass
 from sqlite3 import Connection
 
 from honeyc.normalize import normalize
 from honeyc.parser import parse_text
 from honeyc.render import render
-from rulecatcher.db import list_rules
+from rulecatcher.db import fetch_artifacts, list_rules
 from rulecatcher.engine import adopt_rules, catch_patterns
 from rulecatcher.linting import build_normalization_suggestions, lint_text
 from rulecatcher.models import ArtifactInput
+from rulecatcher.tokenize import line_token_kinds, line_token_texts, tokenize_text
+
+# closed-class kinds: the fixed vocabulary of a chain DSL (delimiters/operators/etc).
+# IDENTIFIER/NUMBER are OPEN class (slot fillers) — always allowed.
+_CLOSED_KINDS = {"SYMBOL", "OPERATOR", "OPEN_DELIM", "CLOSE_DELIM", "SEPARATOR", "KEYWORD"}
+
+
+@dataclass
+class ForeignToken:
+    """A closed-class token foreign to the learned vocabulary (the strict-gate finding)."""
+    token: str
+    kind: str
+    verdict: str = "syntax_break"
+
+
+def _closed_vocab(connection: Connection, scope: str) -> set[str]:
+    """The allowed closed-class token TEXTS, derived from the scope's learned example artifacts."""
+    vocab: set[str] = set()
+    for art in fetch_artifacts(connection, scope=scope):
+        for tl in tokenize_text(art.content):
+            for txt, kind in zip(line_token_texts(tl), line_token_kinds(tl, set())):
+                if kind in _CLOSED_KINDS:
+                    vocab.add(txt)
+    return vocab
+
+
+def foreign_tokens(connection: Connection, chain: str, *, scope: str) -> list[ForeignToken]:
+    """STRICT vocabulary check (the set-valued gate): any closed-class token whose text is foreign to the
+    learned vocabulary is a `syntax_break` — catches branch-point foreign tokens the positional rules miss
+    (BACKLOG: 'Gate — set-valued / closed-class vocabulary check'). Open-class tokens are always allowed."""
+    vocab = _closed_vocab(connection, scope)
+    if not vocab:                                   # nothing learned → nothing to whitelist against
+        return []
+    out: list[ForeignToken] = []
+    for tl in tokenize_text(chain):
+        for txt, kind in zip(line_token_texts(tl), line_token_kinds(tl, set())):
+            if kind in _CLOSED_KINDS and txt not in vocab:
+                out.append(ForeignToken(token=txt, kind=kind))
+    return out
 
 
 def learn(
@@ -58,10 +98,16 @@ def learn(
     return list_rules(connection, "adopted", scope=scope)
 
 
-def gate(connection: Connection, chain: str, *, scope: str) -> tuple[list, list]:
-    """Lint a candidate chain against the ratified grammar. Returns (violations, fixes)."""
+def gate(connection: Connection, chain: str, *, scope: str, strict: bool = False) -> tuple[list, list]:
+    """Lint a candidate chain against the ratified grammar. Returns (violations, fixes).
+    `strict=True` ALSO runs the closed-class vocabulary check (`foreign_tokens`), so foreign tokens at
+    branch points — which the positional rules can't govern — are caught as `syntax_break`. Opt-in, so
+    default behavior (and the rulecatcher tests) are unchanged."""
     violations = lint_text(connection, chain, scope=scope, record_stats=False)
-    return violations, build_normalization_suggestions(violations)
+    suggestions = build_normalization_suggestions(violations)
+    if strict:
+        violations = list(violations) + foreign_tokens(connection, chain, scope=scope)
+    return violations, suggestions
 
 
 def compile_chain(chain: str) -> dict:

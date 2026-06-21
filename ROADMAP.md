@@ -58,11 +58,12 @@ and the **FTS5/BM25 + coord-scoped search arm ✓**. *Next:* usage-tracking anal
 frontend (tree + analytics + problem-marking, launched from the root skill), and the improve loop
 (reports → agent → skill-improver / create).
 
-## P7 — Plugin &nbsp;`○ planned`
+## P7 — Plugin &nbsp;`▸ in progress`
 
-Bundle the whole thing as **ONE installable Claude Code plugin**: a `plugin.json` bundling the skills +
-commands + hooks, the SI MCP + agents, one-command install/distribute, shipping `report-missed-skill`
-and the root skill tree by default.
+Bundle the whole thing as **ONE installable Claude Code plugin**. Done: `.claude-plugin/plugin.json` +
+`.claude-plugin/marketplace.json`, the capability skills under `skills/`, and the SI MCP in `.mcp.json`
+(`python3 -m si.server`). Pending: slash `commands/` + `agents/`, then commit/push and install-verify via
+`/plugin marketplace add github:sancovp/chaincompiler`.
 
 ## P8 — GlyphSteer (research) &nbsp;`▸ in progress`
 

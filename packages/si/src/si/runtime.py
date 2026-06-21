@@ -1,15 +1,16 @@
-"""The execute arm — walk a SkillTree by following its `cat`-breadcrumbs.
+"""The execute arm — walk a SkillTree by following its Read-breadcrumbs.
 
 This is what "running" a tree means: start at the root SKILL.md, parse the
-breadcrumb `cat` paths, and recurse. No new mechanism — the same breadcrumbs the
-validator checks are the ones the runtime follows.
+breadcrumb paths, and recurse. No new mechanism — the same breadcrumbs the
+validator checks are the ones the runtime follows. (The breadcrumb verb is the
+Read tool, not `cat`; the path is what we follow.)
 """
 from __future__ import annotations
 
 from pathlib import Path
 import re
 
-_CAT = re.compile(r"`cat (.+?)`")
+_CRUMB = re.compile(r"`([^`]+/SKILL\.md)`")     # the backticked SKILL.md path, verb-agnostic
 
 
 def _skill_md(node_dir: Path, name: str) -> Path:
@@ -25,7 +26,7 @@ def _walk_md(md: Path) -> dict:
     if not md.is_file():
         node["error"] = "missing"
         return node
-    for p in _CAT.findall(md.read_text(encoding="utf-8")):
+    for p in _CRUMB.findall(md.read_text(encoding="utf-8")):
         node["children"].append(_walk_md(Path(p)))
     return node
 

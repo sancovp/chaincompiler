@@ -1,0 +1,6 @@
+# Generated AIOS substrate — rebuilt by `python3 build.py` (source of truth = build.py).
+# Derived, like the FTS5 index; not committed.
+aios/
+.aios.src/
+.aios.kbbak/
+.aios.agentsbak/

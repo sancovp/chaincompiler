@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "self-interpreter": {
+      "command": "python3",
+      "args": ["-m", "si.server"]
+    }
+  }
+}

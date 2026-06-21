@@ -17,6 +17,107 @@ def main() -> None:
     """SkillTree — a nested tree of skill dirs wired by `cat`-breadcrumbs (validated)."""
 
 
+@main.command(name="discover")
+@click.argument("root", type=click.Path(exists=True, file_okay=False, path_type=Path))
+def discover_cmd(root: Path) -> None:
+    """Read the live filesystem and print the tree that is ACTUALLY there
+    (every dir with a .claude/skills, nested by plain-dir path)."""
+    from .cohere import discover
+    from .model import skill_name
+
+    tree = discover(root)
+
+    def show(node, depth=0):
+        click.echo("  " * depth + f"{skill_name(node)} ({node.kind})")
+        for c in node.children:
+            show(c, depth + 1)
+    show(tree.root)
+
+
+@main.command(name="cohere")
+@click.argument("root", type=click.Path(exists=True, file_okay=False, path_type=Path))
+def cohere_cmd(root: Path) -> None:
+    """Report DECOHERENCE: how the on-disk tree drifted from its engineered shape
+    (bare forest, stale breadcrumbs, coord drift, strays). Exit 1 if any drift —
+    so a cron can notify on a non-zero exit."""
+    from .cohere import cohere
+    findings = cohere(root)
+    if not findings:
+        click.echo("✓ coherent — the tree shape and the breadcrumbs agree")
+        return
+    click.echo(f"⚠ {len(findings)} decoherence finding(s):")
+    for f in findings:
+        click.echo(f"  - {f}")
+    raise SystemExit(1)
+
+
+@main.command(name="emit")
+@click.argument("root", type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.option("--root-forest", is_flag=True, help="tree-ify a bare forest (synthesize + save a root)")
+@click.option("--name", "forest_name", default=None, help="name for the synthesized root")
+def emit_cmd(root: Path, root_forest: bool, forest_name: str | None) -> None:
+    """Re-cohere IN PLACE: reassign coords + rewrite breadcrumbs/index from the
+    canonical shape (non-destructive). With --root-forest, root a bare forest."""
+    from .cohere import emit
+    report = emit(root, root_forest=root_forest, forest_name=forest_name)
+    if not report.get("ok"):
+        click.echo(f"✗ {report.get('error')}")
+        raise SystemExit(1)
+    extra = " (synthesized root)" if report.get("synthesized_root") else ""
+    moves = f", {report.get('moves')} moved" if report.get("moves") else ""
+    click.echo(f"✓ emitted {report['nodes']} node(s) under {report['root']}{extra}{moves}")
+    if report.get("journal"):
+        click.echo(f"  journal: {report['journal']}  (reverse with `skilltree unemit`)")
+
+
+@main.command(name="unemit")
+@click.argument("root", type=click.Path(exists=True, file_okay=False, path_type=Path))
+def unemit_cmd(root: Path) -> None:
+    """Reverse the last tree-ifying `emit`: replay `.emit-journal.json` backwards —
+    move every relocated skill dir back, restore its SKILL.md, drop the synthesized
+    root + manifest. Lossless undo."""
+    from .cohere import unemit
+    rep = unemit(root)
+    if not rep.get("ok"):
+        click.echo(f"✗ {rep.get('error')}")
+        raise SystemExit(1)
+    click.echo(f"✓ reversed: {rep['moved_back']} dir(s) moved back, {rep['removed']} synthesized node(s) removed")
+
+
+_DEFAULT_RULES = Path.home() / ".claude" / "rules"
+
+
+@main.command(name="notify")
+@click.argument("root", type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.option("--rules-dir", type=click.Path(path_type=Path), default=None,
+              help="where to write the managed rule (default ~/.claude/rules)")
+def notify_cmd(root: Path, rules_dir: Path | None) -> None:
+    """One decoherence check → (re)write the self-managed `system_notifications`
+    rule. READ-ONLY on the tree; only the rule file changes. Exit 1 on any drift."""
+    from .cohere import write_notifications
+    rep = write_notifications(root, rules_dir=rules_dir or _DEFAULT_RULES)
+    state = "nominal" if rep["nominal"] else f"{rep['errors']} error(s), {rep['warnings']} warning(s)"
+    wrote = "rewrote" if rep["changed"] else "unchanged"
+    click.echo(f"[SKILLTREE] {state} — {wrote} {rep['path']}")
+    raise SystemExit(0 if rep["nominal"] else 1)
+
+
+@main.command(name="watch")
+@click.argument("root", type=click.Path(exists=True, file_okay=False, path_type=Path))
+@click.option("--rules-dir", type=click.Path(path_type=Path), default=None,
+              help="where to write the managed rule (default ~/.claude/rules)")
+@click.option("--interval", default=300, type=float, help="seconds between checks (default 300)")
+@click.option("--once", is_flag=True, help="run a single check and exit (for testing)")
+def watch_cmd(root: Path, rules_dir: Path | None, interval: float, once: bool) -> None:
+    """The decoherence cron: every --interval seconds, re-check the tree and refresh
+    the `system_notifications` rule. Start as a background process. READ-ONLY on the
+    tree (it only writes the rule); the FIX is agent-initiated via the skilltree skill."""
+    from .cohere import watch
+    rd = rules_dir or _DEFAULT_RULES
+    click.echo(f"[SKILLTREE] watching {root} every {interval:.0f}s → {rd}")
+    watch(root, rules_dir=rd, interval=interval, iterations=1 if once else None)
+
+
 @main.command(name="search")
 @click.argument("root", type=click.Path(exists=True, file_okay=False, path_type=Path))
 @click.argument("query")

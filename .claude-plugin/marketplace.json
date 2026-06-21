@@ -1,0 +1,15 @@
+{
+  "name": "chaincompiler",
+  "owner": {
+    "name": "sancovp",
+    "url": "https://github.com/sancovp"
+  },
+  "plugins": [
+    {
+      "name": "chaincompiler",
+      "source": "./",
+      "description": "A compiler-compiler for cognition — capability skills + the Self-Interpreter MCP.",
+      "version": "0.1.0"
+    }
+  ]
+}

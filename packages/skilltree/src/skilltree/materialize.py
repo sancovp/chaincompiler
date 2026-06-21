@@ -19,8 +19,10 @@ import shutil
 
 from .model import SkillTree, TreeNode, assign_coords, compose_summary, skill_name
 
-# A breadcrumb line is parseable by validate.py: `- <name> (<kind>): cat <abspath>`
-_CRUMB = "- {name} ({kind}): `cat {path}`"
+# A breadcrumb line is parseable by validate.py: `- <name> (<kind>): Read `<abspath>``
+# The verb is **Read** (the Read tool), NOT `cat`: only the Read tool injects a dir's
+# .claude layer — a Bash `cat` reads the bytes but loads nothing (verified 2026-06-18).
+_CRUMB = "- {name} ({kind}): Read `{path}`"
 
 
 def node_skill_md(node_dir: Path, node_name: str) -> Path:
@@ -56,8 +58,10 @@ def _write_node(node: TreeNode, node_dir: Path, root: Path) -> None:
                   for c in node.children]
         body = (f"{base}\n\n## Index summary\n{summary}\n\n"
                 f"## Descend — the next layer ({len(node.children)})\n"
-                "Auto-load stops here (nested `.claude` will not load). To go deeper, "
-                "run the `cat` for the child you want:\n\n" + "\n".join(crumbs))
+                "Only this layer is loaded now. To descend, use the **Read tool** on a child "
+                "below — that injects the child's layer (its persona + skills). A Bash `cat` "
+                "reads the bytes but loads nothing; you must use the Read tool:\n\n"
+                + "\n".join(crumbs))
     else:
         body = base + "\n\n_(leaf — this is an actual skill.)_"
 

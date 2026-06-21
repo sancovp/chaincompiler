@@ -21,18 +21,27 @@ _COORD_NAME = re.compile(r"^([0-9][0-9.]*)-(.+)$")
 _FTS_TERMS = re.compile(r"\w+")
 
 
-def _read_skill(md: Path) -> tuple[str, str, str, str, str]:
+def _read_skill(md: Path) -> tuple[str, str, str, str, str, int]:
     txt = md.read_text(encoding="utf-8", errors="replace")
     nm = re.search(r"^\s*name:\s*(.+?)\s*$", txt, re.M)
     ds = re.search(r"^\s*description:\s*(.+?)\s*$", txt, re.M)
     gl = re.search(r"^\s*glyphs:\s*(.+?)\s*$", txt, re.M)
+    vs = re.search(r"^\s*version:\s*(\d+)", txt, re.M)
     name = nm.group(1).strip() if nm else md.parent.name
     desc = ds.group(1).strip() if ds else ""
     glyphs = gl.group(1).strip() if gl else ""
+    version = int(vs.group(1)) if vs else 1
     body = txt.split("---", 2)[-1].strip() if txt.lstrip().startswith("---") else txt.strip()
     m = _COORD_NAME.match(name)
     coord = m.group(1) if m else ""
-    return coord, name, desc, body, glyphs
+    return coord, name, desc, body, glyphs, version
+
+
+def _logical(name: str) -> str:
+    """The stable logical identity of a skill: drop the coord prefix and any `-v<N>` version suffix."""
+    m = _COORD_NAME.match(name)
+    base = m.group(2) if m else name
+    return re.sub(r"-v\d+$", "", base)
 
 
 def build_index(root_dir: str | Path, db_path: str = ":memory:",
@@ -46,14 +55,14 @@ def build_index(root_dir: str | Path, db_path: str = ":memory:",
     """
     con = sqlite3.connect(db_path)
     con.execute("CREATE VIRTUAL TABLE skills USING fts5(name, description, body, tags, "
-                "coord UNINDEXED, path UNINDEXED, glyphs UNINDEXED)")
+                "coord UNINDEXED, path UNINDEXED, glyphs UNINDEXED, version UNINDEXED)")
     rows = []
     for md in Path(root_dir).rglob("SKILL.md"):
-        coord, name, desc, body, glyphs = _read_skill(md)
+        coord, name, desc, body, glyphs, version = _read_skill(md)
         tags = " ".join(vocab.code_tags(glyphs)) if (vocab and glyphs) else ""
-        rows.append((name, desc, body, tags, coord, str(md), glyphs))
-    con.executemany("INSERT INTO skills(name, description, body, tags, coord, path, glyphs) "
-                    "VALUES (?,?,?,?,?,?,?)", rows)
+        rows.append((name, desc, body, tags, coord, str(md), glyphs, version))
+    con.executemany("INSERT INTO skills(name, description, body, tags, coord, path, glyphs, version) "
+                    "VALUES (?,?,?,?,?,?,?,?)", rows)
     con.commit()
     return con
 
@@ -64,10 +73,13 @@ def _fts_query(q: str) -> str:
 
 
 def search(con: sqlite3.Connection, query: str, *, scope_coord: str | None = None,
-           facet: str | None = None, vocab=None, limit: int = 10) -> list[dict]:
+           facet: str | None = None, vocab=None, limit: int = 10,
+           newest_only: bool = False) -> list[dict]:
     """BM25-ranked search, optionally scoped to a coordinate subtree and/or faceted by a
-    GlyphSteer glyph (`facet`, resolved to its ASCII sentinel tag via `vocab`)."""
-    sql = ("SELECT name, coord, description, path, glyphs, bm25(skills) AS score "
+    GlyphSteer glyph (`facet`, resolved to its ASCII sentinel tag via `vocab`).
+    `newest_only=True` forwards only the **newest `version` per logical skill** (history kept on disk,
+    but search returns the latest) — the self-expansion/freshness routing."""
+    sql = ("SELECT name, coord, description, path, glyphs, version, bm25(skills) AS score "
            "FROM skills WHERE skills MATCH ?")
     params: list = [_fts_query(query)]
     if scope_coord:
@@ -77,15 +89,23 @@ def search(con: sqlite3.Connection, query: str, *, scope_coord: str | None = Non
         tag = (vocab.tag_for(facet) if vocab else None) or facet
         sql += " AND tags MATCH ?"
         params.append(tag)
-    sql += " ORDER BY score LIMIT ?"      # bm25(): lower = better
-    params.append(limit)
-    return [{"name": r[0], "coord": r[1], "description": r[2], "path": r[3],
-             "glyphs": r[4], "score": r[5]}
+    sql += " ORDER BY score"               # bm25(): lower = better
+    hits = [{"name": r[0], "coord": r[1], "description": r[2], "path": r[3], "glyphs": r[4],
+             "version": int(r[5]) if str(r[5]).isdigit() else 1, "score": r[6]}
             for r in con.execute(sql, params)]
+    if newest_only:
+        best: dict[str, dict] = {}
+        for h in hits:                     # keep the highest version per logical name
+            k = _logical(h["name"])
+            if k not in best or h["version"] > best[k]["version"]:
+                best[k] = h
+        hits = sorted(best.values(), key=lambda h: h["score"])
+    return hits[:limit]
 
 
 def search_tree(root_dir: str | Path, query: str, *, scope_coord: str | None = None,
-                facet: str | None = None, vocab=None, limit: int = 10) -> list[dict]:
+                facet: str | None = None, vocab=None, limit: int = 10,
+                newest_only: bool = False) -> list[dict]:
     """Convenience: index a tree dir and search it in one call."""
     return search(build_index(root_dir, vocab=vocab), query, scope_coord=scope_coord,
-                  facet=facet, vocab=vocab, limit=limit)
+                  facet=facet, vocab=vocab, limit=limit, newest_only=newest_only)

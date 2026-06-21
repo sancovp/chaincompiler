@@ -82,5 +82,99 @@ def persona(prompt_file: Path, out_dir: Path) -> None:
         click.echo(f"  gate   : chain {res['gate']['chain']} → {res['gate']['verdict']} (rulecatcher)")
 
 
+@main.group()
+def gba() -> None:
+    """General BanditAgent — a persistent AIOS dir an agent goes to and BECOMES."""
+
+
+@gba.command("new")
+@click.argument("domain")
+@click.argument("root", type=click.Path(path_type=Path))
+@click.option("--atom", "-a", "atoms", multiple=True, required=True,
+              help="an attention chain, e.g. -a '[Symptom] ⇒ [Scope] ⇒ |Severity|'")
+def gba_new(domain: str, root: Path, atoms: tuple[str, ...]) -> None:
+    """Emit a persistent GBA AIOS at ROOT (CLAUDE.md + live tree + index + kb)."""
+    from .gba import make_gba
+    g = make_gba(domain, root, atoms=list(atoms))
+    click.echo(f"══ GBA '{domain}' → {g.root} ══")
+    click.echo(f"  closed={g.closed}  ·  {g.report['indexed_skills']} skills indexed  ·  persona: CLAUDE.md")
+    click.echo(f"  become it: cd {g.root} and run an agent there.")
+
+
+@gba.command("construct")
+@click.argument("root", type=click.Path(exists=True, path_type=Path))
+@click.argument("name")
+@click.argument("atoms", nargs=-1, required=True)
+def gba_construct(root: Path, name: str, atoms: tuple[str, ...]) -> None:
+    """Mint a new chain system NAME into the GBA at ROOT (persists into the tree + re-indexes)."""
+    from .gba import load_gba, construct_into
+    g = load_gba(root)
+    sysd = construct_into(g, name, list(atoms))
+    click.echo(f"constructed '{name}' → {sysd.sc.parent.name}  ({g.report['indexed_skills']} skills now)")
+
+
+@gba.command("search")
+@click.argument("root", type=click.Path(exists=True, path_type=Path))
+@click.argument("query")
+@click.option("--scope", "scope_coord", default=None,
+              help="restrict to a coordinate subtree, e.g. --scope 0.1 (where you are = what you see)")
+@click.option("--newest", "newest_only", is_flag=True, default=False,
+              help="forward only the newest version per logical skill (the self-expansion routing)")
+def gba_search(root: Path, query: str, scope_coord: str | None, newest_only: bool) -> None:
+    """Select's search half: BM25 over the GBA's live tree, optionally scoped + newest-version-routed."""
+    from .gba import load_gba, search
+    g = load_gba(root)
+    hits = search(g, query, scope_coord=scope_coord, newest_only=newest_only)
+    if not hits:
+        click.echo("  (no hits)")
+    for h in hits:
+        click.echo(f"  [{h.get('coord','') or '–'}] {h['name']:28s} — {h.get('description','')}")
+
+
+@gba.command("hba")
+@click.argument("domain")
+@click.argument("root", type=click.Path(path_type=Path))
+@click.option("--atom", "-a", "atoms", multiple=True, required=True,
+              help="an attention chain for the HBA's tree")
+def gba_hba(domain: str, root: Path, atoms: tuple[str, ...]) -> None:
+    """Emit an HBA AIOS at ROOT: a GBA + select/construct seat subagents + the dispatch protocol."""
+    from .hba import make_hba
+    h = make_hba(domain, root, atoms=list(atoms))
+    click.echo(f"══ HBA '{domain}' → {h.root} ══")
+    click.echo(f"  seats (subagents): {', '.join(p.name for p in sorted(h.agents_dir.glob('*.md')))}")
+    click.echo(f"  dispatch protocol: .claude/rules/01-hba-dispatch.md  ·  base GBA tree + index")
+
+
+@main.group()
+def cog() -> None:
+    """COG — a Challenger·Observer·Generator whose three seats are each a GBA."""
+
+
+@cog.command("new")
+@click.argument("domain")
+@click.argument("root", type=click.Path(path_type=Path))
+@click.option("--atom", "-a", "atoms", multiple=True, required=True,
+              help="an attention chain for the Generator seat")
+def cog_new(domain: str, root: Path, atoms: tuple[str, ...]) -> None:
+    """Emit a COG AIOS at ROOT: the C→G→O flow skill + three role-AIOS seats (C/O/G) + a workspace."""
+    from .cog import make_cog
+    c = make_cog(domain, root, atoms=list(atoms))
+    click.echo(f"══ COG '{domain}' → {c.root}  (flow valid: {c.closed}) ══")
+    click.echo(f"  seats: ./C ./G ./O (each an AIOS you go to)  ·  shared: ./workspace")
+    click.echo(f"  flow : cat {c.flow.relative_to(c.root) if c.flow else '—'}  (the C→G→O workflow you walk)")
+
+
+@cog.command("flow")
+@click.argument("root", type=click.Path(exists=True, path_type=Path))
+def cog_flow(root: Path) -> None:
+    """Print the COG's default-workflow flow skill — the C→G→O flow you walk (it's a prompt, not a run)."""
+    from .cog import load_cog
+    c = load_cog(root)
+    if c.flow and c.flow.exists():
+        click.echo(c.flow.read_text())
+    else:
+        click.echo("(no flow skill found — re-run `cog new`)")
+
+
 if __name__ == "__main__":
     main()

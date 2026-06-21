@@ -93,17 +93,17 @@
 <text x="1556" y="294" font-size="11" fill="#15151a">•  Frontend: tree + analytics + prob…</text>
 <text x="1556" y="314" font-size="11" fill="#15151a">•  Improve loop: reports → agent → s…</text>
 <path d="M1770 126 h20" stroke="#c4c4bf" stroke-width="2" marker-end="url(#a)" fill="none"/>
-<rect x="1790" y="96" width="232" height="300" rx="11" fill="#f6f6f5" stroke="#c4c4bf" stroke-width="1.6"/>
-<text x="1806" y="126" font-size="12" font-weight="800" letter-spacing=".08em" fill="#9a9a96">P7</text>
-<rect x="1918" y="112" width="88" height="20" rx="10" fill="#9a9a96"/>
-<text x="1962" y="126" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">○ planned</text>
+<rect x="1790" y="96" width="232" height="300" rx="11" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.6"/>
+<text x="1806" y="126" font-size="12" font-weight="800" letter-spacing=".08em" fill="#3b6fd4">P7</text>
+<rect x="1918" y="112" width="88" height="20" rx="10" fill="#3b6fd4"/>
+<text x="1962" y="126" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">▸ in progress</text>
 <text x="1806" y="154" font-size="16" font-weight="800" fill="#15151a">Plugin</text>
 <text x="1806" y="176" font-size="11.5" fill="#5e5e66">Bundle the whole thing as ONE</text>
 <text x="1806" y="192" font-size="11.5" fill="#5e5e66">installable Claude Code plugin.</text>
-<text x="1806" y="218" font-size="11" fill="#15151a">•  plugin.json bundling skills + com…</text>
-<text x="1806" y="238" font-size="11" fill="#15151a">•  the SI MCP + agents in the plugin</text>
-<text x="1806" y="258" font-size="11" fill="#15151a">•  one-command install / distribute</text>
-<text x="1806" y="278" font-size="11" fill="#15151a">•  ships report-missed-skill + the r…</text>
+<text x="1806" y="218" font-size="11" fill="#15151a">•  plugin.json + marketplace.json ma…</text>
+<text x="1806" y="238" font-size="11" fill="#15151a">•  bundles the capability skills + t…</text>
+<text x="1806" y="258" font-size="11" fill="#15151a">•  commands + agents in the plugin (…</text>
+<text x="1806" y="278" font-size="11" fill="#15151a">•  one-command install / distribute …</text>
 <path d="M2020 126 h20" stroke="#c4c4bf" stroke-width="2" marker-end="url(#a)" fill="none"/>
 <rect x="2040" y="96" width="232" height="300" rx="11" fill="#eef4ff" stroke="#3b6fd4" stroke-width="1.6"/>
 <text x="2056" y="126" font-size="12" font-weight="800" letter-spacing=".08em" fill="#3b6fd4">P8</text>

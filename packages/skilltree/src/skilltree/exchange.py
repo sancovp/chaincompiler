@@ -25,7 +25,7 @@ from pathlib import Path
 from .materialize import node_skill_md
 from .materialize import materialize
 from .model import SkillTree
-from .validate import Violation, _CAT_RE, _has_frontmatter
+from .validate import Violation, _CRUMB_RE, _has_frontmatter
 from .validate import validate as validate_tree
 
 
@@ -75,10 +75,11 @@ def build(exchange: Exchange, repo_dir: str | Path) -> Path:
 
     master_md = node_skill_md(repo, exchange.master)
     master_md.parent.mkdir(parents=True, exist_ok=True)
-    crumbs = [f"- {name} (tree): `cat {root_md}`" for name, root_md in members]
+    crumbs = [f"- {name} (tree): Read `{root_md}`" for name, root_md in members]
     body = (f"Master of the **{exchange.name}** exchange — {len(members)} skill tree(s).\n\n"
-            "## Trees — pick one and `cat` into its root\n"
-            "Auto-load stops at this master. Each tree then walks its own breadcrumbs:\n\n"
+            "## Trees — pick one and **Read** (the Read tool) into its root\n"
+            "Only this master is loaded. Read a tree's root below to load it (a Bash `cat` won't); "
+            "each tree then walks its own breadcrumbs:\n\n"
             + "\n".join(crumbs))
     master_md.write_text(_front(exchange.master, f"master of the {exchange.name} exchange", body),
                          encoding="utf-8")
@@ -103,7 +104,7 @@ def validate(repo_dir: str | Path, exchange: Exchange) -> list[Violation]:
         return out
     if not _has_frontmatter(master_md):
         out.append(Violation("error", exchange.master, "master SKILL.md lacks frontmatter"))
-    found = {Path(p).resolve() for p in _CAT_RE.findall(master_md.read_text(encoding="utf-8"))}
+    found = {Path(p).resolve() for p in _CRUMB_RE.findall(master_md.read_text(encoding="utf-8"))}
     expected = {
         node_skill_md(repo / "trees" / m.name, SkillTree.load((exchange.base / m.manifest).resolve()).root.name).resolve()
         for m in exchange.trees

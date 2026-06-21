@@ -15,7 +15,7 @@ from pathlib import Path
 
 from .model import SkillTree, skill_name
 
-_CRUMB = "- {name} ({kind}): `cat {path}`"
+_CRUMB = "- {name} ({kind}): Read `{path}`"     # the Read TOOL injects the layer, not `cat`
 
 
 def _skill_dir(node_dir: Path, name: str) -> Path:
@@ -72,7 +72,8 @@ def build_forest(name: str, members: list[str | Path], *, user_skills_dir: str |
         roots.append(rn)
     desc = description or f"Forest of {len(members)} skill tree(s): {', '.join(roots)}."
     body = (f"Forest **{name}** — {len(members)} skill tree(s). "
-            "Pick one and `cat` into its root (then follow its breadcrumbs):\n\n" + "\n".join(crumbs))
+            "Pick one and **Read** (the Read tool) into its root to load it, then follow its "
+            "breadcrumbs down (`cat` won't load it — only the Read tool does):\n\n" + "\n".join(crumbs))
     (fdir / "SKILL.md").write_text(f"---\nname: {name}\ndescription: {desc}\n---\n\n{body}\n", encoding="utf-8")
     return _symlink(Path(user_skills_dir) / name, fdir)
 

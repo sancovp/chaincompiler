@@ -95,13 +95,13 @@
     {
       "id": "P7",
       "title": "Plugin",
-      "status": "planned",
+      "status": "in_progress",
       "blurb": "Bundle the whole thing as ONE installable Claude Code plugin.",
       "items": [
-        "plugin.json bundling skills + commands + hooks",
-        "the SI MCP + agents in the plugin",
-        "one-command install / distribute",
-        "ships report-missed-skill + the root skill tree by default"
+        "plugin.json + marketplace.json manifests (done)",
+        "bundles the capability skills + the SI MCP (done)",
+        "commands + agents in the plugin (pending)",
+        "one-command install / distribute (pending: commit + install-verify)"
       ]
     },
     {
@@ -122,6 +122,99 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.41",
+      "date": "2026-06-18",
+      "changes": [
+        "**The auto-load mechanism, VERIFIED \u2014 and skilltree fixed to match it.** We proved against the live Claude Code runtime exactly what makes SkillTree work (frozen in `.claude/rules/02-the-autoload-mechanism.md`): context + menu = `~/.claude` (always, one layer) **+ every project dir you _Read into_** (its `CLAUDE.md` + `.claude/rules` + `.claude/skills`, dynamically, one layer) \u2014 descendants don't load until Read, out-of-project dirs don't trigger, and **the trigger is the Read TOOL, not `cat`** (a Bash `cat` of the same file injects nothing). Three coordinated fixes followed: **(1) breadcrumbs say `Read`, not `cat`** \u2014 the generated descend-menus instructed `cat <path>`, which silently fails to load a child; updated the emitter + every breadcrumb parser (`materialize`/`cohere`/`forest`/`exchange`/`validate`/`si`). **(2) `emit` is lossless + journaled + symlink-aware** \u2014 tree-ifying a forest now MOVES each skill dir wholesale (all baggage preserved, no body-only re-render, no silent `rmtree`) and **de-symlinks symlink'd skills** (copy the resolved content, journal the link) into `.emit-journal.json`; `unemit` replays it backwards for an exact, byte-identical undo (symlinks restored). **(3) descent-trigger pinned** \u2014 Reading a child's nested `SKILL.md` fires that node's layer (ancestors load, descendants don't), so the breadcrumb target is correct as-is. **Dogfooded on our own 8-skill `.claude/skills` forest** (4 real + 4 symlinks): `emit` \u2192 only the root remains at the top (melt fixed), COHERENT \u2192 `unemit` \u2192 byte-identical. The dogfood **caught a real symlink bug** the sandboxes couldn't (4/8 dev skills are symlinks) \u2014 found, fixed, frozen (`test_cohere.py`: lossless, symlink, Read-wording, mixed-coord regressions; `test_emit_roundtrip.py`: a baggage+symlink tree-ify\u2192`unemit` byte-identical round-trip; `test_notifications.py`: the decoherence-rule flip). (Full suite **248 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.40",
+      "date": "2026-06-18",
+      "changes": [
+        "**skilltree's missing front half: `discover \u2192 cohere \u2192 emit` (the filesystem \u21c4 tree inverse + the decoherence gate).** `materialize` only went tree \u2192 disk (destructively); there was no way to read the *live* `.claude` dirs back, no coherence check, no in-place fix. Added `skilltree.cohere`: **`discover(root)`** reconstructs the tree that is *actually* on disk (handles both a nested AIOS and a bare flat forest); **`cohere(root)`** reports DECOHERENCE \u2014 how reality drifted from the engineered shape (`bare_forest`, `uncoordinated`, `stale_breadcrumb`, `coord_drift`, `stray_skill`, `missing_node`); **`emit(root)`** re-coheres IN PLACE (reassign coords + rewrite `cat`-breadcrumbs/index, non-destructive \u2014 no `rmtree`), and with `--root-forest` performs the **forest\u2192tree fix**: relocates flat leaves into nested node-dirs so they stop auto-loading and only the root remains, then writes the breadcrumbs. CLI: `skilltree discover|cohere|emit`; `cohere` exits non-zero on drift, so a **cron can notify on decoherence** (\"you decohered X \u2014 look at the tree shape\"). This is rule 01 (`everything-is-a-tree`) made operational: `cohere` *finds* the bare forest, `emit` *roots* it. Frozen as metaformal self-tests (`test_cohere.py`, 4) that trigger the real fs and observe the state-change \u2014 the first run caught three real bugs in the code (forest-vs-stray confusion, a plain/coord name mismatch, breadcrumbs pointing at the dir not `SKILL.md`).",
+        "**The decoherence cron + the self-managed notification rule + the `skilltree` skill.** On top of the gate: **`write_notifications(root, rules_dir)`** runs `cohere` and rewrites a self-managed top-level rule **`00-system-notifications`** (default `~/.claude/rules`) \u2014 \"None. Systems nominal.\" flips to \ud83d\udd34 ERROR / \ud83d\udfe1 WARN + a \"To fix \u2192 run the `skilltree` skill\" instruction that leaks into every session's system prompt. **`watch(root, interval)`** is the background loop (every ~5 min); it is **read-only on the tree** (only the rule file changes) \u2014 the *fix* stays agent-initiated, because `emit` can relocate real skills. The root is the **user level (`~/.claude`)**, the lord's seat: the top can rewrite a rule that leaks down to every session (\"you decohered X \u2014 here's the tree shape, recohere it\"). New CLI `skilltree notify|watch` and the home-installable **`skilltree` skill** (the recohere flow + navigation how-to = the notification's fix target). Frozen by `test_notifications.py` (\u00d74): trigger the real `cohere\u2192render\u2192write` on a sandbox and observe the rule flip nominal\u21c4ERROR.",
+        "**`emit`'s tree-ify is now LOSSLESS + REVERSIBLE.** The first cut re-rendered SKILL.md-only and `rmtree`'d the original \u2014 silently dropping a skill's other files (a `reference.md`, `scripts/`). Rewritten: it **moves the whole dir** (`shutil.move`, all baggage preserved) and **journals every move** to `.emit-journal.json`; new **`unemit(root)`** / `skilltree unemit` replays the journal backwards for an **exact round-trip** (dirs moved back, SKILL.md restored verbatim, synthesized root + manifest removed, empty nesting pruned). Proven by `test_emit_is_lossless_and_reversible` (a `reference.md` survives `emit` then `unemit`) + a CLI round-trip. The forest\u2192tree fix is now safe to run on a real library \u2014 nothing is destroyed, only moved-with-a-receipt. (Full suite **245 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.39",
+      "date": "2026-06-18",
+      "changes": [
+        "**dietc re-expressed as a chaincompiler-built AIOS \u2014 the v1 recursion runs (`examples/nutrition`).** dietc was meant to be *the worked example made by the system* but shipped as 11 hand-coded Python modules with **0 skills / 0 chains** \u2014 the recursion (*chaincompiler makes dietc*) never ran on it. Now it does: `examples/nutrition/build.py` calls `make_gba(\"nutrition\", aios/, atoms=[gap, cap, safety])` (\u2192 3 AC attention frames + the NutritionBandit CoR + the rollup SC + the loop flow, coord-addressed) then appends two flow-skills the same way `make_gba` adds the loop flow \u2014 **`nutrition-recommend`** (the patch decision, a CoR) and **`compile-day`** (the pipeline SC that *calls* the dietc Python tools: `load \u2192 build_day_state \u2192 gapcap.compute \u2192 patch.plan \u2192 safety.check \u2192 render`). The split follows the law (**only code what must execute**): dietc's `vectors`/`gapcap`/`patch`/`safety`/`load`/`engine` stay **Python tools** (the math is theirs; a prompt never computes a nutrient value); its *how-to-think* becomes **AC/CoR skills**; its *pipeline* becomes a **walked flow**. dietc's **\"NOT medical advice\"** is preserved in the role + a `90-safety` rule (always run `safety.check`). Verified by a **metaformal self-test** (`examples/nutrition/test_nutrition_aios.py`): it triggers the real build (observe: closed, 0 violations, `compile-day` coord-addressed at `0.4`, `90-safety` on disk) AND the real dietc pipeline on the `PotatoDay` fixture (a potato-only day \u2192 a 1680 kcal gap; the safety check fires) \u2014 the substrate is the oracle, no predicted value asserted. The deliverable is the **AIOS template** it reveals (tools in Python \u00b7 cognition in AC/CoR \u00b7 pipeline as a walked flow \u00b7 gated + coord-addressed + self-expanding) \u2014 what chaincompiler then applies to itself. (Full suite **235 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.38",
+      "date": "2026-06-17",
+      "changes": [
+        "**Self-expansion + the workflow-as-a-skill + a strict gate (three corrections from the \"it's all prompts; Python guarantees shape\" pass).** **(1) Self-expansion mechanic** \u2014 every dir is automatically an AIOS, so making a skill *obligates* placing it in the tree and (for a domain) AIOS-ing it. Shipped the home-level **`adding-a-skill`** skill (the standing base-agent obligation: gate \u2192 place in tree by coord \u2192 AIOS a new domain \u2192 version it) + a GBA `04-self-expansion` rule pointing at it, and **newest-version routing** in `skilltree.search` (`version:` frontmatter + `search(..., newest_only=True)` / `gba search --newest` forwards only the latest version per logical skill \u2014 history kept on disk, latest served). **(2) The GBA's default loop is now a flow-skill IN the tree** (`<domain>-loop`, coord-addressed) instead of only a rule \u2014 so uniformly *agent = persona + skills + skillchain + skilltree* (the skillchain lives in the tree, like the COG's flow); rule `01` slimmed to point at it. **(3) Strict gate** \u2014 a metaformal self-test observed the gate *admitting* a foreign token at a branch point (the position after `\u21d2`, legitimately `[`-or-`|`, is ungoverned by confidence-1.0 rules). Fix: opt-in `chaincompiler.bridge.gate(..., strict=True)` + `foreign_tokens(...)` \u2014 a closed-class vocabulary check (derived from the learned artifacts) that flags any closed-class token outside the vocab as `syntax_break`; open-class fillers always allowed. Observed GREEN (rejects `\u274cNOPE\u274c`, admits the valid chain); frozen as `test_strict_gate.py`. Defaults + the 43 rulecatcher tests untouched. (Full suite **232 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.37",
+      "date": "2026-06-17",
+      "changes": [
+        "**Correction: a COG is a FLOW you WALK, not a function \u2014 deleted `run_cog`.** The earlier `cog.py` modeled the COG as a Python orchestrator (`run_cog`) with a `c_admit`/`o_continue` gate that *returned a verdict* \u2014 and its tests asserted `admitted is True` where `c_admit = True` was hardcoded (`assert True == True` in a costume; a hallucination). That is the wrong object. The system is **all prompts**; the Python only **guarantees shape** (gate syntax \u00b7 place names/coords \u00b7 validate the tree \u00b7 index for search), used at build time. So `make_cog` now emits the COG as a thing you *travel*: the three **role-AIOS directories** (`C/` `G/` `O/`, each a GBA you `cd` into to learn the role and act) + a shared **`workspace/`** + the **default-workflow flow skill** \u2014 a *prompt* (`<domain>-cog`, coord-addressed + validated in the COG's tree) that says *cd C (mint the AC/CoR the work needs \u2192 place them in G's tree) \u2192 cd G (use them to produce into workspace) \u2192 loop C\u2192G \u2192 cd O (observe; next cycle's C starts from O's observations)*. There is **no runtime engine**: the agent is the run. `run_cog`/`CogResult` deleted; CLI `cog run` \u2192 `cog flow` (prints the flow you walk); `test_cog.py` rewritten as **metaformal self-tests** that OBSERVE the emitted substrate (seats/workspace/flow-skill exist + resolve) rather than assert a stubbed return. Also crystallized the testing methodology itself as the **`metaformal-self-test`** skill (home-level, coord-addressed: `0-metaformal-self-test` / `0.1-gate-rejects-foreign`) \u2014 *trigger the real substrate, observe the change, freeze the anecdote; the substrate is the oracle.* It earned its keep immediately: a live gate self-test OBSERVED the Challenger gate **admitting** a foreign token `\u274cNOPE\u274c` (a real gap a tautology assert would have hidden). (Full suite **229 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.36",
+      "date": "2026-06-17",
+      "changes": [
+        "**HBA + the COG\u00d7HBA variant lattice (`chaincompiler.hba`, `chaincompiler.cog seats=`; DESIGN.md Stages 3\u20134).** **Stage 3 \u2014 the HierarchicalBanditAgent:** a GBA whose `Select`/`Construct` arms delegate to subagents (the anti-melt move \u2014 filling a frame excellently needs more domain ACs than fit one window without the geometry flattening, so the *construct-agent* loads that context in its **own** window and returns only the finished skill). Scaffold approach: `make_hba(domain, root, atoms)` emits `.claude/agents/select-agent.md` + `construct-agent.md` (valid subagent defs) + an `01-hba-dispatch.md` rule that **replaces** the inline bandit-loop (`HBA \u2192 SelectAgent \u2192 (ConstructAgent) \u2192 HBA execs`); a real Claude Code agent does the runtime delegation via the Agent tool. Identity (role + dispatch rule + seat defs) is carried as a manifest `_profile` and **survives runtime construct** (fixed `_apply_tree` to preserve `.claude/agents` + the profile across `materialize`'s `rmtree`). CLI `chaincompiler gba hba`. **Stage 4 \u2014 the lattice:** `make_cog(..., seats={...})` makes each of `C`/`O`/`G` a GBA or an HBA \u2192 the **2\u00b3 `PATTERNS`** catalog (`flat` \u00b7 `G-hba` \u00b7 `C-hba` \u00b7 `O-hba` \u00b7 pairs \u00b7 `all-hba`); the HBA scaffold lands exactly on the designated seats. **This pattern library is what compoctopus composes.** Ships `test_hba.py` (4) + variant-lattice tests in `test_cog.py`. **The full *downward* algebra (DESIGN \u00a710) is built end-to-end:** GBA \u2192 COG-of-GBAs \u2192 HBA \u2192 variants. (Full suite **230 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.35",
+      "date": "2026-06-17",
+      "changes": [
+        "**COG \u2014 a Challenger\u00b7Observer\u00b7Generator whose three seats are GBAs (`chaincompiler.cog`; DESIGN.md Stage 2).** With the GBA real (v0.1.34), the upward **control stack** (DESIGN \u00a74) gets built: `make_cog(domain, root, atoms)` emits an AIOS with three real GBA seats \u2014 `C/` (Challenger), `O/` (Observer), `G/` (Generator) \u2014 plus an orchestrator `CLAUDE.md` role block and the `[C\u2192G, G\u2192C, O\u2192C]` protocol as a rule. `run_cog(cog, task)` runs one **in-process** pass: **C\u00b7Select** (substantive-term search of G's tree \u2014 the stand-in for the LLM's neural-match) decides the arm \u2192 **C\u2192G** \u2192 **Construct** (mints + persists a new chain into G) or **Exec** (reuses a golden) \u2192 **G\u2192C\u00b7verify** (the **rulecatcher** gate on the produced sequence \u2014 C's back-end) \u2192 **O\u2192C\u00b7meta** (an injectable Observer that can reject/continue the *strategy* or *final work*). This makes the **two-tier control** real and tested: C admits an artifact at the object level while O can still **veto the strategy** at the meta level (`test_cog.py`, 4). Also `construct_into` now returns the full `BanditChainSystem` (so C can gate its `sequence`), `load_cog` re-opens cold, and CLI `chaincompiler cog new|run`. Seats are in-process here; **subagent dispatch is Stage 3 (HBA)**. (Full suite **224 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.34",
+      "date": "2026-06-17",
+      "changes": [
+        "**GBA \u2014 the General BanditAgent as a *persistent* native-CC AIOS (`chaincompiler.gba`; DESIGN.md Stage 1).** The whole stack minted skills into `tempfile.mkdtemp()` and threw them away \u2014 a skill-factory with no warehouse and no operator. `make_gba(domain, root, atoms)` fixes that: it emits a real **AIOS directory on disk** \u2014 a root `CLAUDE.md` *persona* carrying the **BanditChain loop** (`Task \u2192 Recall=Select(search\u2192neural-match) \u2192 Decide \u2192 Construct|Exec \u2192 Reward`), a live `cat`-breadcrumb **SkillTree** (gated AC/CoR/SC bodies), a `kb/`, the `bandit-chain-system` skill loadable in place, and a **persisted, rebuildable FTS5 index** \u2014 never `/tmp`. `construct_into(...)` is the Bandit's explore arm made to **persist**: it mints a new chain, **fits it into the live tree, re-materializes, and re-indexes** (the `kb` reward-record and the persona survive the rebuild \u2014 `materialize` does `rmtree(root)`, so one `_apply_tree` path preserves the sidecars). `search(...)` is Select's search half (BM25 over the tree; the agent does the neural-match). `load_gba(root)` re-opens one cold from `gba.json`. CLI: `chaincompiler gba new|construct|search`. Ships `test_gba.py` (4: persistence \u00b7 construct-persists-into-tree \u00b7 kb/persona survive \u00b7 cold-reopen). This is **DESIGN.md \u00a710 Stage 1** \u2014 an agent goes to the directory and *becomes* the bandit; the warehouse and operator now exist. (Full suite **220 passing**.) Next: Stage 2 \u2014 COGs whose seats are GBAs."
+      ]
+    },
+    {
+      "version": "v0.1.33",
+      "date": "2026-06-17",
+      "changes": [
+        "**The Archetype Compiler (`packages/archetype`) \u2014 the system the music detour was *for*.** `fractran-music` (the verified circle-of-fifths/comma calculation) had been an orphan: a proof of a fact with nothing consuming it. Its consumer is this \u2014 an **archetype-as-state-machine** compiler (ARCHETYPE-COMPILER.md spec, now built). An archetype is not a noun but a recursive individuation circuit `\u27e8Persona, Shadow, Self, Odyssey, Becoming\u27e9`: `Shadow = DeniedInverse(Persona)`, `Self = Integrate(Persona, Shadow)` (a *purified* Persona that bypasses the Shadow fails **C2**), `Becoming = TypeLift(Self)` (the next archetype's Persona). `arc.compile_archetype(\"Hero\")` infers the missing aspects from one seed, builds the **multi-journey Odyssey** (the spec's main fix: an Odyssey is a *succession* of hero's journeys \u2014 a call-out, one automorphism-encounter per pantheon member, and a **post-return** HJ \u2014 not a single P\u2192S\u2192Self path), accrues the Aut-web and tests **quining** (orbit-closure), validates **C1\u2013C6**, and emits **Cypher / Prolog / JSON / triples / readable** or the ONE type via `emit_skill` (`<name>/SKILL.md`). Also `compile_chain` (an individuation chain), `compile_world` (a worked example world), the DSL `parse`, and a CLI (`archetype compile Hero --emit all` \u00b7 `archetype demo`). Ships the **`archetype-compiler` skill** and `test_archetype.py` (11 \u2014 the spec's MVP list + the \u2726Odyssey-refactor tests). **Grade-honest:** the state-machine mechanics are G0-by-definition; the music\u2194archetype frame is a G8 resonance; whether the Becoming-cycle **closes exactly or only tempers** (the comma, `fractran-music`) is the explicit open seam, connected at G7/G8 and *not* claimed by `quines()`. (Full suite **216 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.32",
+      "date": "2026-06-17",
+      "changes": [
+        "**P7 \u2014 the Claude Code plugin (`\u25b8`).** The repo is now an installable plugin. Added `.claude-plugin/plugin.json` (identity: name `chaincompiler`, MIT, repo/homepage) + `.claude-plugin/marketplace.json` (so `/plugin marketplace add github:sancovp/chaincompiler` resolves, `source: \"./\"`), a plugin-root `skills/` carrying the **capability** skills (`bandit-chain-system`, `glyphsteer`, `glyphsteer-dense`, `report-missed-skill`), and `.mcp.json` wiring the **Self-Interpreter MCP** (`python3 -m si.server`). One source of truth: the capability skills moved to `skills/` (real dirs \u2014 what the plugin loader reads) and are symlinked back into `.claude/skills/` for in-repo dev; the dev-only `chaincompiler` orientation skill stays out of the plugin. Validated by the `plugin-validator` agent: manifests well-formed + consistent, all four skills valid, the loader follows the symlinks on macOS/Linux, and the root `registry.json` (the *skill-tree* federation registry \u2014 a different concept) does not conflict. Pending: slash `commands/` + `agents/`, then `git add .claude-plugin/ .mcp.json skills/` + push and an install-verify. (Suite unchanged: **205 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.31",
+      "date": "2026-06-17",
+      "changes": [
+        "**The bandit's headline move: roll up the algebra, close it, make it self-improve (`chaincompiler.bandit`).** The default persona was *named* the ChainSelector but had no construct move of its own \u2014 it could only be handed to `construct_language`. `cc.roll_up_algebra(domain, atoms, \u2026)` is that move made real: it mints the domain's **AC(s) + a domain-specialized bandit CoR + SC**, then **CLOSES** the algebra (every artifact is the one type *and* an organizing `SkillTree` validates with zero violations \u2192 `system.closed`). The output is a **domain-specific persona AIOS** \u2014 a `CLAUDE.md` dir (not a single SKILL.md), shipping `legend.json` (the GlyphSteer GRADE vocab) and a `kb/`, and carrying two standing self-instructions: **build your own KB** (graded per-topic notes) and **improve yourself via GlyphSteer chains** (`\ud83c\udfc6`-faceted `Recall`, promote-on-double-\ud83c\udfc6, demote-on-\u274c \u2014 the KB + legend *are* the bandit policy). Then `cc.hierarchicalize(workdir)` applies the **same move over everything the bandit is composed of** (accc \u00b7 corcc \u00b7 sccc \u00b7 glyphsteer \u00b7 skilltree \u00b7 si \u00b7 honeyc \u00b7 rulecatcher) \u2014 a closed chain system per part, assembled into one master `bandit-self` tree: the homoicon, a granular view of the bandit in its own type. Ships the **`bandit-chain-system` skill** (the explicit how-to the bandit loads), `examples/_all/bandit_self.py` (7/7, runs green: roll-up \u2192 self-improving persona \u2192 9/9 components closed \u2192 self-view validates), and `test_bandit.py`. This answers \"have we made skills for everything, and skillchains for chaincompiler, *with* chaincompiler?\" \u2014 yes: hierarchicalize mints them for every component, using the system itself. (Full suite **205 passing**.)"
+      ]
+    },
+    {
+      "version": "v0.1.30",
+      "date": "2026-06-17",
+      "changes": [
+        "**The default persona is now the bandit (the `ChainSelector`).** `construct_language` minted a CoR, but you had to *hand it a flavor* (Einstein/Feynman) \u2014 and a flavor is a single, already-chosen chain, i.e. a `ChainConstruct` **output**. There was no default for the thing that sits *above* the flavors: the selector that decides whether to construct a chain at all. `corcc.BANDIT` (`= corcc.DEFAULT`) is that persona \u2014 a CoR whose moves are the explore/exploit decision: `Task \u2192 Recall \u2192 Decide(exploit: select a golden chain \u00b7 explore: construct a new one) \u2192 Execute \u2192 Reward`. It is compoctopus's `router.py` Bandit (`Link\u2192Chain\u2192Compiler\u2192Bandit`) rendered as a CoR \u2014 fitting ChainCompiler's thesis exactly: *the LLM, shaped by the gate, IS the selector*, so the bandit policy is a persona the model reads and performs, not a separate engine. `construct_language(cor_persona=None)` now defaults to it; `examples/_all` mints its default agent with no flavor and asserts the CoR is `BanditChain`. (Full suite 202 passing.)"
+      ]
+    },
+    {
+      "version": "v0.1.29",
+      "date": "2026-06-17",
+      "changes": [
+        "**`examples/_all` \u2014 the everything example (the dogfood).** The repo had ten packages, each with its own passing tests and its own `demo`, but **nothing exercised them together** \u2014 the central claim (a *closed algebra over one type*, so every tool's output is the next tool's input) was asserted in prose and never run. `examples/_all/run_all.py` now flows **one domain** (`reviewer`) through **all ten packages** in sequence \u2014 `persona \u2192 honeyc \u2192 gate \u2192 construct \u2192 tree \u2192 steer \u2192 custody \u2192 interpret` \u2014 with **19 assertions across 8 stages**, ending green from a clean `./install.sh`. It produces and consumes only the one type (a `<name>/SKILL.md`) at every seam, so the closure is *demonstrated*, not promised. Shipped with `test_all.py` (CI guard \u2014 drift in any package's public API goes red here first) and a `README.md` mapping each stage to its package + what it proves. This is the proof-by-use the system was missing."
+      ]
+    },
+    {
       "version": "v0.1.28",
       "date": "2026-06-17",
       "changes": [
@@ -140,9 +233,7 @@
     {
       "version": "v0.1.26",
       "date": "2026-06-16",
-      "changes": [
-        "**The Steward layer \u2014 the Custodian genus, lowest rung (off-graph).** `packages/steward`: a **Steward** = a loop-runner (O/F/I/A/P) gated by a **warrant**, producing the one type (a skill-dir `Artifact`); the **A-stage is the LOCK** (warrant-freeze \u2192 admit/crystallize or reject). This is the headless/automation sibling of CCC's Cybernet (same Custodian genus, CCC `DESIGN.md \u00a72.1`), built bottom-up: base `Steward` \u2192 specialist Stewards (`chain`/`sm`/`compiler`/`core`) \u2192 `meta_steward` (a Steward that runs a *sequence* of Stewards \u2014 **presents as one, runs many**; homoiconic, so meta-Stewards nest). The **warrant has a fidelity tier** (`proto_soma` regex \u2192 `grammar` rulecatcher/GlyphSteer \u2192 `soma`) \u2014 the same loop swaps tiers unchanged, demonstrating the warrant-upgrade axis the CCC merge wants. 7 tests green. Canonical design + the CCC bijection in `packages/steward/DESIGN.md`. **Committed next-conversation work: implement the same hierarchy INTO CCC on the graph (Steward\u2192Cybernet, warrant regex\u2192rulecatcher\u2192SOMA).**"
-      ]
+      "changes": []
     },
     {
       "version": "v0.1.25",
