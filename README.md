@@ -12,7 +12,7 @@
 
 <br/>
 
-![tests](https://img.shields.io/badge/tests-120%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
+![tests](https://img.shields.io/badge/tests-182%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
 
 <br/>
 
@@ -307,10 +307,13 @@ chaincompiler/                 # the monorepo (this repo)
   packages/
     rulecatcher/                                   # the gate (vendored; zero deps)
     chaincompiler/   accc/   corcc/   sccc/       # substrate + the three layers
-    skilltree/   si/   honeyc/   skillchain-compiler/   glyphsteer/   archetype/
+    si/   honeyc/   skillchain-compiler/   glyphsteer/   archetype/
 ```
 
-Everything is vendored in `packages/` — `./install.sh` wires it all editable, no external setup.
+`./install.sh` wires every package editable. **SkillTree** is published standalone on PyPI as
+**[`agent-skilltree`](https://pypi.org/project/agent-skilltree/)** (the bare name `skilltree` is taken by
+an unrelated package) — import name stays `skilltree`; `install.sh` pulls it. Everything else is vendored
+in `packages/`.
 
 ---
 
@@ -333,6 +336,9 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.1.42 — 2026-06-27
+- **SkillTree de-duplicated — published standalone as `agent-skilltree`, the bundled copy removed.** `packages/skilltree` was a *stale fork* (v0.1.0) of the canonical standalone (`github.com/sancovp/skilltree`, v0.2.0, which was ahead: `mapper.py` + a bigger `search`/`__init__`; the bundle had nothing unique, `cohere`/`materialize`/`validate` byte-identical). The obvious fix — depend on the published package — was blocked: **the PyPI name `skilltree` is taken by an unrelated `pygame` package.** So SkillTree is now published as **[`agent-skilltree`](https://pypi.org/project/agent-skilltree/)** (import name stays `skilltree`, so every `import skilltree` is unchanged); `chaincompiler` + `si` depend on it, `install.sh` pulls it, and `packages/skilltree` is deleted. The whole suite stays green on the published package (`gba`/`bandit`/`cog`/`si` import it). Also fixed the stale test badge (`120` → the real **182** for `pytest packages/`; SkillTree's own suite now lives in its repo).
 
 ### v0.1.41 — 2026-06-18
 - **The auto-load mechanism, VERIFIED — and skilltree fixed to match it.** We proved against the live Claude Code runtime exactly what makes SkillTree work (frozen in `.claude/rules/02-the-autoload-mechanism.md`): context + menu = `~/.claude` (always, one layer) **+ every project dir you _Read into_** (its `CLAUDE.md` + `.claude/rules` + `.claude/skills`, dynamically, one layer) — descendants don't load until Read, out-of-project dirs don't trigger, and **the trigger is the Read TOOL, not `cat`** (a Bash `cat` of the same file injects nothing). Three coordinated fixes followed: **(1) breadcrumbs say `Read`, not `cat`** — the generated descend-menus instructed `cat <path>`, which silently fails to load a child; updated the emitter + every breadcrumb parser (`materialize`/`cohere`/`forest`/`exchange`/`validate`/`si`). **(2) `emit` is lossless + journaled + symlink-aware** — tree-ifying a forest now MOVES each skill dir wholesale (all baggage preserved, no body-only re-render, no silent `rmtree`) and **de-symlinks symlink'd skills** (copy the resolved content, journal the link) into `.emit-journal.json`; `unemit` replays it backwards for an exact, byte-identical undo (symlinks restored). **(3) descent-trigger pinned** — Reading a child's nested `SKILL.md` fires that node's layer (ancestors load, descendants don't), so the breadcrumb target is correct as-is. **Dogfooded on our own 8-skill `.claude/skills` forest** (4 real + 4 symlinks): `emit` → only the root remains at the top (melt fixed), COHERENT → `unemit` → byte-identical. The dogfood **caught a real symlink bug** the sandboxes couldn't (4/8 dev skills are symlinks) — found, fixed, frozen (`test_cohere.py`: lossless, symlink, Read-wording, mixed-coord regressions; `test_emit_roundtrip.py`: a baggage+symlink tree-ify→`unemit` byte-identical round-trip; `test_notifications.py`: the decoherence-rule flip). (Full suite **248 passing**.)
@@ -491,10 +497,10 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 | `honeyc` (+ `dietc`) | the compiler (+ domain proof) | 36 |
 | `chaincompiler` | substrate + umbrella | 6 |
 | `accc` / `corcc` / `sccc` | the three layers | 5 / 5 / 6 |
-| `skilltree` | the organization | 6 |
+| `agent-skilltree` | the organization (published standalone on PyPI; import `skilltree`) | — (own repo) |
 | `archetype` | archetype-as-state-machine compiler | 11 |
 
-**216 passing.** Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
+**182 passing** (`pytest packages/`; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
 
 ### Not done yet (honestly)
 

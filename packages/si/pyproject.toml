@@ -7,7 +7,7 @@ name = "si"
 version = "0.1.0"
 description = "Self-Interpreter for the ChainCompiler chain dialect — an MCP that is also a skill"
 requires-python = ">=3.11"
-dependencies = ["chaincompiler", "accc", "corcc", "sccc", "skilltree", "fastmcp"]
+dependencies = ["chaincompiler", "accc", "corcc", "sccc", "agent-skilltree", "fastmcp"]
 
 [project.scripts]
 si-server = "si.server:main"
