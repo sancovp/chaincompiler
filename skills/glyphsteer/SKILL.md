@@ -87,7 +87,7 @@ print(render_legend(master))
 ## Wire it into ChainCompiler's skill search
 
 `skilltree.search` facets the skill corpus by glyph. First install skilltree
-(`python3 -m pip install -e packages/skilltree`). **The legend you pass MUST contain the
+(`python3 -m pip install agent-skilltree`). **The legend you pass MUST contain the
 glyph you facet on** — here we use the built-in `GRADE` vocab (which defines 🏆) and save it
 as the legend. Put `glyphs: 🏆` in a SKILL.md's frontmatter, then:
 
@@ -128,7 +128,7 @@ emoji to one token). See the **glyphsteer-dense** skill before using it.
 ## Verify your understanding (run this)
 ```bash
 python3 -m pip install -e packages/glyphsteer -q
-python3 -m pip install -e packages/skilltree -q     # needed for the search integration
+python3 -m pip install agent-skilltree -q     # needed for the search integration
 python3 packages/glyphsteer/experiments/grade_demo.py
 python3 -m pytest packages/glyphsteer -q
 ```
