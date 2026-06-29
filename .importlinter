@@ -1,0 +1,22 @@
+# import-linter — the GATE-CYCLE kill-criterion (REBUILD-SPEC.md §10).
+# Enforces the target DAG: imports only ever point DOWN.
+#   chaincompiler (AIOS) > sccc > corcc > accc (cognition) > prompt_engineering (base)
+# RED until P2 repoints the *CC back-edges down onto prompt_engineering; GREEN is the P2 success signal.
+
+[importlinter]
+root_packages =
+    chaincompiler
+    accc
+    corcc
+    sccc
+    prompt_engineering
+
+[importlinter:contract:down-only]
+name = Ecosystem DOWN-only (no chaincompiler <-> *CC cycle)
+type = layers
+layers =
+    chaincompiler
+    sccc
+    corcc
+    accc
+    prompt_engineering

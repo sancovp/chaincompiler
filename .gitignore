@@ -26,3 +26,5 @@ venv/
 
 # dev-local preview config (not source)
 /.claude/launch.json
+
+.venv-rebuild/
