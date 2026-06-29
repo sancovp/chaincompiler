@@ -13,9 +13,8 @@ import re
 
 import skillchain as sc
 
-from chaincompiler import slugify
-from chaincompiler.bridge import gate as cp_gate
-from chaincompiler.bridge import learn
+from prompt_engineering import slugify, learn
+from prompt_engineering.grammar import gate as cp_gate
 from rulecatcher.db import connect
 
 _STEP_RE = re.compile(r"\[(ac|cor|skill):([^\]]+)\]")

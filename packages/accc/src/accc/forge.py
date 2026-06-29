@@ -9,9 +9,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from chaincompiler import write_skill
-from chaincompiler.bridge import grammar_lines, learn
-from chaincompiler.bridge import gate as _gate
+from prompt_engineering import write_skill, grammar_lines, learn
+from prompt_engineering.grammar import gate as _gate
 from rulecatcher.db import connect, list_rules
 
 from .render import attention_block, parse_ac
