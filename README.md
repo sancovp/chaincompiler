@@ -12,7 +12,7 @@
 
 <br/>
 
-![tests](https://img.shields.io/badge/tests-182%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
+![tests](https://img.shields.io/badge/tests-185%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
 
 <br/>
 
@@ -336,6 +336,9 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.1.43 — 2026-06-29
+- **The dependency cycle is cut: chaincompiler now rides a `prompt-engineering` base (cycle → DAG).** The monorepo had a *circular* dependency — `chaincompiler` imported `accc/corcc/sccc` and they imported `chaincompiler` back — with no deterministic prompt engine at the bottom (prompt-making sat *on top of* the rulecatcher grammar tower). Fixed by **dependency inversion**: the standalone **`prompt-engineering`** package is now THE base — `prompt_engineering` carries the deterministic prompt engine + `grammar` (the rulecatcher seam: `learn`/`gate`/`grammar_lines`) + `skillpack` (`write_skill`, now **skilltree-aware** — coordinate-addressed placement). The 7 `*CC` back-edges repoint DOWN onto it; `chaincompiler.bridge`/`skillpack` **re-export** from the base (one implementation, no drift); the layering (`skilltree`/`rulecatcher`/`honeyc` < base < `accc/corcc/sccc` < `chaincompiler`) is enforced by an **import-linter** contract (RED→GREEN was the success signal). The CORCC cue/skeleton format converged onto a base primitive (`cor_skeleton`); `resolve_steps`/seeds correctly stay in the `*CC`. Public API + CLI + `install.sh` unchanged. **185 passing**, GATE-CYCLE GREEN. Full spec: [`REBUILD-SPEC.md`](REBUILD-SPEC.md).
 
 ### v0.1.42 — 2026-06-27
 - **SkillTree de-duplicated — published standalone as `agent-skilltree`, the bundled copy removed.** `packages/skilltree` was a *stale fork* (v0.1.0) of the canonical standalone (`github.com/sancovp/skilltree`, v0.2.0, which was ahead: `mapper.py` + a bigger `search`/`__init__`; the bundle had nothing unique, `cohere`/`materialize`/`validate` byte-identical). The obvious fix — depend on the published package — was blocked: **the PyPI name `skilltree` is taken by an unrelated `pygame` package.** So SkillTree is now published as **[`agent-skilltree`](https://pypi.org/project/agent-skilltree/)** (import name stays `skilltree`, so every `import skilltree` is unchanged); `chaincompiler` + `si` depend on it, `install.sh` pulls it, and `packages/skilltree` is deleted. The whole suite stays green on the published package (`gba`/`bandit`/`cog`/`si` import it). Also fixed the stale test badge (`120` → the real **182** for `pytest packages/`; SkillTree's own suite now lives in its repo).
