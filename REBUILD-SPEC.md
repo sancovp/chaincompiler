@@ -184,6 +184,18 @@ for the on-engine path.
 
 **Gate (rule 24):** P3 is not "done" until every row has a passing test. A red row stops the phase.
 
+**P3 outcome (2026-06-29).** The substrate convergence landed without touching the working `*CC` output:
+- **CORCC cues + paragraph skeleton** → now a base primitive: `prompt_engineering.cognition.cor_skeleton`
+  + `cor_payload(..., cues=…)`. `corcc.paragraph.cor_template` **renders through it** (single source of the
+  skeleton format) — output byte-identical, 185 green. Tested in the base (`test_cognition` cue block).
+- **ACCC persistent / exportable scopes** → already in the base: `prompt_engineering.grammar`
+  (`learn`/`gate`/`grammar_lines` take a `Connection` + `scope`; rulecatcher's DB API is persistent).
+- **SCCC `resolve_steps` + `package`, and the seed corpora** → correctly **stay in the `*CC`** (they depend
+  on `skillchain` disk-resolution and domain corpora — genuinely compiler-compiler concerns, not base
+  primitives). They were never lost; they're intact and tested (185 green). The base is the substrate for
+  the *general* features (rendering + cues + grammar + skill-packaging); the `*CC` add their domain logic
+  on top. No drift: the shared format/utilities now have exactly one home (the base).
+
 ---
 
 ## 6. honeyc — distinct leaf, kept as-is
