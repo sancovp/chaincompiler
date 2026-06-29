@@ -4,10 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "rulecatcher"
-version = "0.1.0"
+version = "0.1.1"
 description = "SQLite-backed rule catcher for emergent LLM DSLs."
 readme = "README.md"
 requires-python = ">=3.11"
+license = { text = "MIT" }
 dependencies = []
 
 [project.scripts]
