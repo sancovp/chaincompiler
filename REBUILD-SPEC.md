@@ -144,10 +144,18 @@ Repoint the seven back-edges. `<base>` = `prompt_engineering`.
 | `sccc/forge.py:17` | `from chaincompiler.bridge import gate as cp_gate` | `from prompt_engineering import gate as cp_gate` |
 | `sccc/forge.py:18` | `from chaincompiler.bridge import learn` | `from prompt_engineering import learn` |
 
-`chaincompiler.bridge` then **splits**: its `rulecatcher`-wrapping functions (`learn`/`gate`/`grammar_lines`)
-move to the base; its `honeyc`-wrapping `compile_chain` stays in `chaincompiler` (honeyc is chaincompiler's
-concern, §6). `chaincompiler/__init__.py` **re-exports** `learn`/`gate`/`grammar_lines`/`write_skill`/
-`slugify`/`skill_markdown` from `prompt_engineering` so the public API (§8) is byte-stable.
+`chaincompiler.bridge` then **splits**: its `rulecatcher`-wrapping seam (`learn`, `gate`, `grammar_lines`,
+`foreign_tokens`, `ForeignToken`) moves to a new base submodule **`prompt_engineering.grammar`**; its
+`honeyc`-wrapping `compile_chain` **stays** in `chaincompiler` (honeyc is chaincompiler's concern, §6).
+
+> **Gate name clash (resolved):** the base already has an *ephemeral* top-level `gate(text, exemplars)`
+> (learn-then-lint over `:memory:`). The `*CC` use the *persistent* `gate(connection, chain, *, scope)` —
+> a different signature. So the persistent trio lives in `prompt_engineering.grammar` and the `*CC` import
+> `from prompt_engineering.grammar import learn, gate as _gate, grammar_lines`; `write_skill`/`slugify`
+> come from top-level `prompt_engineering`. Top-level `gate` stays the ephemeral convenience.
+
+`chaincompiler/__init__.py` **re-exports** `learn`/`gate`/`grammar_lines`/`write_skill`/`slugify`/
+`skill_markdown` from `prompt_engineering[.grammar]` so the public API (§8) is byte-stable.
 
 **Milestone P2 done** = the import-linter cycle contract goes GREEN with **zero behavior change** and
 all 182 tests still green. (No `prompt_engine`-substrate adoption yet — that's P3.)
