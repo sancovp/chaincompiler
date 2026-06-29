@@ -15,6 +15,11 @@
   "good once it's done" version.
 - **D3 — One `rulecatcher`.** Un-vendor the skill's `lib/rulecatcher/`; both the base and the `*CC`
   depend on the single `packages/rulecatcher` leaf. One linter, no vendor-drift.
+- **D4 — `skilltree` is the bottom-level foundation.** ALL skill stuff is built with `skilltree` — the
+  skill-packaging layer (`write_skill` / `skill_markdown` / the SKILL.md tree) places skills as
+  **coordinate-addressed** tree nodes (rule 25), not loose dirs. `skilltree` is a foundation leaf
+  *below* the base; the base's skill-packaging **and** `chaincompiler`'s GBA/COG **and** `sccc`'s
+  step-resolver all depend DOWN on it. `write_skill` becomes `skilltree`-aware.
 
 Everything below is derived from the cold audit (cross-package seam map + old↔new divergence +
 core/test/site inventory).
@@ -66,7 +71,8 @@ flowchart TB
     gate["gate / learn / grammar_lines<br/>(ephemeral :memory: AND persistent named scopes)"]
     sp["skillpack: write_skill / slugify / skill_markdown"]
   end
-  subgraph LEAVES["clean leaves (no sibling imports)"]
+  subgraph LEAVES["FOUNDATION leaves (no sibling imports — the bottom)"]
+    st["skilltree — coordinate-addressed skill tree<br/>(ALL skill stuff builds on this, D4)"]
     rc["rulecatcher (grammar learner/linter)"]
     hc["honeyc (Lark/Earley compiler + dietc) — DISTINCT, kept"]
   end
@@ -75,14 +81,16 @@ flowchart TB
     corcc --> accc
     sccc --> corcc
     accc --> hc
-    sccc -.disk resolve.-> ST["skilltree / skillchain"]
+    sccc -.disk resolve.-> st
   end
   subgraph AIOS["chaincompiler — unique top layer (KEEP)"]
     cc["bandit · gba · hba · cog · construct<br/>Select → Construct → Exec"] --> COG
     cc --> BASE
     cc --> hc
+    cc --> st
   end
   gate --> rc
+  sp --> st
 ```
 
 **The one rule:** imports only ever point **down**. `BASE` depends on nothing in the monorepo except
@@ -108,13 +116,16 @@ see §11). The skill mount (`~/.claude/skills/prompt-engineering` symlink) is un
 | `render`, `render_template`, `render_file`, `list_templates` | `prompt-engineering/lib/prompt_engine.py` | already there — the deterministic builder |
 | `gate(text, exemplars=…)` (ephemeral) | `prompt-engineering/lib/gate.py` | already there |
 | `gate(…, scope=…/db=…)`, `learn`, `grammar_lines`, `adopt`, `export_scope`, `import_scope` (**persistent named scopes**) | re-expose `lib/rulecatcher/` DB API that `gate.py` hides behind `:memory:` + port `chaincompiler.bridge.{learn,grammar_lines}` | **PORT** — the `*CC` need persistent, exportable grammar scopes; ephemeral-only is a regression (§5) |
-| `write_skill`, `skill_markdown`, `slugify` | `chaincompiler/packages/chaincompiler/src/chaincompiler/skillpack.py` (stdlib-only) | **MOVE** into the base; `chaincompiler` re-exports the names (§8) |
+| `write_skill`, `skill_markdown`, `slugify` | `chaincompiler/packages/chaincompiler/src/chaincompiler/skillpack.py` (stdlib-only) | **MOVE** into the base **and rebuild on `skilltree`** — coordinate-addressed placement, not loose dirs (D4); `chaincompiler` re-exports the names (§8) |
 | `render_cor`, `render_attention_chain`, `render_skillchain`, `make_persona`, cognition payloads | `prompt-engineering/lib/{cognition,persona}.py` | already there — extended to feature-parity in §5 |
 
-> **rulecatcher single-copy (sub-decision, see §11):** `prompt-engineering` currently *vendors*
-> `lib/rulecatcher/`; the monorepo also has `packages/rulecatcher`. There must be **one**. Recommended:
-> keep `rulecatcher` as its own leaf package; the base depends on it and re-exports; un-vendor the skill's
-> copy. (Flagged for confirmation.)
+**Base dependencies** (the only non-stdlib things below it): `rulecatcher` (D3 — gate) and `skilltree`
+(D4 — skill-packaging). Both are foundation leaves; the base depends DOWN on them. The prompt engine
+itself (`render`/`template_mixins`) stays pure stdlib.
+
+> **rulecatcher single-copy — DONE (D3):** un-vendored `prompt-engineering/lib/rulecatcher/`; the base
+> now depends on the single `packages/rulecatcher` leaf (`from rulecatcher… import …` resolves to the
+> installed package). One linter, no vendor-drift.
 
 ---
 
@@ -232,8 +243,9 @@ flowchart LR
 
 ## 10. Kill criteria / gates (rule 24 — a rule is a suggestion until code checks it)
 
-- **GATE-CYCLE** — an `import-linter` "layers" contract (`base < cognition < aios`, forbidding any
-  up-edge) MUST pass. Binary success criterion for P2. RED until then by design.
+- **GATE-CYCLE** — an `import-linter` "layers" contract (`foundation < base < cognition < aios`, where
+  foundation = `skilltree`/`rulecatcher`/`honeyc`, forbidding any up-edge) MUST pass. Binary success
+  criterion for P2. RED until then by design.
 - **GATE-TESTS** — full suite 182 green; `examples/_all` closure green; `test_cog.py` metaformal
   self-tests observe the correct emitted dirs.
 - **GATE-API** — a smoke test that imports the entire frozen §8 public surface from `chaincompiler`.
