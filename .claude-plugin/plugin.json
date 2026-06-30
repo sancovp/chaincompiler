@@ -1,6 +1,6 @@
 {
   "name": "chaincompiler",
-  "description": "A compiler-compiler for cognition: invent a notation, gate it so the model can't malform it, compile it into a loadable skill, compose and organize them. Bundles the capability skills (bandit-chain-system, glyphsteer, glyphsteer-dense, report-missed-skill) and the Self-Interpreter MCP. Requires the Python packages: ./install.sh, then `pip install fastmcp` for the MCP.",
+  "description": "A compiler-compiler for cognition: invent a notation, gate it so the model can't malform it, compile it into a loadable skill, compose and organize them. Ships the meta-APE capability skills (make-prompt, make-persona, big-generator, persona-generator, forge-attention-chain, forge-cor, forge-skillchain, construct-language) — one per CC/*CC build-function — plus bandit-chain-system, glyphsteer, glyphsteer-dense, report-missed-skill and the Self-Interpreter MCP. Built on agent-prompt-engineering (APE, the prompt engine) over pydantic-stack-core, with the *CC (accc/corcc/sccc) made FROM chaincompiler. Requires the Python packages: ./install.sh, then `pip install fastmcp` for the MCP.",
   "version": "0.1.0",
   "author": {
     "name": "sancovp",
