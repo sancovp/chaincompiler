@@ -20,7 +20,7 @@ from dataclasses import dataclass
 from accc import Language as ACLanguage
 from accc import attention_block, forge as ac_forge
 from accc import gate as ac_gate
-from prompt_engineering import write_skill
+from chaincompiler import write_skill   # made FROM CC (CC re-exports APE's write_skill)
 
 from .notation import PersonaSpec
 from .paragraph import cor_template, must_say_directive

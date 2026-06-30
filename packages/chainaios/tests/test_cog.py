@@ -9,7 +9,7 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-from chaincompiler.cog import make_cog, PATTERNS
+from chainaios.cog import make_cog, PATTERNS
 
 
 def _root():

@@ -24,7 +24,7 @@ from pathlib import Path
 from skilltree import SkillTree, TreeNode, materialize, validate
 
 from .gba import GBA, make_gba
-from .skillpack import skill_markdown, slugify
+from chaincompiler import skill_markdown, slugify   # the CC base
 
 SEATS = ("C", "O", "G")
 

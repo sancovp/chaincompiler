@@ -14,7 +14,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from .gba import GBA, make_gba, _rule_blocks
-from .skillpack import slugify
+from chaincompiler import slugify   # the CC base
 
 
 @dataclass

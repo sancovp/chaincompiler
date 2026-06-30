@@ -18,6 +18,7 @@ def make_env(extra: dict[str, Any] | None = None) -> dict[str, Any]:
     """The dialect's vocabulary — ChainCompiler primitives, injected as names."""
     import accc
     import chaincompiler
+    import chainaios
     import corcc
     import sccc
     import skilltree
@@ -26,8 +27,8 @@ def make_env(extra: dict[str, Any] | None = None) -> dict[str, Any]:
     from .mcp_tree import tree_to_mcp
 
     env: dict[str, Any] = {
-        # construct
-        "construct_language": chaincompiler.construct_language,
+        # construct (the AIOS top-door now lives in chainaios; write_skill stays in the CC base)
+        "construct_language": chainaios.construct_language,
         "write_skill": chaincompiler.write_skill,
         "forge_ac": accc.forge, "package_ac": accc.package, "gate_ac": accc.gate,
         "forge_cor": corcc.forge_persona, "package_cor": corcc.package, "lint_cor": corcc.lint,

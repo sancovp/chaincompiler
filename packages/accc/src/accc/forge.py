@@ -1,53 +1,41 @@
-"""ACCC — the Attention-Chain Compiler-Compiler.
+"""ACCC — the Attention-Chain Compiler-Compiler. Made FROM ChainCompiler (spec §3: ACCC imports CC).
 
-The compiler-compiler move: `forge` mints a *new* AC language for a task/domain
-(it doesn't just compile one chain). Each forged language is a rulecatcher scope
-holding the ratified grammar; `gate` enforces it; `prime` emits the re-injectable
-block. CORCC consumes these: a reasoning step embeds a forged AC.
+The compiler-compiler move: `forge` mints a *new* AC language for a task/domain (it doesn't just compile
+one chain). The generic machinery (forge a rulecatcher scope, gate against it, read the grammar, wrap a
+body as SKILL.md) lives in `chaincompiler.forge`; ACCC specializes it to attention chains (the `ac:` kind
++ the attention-block render). CORCC consumes these: a reasoning step embeds a forged AC.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
-
-from prompt_engineering import write_skill, grammar_lines, learn
-from prompt_engineering.grammar import gate as _gate
-from rulecatcher.db import connect, list_rules
+# made FROM CC — the generic forge core (CC re-exports APE's write_skill/learn/gate underneath):
+from chaincompiler import (
+    Language,
+    forge as _forge,
+    gate_language as _gate,
+    grammar as _grammar,
+    package_skill as _package,
+)
 
 from .render import attention_block, parse_ac
 
 
-@dataclass
-class Language:
-    """A forged attention-chain language."""
-    name: str
-    scope: str
-    db: str
-    rule_count: int
-
-
 def forge(name: str, examples: list[str], *, db: str, strict: bool = False) -> Language:
-    """Mint an AC language for `name` from example chains.
+    """Mint an AC language for `name` from example chains (CC's forge, `ac:` kind).
 
     strict=False  → learn the SHAPE only (next_kind): any focus vocabulary is allowed.
     strict=True   → also pin the focus vocabulary (next_token): the gate enforces
                     domain-specific foci (e.g. a debug AC must open on a Symptom).
     """
-    scope = f"ac:{name}"
-    rule_types = ("next_kind", "next_token") if strict else ("next_kind",)
-    with connect(db) as cx:
-        adopted = learn(cx, examples, scope=scope, rule_types=rule_types, label=f"forge:{name}")
-    return Language(name=name, scope=scope, db=db, rule_count=len(adopted))
+    return _forge("ac", name, examples, db=db, strict=strict)
 
 
 def gate(language: Language, ac: str) -> tuple[list, list]:
     """Lint a candidate attention chain against a forged language."""
-    with connect(language.db) as cx:
-        return _gate(cx, ac, scope=language.scope)
+    return _gate(language, ac)
 
 
 def grammar(language: Language) -> list[str]:
-    with connect(language.db) as cx:
-        return grammar_lines(list_rules(cx, "adopted", scope=language.scope))
+    return _grammar(language)
 
 
 def package(name: str, ac: str, *, out_dir: str, description: str | None = None):
@@ -73,7 +61,7 @@ def package(name: str, ac: str, *, out_dir: str, description: str | None = None)
         "## How to use it",
         attention_block(name, ac),
     ])
-    return write_skill(name, desc, body, out_dir=out_dir, extra={"kind": "attention-chain"})
+    return _package(name, body, out_dir=out_dir, description=desc, extra={"kind": "attention-chain"})
 
 
 def prime(language: Language, exemplar: str) -> str:

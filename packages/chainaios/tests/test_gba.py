@@ -4,8 +4,8 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-import chaincompiler as cc
-from chaincompiler.gba import make_gba, construct_into, search, load_gba
+import chainaios as cc
+from chainaios.gba import make_gba, construct_into, search, load_gba
 
 
 def _root():

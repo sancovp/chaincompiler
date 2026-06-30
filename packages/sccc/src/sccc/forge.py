@@ -13,8 +13,8 @@ import re
 
 import skillchain as sc
 
-from prompt_engineering import slugify, learn
-from prompt_engineering.grammar import gate as cp_gate
+from chaincompiler import slugify, learn   # made FROM CC (CC re-exports APE's slugify/learn)
+from chaincompiler import gate as cp_gate   # the persistent grammar gate, re-exported by CC
 from rulecatcher.db import connect
 
 _STEP_RE = re.compile(r"\[(ac|cor|skill):([^\]]+)\]")

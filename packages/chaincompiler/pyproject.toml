@@ -11,8 +11,9 @@ requires-python = ">=3.11"
 # agent-prompt-engineering is the published prompt-engine BASE chaincompiler imports DOWN onto.
 dependencies = ["honeyc", "rulecatcher", "agent-skilltree", "agent-prompt-engineering"]
 
-[project.scripts]
-chaincompiler = "chaincompiler.cli:main"
+# NOTE: the `chaincompiler` CLI command moved to the `chainaios` package (its AIOS subcommands are
+# *CC-coupled, which would make this BASE import the *CC). The command NAME is unchanged — see
+# packages/chainaios/pyproject.toml [project.scripts].
 
 [tool.setuptools.packages.find]
 where = ["src"]

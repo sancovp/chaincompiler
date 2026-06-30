@@ -27,7 +27,7 @@ import corcc
 import sccc
 from corcc.notation import BANDIT, Move, PersonaSpec
 
-from .skillpack import slugify, write_skill
+from chaincompiler import slugify, write_skill   # the CC base (chainaios is ABOVE CC + the *CC)
 
 
 # ── the domain-specialized bandit (the selector, given a domain flavor) ──────

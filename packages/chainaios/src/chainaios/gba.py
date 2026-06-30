@@ -25,7 +25,7 @@ from pathlib import Path
 from skilltree import SkillTree, TreeNode, materialize, validate, build_index, search as _tree_search
 
 from .bandit import roll_up_algebra, domain_bandit
-from .skillpack import skill_markdown, slugify
+from chaincompiler import skill_markdown, slugify   # the CC base
 
 # the repo skill that teaches the loop (installed into every GBA so it's loadable)
 _BCS_SKILL = Path(__file__).resolve().parents[4] / ".claude" / "skills" / "bandit-chain-system" / "SKILL.md"

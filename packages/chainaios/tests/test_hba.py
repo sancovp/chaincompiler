@@ -5,8 +5,8 @@ import re
 import tempfile
 from pathlib import Path
 
-from chaincompiler.hba import make_hba
-from chaincompiler.gba import construct_into, search
+from chainaios.hba import make_hba
+from chainaios.gba import construct_into, search
 
 
 def _root():

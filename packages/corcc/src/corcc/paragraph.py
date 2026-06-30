@@ -1,11 +1,11 @@
 """Render a CoR persona into the paragraph the model must say.
 
-§5 convergence: the fill-in skeleton format lives in the base (`prompt_engineering.cognition.cor_skeleton`);
-this module renders CORCC's PersonaSpec THROUGH that single source instead of re-implementing it.
+§5 convergence: the fill-in skeleton format lives in the base (`cor_skeleton`); this module renders CORCC's
+PersonaSpec THROUGH that single source (routed via CC, which re-exports it) instead of re-implementing it.
 """
 from __future__ import annotations
 
-from prompt_engineering.cognition import cor_skeleton
+from chaincompiler import cor_skeleton   # made FROM CC (CC re-exports APE's cor_skeleton)
 
 from .notation import PersonaSpec
 

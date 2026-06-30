@@ -72,7 +72,7 @@ def persona(prompt_file: Path, out_dir: Path) -> None:
     Parses the three layers — [VarDefs] legend, ⚙️ workflow, [ROLE] wrapper — into the
     artifacts the rest of ChainCompiler eats. Gates a legend chain via rulecatcher.
     """
-    from .persona import compile_persona
+    from chaincompiler.persona import compile_persona
     res = compile_persona(prompt_file.read_text(encoding="utf-8"), out_dir)
     click.echo(f"══ compiled persona '{res['name']}' ══")
     click.echo(f"  legend : {res['axes']} glyph axes → {res['legend']}")

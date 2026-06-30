@@ -4,8 +4,8 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-import chaincompiler as cc
-from chaincompiler.bandit import COMPONENTS, domain_bandit
+import chainaios as cc
+from chainaios.bandit import COMPONENTS, domain_bandit
 
 
 def _work():
