@@ -8,8 +8,8 @@
     {
       "name": "chaincompiler",
       "source": "./",
-      "description": "A compiler-compiler for cognition — capability skills + the Self-Interpreter MCP.",
-      "version": "0.1.0"
+      "description": "A compiler-compiler for cognition — meta-APE capability skills (make-prompt/make-persona/big-generator/persona-generator/forge-attention-chain/forge-cor/forge-skillchain/construct-language) + bandit-chain-system, glyphsteer + the Self-Interpreter MCP.",
+      "version": "0.2.0"
     }
   ]
 }
