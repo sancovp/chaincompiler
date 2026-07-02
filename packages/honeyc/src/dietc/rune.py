@@ -61,7 +61,7 @@ def render_rune_block(state: DayState) -> str:
         "[DietCompiler]:{\n"
         f"  [Input]:{{{inputs}}},\n"
         "  [Estimate]:Input ⇢ NutrientVector,\n"
-        f"  [Compare]:DayState ⇔ GoalProfile ⇒ Gap,\n"
+        f"  [Compare]:DayState ⇔ GoalProfile ⇒ Gap:{{{gap}}},\n"
         f"  [PatchSelect]:Gap ⇒ {{{patches}}},\n"
         "  [Output] ⇒ |ImprovedPattern|\n"
         "}"

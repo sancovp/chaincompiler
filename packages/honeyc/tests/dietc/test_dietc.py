@@ -123,3 +123,11 @@ def test_rune_through_honeyc_is_valid():
     out = render_via_honeyc(state)
     assert out is not None
     assert "DietCompiler" in out
+
+
+def test_rune_block_carries_the_gap_terms():
+    # the [Compare] line must interpolate the computed gap set, not a bare `Gap` symbol
+    state = compile_day(EX / "potato_day.yaml", _profile(), _modules())
+    from dietc.rune import render_rune_block
+    block = render_rune_block(state)
+    assert "Gap:{" in block

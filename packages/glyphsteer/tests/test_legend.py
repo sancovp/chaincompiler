@@ -48,3 +48,11 @@ def test_save_and_load(tmp_path: Path):
     loaded = load_legend(p)
     assert loaded.tag_for("📌") == "gsxclaim"
     assert loaded.by_name("claim").description == "assertion"
+
+
+def test_merge_last_author_wins_on_tag_collision():
+    # distinct names/glyphs can derive the SAME tag ("risk" / "Risk!" -> gsxrisk);
+    # merge must evict the prior axis, not crash validation
+    m = merge(author([{"name": "risk", "glyph": "☢️"}]),
+              author([{"name": "Risk!", "glyph": "💀"}]))
+    assert [a.name for a in m.axes] == ["Risk!"]

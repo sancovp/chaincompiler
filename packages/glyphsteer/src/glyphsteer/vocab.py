@@ -95,6 +95,16 @@ class Vocabulary:
             if a.tag in tags:
                 raise ValueError(f"duplicate tag {a.tag!r} (axis {a.name!r})")
             tags.add(a.tag)
+        # no glyph may be a substring of another: parse/strip/glyphs_in match by
+        # substring, so an overlapping pair (e.g. 👍 and 👍🏽) would phantom-parse the
+        # shorter one and mutilate text on strip — breaking the hide invariant
+        for a in self.axes:
+            for b in self.axes:
+                if a.glyph != b.glyph and a.glyph in b.glyph:
+                    raise ValueError(
+                        f"glyph {a.glyph!r} (axis {a.name!r}) is a substring of glyph "
+                        f"{b.glyph!r} (axis {b.name!r}); overlapping markers cannot be "
+                        "parsed or stripped unambiguously")
 
     # ---- code (de)serialization ---------------------------------------------
     def code(self, glyphs: list[str]) -> str:
@@ -117,11 +127,13 @@ class Vocabulary:
         """Remove every vocabulary glyph (and the separator) from `text`."""
         for g in self.glyphs:
             text = text.replace(g, "")
-        return text.replace(SEP.strip(), "").replace("⁣", "")
+        # remove the full SEP (space + U+2063) first, then any stray U+2063
+        return text.replace(SEP, "").replace(SEP.strip(), "").replace("⁣", "")
 
     def to_honeyc(self, code: str) -> str:
         """Render a code as a HoneyC chain (`a→b→c`) — the compiler bridge."""
-        return "→".join(self.parse(code))
+        # a chain is order-significant, and code() is order-preserving — keep code order
+        return "→".join(sorted(self.parse(code), key=code.find))
 
 
 def is_lexically_clean(glyph: str) -> bool:

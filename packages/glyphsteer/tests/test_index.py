@@ -42,3 +42,8 @@ def test_baseline_query_without_facet_returns_all():
     con = build_index(_corpus())
     ids = {h["id"] for h in search(con, "pipeline")}
     assert ids == {"ok1", "ok2", "bug1"}              # facet is what narrows it
+
+
+def test_punctuation_query_with_quote_is_safe():
+    con = build_index(_corpus(), SENTIMENT)
+    assert search(con, '"') == []                    # crashed pre-fix (unescaped FTS5 string)

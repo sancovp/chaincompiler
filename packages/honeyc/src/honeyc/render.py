@@ -63,7 +63,9 @@ def _strip_brackets(text: str) -> str:
 
 def _connector(kind: str, value: str) -> str:
     if kind == "rel":
-        return f"<{value}"
+        # `<value` is not valid chain syntax; `<value-` is (REL_REV), and fwd/rev
+        # normalize to the same triples, so the readable form stays re-parseable
+        return f"<{value}-"
     if kind == "rel:bi":
         return f"<{value}>"
     return _CONNECTOR_GLYPH.get(kind, value)
