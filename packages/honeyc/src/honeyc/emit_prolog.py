@@ -8,8 +8,11 @@ from .symbols import to_atom
 _UNARY = {"entity": "entity", "glyph": "glyph", "symbol": "symbol", "transform": "transform"}
 
 _BASE_RULES = """
-linked(A, B) :- equiv(A, B).
-linked(A, B) :- equiv(A, X), X \\= B, linked(X, B).
+% transitive closure over the symmetric equiv/2 facts, with a visited list so the
+% symmetry (equiv is emitted both ways) cannot loop the recursion forever.
+linked(A, B) :- linked_(A, B, [A]).
+linked_(A, B, _) :- equiv(A, B).
+linked_(A, B, V) :- equiv(A, X), \\+ memberchk(X, V), linked_(X, B, [X | V]).
 
 bounded_bridge(X, A, B) :-
     bounded(X),
@@ -31,7 +34,7 @@ def emit_prolog(statements: list[Statement]) -> str:
             facts.append(f"type({subj}, {to_atom(s.object)}).")
         elif s.predicate == "placeholder":
             facts.append(f"placeholder({subj}, {to_atom(s.object)}).")
-        elif s.predicate == "mediates":
+        elif s.predicate == "mediates" and "target" in s.meta:
             facts.append(f"mediates({subj}, {to_atom(s.object)}, {to_atom(s.meta['target'])}).")
         elif s.predicate == "assign":
             facts.append(f"assign({subj}, {to_atom(s.object)}).")

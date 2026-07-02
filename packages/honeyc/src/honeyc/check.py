@@ -4,7 +4,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from .ast_nodes import Bounded, Chain, Entity, Glyph, Program, Scope, TypeAnn
+from .ast_nodes import Assignment, Bounded, Chain, Entity, Glyph, Program, Scope, Transform, TypeAnn
 from .render import _term
 
 
@@ -45,6 +45,11 @@ def check_program(program: Program) -> list[CheckIssue]:
             visit(node.term)
         elif isinstance(node, Bounded):
             visit(node.term)
+        elif isinstance(node, Assignment):
+            visit(node.left)
+            visit(node.right)
+        elif isinstance(node, Transform):
+            visit(node.chain)
         elif isinstance(node, Entity):
             seen_entities.add(node.id)
 

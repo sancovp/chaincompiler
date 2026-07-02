@@ -40,6 +40,7 @@ class Placeholder:
 class Connector:
     kind: str          # equiv | produces | compiles | maps | arrow | trans | runtime | rel
     value: str         # the surface glyph or relation name
+    reverse: bool = False   # kind="rel" only: surface was `<name-` (True) vs `-name->` (False)
 
 
 @dataclass

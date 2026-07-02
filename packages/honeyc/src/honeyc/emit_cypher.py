@@ -45,7 +45,7 @@ def emit_cypher(statements: list[Statement]) -> str:
         if s.predicate == "has_type":
             see(s.object)
             label[s.object] = "Type"
-        elif s.predicate == "mediates":
+        elif s.predicate == "mediates" and "target" in s.meta:
             see(s.object)
             see(s.meta["target"])
         else:
@@ -70,7 +70,7 @@ def emit_cypher(statements: list[Statement]) -> str:
                 lines.append(f'SET {sv}.name = "{_esc(s.meta["name"])}"')
         elif s.predicate == "has_type":
             lines.append(f"MERGE ({sv})-[:HAS_TYPE]->({var_of[s.object]})")
-        elif s.predicate == "mediates":
+        elif s.predicate == "mediates" and "target" in s.meta:
             ov, tv = var_of[s.object], var_of[s.meta["target"]]
             lines.append(f'MERGE ({sv})-[:MEDIATES {{target:"{_esc(s.meta["target"])}"}}]->({ov})')
             lines.append(f"MERGE ({sv})-[:MEDIATES_TARGET]->({tv})")

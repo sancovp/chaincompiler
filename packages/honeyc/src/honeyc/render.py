@@ -61,9 +61,9 @@ def _strip_brackets(text: str) -> str:
     return text[1:-1] if text.startswith("[") and text.endswith("]") else text
 
 
-def _connector(kind: str, value: str) -> str:
+def _connector(kind: str, value: str, reverse: bool = False) -> str:
     if kind == "rel":
-        return f"<{value}"
+        return f"<{value}-" if reverse else f"-{value}->"
     if kind == "rel:bi":
         return f"<{value}>"
     return _CONNECTOR_GLYPH.get(kind, value)
@@ -74,7 +74,7 @@ def _readable_node(node: object) -> str:
         out = [_term(node.terms[0])] if node.terms else []
         for i, c in enumerate(node.connectors):
             if i + 1 < len(node.terms):
-                out.append(_connector(c.kind, c.value))
+                out.append(_connector(c.kind, c.value, getattr(c, "reverse", False)))
                 out.append(_term(node.terms[i + 1]))
         return " ".join(out)
     if isinstance(node, Assignment):
@@ -91,7 +91,7 @@ def render_triples(statements: list[Statement]) -> str:
     for s in statements:
         if s.predicate in _TRIPLE_SKIP:
             continue
-        if s.predicate == "mediates":
+        if s.predicate == "mediates" and "target" in s.meta:
             lines.append(f"{s.subject} mediates {s.object} target={s.meta['target']}")
         else:
             lines.append(f"{s.subject} {s.predicate} {s.object}")
@@ -110,7 +110,7 @@ def render_prose(statements: list[Statement]) -> str:
             is_a[s.subject] = s.object
         elif s.predicate == "bounded":
             bounded.add(s.subject)
-        elif s.predicate == "mediates":
+        elif s.predicate == "mediates" and "target" in s.meta:
             mediations.append((s.subject, s.object, s.meta["target"]))
 
     sentences: list[str] = []
