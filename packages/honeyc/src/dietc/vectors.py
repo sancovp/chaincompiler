@@ -1,7 +1,7 @@
 """Nutrient / matrix / safety vectors and their arithmetic."""
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, fields
 from typing import Any
 
 NUTRIENT_FIELDS = [
@@ -114,13 +114,15 @@ class SafetyVector:
     @classmethod
     def from_dict(cls, data: dict[str, Any] | None) -> "SafetyVector":
         data = data or {}
-        numeric = {k: float(v) for k, v in data.items()
-                   if k not in ("allergen_flags", "interaction_flags", "notes")}
+        list_fields = ("allergen_flags", "interaction_flags", "notes")
+        known = {f.name for f in fields(cls)} - set(list_fields)
+        numeric = {k: float(v) for k, v in data.items() if k in known}
+        unknown = sorted(set(data) - known - set(list_fields))
         return cls(
             **numeric,
             allergen_flags=list(data.get("allergen_flags", [])),
             interaction_flags=list(data.get("interaction_flags", [])),
-            notes=list(data.get("notes", [])),
+            notes=list(data.get("notes", [])) + [f"unknown safety field: {k}" for k in unknown],
         )
 
 
