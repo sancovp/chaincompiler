@@ -97,8 +97,17 @@ class GlyphGrammar:
         return GlyphLint("ok", violations)
 
     def lint(self, code: str) -> GlyphLint:
-        """Gate a glyph code: foreign-token (`syntax_break`) via rulecatcher, then
-        canonical-order (`orthogonal`) via vocab order."""
+        """Gate a glyph code: foreign-token (`syntax_break`), then canonical-order
+        (`orthogonal`) via vocab order.
+
+        Foreign content is detected HERE (not only in rulecatcher): `code_tags`
+        drops unknown glyphs before the chain is built, so any non-vocabulary,
+        non-whitespace residue in the code must fail the gate directly (rulecatcher's
+        tokenizer also drops emoji, so it could never see a foreign glyph)."""
+        residue = self.vocab.strip(code).strip()
+        if residue:
+            return GlyphLint("syntax_break",
+                             [f"foreign content {residue!r} is not in the vocabulary"])
         chain = " -> ".join(self.vocab.code_tags(code))
         base = self.lint_chain(chain)
         if base.verdict == "syntax_break":
