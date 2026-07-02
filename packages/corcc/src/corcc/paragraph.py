@@ -12,7 +12,7 @@ from .notation import PersonaSpec
 
 def must_say_directive(spec: PersonaSpec) -> str:
     moves = ", ".join(m.name for m in spec.moves[:-1])
-    return (f"State your reasoning as ONE paragraph that, in order, {len(spec.moves)} moves: "
+    return (f"State your reasoning as ONE paragraph that performs, in order, {len(spec.moves)} moves: "
             f"{moves}, and finally converges on {spec.held.name}.")
 
 
