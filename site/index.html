@@ -12,6 +12,7 @@
   <nav class="topnav">
     <a class="brand" href="index.html">⛓️ ChainCompiler</a>
     <div class="topnav-links">
+      <a href="#workbench">Workbench</a>
       <a href="#glyphsteer">GlyphSteer</a>
       <a href="#roadmap-sec">Roadmap</a>
       <a href="blog.html">🌼 Hive Log</a>
@@ -68,6 +69,152 @@
 <span class="cmt"># mints a whole 'triage' cognition-language —</span>
 <span class="cmt"># attention chain + chain-of-reasoning + skill</span>
 <span class="cmt"># chain — in one call, as loadable skills.</span></code></pre>
+      </div>
+    </section>
+
+    <!-- ── OPERATOR WORKBENCH ───────────────────────────────────── -->
+    <section class="operator-band" id="workbench" aria-labelledby="workbench-title">
+      <div class="operator-shell">
+        <div class="operator-head">
+          <p class="kicker">Operator workbench</p>
+          <h2 id="workbench-title">Compile the psyche. Mint the AIOS. Walk the flow.</h2>
+          <p>
+            A front door for the pieces that are already real in the repo: the Archetype Compiler,
+            ChainAIOS, and the DietC recursion path.
+          </p>
+        </div>
+
+        <div class="operator-grid">
+          <section class="operator-panel controls-panel" aria-labelledby="archetype-title">
+            <div class="panel-topline">
+              <span class="panel-kind">archetype</span>
+              <span class="panel-chip">state machine</span>
+            </div>
+            <h3 id="archetype-title">Archetype Compiler</h3>
+            <div class="workbench-fields">
+              <label class="field">
+                <span>Name</span>
+                <select id="arcName">
+                  <option>Hero</option>
+                  <option>Guardian</option>
+                  <option>King</option>
+                  <option>Steward</option>
+                  <option>Sage</option>
+                  <option>Witness</option>
+                  <option>Self</option>
+                  <option>Trickster</option>
+                  <option>Magician</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Substrate</span>
+                <input id="arcSubstrate" value="agent operating system"/>
+              </label>
+              <label class="field">
+                <span>Odyssey depth <output id="arcDepthOut">4</output></span>
+                <input id="arcDepth" type="range" min="1" max="8" value="4"/>
+              </label>
+            </div>
+            <div class="segmented" role="group" aria-label="Archetype emit format">
+              <button class="seg active" type="button" data-arc-emit="readable">readable</button>
+              <button class="seg" type="button" data-arc-emit="json">json</button>
+              <button class="seg" type="button" data-arc-emit="cypher">cypher</button>
+              <button class="seg" type="button" data-arc-emit="prolog">prolog</button>
+              <button class="seg" type="button" data-arc-emit="all">all</button>
+            </div>
+            <div class="command-box">
+              <code id="arcCommand"></code>
+              <button class="copy-btn" type="button" data-copy="#arcCommand" aria-label="Copy archetype command">⧉</button>
+            </div>
+          </section>
+
+          <section class="operator-panel preview-panel" aria-labelledby="circuit-title">
+            <div class="panel-topline">
+              <span class="panel-kind">preview</span>
+              <span class="panel-chip">C1-C6</span>
+            </div>
+            <h3 id="circuit-title">Compiled circuit</h3>
+            <div class="circuit-lane" aria-live="polite">
+              <div class="circuit-node">
+                <span>Persona</span>
+                <strong id="arcPersona"></strong>
+              </div>
+              <div class="circuit-op">→</div>
+              <div class="circuit-node shadow">
+                <span>Shadow</span>
+                <strong id="arcShadow"></strong>
+              </div>
+              <div class="circuit-op">→</div>
+              <div class="circuit-node self">
+                <span>Self</span>
+                <strong id="arcSelf"></strong>
+              </div>
+              <div class="circuit-op">⇒</div>
+              <div class="circuit-node">
+                <span>Becoming</span>
+                <strong id="arcBecoming"></strong>
+              </div>
+            </div>
+            <div class="odyssey-meter">
+              <div>
+                <span class="meter-label">Odyssey</span>
+                <strong id="odysseyLabel">4 encounters</strong>
+              </div>
+              <div class="meter-track"><span id="odysseyBar"></span></div>
+            </div>
+          </section>
+        </div>
+
+        <section class="operator-panel aios-panel" aria-labelledby="aios-title">
+          <div class="aios-left">
+            <div class="panel-topline">
+              <span class="panel-kind">chainaios</span>
+              <span class="panel-chip">directory-native</span>
+            </div>
+            <h3 id="aios-title">AIOS builder</h3>
+            <div class="aios-modes segmented" role="group" aria-label="AIOS topology">
+              <button class="seg active" type="button" data-aios-mode="gba">GBA</button>
+              <button class="seg" type="button" data-aios-mode="hba">HBA</button>
+              <button class="seg" type="button" data-aios-mode="cog">COG</button>
+              <button class="seg" type="button" data-aios-mode="nutrition">DietC</button>
+            </div>
+            <div class="workbench-fields two">
+              <label class="field">
+                <span>Domain</span>
+                <input id="aiosDomain" value="archetype"/>
+              </label>
+              <label class="field">
+                <span>Attention atom</span>
+                <input id="aiosAtom" value="[Persona] ⇒ [Shadow] ⇒ |Self|"/>
+              </label>
+            </div>
+          </div>
+          <div class="aios-right">
+            <p id="aiosSummary" class="aios-summary"></p>
+            <div class="command-box tall">
+              <code id="aiosCommand"></code>
+              <button class="copy-btn" type="button" data-copy="#aiosCommand" aria-label="Copy AIOS command">⧉</button>
+            </div>
+          </div>
+        </section>
+
+        <div class="compiler-rail" aria-label="Compiler stack">
+          <div class="rail-step">
+            <span>01</span>
+            <strong>archetype</strong>
+            <p>compile Persona, Shadow, Self, Odyssey, Becoming</p>
+          </div>
+          <div class="rail-step">
+            <span>02</span>
+            <strong>chainaios</strong>
+            <p>emit GBA, HBA, or COG directories an agent becomes</p>
+          </div>
+          <div class="rail-step">
+            <span>03</span>
+            <strong>dietc</strong>
+            <p>prove the split: Python tools compute, skills orchestrate</p>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -244,6 +391,7 @@ skilltree validate mytree
     </p>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
+  <script src="workbench.js?v=1"></script>
 </body>
 </html>
