@@ -132,7 +132,7 @@ def _write_persona_aios(domain: str, persona: PersonaSpec, ac: list[Path], cor: 
         "These three skill dirs are your minted, closed AC→CoR→SC algebra:",
         "",
         *[f"- **AC** (how to think): `{p.parent.name}`" for p in ac],
-        f"- **CoR** (the bandit, spoken): `{cor.parent.name}`",
+        f"- **CoR** ({'the bandit, spoken' if selector else 'spoken — the melt-gauge'}): `{cor.parent.name}`",
         f"- **SC** (the rollup): `{sc.parent.name}`",
         "",
         legend_line,

@@ -87,6 +87,7 @@ def test_roll_up_algebra_custom_persona_and_named_atoms():
     assert "WoomEngineer" in text
     assert "Experience → Seam → Proof" in text     # role + loop render from ITS moves
     assert "ChainSelector" not in text             # no bandit wording leaks in
+    assert "the bandit, spoken" not in text        # CoR label renders as the melt-gauge
     assert "Build your own KB" in text             # AIOS self-improvement kept
     assert "Improve yourself via GlyphSteer" in text
     # persona dir named from the persona, not "-bandit-"
