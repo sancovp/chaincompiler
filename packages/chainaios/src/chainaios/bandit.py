@@ -96,11 +96,16 @@ class BanditChainSystem:
 
 
 def _write_persona_aios(domain: str, persona: PersonaSpec, ac: list[Path], cor: Path,
-                        sc: Path, root: Path) -> Path:
+                        sc: Path, root: Path, *, selector: bool = True) -> Path:
     """Write the domain-specific persona as an AIOS dir: CLAUDE.md (the persona) +
     legend.json (the glyph vocab) + kb/ (its own knowledge base) + a skills/ pointer.
-    A persona IS a CLAUDE.md inside a dir — not a single SKILL.md."""
-    pdir = root / slugify(f"{domain}-bandit-persona")
+    A persona IS a CLAUDE.md inside a dir — not a single SKILL.md.
+
+    `selector=True` = the default bandit (the ChainSelector); False = a custom
+    PersonaSpec CoR — same AIOS shape (KB + glyphsteer self-improvement), but the
+    role text and loop render from the persona's own moves."""
+    pdir = root / slugify(f"{domain}-bandit-persona" if selector
+                          else f"{domain}-{persona.name}-persona")
     pdir.mkdir(parents=True, exist_ok=True)
     (pdir / "kb").mkdir(exist_ok=True)
 
@@ -114,10 +119,12 @@ def _write_persona_aios(domain: str, persona: PersonaSpec, ac: list[Path], cor: 
         legend_line = "Legend: install `glyphsteer` to enable the grade vocabulary."
 
     moves = " → ".join(m.name for m in persona.moves)
+    who = "the ChainSelector" if selector else "a chain-of-reasoning persona"
+    kind = "a bandit chain system" if selector else "a rolled-up chain system"
     claude_md = "\n".join([
-        f"# {persona.name} — a bandit chain system for `{domain}`",
+        f"# {persona.name} — {kind} for `{domain}`",
         "",
-        f"You are the **{persona.name}**: the ChainSelector ({moves}), specialized to the "
+        f"You are the **{persona.name}**: {who} ({moves}), specialized to the "
         f"`{domain}` domain. {persona.blurb}.",
         "",
         "## Your closed algebra (the chains you were rolled up from)",
@@ -136,8 +143,12 @@ def _write_persona_aios(domain: str, persona: PersonaSpec, ac: list[Path], cor: 
         "",
         "## The loop",
         "",
-        "`Task → Recall (search your KB, 🏆-faceted) → Decide (select golden vs construct new) "
-        "→ Execute → Reward (grade it, write the KB note)` — then improve yourself by reading the KB back.",
+        ("`Task → Recall (search your KB, 🏆-faceted) → Decide (select golden vs construct new) "
+         "→ Execute → Reward (grade it, write the KB note)` — then improve yourself by reading the KB back."
+         if selector else
+         f"`{moves}` — perform the moves in order on every task (the last move is your held "
+         "convergence; skipping or scrambling them = the persona is melting). Grade each run in "
+         "the KB, then improve yourself by reading the KB back."),
     ])
     (pdir / "CLAUDE.md").write_text(claude_md)
     (pdir / "kb" / "README.md").write_text(
@@ -146,27 +157,41 @@ def _write_persona_aios(domain: str, persona: PersonaSpec, ac: list[Path], cor: 
     return pdir
 
 
-def roll_up_algebra(domain: str, atoms: list[str], *, db: str, skills_dir: str,
+def roll_up_algebra(domain: str, atoms: list[str] | dict[str, str | tuple[str, str]],
+                    *, db: str, skills_dir: str,
                     out_dir: str, blurb: str = "", persona_root: str | None = None,
-                    sequence: str | None = None) -> BanditChainSystem:
-    """Mint a domain's AC(s) + CoR(bandit) + SC, build its persona AIOS, and CLOSE it.
+                    sequence: str | None = None,
+                    persona: PersonaSpec | None = None) -> BanditChainSystem:
+    """Mint a domain's AC(s) + CoR + SC, build its persona AIOS, and CLOSE it.
 
-    `atoms` = one or more attention-chain strings (the inner templates). The CoR is
-    the domain-specialized BANDIT (not a flavor — the selector itself). Closure =
-    every minted artifact is the one type AND the organizing SkillTree validates.
+    `atoms` = the attention-chain strings (the inner templates): a list (auto-named
+    `{domain}-attention[-N]`) or a dict `name -> atom` / `name -> (atom, description)`
+    to control the minted AC package names. The CoR defaults to the domain-specialized
+    BANDIT (not a flavor — the selector itself); pass `persona=` a custom `PersonaSpec`
+    to seat a domain CoR instead (e.g. an SDNA v2 profile's melt-gauge chain) — same
+    AIOS + KB + glyphsteer self-improvement, role text rendered from its moves.
+    Closure = every minted artifact is the one type AND the organizing SkillTree
+    validates.
     """
     from skilltree import SkillTree, TreeNode, materialize, validate
 
     skills_dir = str(skills_dir)
     # 1. AC(s) — accc forges + packages each atom into a skill dir
+    if isinstance(atoms, dict):
+        normalized = [(name, *(val if isinstance(val, tuple) else (val, None)))
+                      for name, val in atoms.items()]
+    else:
+        normalized = [((f"{domain}-attention" if len(atoms) == 1
+                        else f"{domain}-attention-{i+1}"), atom, None)
+                      for i, atom in enumerate(atoms)]
     ac_paths: list[Path] = []
-    for i, atom in enumerate(atoms):
-        name = f"{domain}-attention" if len(atoms) == 1 else f"{domain}-attention-{i+1}"
+    for name, atom, desc in normalized:
         accc.forge(name, [atom], db=db)
-        ac_paths.append(Path(accc.package(name, atom, out_dir=skills_dir)))
+        ac_paths.append(Path(accc.package(name, atom, out_dir=skills_dir, description=desc)))
 
-    # 2. CoR — the domain-specialized bandit, forged + packaged
-    persona = domain_bandit(domain, blurb)
+    # 2. CoR — the domain-specialized bandit by default, or the supplied persona
+    selector = persona is None
+    persona = persona or domain_bandit(domain, blurb)
     forged = corcc.forge_persona(persona, db=db)
     cor = Path(corcc.package(forged, out_dir=skills_dir))
 
@@ -179,7 +204,7 @@ def roll_up_algebra(domain: str, atoms: list[str], *, db: str, skills_dir: str,
 
     # 4. the domain-specific persona AIOS (CLAUDE.md + legend + KB + glyphsteer self-improve)
     persona_dir = _write_persona_aios(
-        domain, persona, ac_paths, cor, sc, Path(persona_root or out_dir))
+        domain, persona, ac_paths, cor, sc, Path(persona_root or out_dir), selector=selector)
 
     # 5. CLOSE — organize into a SkillTree and validate (the algebra closes ⇔ no violations)
     tree = SkillTree(TreeNode(slugify(domain), "sc", description=f"{domain}: {persona.blurb}",

@@ -55,6 +55,44 @@ def test_persona_aios_has_kb_and_glyphsteer_instructions():
     assert (s.persona_dir / "legend.json").exists()         # the glyph vocabulary
 
 
+def test_roll_up_algebra_custom_persona_and_named_atoms():
+    """persona= seats a custom PersonaSpec CoR (e.g. an SDNA v2 melt-gauge chain);
+    dict atoms control the minted AC package names (+ optional descriptions)."""
+    from corcc.notation import Move, PersonaSpec
+
+    w = _work()
+    spec = PersonaSpec(
+        name="WoomEngineer",
+        blurb="experience, seam, floor, generator, law, proof",
+        moves=(
+            Move("Experience", ("the felt experience",)),
+            Move("Seam", ("which seam",)),
+            Move("Proof", ("observed directly",)),
+        ),
+    )
+    s = cc.roll_up_algebra(
+        "woom",
+        {"woom-design-attention": ("[Experience] ⇒ [Seam] ⇒ |Floor|", "Design attention."),
+         "woom-verify-attention": "[Claim] ⇒ [Evidence] ⇒ |Label|"},
+        db=str(w / "cc.db"), skills_dir=str(w / "skills"), out_dir=str(w / "dist"),
+        persona_root=str(w / "personas"), persona=spec,
+    )
+    assert s.closed is True
+    # named atoms → named AC packages (not {domain}-attention-N)
+    assert {p.parent.name for p in s.ac} == {"woom-design-attention", "woom-verify-attention"}
+    # the CoR seat is the custom persona, not the bandit
+    assert s.cor.parent.name == "woomengineer"
+    assert "bandit" not in s.cor.parent.name.lower()
+    text = (s.persona_dir / "CLAUDE.md").read_text()
+    assert "WoomEngineer" in text
+    assert "Experience → Seam → Proof" in text     # role + loop render from ITS moves
+    assert "ChainSelector" not in text             # no bandit wording leaks in
+    assert "Build your own KB" in text             # AIOS self-improvement kept
+    assert "Improve yourself via GlyphSteer" in text
+    # persona dir named from the persona, not "-bandit-"
+    assert "bandit" not in s.persona_dir.name
+
+
 def test_hierarchicalize_over_own_components_closes():
     w = _work()
     view = cc.hierarchicalize(workdir=str(w / "self"))
