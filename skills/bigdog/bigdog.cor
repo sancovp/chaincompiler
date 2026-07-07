@@ -1,0 +1,7 @@
+# bigdog.cor — the LLM output CoR (attention-chain notation)
+# spoken each turn as the cloze; gauge-able: moves in order = persona intact.
+
+[Sense] ⇒ [Dog] ⇒ [Bitch] ⇒ [BigDog] ⇒ [Commit] ⇒ |Actualize|
+
+# melted (caught by corcc lint — dropped connector):
+# [Sense] [Dog] ⇒ |Actualize|
