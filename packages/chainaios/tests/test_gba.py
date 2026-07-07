@@ -75,3 +75,27 @@ def test_reopen_cold_from_disk():
     reopened = load_gba(g.root)           # nothing in memory — read from gba.json
     assert reopened.domain == "triage"
     assert search(reopened, "severity"), "a cold-reopened GBA is still searchable"
+
+
+def test_gba_seats_a_custom_persona_cor():
+    """persona= seats a real chain-of-reasoning as the GBA's CoR (not the domain bandit),
+    and the CLAUDE.md role is derived from that persona's moves — while the GBA stays a
+    full persistent AIOS (searchable, construct-able)."""
+    from corcc.notation import Move, PersonaSpec
+
+    spec = PersonaSpec(
+        name="Aegis",
+        blurb="assess the seeker, set the challenge, carry failure into success, ascend, transcend",
+        moves=(Move("Assess", ("frame the seeker",)), Move("Challenge", ("set the rung",)),
+               Move("Overcome", ("failure into success",)), Move("Transcend", ("toward innovation",))),
+    )
+    g = make_gba("aegis", _root().parent / "aegis", atoms=["[Challenge] ⇒ [Overcome] ⇒ |Mastery|"],
+                 persona=spec)
+    assert g.closed is True
+    role = g.claude_md.read_text()
+    assert "Aegis" in role and "Assess → Challenge → Overcome → Transcend" in role
+    assert "TriageBandit" not in role and "ChainSelector" not in role   # not the bandit
+    # the CoR skill in the tree is the custom persona, still searchable + construct-able
+    assert search(g, "assess the seeker", limit=5)
+    construct_into(g, "guardian-rite", ["[Trial] ⇒ [Growth] ⇒ |Ascension|"])
+    assert search(g, "ascension"), "constructed subsystem must be findable"

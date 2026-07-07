@@ -184,9 +184,28 @@ def _apply_tree(gba: GBA, tree_dict: dict) -> tuple[int, int]:
     return len(viol), n
 
 
-def _node_dict(domain: str, sysd, *, root: bool) -> dict:
-    """Build a tree manifest node from a rolled-up BanditChainSystem (skill_src = gated bodies)."""
-    persona = domain_bandit(domain)
+def _persona_role_block(domain: str, persona) -> str:
+    """A role block derived from a CUSTOM CoR persona (not the bandit): who you ARE in this
+    domain, with the melt-gauge loop (the ordered moves; the last is the held convergence)."""
+    moves = " → ".join(m.name for m in persona.moves)
+    return "\n".join([
+        f"# {persona.name}",
+        "",
+        f"You are the **{persona.name}**, the base agent of this directory: the compiled "
+        f"chain-of-reasoning for `{domain}`. {persona.blurb}.",
+        "",
+        f"Your reasoning is the melt-gauge **{moves}** — perform the moves in order on every "
+        "task (the last move is your held convergence; skipping or scrambling them = the persona "
+        "is melting). Your loop, your law, and your KB protocol are in your appended rules "
+        "(`.claude/rules/`); your chains and the `bandit-chain-system` how-to are your skills "
+        "(`.claude/skills/`).",
+    ])
+
+
+def _node_dict(domain: str, sysd, *, root: bool, persona=None) -> dict:
+    """Build a tree manifest node from a rolled-up BanditChainSystem (skill_src = gated bodies).
+    `persona` (a custom CoR seat) overrides the default domain bandit for the node's name/blurb."""
+    persona = persona or domain_bandit(domain)
     cor = {"name": slugify(persona.name) if root else slugify(f"{domain}-cor"), "kind": "cor",
            "description": persona.blurb, "skill_src": str(sysd.cor.parent),
            "children": [{"name": p.parent.name, "kind": "ac",
@@ -220,20 +239,26 @@ def _loop_flow(domain: str) -> str:
 
 # ── make a GBA (the keystone: a persistent AIOS, not /tmp) ───────────────────
 def make_gba(domain: str, root: str | Path, *, atoms: list[str], blurb: str = "",
-             role_block: str | None = None, rule_blocks: dict | None = None) -> GBA:
+             role_block: str | None = None, rule_blocks: dict | None = None,
+             persona=None) -> GBA:
     """Emit a persistent GBA AIOS dir: CLAUDE.md + live SkillTree + persisted index + KB.
     `role_block` / `rule_blocks` override the defaults (e.g. an HBA) and persist as a `_profile`
-    in the manifest, so they survive every re-materialize (construct doesn't clobber identity)."""
+    in the manifest, so they survive every re-materialize (construct doesn't clobber identity).
+    `persona` (a custom `corcc` `PersonaSpec`) seats a real chain-of-reasoning as the GBA's CoR
+    instead of the generic domain bandit (the melt-gauge seam, chainaios cc3af4e); when given
+    without an explicit `role_block`, the CLAUDE.md role is derived from that persona's moves."""
     root = Path(root).resolve()
     root.mkdir(parents=True, exist_ok=True)
     src = root.parent / f".{root.name}.src"           # gated bodies, OUTSIDE the indexed root
     src.mkdir(parents=True, exist_ok=True)
+    if persona is not None and role_block is None:
+        role_block = _persona_role_block(domain, persona)
 
     # CONSTRUCT the closed AC/CoR/SC algebra (gated bodies land in `src`, which persists)
     sysd = roll_up_algebra(domain, atoms, db=str(src / ".cc.db"),
                            skills_dir=str(src / "skills"), out_dir=str(src / "dist"),
-                           persona_root=str(src / "personas"), blurb=blurb)
-    tree_dict = _node_dict(domain, sysd, root=True)
+                           persona_root=str(src / "personas"), blurb=blurb, persona=persona)
+    tree_dict = _node_dict(domain, sysd, root=True, persona=persona)
 
     # the default workflow, as a flow-skill IN the tree (agent = persona + skills + skillCHAIN + skilltree)
     loop_src = src / "loop"
@@ -256,16 +281,18 @@ def make_gba(domain: str, root: str | Path, *, atoms: list[str], blurb: str = ""
 
 
 # ── construct INTO a live GBA (the Bandit's explore arm, persisted) ──────────
-def construct_into(gba: GBA, name: str, atoms: list[str], *, blurb: str = ""):
+def construct_into(gba: GBA, name: str, atoms: list[str], *, blurb: str = "", persona=None):
     """Mint a new AC/CoR/SC chain system, append it to the GBA's tree, re-materialize + re-index.
     The output PERSISTS into the agent's own directory (DESIGN.md §5 step 3–4). Returns the
-    BanditChainSystem (so a Challenger can gate its `.report['sequence']`)."""
+    BanditChainSystem (so a Challenger can gate its `.report['sequence']`). `persona` seats a
+    custom CoR for the constructed subsystem — e.g. a minted character's own reasoning (the
+    Aegis `SDNA_Synth` arm: each new character constructed carries its OWN persona, not the bandit)."""
     src = gba.root.parent / f".{gba.root.name}.src"
     sysd = roll_up_algebra(name, atoms, db=str(src / ".cc.db"),
                            skills_dir=str(src / "skills"), out_dir=str(src / "dist"),
-                           persona_root=str(src / "personas"), blurb=blurb)
+                           persona_root=str(src / "personas"), blurb=blurb, persona=persona)
     tree_dict = json.loads(gba.manifest.read_text())
-    tree_dict["children"].append(_node_dict(name, sysd, root=False))
+    tree_dict["children"].append(_node_dict(name, sysd, root=False, persona=persona))
     _, n = _apply_tree(gba, tree_dict)
     gba.report["indexed_skills"] = n
     return sysd
