@@ -105,12 +105,30 @@ def gba_new(domain: str, root: Path, atoms: tuple[str, ...]) -> None:
 @click.argument("root", type=click.Path(exists=True, path_type=Path))
 @click.argument("name")
 @click.argument("atoms", nargs=-1, required=True)
-def gba_construct(root: Path, name: str, atoms: tuple[str, ...]) -> None:
-    """Mint a new chain system NAME into the GBA at ROOT (persists into the tree + re-indexes)."""
+@click.option("--persona-json", type=click.Path(exists=True, path_type=Path), default=None,
+              help="JSON {name, blurb, moves:[{name, cues:[...]}]} — seat a bespoke CoR "
+                   "(the melt-gauge) instead of the default bandit. This is how a walked "
+                   "SDNA_Synth places a character with its OWN persona, not the selector.")
+def gba_construct(root: Path, name: str, atoms: tuple[str, ...],
+                  persona_json: Path | None) -> None:
+    """Mint a new chain system NAME into the GBA at ROOT (persists into the tree + re-indexes).
+
+    With --persona-json, the placed character gets a bespoke chain-of-reasoning seat (its own
+    melt-gauge) rather than the generic ChainSelector — the operational half of SDNA_Synth."""
+    import json as _json
     from .gba import load_gba, construct_into
+    from corcc.notation import Move, PersonaSpec
+    persona = None
+    if persona_json is not None:
+        spec = _json.loads(Path(persona_json).read_text())
+        persona = PersonaSpec(name=spec["name"], blurb=spec.get("blurb", ""),
+                              moves=tuple(Move(m["name"], tuple(m.get("cues", [])))
+                                          for m in spec["moves"]))
     g = load_gba(root)
-    sysd = construct_into(g, name, list(atoms))
-    click.echo(f"constructed '{name}' → {sysd.sc.parent.name}  ({g.report['indexed_skills']} skills now)")
+    sysd = construct_into(g, name, list(atoms), persona=persona)
+    seat = persona.name if persona else "bandit (default selector)"
+    click.echo(f"constructed '{name}' → {sysd.sc.parent.name}  (CoR seat: {seat}; "
+               f"{g.report['indexed_skills']} skills now)")
 
 
 @gba.command("search")
