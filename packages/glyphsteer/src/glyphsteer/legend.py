@@ -40,14 +40,16 @@ def merge(*vocabs: Vocabulary) -> Vocabulary:
     deterministic, last-author-priority). Skips entries that would break validation."""
     by_name: dict[str, Axis] = {}
     by_glyph: dict[str, str] = {}     # glyph -> name (to detect cross-name reuse)
+    by_tag: dict[str, str] = {}       # tag -> name (distinct names can derive the same tag)
     for v in vocabs:
         for a in v.axes:
-            # drop a prior axis that used this glyph under a different name
-            clash = by_glyph.get(a.glyph)
-            if clash and clash != a.name:
-                by_name.pop(clash, None)
+            # drop a prior axis that used this glyph or tag under a different name
+            for clash in (by_glyph.get(a.glyph), by_tag.get(a.tag)):
+                if clash and clash != a.name:
+                    by_name.pop(clash, None)
             by_name[a.name] = a
             by_glyph[a.glyph] = a.name
+            by_tag[a.tag] = a.name
     return Vocabulary(list(by_name.values()))
 
 

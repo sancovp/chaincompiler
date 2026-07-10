@@ -99,6 +99,10 @@ class GlyphGrammar:
     def lint(self, code: str) -> GlyphLint:
         """Gate a glyph code: foreign-token (`syntax_break`) via rulecatcher, then
         canonical-order (`orthogonal`) via vocab order."""
+        # code_tags/parse silently DROP unknown glyphs, so a contaminated code would be
+        # laundered before rulecatcher sees it — detect the foreign residue directly
+        if self.vocab.strip(code).strip():
+            return GlyphLint("syntax_break", [])
         chain = " -> ".join(self.vocab.code_tags(code))
         base = self.lint_chain(chain)
         if base.verdict == "syntax_break":

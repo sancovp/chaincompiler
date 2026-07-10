@@ -49,3 +49,9 @@ def test_check_warns_unbounded_mediator():
 def test_check_clean_when_bounded():
     issues = check_program(parse_text("[A] ⇔ |🍯| ⇔ [B]"))
     assert not [i for i in issues if i.severity == "warning"]
+
+
+def test_render_readable_rel_roundtrips():
+    # rel connectors must render as valid chain syntax (`<name-`), so readable re-parses
+    out = render(parse_text("[A] -has-> [B]"), "readable")
+    assert render(parse_text(out), "triples") == render(parse_text("[A] -has-> [B]"), "triples")

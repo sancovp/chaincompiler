@@ -29,3 +29,21 @@ def test_to_honeyc_emits_chain():
     v = SENTIMENT
     pos, fire = v.by_name("positive").glyph, v.by_name("urgent").glyph
     assert "→" in v.to_honeyc(v.code([pos, fire]))
+
+
+def test_overlapping_glyphs_rejected():
+    # substring matching (parse/strip) cannot disambiguate 👍 inside 👍🏽 — reject at the gate
+    with pytest.raises(ValueError):
+        Vocabulary([Axis("thumb", "\U0001F44D"), Axis("thumbtan", "\U0001F44D\U0001F3FD")])
+
+
+def test_strip_removes_the_full_separator():
+    from glyphsteer.vocab import SEP
+    pos = SENTIMENT.by_name("positive").glyph
+    assert SENTIMENT.strip(f"text{SEP}{pos}") == "text"   # no trailing space
+
+
+def test_to_honeyc_preserves_code_order():
+    v = SENTIMENT
+    pos, fire = v.by_name("positive").glyph, v.by_name("urgent").glyph
+    assert v.to_honeyc(v.code([fire, pos])) == f"{fire}→{pos}"

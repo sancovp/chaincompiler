@@ -49,3 +49,9 @@ def test_annotate_chunk_canonicalizes_with_grammar(gg):
     ann = RuleAnnotator.keyword(SENTIMENT, {URG: ["now"], POS: ["great"]})
     c = annotate_chunk(Chunk("x", "do it now, it's great"), ann, SENTIMENT, grammar=gg)
     assert c.code == SENTIMENT.code([POS, URG])      # stored code is canonical, not input-order
+
+
+def test_foreign_glyph_in_code_is_syntax_break(gg):
+    # unknown content must not be laundered out by code_tags before the gate
+    assert gg.lint(POS + "Zqq").verdict == "syntax_break"
+    assert gg.lint(POS + "\U0001F4A9").verdict == "syntax_break"
