@@ -118,6 +118,19 @@
         "Dense Q1-Q3 measured: emoji-direction real but model-dependent (bge-en collapses, XLM-R doesn't) ✓",
         "Dense Q4 on a real corpus + arXiv short paper (aspirational)"
       ]
+    },
+    {
+      "id": "P9",
+      "title": "Tome (framework → volume → tome)",
+      "status": "in_progress",
+      "blurb": "The chapter rung: skill2framework as a skillchain (2 blog stages + deterministic chapter/plugin ops) whose terminal stage folds the framework into the author's SkillTome via skilltree's bind op (agent-skilltree ≥0.3.0). SkillVolume = the per-AIOS pattern book (was {aios}-nomicon); SkillTome = the author's overall corpus.",
+      "items": [
+        "packages/framework: JourneyCore + render_blog1, assemble_chapter, package_plugin, fold_into_tome (delegates to skilltree.tome.fold) ✓",
+        "skills/skill2framework/*: the 6 stage prompt-skills (DIY port of the proven doc-mirror set) ✓",
+        "chains/skill2framework.chain + the compiled rollup skill ✓",
+        "Deterministic spine E2E: blog → chapter → plugin → fold → skilltree validate green ✓",
+        "First real chapter through the full chain (LLM stages) — pending"
+      ]
     }
   ]
 }

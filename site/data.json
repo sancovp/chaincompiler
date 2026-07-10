@@ -118,9 +118,43 @@
         "Dense Q1-Q3 measured: emoji-direction real but model-dependent (bge-en collapses, XLM-R doesn't) \u2713",
         "Dense Q4 on a real corpus + arXiv short paper (aspirational)"
       ]
+    },
+    {
+      "id": "P9",
+      "title": "Tome (framework \u2192 volume \u2192 tome)",
+      "status": "in_progress",
+      "blurb": "The chapter rung: skill2framework as a skillchain (2 blog stages + deterministic chapter/plugin ops) whose terminal stage folds the framework into the author's SkillTome via skilltree's bind op (agent-skilltree \u22650.3.0). SkillVolume = the per-AIOS pattern book (was {aios}-nomicon); SkillTome = the author's overall corpus.",
+      "items": [
+        "packages/framework: JourneyCore + render_blog1, assemble_chapter, package_plugin, fold_into_tome (delegates to skilltree.tome.fold) \u2713",
+        "skills/skill2framework/*: the 6 stage prompt-skills (DIY port of the proven doc-mirror set) \u2713",
+        "chains/skill2framework.chain + the compiled rollup skill \u2713",
+        "Deterministic spine E2E: blog \u2192 chapter \u2192 plugin \u2192 fold \u2192 skilltree validate green \u2713",
+        "First real chapter through the full chain (LLM stages) \u2014 pending"
+      ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.1.44",
+      "date": "2026-07-10",
+      "changes": [
+        "**P9 Tome \u2014 the chapter rung lands: `skill2framework` + the `framework` package (Move 2 of the nomicon/scalable-publishing incorporation).** New **`packages/framework`** = the chapter rung's deterministic glue: `JourneyCore` + `render_blog1` (the blog-organ law \u2014 FILL the model, never hand-write the narrative), `assemble_chapter` (blogs \u2192 self-contained chapter dir with relative cross-links/CTAs/manifest), `package_plugin` (framework skill + chapter \u2192 installable plugin dir, chapter links repathed + resolution-checked), and `fold_into_tome` \u2014 the terminal bind, **delegating to `skilltree.tome.fold` (`agent-skilltree \u22650.3.0`)**: the author's SkillTome is a SkillTree whose volume nodes hold frameworks as generated `## Frameworks` table rows (idempotent code op \u2014 no LLM hand-edits the table). Six stage prompt-skills under `skills/skill2framework/` (DIY port of the proven doc-mirror set, score 1.00 FULL_E2E 2026-06-03; inputs adapted to CC-native sources), composed by **`chains/skill2framework.chain`** (skill steps + CoR bridges) and compiled to the rollup `skills/skill2framework/skill2framework/SKILL.md`. Vocabulary: the generated index/router is the **`{aios}-volume`** (SkillVolume; \"{aios}-nomicon\" is the legacy name). Deterministic spine proven E2E (blog \u2192 chapter \u2192 plugin \u2192 fold \u2192 `skilltree validate` green); the framework package ships 5 tests. `install.sh` gains `framework` + bumps `agent-skilltree>=0.3.0`."
+      ]
+    },
+    {
+      "version": "v0.1.43",
+      "date": "2026-06-29",
+      "changes": [
+        "**The dependency cycle is cut: chaincompiler now rides a `prompt-engineering` base (cycle \u2192 DAG).** The monorepo had a *circular* dependency \u2014 `chaincompiler` imported `accc/corcc/sccc` and they imported `chaincompiler` back \u2014 with no deterministic prompt engine at the bottom (prompt-making sat *on top of* the rulecatcher grammar tower). Fixed by **dependency inversion**: the standalone **`prompt-engineering`** package is now THE base \u2014 `prompt_engineering` carries the deterministic prompt engine + `grammar` (the rulecatcher seam: `learn`/`gate`/`grammar_lines`) + `skillpack` (`write_skill`, now **skilltree-aware** \u2014 coordinate-addressed placement). The 7 `*CC` back-edges repoint DOWN onto it; `chaincompiler.bridge`/`skillpack` **re-export** from the base (one implementation, no drift); the layering (`skilltree`/`rulecatcher`/`honeyc` < base < `accc/corcc/sccc` < `chaincompiler`) is enforced by an **import-linter** contract (RED\u2192GREEN was the success signal). The CORCC cue/skeleton format converged onto a base primitive (`cor_skeleton`); `resolve_steps`/seeds correctly stay in the `*CC`. Public API + CLI + `install.sh` unchanged. **185 passing**, GATE-CYCLE GREEN. Full spec: [`REBUILD-SPEC.md`](REBUILD-SPEC.md)."
+      ]
+    },
+    {
+      "version": "v0.1.42",
+      "date": "2026-06-27",
+      "changes": [
+        "**SkillTree de-duplicated \u2014 published standalone as `agent-skilltree`, the bundled copy removed.** `packages/skilltree` was a *stale fork* (v0.1.0) of the canonical standalone (`github.com/sancovp/skilltree`, v0.2.0, which was ahead: `mapper.py` + a bigger `search`/`__init__`; the bundle had nothing unique, `cohere`/`materialize`/`validate` byte-identical). The obvious fix \u2014 depend on the published package \u2014 was blocked: **the PyPI name `skilltree` is taken by an unrelated `pygame` package.** So SkillTree is now published as **[`agent-skilltree`](https://pypi.org/project/agent-skilltree/)** (import name stays `skilltree`, so every `import skilltree` is unchanged); `chaincompiler` + `si` depend on it, `install.sh` pulls it, and `packages/skilltree` is deleted. The whole suite stays green on the published package (`gba`/`bandit`/`cog`/`si` import it). Also fixed the stale test badge (`120` \u2192 the real **182** for `pytest packages/`; SkillTree's own suite now lives in its repo)."
+      ]
+    },
     {
       "version": "v0.1.41",
       "date": "2026-06-18",

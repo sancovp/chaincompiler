@@ -1,0 +1,21 @@
+# skill2framework — the chapter rung as a skillchain (Move 2 of the tome incorporation).
+# Six stages: two LLM blog stages, then the deterministic framework-package ops, ending
+# in the terminal tome bind (a code op, skilltree.tome.fold). Compiled with skillchain
+# into skills/skill2framework/skill2framework/SKILL.md (the rollup).
+name: skill2framework
+description: Turn an already-built AIOS/package into a framework chapter — narrative blog + deep-dive blog → chapter → {aios}-volume index skill → plugin → folded into the author's SkillTome.
+> narrative-blog : the AIOS name + root; journey source = its CLAUDE.md/README/dev-log; the plugin URL; write blog1.md
+= blog1
+~ Blog 1 (the story) exists at {blog1}. The other half of the chapter is the mechanics. Gather the package's impl docs (README architecture sections, design docs, module docstrings) — Blog 2 explains only what they say IS.
+> deepdive-blog : the impl docs; back-link to {blog1}; write blog2.md
+= blog2
+~ Both posts exist ({blog1}, {blog2}). They become ONE publishable unit — the chapter — via the deterministic op (framework.assemble_chapter). Decide the skill links to wire (the framework's decomposed skills) and a two-line abstract before running it.
+> assemble-chapter : blog1={blog1} blog2={blog2}; the chapter dir; plugin URL + skill links + abstract
+= chapter
+~ The chapter tells the story and the mechanics; now the AIOS needs its front door. The {aios}-volume skill indexes the AIOS's skills + rules, gives the decision tree, and routes into the AIOS dir — it will link {chapter} and the plugin.
+> framework-skill : the AIOS skills/rules dirs + system doc; chapter={chapter}; write the {aios}-volume SKILL.md
+= volume_skill
+> package-plugin : framework skill={volume_skill}; chapter={chapter}; assemble the plugin dir (framework.package_plugin)
+= plugin
+~ The framework package is complete: chapter + volume skill + plugin ({plugin}). The terminal move registers it in the author's SkillTome so it is findable and routable — a code op, idempotent, one row per framework.
+> fold-into-tome : framework skill dir from {volume_skill}; the tome root + volume node; run framework.fold_into_tome, then skilltree validate the tome

@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "framework"
+version = "0.1.0"
+description = "The chapter rung: blogs → chapter → plugin → fold into the SkillTome (skill2framework's deterministic glue)"
+requires-python = ">=3.11"
+dependencies = ["agent-skilltree>=0.3.0"]
+
+[tool.setuptools.packages.find]
+where = ["src"]

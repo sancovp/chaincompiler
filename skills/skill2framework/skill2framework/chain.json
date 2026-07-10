@@ -1,0 +1,47 @@
+{
+  "name": "skill2framework",
+  "description": "Turn an already-built AIOS/package into a framework chapter \u2014 narrative blog + deep-dive blog \u2192 chapter \u2192 {aios}-volume index skill \u2192 plugin \u2192 folded into the author's SkillTome.",
+  "steps": [
+    {
+      "skill": "narrative-blog",
+      "args": "the AIOS name + root; journey source = its CLAUDE.md/README/dev-log; the plugin URL; write blog1.md",
+      "capture": "blog1"
+    },
+    {
+      "cor": "Blog 1 (the story) exists at {blog1}. The other half of the chapter is the mechanics. Gather the package's impl docs (README architecture sections, design docs, module docstrings) \u2014 Blog 2 explains only what they say IS."
+    },
+    {
+      "skill": "deepdive-blog",
+      "args": "the impl docs; back-link to {blog1}; write blog2.md",
+      "capture": "blog2"
+    },
+    {
+      "cor": "Both posts exist ({blog1}, {blog2}). They become ONE publishable unit \u2014 the chapter \u2014 via the deterministic op (framework.assemble_chapter). Decide the skill links to wire (the framework's decomposed skills) and a two-line abstract before running it."
+    },
+    {
+      "skill": "assemble-chapter",
+      "args": "blog1={blog1} blog2={blog2}; the chapter dir; plugin URL + skill links + abstract",
+      "capture": "chapter"
+    },
+    {
+      "cor": "The chapter tells the story and the mechanics; now the AIOS needs its front door. The {aios}-volume skill indexes the AIOS's skills + rules, gives the decision tree, and routes into the AIOS dir \u2014 it will link {chapter} and the plugin."
+    },
+    {
+      "skill": "framework-skill",
+      "args": "the AIOS skills/rules dirs + system doc; chapter={chapter}; write the {aios}-volume SKILL.md",
+      "capture": "volume_skill"
+    },
+    {
+      "skill": "package-plugin",
+      "args": "framework skill={volume_skill}; chapter={chapter}; assemble the plugin dir (framework.package_plugin)",
+      "capture": "plugin"
+    },
+    {
+      "cor": "The framework package is complete: chapter + volume skill + plugin ({plugin}). The terminal move registers it in the author's SkillTome so it is findable and routable \u2014 a code op, idempotent, one row per framework."
+    },
+    {
+      "skill": "fold-into-tome",
+      "args": "framework skill dir from {volume_skill}; the tome root + volume node; run framework.fold_into_tome, then skilltree validate the tome"
+    }
+  ]
+}

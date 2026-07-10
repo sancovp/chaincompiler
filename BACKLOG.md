@@ -87,3 +87,17 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 P0 Foundation · P1 Project Surface (live site) · P2 Exchange · P3 Self-Hosting & SI ·
 P5 Federation · the public repo + CI + Pages · coordinate addressing · the
 `report-missed-skill` keystone.
+
+## P9 — Tome: the chapter rung (`skill2framework` + `framework`)  (2026-07-10)
+
+- [x] **`packages/framework`** — the deterministic glue: `JourneyCore`+`render_blog1` (fill,
+  never hand-write), `assemble_chapter`, `package_plugin`, `fold_into_tome` (delegates to
+  `skilltree.tome.fold`, `agent-skilltree>=0.3.0`). 5 tests.
+- [x] **`skills/skill2framework/*`** — the 6 stage prompt-skills (DIY port of the proven
+  doc-mirror set): narrative-blog, deepdive-blog, assemble-chapter, framework-skill
+  (emits the `{aios}-volume`), package-plugin, fold-into-tome.
+- [x] **`chains/skill2framework.chain`** + the compiled rollup skill (skill steps + CoR bridges).
+- [x] Deterministic spine E2E: blog → chapter → plugin → fold → `skilltree validate` green.
+- [ ] First REAL chapter through the full chain (the LLM stages, agent-run) — the my-way
+  originals are proven; this DIY port earns its own score on first use.
+- [ ] Wire the tome into the marketplace/federation render (P4/P5 reconcile — Move 3).
