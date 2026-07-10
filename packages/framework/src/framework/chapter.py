@@ -10,8 +10,11 @@ from __future__ import annotations
 from pathlib import Path
 
 
+# "## Chapter links", not "## Links": render_blog1 already emits a "## Links" section
+# when the core carries URLs — the first dogfood produced a doubled heading. Distinct
+# heading = no collision, and the chapter block stays a pure addition.
 def _links_block(entries: list[str], cta: str) -> str:
-    return "\n\n## Links\n\n" + "\n".join(f"- {e}" for e in entries) + f"\n\n> **{cta}**\n"
+    return "\n\n## Chapter links\n\n" + "\n".join(f"- {e}" for e in entries) + f"\n\n> **{cta}**\n"
 
 
 def assemble_chapter(blog1_path: str | Path, blog2_path: str | Path, *,

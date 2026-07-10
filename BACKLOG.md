@@ -98,6 +98,9 @@ P5 Federation · the public repo + CI + Pages · coordinate addressing · the
   (emits the `{aios}-volume`), package-plugin, fold-into-tome.
 - [x] **`chains/skill2framework.chain`** + the compiled rollup skill (skill steps + CoR bridges).
 - [x] Deterministic spine E2E: blog → chapter → plugin → fold → `skilltree validate` green.
-- [ ] First REAL chapter through the full chain (the LLM stages, agent-run) — the my-way
-  originals are proven; this DIY port earns its own score on first use.
+- [x] First REAL chapter through the full chain: dogfood on the **skilltree** unit,
+  2026-07-10 — all 6 stages ran (agent LLM stages + the deterministic ops), scratch-only;
+  blog1 grounded (authored hook, IS-only), plugin `dead_refs == []`, scratch-tome
+  `skilltree validate` green. Surfaced + fixed: the chapter links block now uses
+  `## Chapter links` (blog1 already carries `## Links` when the core has URLs).
 - [ ] Wire the tome into the marketplace/federation render (P4/P5 reconcile — Move 3).

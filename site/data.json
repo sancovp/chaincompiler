@@ -129,11 +129,18 @@
         "skills/skill2framework/*: the 6 stage prompt-skills (DIY port of the proven doc-mirror set) \u2713",
         "chains/skill2framework.chain + the compiled rollup skill \u2713",
         "Deterministic spine E2E: blog \u2192 chapter \u2192 plugin \u2192 fold \u2192 skilltree validate green \u2713",
-        "First real chapter through the full chain (LLM stages) \u2014 pending"
+        "First real chapter through the full chain: dogfood on the skilltree unit PASS 2026-07-10 (scratch, all 6 stages, tome validate green) \u2713 \u2014 publishable chapters = v1"
       ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.1.45",
+      "date": "2026-07-10",
+      "changes": [
+        "**P9: the chain's first REAL chapter \u2014 dogfood PASS.** An agent ran all six `skill2framework` stages on the **skilltree** unit (scratch-only): Blog 1 filled via `JourneyCore` + `render_blog1` with an authored hook and IS-only narration grounded in the README/papers; Blog 2 mechanics-only with per-section citations; `assemble_chapter` \u2192 `package_plugin` (`dead_refs == []`, zero absolute-path leakage) \u2192 `fold_into_tome` \u2192 `skilltree validate` green on the scratch tome. One wart surfaced and fixed: the chapter's appended links block now renders as `## Chapter links` (Blog 1 already emits `## Links` when the core carries URLs \u2014 the first run doubled the heading)."
+      ]
+    },
     {
       "version": "v0.1.44",
       "date": "2026-07-10",

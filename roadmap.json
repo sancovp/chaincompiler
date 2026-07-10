@@ -129,7 +129,7 @@
         "skills/skill2framework/*: the 6 stage prompt-skills (DIY port of the proven doc-mirror set) ✓",
         "chains/skill2framework.chain + the compiled rollup skill ✓",
         "Deterministic spine E2E: blog → chapter → plugin → fold → skilltree validate green ✓",
-        "First real chapter through the full chain (LLM stages) — pending"
+        "First real chapter through the full chain: dogfood on the skilltree unit PASS 2026-07-10 (scratch, all 6 stages, tome validate green) ✓ — publishable chapters = v1"
       ]
     }
   ]
