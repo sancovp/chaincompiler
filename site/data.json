@@ -135,6 +135,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.46",
+      "date": "2026-07-10",
+      "changes": [
+        "**`package_plugin` repath precision (the dogfood's finding #2).** The chapter-link repath rewrote ANY filename-shaped token \u2014 including markdown link **display text** (`[blog1.md](\u2026)` labels got mangled into bundled paths). It now rewrites only real references: path-shaped tokens (a `/` before the chapter filename) and bare-filename link **targets** (`](blog1.md)`); labels stay intact. New regression test (`test_package_plugin_preserves_link_display_text`); framework suite \u2192 6."
+      ]
+    },
+    {
       "version": "v0.1.45",
       "date": "2026-07-10",
       "changes": [

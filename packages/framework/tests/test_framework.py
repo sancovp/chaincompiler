@@ -84,6 +84,22 @@ def test_package_plugin_repaths_and_resolves(tmp_path: Path):
     assert manifest["name"] == "demo-volume" and manifest["author"] == "tester"
 
 
+def test_package_plugin_preserves_link_display_text(tmp_path: Path):
+    # the first dogfood's finding: bare filenames in link LABELS are not paths —
+    # only the link target (and path-shaped tokens) may be repathed
+    chap = tmp_path / "chap"; chap.mkdir()
+    for f in ("blog1.md", "blog2.md", "chapter.md"):
+        (chap / f).write_text(f"content of {f}\n")
+    fw = tmp_path / "v"; fw.mkdir()
+    (fw / "SKILL.md").write_text("---\nname: v\ndescription: d\n---\n\n"
+                                 f"Read [blog1.md]({chap}/blog1.md) and [the story](blog2.md).\n")
+    rep = package_plugin(fw / "SKILL.md", chap, out_dir=tmp_path / "plug", name="v")
+    assert rep["ok"] and rep["repathed"] == 2
+    body = (tmp_path / "plug" / "skills" / "v" / "SKILL.md").read_text()
+    assert "[blog1.md](./resources/chapter/blog1.md)" in body    # label intact, target repathed
+    assert "[the story](./resources/chapter/blog2.md)" in body   # bare-filename target repathed
+
+
 def test_fold_into_tome_delegates_to_skilltree(tmp_path: Path):
     from skilltree import SkillTree, TreeNode, is_valid, materialize
     root = tmp_path / "tome"

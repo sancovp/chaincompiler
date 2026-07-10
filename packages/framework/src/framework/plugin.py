@@ -35,11 +35,17 @@ def package_plugin(framework_skill_path: str | Path, chapter_dir: str | Path, *,
         if (chap / f).is_file():
             shutil.copy2(chap / f, res_dir / f)
 
-    # repath: any path (absolute or relative) that ends in the chapter files
-    # becomes the bundled relative reference. Nothing else in the body changes.
+    # repath: any PATH that ends in a chapter file — a token containing a "/" before
+    # the filename, or a bare-filename markdown link TARGET — becomes the bundled
+    # relative reference. Bare filenames in display text (e.g. the "[blog1.md]" label
+    # of a link) are NOT paths and stay untouched (the first dogfood's repath mangled
+    # them). Nothing else in the body changes.
     body = skill_src.read_text(encoding="utf-8")
-    body, n = re.subn(r"[^\s()`\[\]]*\b(blog1\.md|blog2\.md|chapter\.md)\b",
-                      r"./resources/chapter/\1", body)
+    body, n1 = re.subn(r"[^\s()`\[\]]*/(blog1\.md|blog2\.md|chapter\.md)\b",
+                       r"./resources/chapter/\1", body)
+    body, n2 = re.subn(r"\((blog1\.md|blog2\.md|chapter\.md)\)",
+                       r"(./resources/chapter/\1)", body)
+    n = n1 + n2
     (skill_dir / "SKILL.md").write_text(body, encoding="utf-8")
 
     manifest = {"name": name, "version": version,

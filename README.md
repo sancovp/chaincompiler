@@ -337,6 +337,9 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.1.46 — 2026-07-10
+- **`package_plugin` repath precision (the dogfood's finding #2).** The chapter-link repath rewrote ANY filename-shaped token — including markdown link **display text** (`[blog1.md](…)` labels got mangled into bundled paths). It now rewrites only real references: path-shaped tokens (a `/` before the chapter filename) and bare-filename link **targets** (`](blog1.md)`); labels stay intact. New regression test (`test_package_plugin_preserves_link_display_text`); framework suite → 6.
+
 ### v0.1.45 — 2026-07-10
 - **P9: the chain's first REAL chapter — dogfood PASS.** An agent ran all six `skill2framework` stages on the **skilltree** unit (scratch-only): Blog 1 filled via `JourneyCore` + `render_blog1` with an authored hook and IS-only narration grounded in the README/papers; Blog 2 mechanics-only with per-section citations; `assemble_chapter` → `package_plugin` (`dead_refs == []`, zero absolute-path leakage) → `fold_into_tome` → `skilltree validate` green on the scratch tome. One wart surfaced and fixed: the chapter's appended links block now renders as `## Chapter links` (Blog 1 already emits `## Links` when the core carries URLs — the first run doubled the heading).
 
