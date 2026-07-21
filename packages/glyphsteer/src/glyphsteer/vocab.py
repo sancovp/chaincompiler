@@ -105,23 +105,35 @@ class Vocabulary:
                 out.append(g)
         return "".join(out)
 
+    def _present(self, text: str) -> list[str]:
+        """Vocabulary glyphs present in `text` (vocab order), matched longest-first
+        and non-overlapping — a glyph that is a prefix of another (e.g. an emoji vs
+        its VS16/skin-tone variant) never phantom-matches inside the longer one."""
+        found: set[str] = set()
+        for g in sorted(self.glyphs, key=len, reverse=True):
+            if g in text:
+                found.add(g)
+                text = text.replace(g, "\x00")
+        return [g for g in self.glyphs if g in found]
+
     def parse(self, code: str) -> list[str]:
         """Extract the known glyphs from a code string (unknown glyphs dropped)."""
-        return [g for g in self.glyphs if g in code]
+        return self._present(code)
 
     def glyphs_in(self, text: str) -> list[str]:
         """Which vocabulary glyphs appear anywhere in `text` (order of vocab)."""
-        return [g for g in self.glyphs if g in text]
+        return self._present(text)
 
     def strip(self, text: str) -> str:
         """Remove every vocabulary glyph (and the separator) from `text`."""
-        for g in self.glyphs:
+        for g in sorted(self.glyphs, key=len, reverse=True):
             text = text.replace(g, "")
-        return text.replace(SEP.strip(), "").replace("⁣", "")
+        return text.replace(SEP, "").replace("⁣", "")
 
     def to_honeyc(self, code: str) -> str:
-        """Render a code as a HoneyC chain (`a→b→c`) — the compiler bridge."""
-        return "→".join(self.parse(code))
+        """Render a code as a HoneyC chain (`a→b→c`) in the CODE's order — the
+        compiler bridge (a chain is order-significant)."""
+        return "→".join(sorted(self.parse(code), key=code.find))
 
 
 def is_lexically_clean(glyph: str) -> bool:

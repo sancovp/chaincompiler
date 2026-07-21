@@ -89,7 +89,7 @@ class _ToAst(Transformer):
     def rel_rev(self, token):
         # <name-
         name = str(token)[1:-1]
-        return Connector("rel", name)
+        return Connector("rel", name, reverse=True)
 
     def rel_bi(self, token):
         # <name>
