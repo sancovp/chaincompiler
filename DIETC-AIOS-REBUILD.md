@@ -1,5 +1,8 @@
 # DietC → a chaincompiler-built AIOS  (the v1 recursion) — BUILD PLAN
 
+> **REFERENCE DETAIL — the record of rebuilding dietc as a GBA (built: `examples/nutrition`). READ when that
+> rebuild is the question.** The current design is `DESIGN.md` §8 (the worked agents) and §19.
+
 > **Resumable after compaction.** This is the plan to execute decision **(b)**: re-express dietc as a
 > domain **built BY chaincompiler** (a `nutrition` GBA/AIOS), instead of the current hand-coded Python
 > package. It runs the original recursion: *chaincompiler makes dietc → finishing it reveals the AIOS

@@ -1,4 +1,4 @@
-"""chaincompiler — the ChainCompiler BASE: the generic compiler-compiler (META-APE spec §3).
+"""chaincompiler — the ChainCompiler BASE: the generic compiler-compiler (DESIGN.md §2).
 
 This package imports only DOWN (APE + honeyc + rulecatcher). It is the machine the *CC are MADE FROM:
   - forge   : the generic "forge a language" core (Language / forge / gate_language / grammar / package_skill)
@@ -17,7 +17,7 @@ __version__ = "0.1.0"
 from .bridge import compile_chain, gate, learn
 from .prime import build_prime
 from .skillpack import skill_markdown, slugify, write_skill
-# the generic compiler-compiler core — the machine the *CC are MADE FROM (spec §3). Imports only APE.
+# the generic compiler-compiler core — the machine the *CC are MADE FROM (DESIGN.md §2). Imports only APE.
 from .forge import Language, forge, gate_language, grammar, package_skill
 # re-export the APE cognition helper the *CC need, so they route through CC (not around it to APE):
 from prompt_engineering import cor_skeleton

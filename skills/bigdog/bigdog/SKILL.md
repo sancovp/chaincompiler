@@ -1,6 +1,6 @@
 ---
 name: bigdog
-description: Use to refuse AI slop on every output: fix the sense, define the valid type, name the failure mode (emit-P-without-P-ness), define P-ness (the gate) and refuse the failure, grade every correspondence (G0–G9, never round up), commit, then actualize. The anti-slop define-validity-then-emit persona.
+description: Use to refuse AI slop on every output — fix the sense, define the valid type, name the failure mode (emit-P-without-P-ness), define P-ness (the gate) and refuse the failure, grade every correspondence (G0–G9, never round up), commit, then actualize. The anti-slop define-validity-then-emit persona.
 kind: chain-of-reasoning
 ---
 

@@ -43,16 +43,17 @@ The tree is **virtual** — rendered onto the one-layer substrate by the materia
 1. **placement** — nested *plain* dirs (a node must be a plain dir first, *then* carry `.claude`); the
    path **is** the coordinate (`0` → `0.1` → `0.1.1`).
 2. **the inert-nested-`.claude` boundary** — only the top layer auto-loads; deeper `.claude/skills`
-   are inert until cat'd. *This is the load-cutter that makes layers instead of a flat dump.*
-3. **cat-breadcrumbs + index summary** — each `SKILL.md` ends with literal `cat <path>` links to its
-   children (descend on demand) and an index summary ("reachable below: …") so a hit on a leaf term
-   still finds the branch. (See `20-architecture-flows.md` §3.)
+   are inert until read into. *This is the load-cutter that makes layers instead of a flat dump.*
+3. **Read-breadcrumbs + index summary** — each `SKILL.md` ends with one breadcrumb per child (`Read`
+   and the child's `SKILL.md` path, relative to the node's folder — descend on demand) and an index
+   summary ("reachable below: …") so a hit on a leaf term still finds the branch. (See
+   `20-architecture-flows.md` §3 and `02-the-autoload-mechanism.md`.)
 
 You load **one layer and walk**; you never load the pile. That is the whole technology.
 
 ## Position = identity = curation authority (the lording rule)
 
-Because each branch's nested `.claude/skills` is **its own root when you cat into it**, *where you
+Because each branch's nested `.claude/skills` is **its own root when you read into it**, *where you
 are determines who you are and what you curate.* Descend into a branch and that subtree is your
 world — you lord over it. A branch becomes an actual **lord** when it carries a **`CLAUDE.md`** (a
 persona) at that dir; until then the parent lord curates it via `search --scope <coord>`.
@@ -75,13 +76,9 @@ direction). This is the self-expansion principle (every dir is an AIOS) applied 
 
 ## Open debts this law exposes (the audit backlog)
 
-- ⚠️ **This very `.claude/skills/` dir is a flat forest** (7 sibling skills, no root, no coords). The
-  dev surface violates its own first law. It must be **treeified** (one root, cat-breadcrumbs, coords)
-  — the canonical dogfood.
-- ⚠️ **`roll_up_algebra` emits a *single-lord* tree** (root → one CoR → its frames), not a
-  *forest-of-lords*. To make "each branch curates its subtree" real, the construct must be able to
-  emit **lordable sub-domains** (each a branch with its own `CLAUDE.md` + subtree). This is the
-  upstream (`accc`/`corcc`/`sccc`) change that makes the recursion structural, not cosmetic.
+- ⚠️ **This very `.claude/skills/` dir is a flat forest** (8 sibling skills, no root, no coords). The
+  dev surface violates its own first law. It must be **treeified** (one root, Read-breadcrumbs, coords)
+  — the canonical dogfood. Rooting it waits on a layout decision (`BACKLOG.md`).
 
 ## Triggers
 

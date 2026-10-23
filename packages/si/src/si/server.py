@@ -29,7 +29,7 @@ def si_interpret(source: str) -> str:
 
 
 def si_walk(root_dir: str, root_name: str) -> dict:
-    """Traverse a materialized skill tree by following its cat-breadcrumbs."""
+    """Traverse a materialized skill tree by following its breadcrumbs."""
     return runtime.walk(root_dir, root_name)
 
 

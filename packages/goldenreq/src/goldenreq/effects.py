@@ -82,7 +82,7 @@ def adopt_rule(request: dict, *, by: str, **_) -> dict:
         rulecatcher.engine.adopt_rules(connection, rule_ids, actor=by,
                                        source="goldenreq", reason=<verdict reason>)
 
-    (see base/chaincompiler/packages/rulecatcher/src/rulecatcher/engine.py:90).
+    (see packages/rulecatcher/src/rulecatcher/engine.py, `adopt_rules`).
     That needs a live rulecatcher sqlite `Connection` and real candidate rule ids
     threaded through the request — wiring goldenreq cannot construct or exercise
     in isolation. Not faked.

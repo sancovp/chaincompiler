@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""build_meta_ape_skills.py — emit the meta-APE skill set into the chaincompiler PLUGIN (spec §4.4/§6).
+"""build_meta_ape_skills.py — emit the meta-APE skill set into the chaincompiler PLUGIN (DESIGN.md §16).
 
 meta-APE = each compiler build-function becomes a real SKILL. This assembles the FULL catalog —
   APE_CAPABILITIES (from prompt_engineering)  +  the *CC capabilities (forge AC/CoR/SC, construct a language)
@@ -46,7 +46,7 @@ CC_CAPABILITIES = [
     ),
     Capability(
         "forge-skillchain",
-        "SCCC — forge a skill-chain language: resolve [ac|cor|skill] steps to packages and roll them up.",
+        "SCCC — forge a skill-chain language — resolve [ac|cor|skill] steps to packages and roll them up.",
         "An SC chains forged AC/CoR/skill steps toward a goal. SCCC is made FROM CORCC+ACCC+chaincompiler.\n\n"
         "```python\n"
         "import sccc\n"

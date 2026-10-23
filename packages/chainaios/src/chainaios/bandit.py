@@ -14,8 +14,8 @@ mints a closed chain system for each part, organized into one granular self-view
     roll_up_algebra(domain, atoms, ...) -> BanditChainSystem     (closed: bool)
     hierarchicalize(workdir, ...)        -> SelfView             (a tree of systems)
 
-Lazy-loaded from the package root (`chaincompiler.roll_up_algebra`) to avoid the
-import cycle (this imports accc/corcc/sccc, which import the engine).
+Exported from `chainaios` (the agent tier above the chain compilers — DESIGN.md §7);
+the chaincompiler base never imports it.
 """
 from __future__ import annotations
 
@@ -208,7 +208,7 @@ def roll_up_algebra(domain: str, atoms: list[str] | dict[str, str | tuple[str, s
         domain, persona, ac_paths, cor, sc, Path(persona_root or out_dir), selector=selector)
 
     # 5. CLOSE — organize into a SkillTree and validate (the algebra closes ⇔ no violations)
-    tree = SkillTree(TreeNode(slugify(domain), "sc", description=f"{domain}: {persona.blurb}",
+    tree = SkillTree(TreeNode(slugify(domain), "sc", description=f"{domain} — {persona.blurb}",
         children=[TreeNode(slugify(persona.name), "cor", description=persona.blurb, children=[
             TreeNode(slugify(p.parent.name), "ac", description=f"attend ({domain})") for p in ac_paths
         ])]))
@@ -247,7 +247,7 @@ COMPONENTS: dict[str, tuple[str, list[str]]] = {
                     "[Chunks] ⇒ [FTS5] ⇒ |Index|",
                     "[Query] ⇒ [Facet] ⇒ |Search|",
                     "[Indexed] ⇒ [Clean] ⇒ |Hide|"]),
-    "skilltree":   ("progressive-disclosure tree of skill dirs (cat-breadcrumbs)", [
+    "skilltree":   ("progressive-disclosure tree of skill dirs (Read-breadcrumbs)", [
                     "[Tree] ⇒ [Dirs] ⇒ |Materialize|",
                     "[Root] ⇒ [Breadcrumbs] ⇒ |Validate|",
                     "[Corpus] ⇒ [BM25] ⇒ |Search|"]),

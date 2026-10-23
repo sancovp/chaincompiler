@@ -1,7 +1,7 @@
 """P5.1 — scaffold a federated node repo from a skill tree.
 
 When the SI emits an MCP, it can also stamp a ChainCompiler-SHAPED node repo: the
-skill tree (cat-breadcrumbs), a marketplace registry that **federates under a
+skill tree (breadcrumbs), a marketplace registry that **federates under a
 parent**, a runnable MCP launcher, and a README. The fractal made real — each
 emitted MCP becomes a repo like ours, its marketplace joining under ours.
 
@@ -22,7 +22,7 @@ _NODE_README = """# {name} — a ChainCompiler node
 
 A self-contained skill tree, served as an MCP, federated under `{parent}`.
 
-- **Walk it** — start at `.claude/skills/{root}/SKILL.md` and follow the `cat` breadcrumbs.
+- **Walk it** — start at `.claude/skills/{root}/SKILL.md` and Read each breadcrumb to descend.
 - **Serve it** — `python serve_mcp.py` (an MCP exposing this tree's skills).
 - **Marketplace** — see `registry.json`; this node registers under its parent.
 """
@@ -36,7 +36,7 @@ def scaffold_repo(name: str, tree: SkillTree | str | Path, out_dir: str | Path,
     repo = Path(out_dir) / name
     repo.mkdir(parents=True, exist_ok=True)
 
-    materialize(tree, repo)                      # the node's skill tree (cat-breadcrumbs)
+    materialize(tree, repo)                      # the node's skill tree (breadcrumbs)
     root = tree.root.name
 
     (repo / "registry.json").write_text(json.dumps({          # marketplace, federated

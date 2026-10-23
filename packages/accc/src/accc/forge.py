@@ -1,4 +1,4 @@
-"""ACCC — the Attention-Chain Compiler-Compiler. Made FROM ChainCompiler (spec §3: ACCC imports CC).
+"""ACCC — the Attention-Chain Compiler-Compiler. Made FROM ChainCompiler (DESIGN.md §2: ACCC imports CC).
 
 The compiler-compiler move: `forge` mints a *new* AC language for a task/domain (it doesn't just compile
 one chain). The generic machinery (forge a rulecatcher scope, gate against it, read the grammar, wrap a

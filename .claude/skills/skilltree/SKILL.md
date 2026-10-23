@@ -1,60 +1,58 @@
 ---
 name: skilltree
-description: The primary technology — impose a navigable TREE on the flat `.claude/skills` substrate, and keep it COHERENT. Use when you see a `[SKILLTREE]` system-notification warning (the tree decohered — recohere it), when a `.claude/skills` is a flat forest you can't navigate, when you need to view/engineer/assign-coords on a skill tree, or when you must navigate a big tree without loading the pile. Triggers — "tree decoherence", "recohere", "skilltree", "treeify skills", "the tree shape", "flat forest", "bare forest", "cat down the tree".
+description: "WHAT: turn a flat .claude/skills folder (or any folder of skills) into a walkable coordinate-addressed tree so the model loads one layer at a time instead of the whole pile - the skilltree CLI (discover, cohere, emit, unemit, map, search, fold, project, validate, watch). WHEN: when the user mentions skilltree, skill tree, too many skills, skills all load at once, organize/structure my skills, progressive disclosure for skills, tree-ify a flat skills folder, or a skills folder has grown past the point where tool selection degrades (any of)."
 ---
 
-# skilltree — the tree is the primary technology
+# skilltree — walk the tree, never load the pile
 
-Anthropic's `.claude/skills` is a **flat forest**: it auto-loads **one layer per dir**, `.claude`
-**cannot nest in `.claude`**, and the top can't itself be `.claude`. So the substrate cannot express
-depth — every skill screams into context at once (melt), and you pay a "management" tax to fake
-structure. **skilltree fixes this by imposing a virtual tree on the flat substrate** (rule 01:
-*nothing is a forest; everything is a tree, which contains a forest — `Tree = Root × Forest`*).
+The problem this solves: the platform auto-loads `.claude/skills` one layer
+deep, so at scale EVERY skill lands in context EVERY turn and tool selection
+degrades. skilltree imposes a coordinate-addressed tree on that flat substrate
+using the three levers the runtime leaves open: **path = coordinate**
+(`0 -> 0.1 -> 0.1.1`), **depth = gate** (a nested `.claude` never auto-loads,
+so deeper nodes stay out of context until entered), **Read = edge** (the Read
+tool injects a directory's layer; a shell `cat` injects nothing).
 
-The tree is rendered with three levers:
-1. **placement** — nested *plain* dirs (path = coordinate `0` → `0.1` → `0.1.1`);
-2. **the inert-nested-`.claude` boundary** — only the top layer auto-loads; deeper `.claude/skills`
-   are inert until you `cat` them (this is the load-cutter that makes layers, not a dump);
-3. **`cat`-breadcrumbs + index summary** — each `SKILL.md` ends with literal `cat <path>` links to
-   its children + a "reachable below: …" summary (so a search on a leaf term still finds the branch).
+## Setup (you do this yourself — the user never touches pip)
 
-You **load one layer and walk**; you never load the pile. *Position = identity:* `cat` into a branch
-and that subtree is your world — you lord over it.
+Check, and install if missing:
 
-## If you got here from a `[SKILLTREE]` notification (recohere — the fix)
-
-The decoherence cron found the on-disk tree drifted from its coherent shape. **Recohere it:**
-
-```
-skilltree cohere <root>          # see exactly what drifted (bare forest / stale breadcrumb / coord drift / stray)
-skilltree emit   <root>          # re-cohere IN PLACE: reassign coords + rewrite breadcrumbs (non-destructive)
-skilltree emit   <root> --root-forest --name <root-name>   # if it's a BARE FOREST: synthesize a root + relocate leaves
-skilltree cohere <root>          # confirm: "✓ coherent" → the notice clears on the next check
+```bash
+skilltree --help >/dev/null 2>&1 || pip install agent-skilltree
 ```
 
-`<root>` is the dir whose tree drifted (the user level is `~/.claude`). **`emit` can relocate/remove
-real skill dirs when tree-ifying a forest** — read the `cohere` report first and be sure of `<root>`.
+## The commands
 
-## Engineer or build a tree
+| Command | What it does |
+|---|---|
+| `skilltree tree <root>` | show the coordinate tree on disk |
+| `skilltree cohere <root>` | report drift between reality and the coherent shape (a bare forest, stale breadcrumbs, flat drops) |
+| `skilltree emit <root> [--root-forest] [--localize]` | re-cohere in place; `--root-forest` tree-ifies a flat forest (lossless — every move journaled); breadcrumbs portable unless `--localize` |
+| `skilltree relink <root> [--localize]` | rewrite only the breadcrumb paths: portable (relative to each node's folder — what you commit and ship) or absolute for this machine (`--localize`, after installing a tree) |
+| `skilltree unemit <root>` | reverse the last emit, byte-for-byte |
+| `skilltree map <folder> [--write]` | render ANY flat folder as one coordinate-addressed index (progressive disclosure over a pile) |
+| `skilltree search <folder> <query> [--scope <coord>]` | FTS5/BM25 retrieval; `--scope` restricts to a coordinate subtree |
+| `skilltree fold <framework_dir> --into <node> --tree <root>` | bind a framework into a volume node's tome table (idempotent) |
+| `skilltree project <root> <target> [--policy flat\|progressive]` | deploy a tree into a skills dir as symlinks |
+| `skilltree validate <root>` | gate: every breadcrumb must resolve |
+| `skilltree watch <root>` | the decoherence cron — a drifted tree announces itself |
 
-- **Discover reality:** `skilltree discover <root>` prints the tree that is actually on disk.
-- **From scratch / a manifest:** construct a `SkillTree(TreeNode(...))` (or a `skilltree.json`) and
-  `materialize(tree, root, coords=True)` — or `skilltree build <manifest> <root>`.
-- **Assign coords / re-emit breadcrumbs:** `emit` (above). Coords come from the tree shape
-  (`assign_coords`: root `0`, child *i* = `parent.i`).
-- **Surface to the top:** `link_tree` / `build_forest` symlink a tree's (or a forest's) entry points
-  up into `~/.claude/skills` so they auto-load; everything deeper stays behind `cat`.
+## The one law that makes descent work
 
-## Navigate a tree (don't load it — walk it)
+Breadcrumbs instruct you to **use the Read tool** on a child's SKILL.md — that
+injects the child's layer. A shell `cat` of the same file injects NOTHING (the
+bytes arrive, the skill does not load). Never descend with `cat`.
 
-- You auto-load **only the root layer**. To go deeper, run the `cat` the `## Descend` block gives you.
-- **Search, scoped:** `skilltree search <root> "<query>" --scope 0.1` searches only `0.1` + its
-  descendants ("where you are = what you see"). The index summaries make branches findable by any
-  descendant's terms.
+## The lowest-cost first run (on the user's own skills)
 
-## The decoherence cron (how the notification got there)
+```bash
+skilltree cohere ~/.claude/skills   # see the drift before changing anything
+skilltree emit ~/.claude/skills --root-forest   # tree-ify (reversible: unemit)
+```
 
-`skilltree watch <root> --interval 300` runs in the background: every ~5 min it re-checks the tree
-and rewrites the self-managed `00-system-notifications` rule (`~/.claude/rules`) — "nominal" when
-coherent, ERROR/WARN + this fix when not. It is **read-only on the tree**; the fix is yours to run.
-Single check: `skilltree notify <root>` (or `watch --once`).
+## Going deeper
+
+The full mechanics (verified runtime table, file geometry, invariants, source
+`path:line` map) are in SkillTree's own repository, `github.com/sancovp/skilltree`:
+`README.md`, `papers/skilltree-paper.md` and `papers/flat-vs-tree.md`. This file is a
+copy of that repository's `skills/skilltree/SKILL.md`, kept for agents working here.

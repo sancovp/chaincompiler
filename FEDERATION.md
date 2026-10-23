@@ -1,3 +1,6 @@
+> **REFERENCE DETAIL — the plan behind the marketplace federation. READ when the federation is the task.**
+> The current design is `DESIGN.md` §15.
+
 <div align="center">
 
 # P5 — Federation (plan)

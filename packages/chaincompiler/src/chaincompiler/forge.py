@@ -1,6 +1,6 @@
 """forge.py — the generic compiler-compiler core (the "forge a language" move).
 
-This is the machine the *CC are *made FROM* (META-APE spec §3: ACCC/CORCC/SCCC import CC). A forged
+This is the machine the *CC are *made FROM* (DESIGN.md §2: ACCC/CORCC/SCCC import CC). A forged
 language = a rulecatcher SCOPE holding a ratified grammar; `forge` mints one, `gate_language` enforces it,
 `grammar` reads it back, `package_skill` wraps a compiled body as a publishable `<name>/SKILL.md`. Each
 *CC calls these with its own chain-kind prefix + render/parse and adds nothing to the mechanism.

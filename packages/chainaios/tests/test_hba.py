@@ -1,4 +1,4 @@
-"""Stage 3 — the HBA emits a subagent-dispatch scaffold (DESIGN.md §3, §10 stage 3)."""
+"""Stage 3 — the HBA emits a subagent-dispatch scaffold (DESIGN.md §8, stage 3)."""
 from __future__ import annotations
 
 import re

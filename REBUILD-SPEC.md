@@ -1,11 +1,13 @@
 # CHAINCOMPILER REBUILD SPEC — prompt-engine base, cycle → DAG
 
-> Canonical design doc for the rebuild (rule 26). Branch: `rebuild/prompt-engine-base`.
-> Date: 2026-06-28. Anything marked `ASPIRATIONAL:` is a commitment not yet implemented.
+> **REFERENCE DETAIL — the record of the prompt-engine-base rebuild. READ when the history of the layering
+> is the question; NOT the current design.** The current layering is `DESIGN.md` §2. Where this record
+> differs from it — §7 keeps `bandit` · `gba` · `hba` · `cog` · `construct` in `chaincompiler`; they now live in
+> `chainaios` — `DESIGN.md` is current.
 
 ## 0. Locked decisions
 
-- **D1 — `prompt-engineering` IS the base.** The standalone repo `~/claude_code/prompt-engineering`
+- **D1 — `prompt-engineering` IS the base.** The standalone repo `sancovp/prompt-engineering`
   becomes the single foundation. `chaincompiler` **and** `accc/corcc/sccc` depend **DOWN** on it.
   One source of truth for the prompt engine + the grammar gate + the shared `write_skill`/`slugify`
   utilities. No duplicated engine code, no drift.
@@ -290,5 +292,4 @@ gate.
 ---
 
 *Audit basis: cross-package seam map (every import w/ file:line), old↔new divergence (what the skill
-dropped), core/test/site inventory. This doc is the source of structural truth for the branch; update it
-in the same commit as any architectural change (rule 26).*
+dropped), core/test/site inventory. This record is closed; the source of structural truth is `DESIGN.md`.*

@@ -1,5 +1,5 @@
 """hba.py — the HierarchicalBanditAgent: a GBA whose Select/Construct arms DELEGATE to subagents
-(DESIGN.md §3, §10 stage 3). Scaffold approach: chaincompiler EMITS the structure (subagent defs +
+(DESIGN.md §8, stage 3). Scaffold approach: chaincompiler EMITS the structure (subagent defs +
 the dispatch protocol); a real Claude Code agent does the delegation at runtime via the Agent tool.
 
 Why hierarchy: filling a frame *excellently* needs more domain ACs than fit one window without the
@@ -70,8 +70,8 @@ def _select_agent_def(domain: str, root_node: str) -> str:
         "",
         f"You are the **Select seat** for `{domain}`. Given a task:",
         "",
-        f"1. Search the HBA's tree: `chaincompiler gba search <hba-dir> \"<task>\"`, then `cat` the hits "
-        f"(start at `.claude/skills/{root_node}/SKILL.md`).",
+        f"1. Search the HBA's tree: `chaincompiler gba search <hba-dir> \"<task>\"`, then Read the hits "
+        f"(start at the root, `.claude/skills/0-{root_node}/SKILL.md`).",
         "2. **Neural-match**: judge whether any hit *truly* fits the task — not just keyword overlap.",
         "3. Return ONE line: `EXEC <skill-name>` if a golden chain fits, else "
         "`CONSTRUCT <name>: <attention-chain>` describing the gap to fill.",

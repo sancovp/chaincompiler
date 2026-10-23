@@ -2,7 +2,7 @@
 
 This is the AIOS/orchestration tier that sits ON TOP of ACCC/CORCC/SCCC (it mints a domain's AC + CoR + SC
 and rolls them up into persistent BanditChain-system AIOS dirs). It imports the *CC + the CC base; the CC
-base and the *CC never import it. (META-APE spec §3 keeps `chaincompiler` the compiler-compiler BASE — the
+base and the *CC never import it. (DESIGN.md §2 keeps `chaincompiler` the compiler-compiler BASE — the
 *CC are made FROM CC; this AIOS app is a separate top layer, extracted out of the CC package so CC no
 longer imports the *CC.)
 

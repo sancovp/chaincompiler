@@ -1,4 +1,4 @@
-"""Stage 1 — the General BanditAgent is a PERSISTENT native-CC AIOS (DESIGN.md §3, §10)."""
+"""Stage 1 — the General BanditAgent is a PERSISTENT native-CC AIOS (DESIGN.md §8, stage 1)."""
 from __future__ import annotations
 
 import tempfile
@@ -145,3 +145,33 @@ def test_the_persisted_manifest_names_no_machine_path_and_reconstructs():
     construct_into(g, "perf", ["[Latency] ⇒ [Profile] ⇒ |Hotspot|"])
     assert str(g.root.parent) not in g.manifest.read_text()
     assert search(g, "hotspot")
+
+
+def test_rebuild_refuses_missing_sources_instead_of_writing_stubs():
+    # a GBA copied without its sibling `.<name>.src/` cannot rebuild its bodies; a rebuild must
+    # refuse rather than replace every body with a stub and still validate clean
+    import shutil
+    import pytest
+    g = make_gba("triage", _root(), atoms=["[Symptom] ⇒ [Scope] ⇒ |Severity|"])
+    alone = Path(tempfile.mkdtemp(prefix="test_gba_alone_")) / "triage"
+    shutil.copytree(g.root, alone)
+    copied = load_gba(alone)
+    root_body = (copied.skills_root / "0-triage" / "SKILL.md").read_text()
+    with pytest.raises(FileNotFoundError, match="source"):
+        construct_into(copied, "repro", ["[Repro] ⇒ [Localize] ⇒ |Cause|"])
+    assert (copied.skills_root / "0-triage" / "SKILL.md").read_text() == root_body   # untouched
+
+
+
+def test_rebuild_refuses_a_clone_missing_one_source():
+    # the sibling `.<name>.src/` is present but one body is not (an ignored file a clone never
+    # received): the rebuild must refuse instead of turning that body into a stub
+    import json
+    import pytest
+    g = make_gba("triage", _root(), atoms=["[Symptom] ⇒ [Scope] ⇒ |Severity|"])
+    root_src = (g.root / json.loads(g.manifest.read_text())["skill_src"]).resolve() / "SKILL.md"
+    root_src.unlink()
+    root_body = (g.skills_root / "0-triage" / "SKILL.md").read_text()
+    with pytest.raises(FileNotFoundError, match="source"):
+        construct_into(g, "repro", ["[Repro] ⇒ [Localize] ⇒ |Cause|"])
+    assert (g.skills_root / "0-triage" / "SKILL.md").read_text() == root_body

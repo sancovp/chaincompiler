@@ -13,6 +13,8 @@ never drift from reality. This is a hard rule, not a suggestion.
 
 ## When you finish a unit of work, in the SAME change
 
+0. **Rewrite `DESIGN.md`** where the design changed — it states the current design, one section per
+   part, and nothing else (the history goes in the changelog, step 3).
 1. **Tick the backlog** — flip the item to `[x]` (or add it if it was missing).
 2. **Update `roadmap.json`** — bump the phase/item status if the unit moved it
    (`planned` → `in_progress` → `done`). Mark aspirational tails honestly.

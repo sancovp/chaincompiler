@@ -31,7 +31,7 @@ def build_tree_server(root_dir: str | Path, root_name: str, *, name: str | None 
 
     @server.tool()
     def walk() -> dict:
-        """Return the full tree, traversed by following cat-breadcrumbs."""
+        """Return the full tree, traversed by following its breadcrumbs."""
         return runtime.walk(root_dir, root_name)
 
     return server

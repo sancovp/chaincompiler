@@ -20,11 +20,11 @@
 
 <br/>
 
-**[★ GitHub](https://github.com/sancovp/chaincompiler)** · **[Live site](https://sancovp.github.io/chaincompiler/)** · **[🌼 The Hive Log](https://sancovp.github.io/chaincompiler/blog.html)**
+**[★ GitHub](https://github.com/sancovp/chaincompiler)** · **[Live site](https://sancovp.github.io/chaincompiler/)** · **[🌼 The Hive Log](https://sancovp.github.io/chaincompiler/blog.html)** · **[Design](DESIGN.md)**
 
 <br/>
 
-![tests](https://img.shields.io/badge/tests-185%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
+![tests](https://img.shields.io/badge/tests-240%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
 
 <br/>
 
@@ -70,7 +70,7 @@ The `*CC`s are *constructors*, `skillchain` is the *composition operator*, `Skil
 <img src="assets/roadmap.svg" alt="ChainCompiler roadmap" width="900"/>
 </div>
 
-**P0 Foundation** `✓` · **P1 Project Surface** `✓` · **P2 Exchange** `✓` · **P3 Self-Hosting & SI** `✓` · **P4 Marketplace** `▸` · **P5 Federation** `✓` ([plan](FEDERATION.md)) · **P6 Skill OS** `▸` · **P7 Plugin** `▸`
+**P0 Foundation** `✓` · **P1 Project Surface** `✓` · **P2 Exchange** `✓` · **P3 Self-Hosting & SI** `✓` · **P4 Marketplace** `▸` · **P5 Federation** `✓` ([plan](FEDERATION.md)) · **P6 Skill OS** `▸` · **P7 Plugin** `▸` · **P8 GlyphSteer** `▸` · **P9 Tome** `▸`
 
 Full detail in **[ROADMAP.md](ROADMAP.md)** (live on the **[site](site/)**); concrete tasks in **[BACKLOG.md](BACKLOG.md)**. The image and the site are *generated* from [`roadmap.json`](roadmap.json) by [`scripts/update_site.py`](scripts/update_site.py) — edit the data, run the script, everything updates.
 
@@ -114,7 +114,7 @@ honeyc render examples/mbr.rune --as prose
 
 <br/>
 
-Wires the linter + compiler into the `learn → gate → compile` loop, writes the result as a `SKILL.md`, and exposes the top-door `construct_language()`. One name over the whole stack.
+Wires the linter + compiler into the `learn → gate → compile` loop and writes the result as a `SKILL.md`. The agent tier above the chain compilers, **`chainaios`**, adds the top-door `construct_language()`, the roll-up into closed chain systems and the agent shapes (GBA · COG · HBA), and installs the `chaincompiler` command. The whole design is [`DESIGN.md`](DESIGN.md).
 
 ```bash
 chaincompiler layers     # print the stack
@@ -228,17 +228,17 @@ archetype demo
 
 The state-machine mechanics are G0-by-definition; the music↔archetype frame is a G8
 resonance; whether the Becoming-cycle **closes or only tempers** (the comma) is the
-open seam. Spec: [ARCHETYPE-COMPILER.md](ARCHETYPE-COMPILER.md).
+open seam. Its spec, `ARCHETYPE-COMPILER.md`, is not yet published with this repo ([`DESIGN.md`](DESIGN.md) §12).
 </details>
 
 ---
 
-## SkillTree — a tree you `cat` your way down
+## SkillTree — a tree you Read your way down
 
-Claude Code auto-loads **only the root** `.claude/skills/` and **won't descend** into a nested `.claude`. So the tree lives in **`cat`-breadcrumbs**: each node's `SKILL.md` body hands you the `cat` command for its children. Load one root, walk to the exact leaf you need — nothing else pollutes context. It's progressive disclosure implemented in the filesystem, **JSON-driven**, and **validated** (the platform never checks the breadcrumbs — so we do).
+Claude Code auto-loads **one layer** of `.claude/skills/` and **won't descend** into a nested `.claude` until you read into its folder. So the tree lives in **breadcrumbs**: each node's `SKILL.md` body names each child's `SKILL.md`, and Reading it (the Read tool — a shell `cat` loads nothing) injects that child's layer. Load one root, walk to the exact leaf you need — nothing else pollutes context. It's progressive disclosure implemented in the filesystem, **JSON-driven**, and **validated** (the platform never checks the breadcrumbs — so we do).
 
 <div align="center">
-<img src="assets/skilltree.svg" alt="SkillTree cat-breadcrumb structure" width="760"/>
+<img src="assets/skilltree.svg" alt="SkillTree breadcrumb structure" width="760"/>
 </div>
 
 <details>
@@ -260,10 +260,10 @@ The root's body — the breadcrumbs:
 
 ```markdown
 ## Descend — the next layer (2)
-Auto-load stops here (nested `.claude` will not load). To go deeper, run the `cat`:
+Only this layer is loaded now. To descend, use the **Read tool** on a child below — that injects the child's layer (its persona + skills). …
 
-- reason (cor): `cat /…/cc_tree_test/reason/.claude/skills/reason/SKILL.md`
-- debug  (cor): `cat /…/cc_tree_test/debug/.claude/skills/debug/SKILL.md`
+- reason (cor): Read `reason/.claude/skills/reason/SKILL.md`
+- debug (cor): Read `debug/.claude/skills/debug/SKILL.md`
 ```
 </details>
 
@@ -283,14 +283,14 @@ The manifest is the org chart — **edit it however you want, rebuild, and every
 # one clone, one command, no external setup.
 ./install.sh            # pip install -e packages/* (no-deps)
 
-python3 examples/_all/run_all.py   # ⭐ THE everything example — one domain through ALL 10
+python3 examples/_all/run_all.py   # ⭐ THE everything example — one domain through 10
                                    #    packages, end to end: persona → honeyc → gate →
-                                   #    construct → tree → steer → custody → interpret.
-                                   #    19/19 checks; the closed algebra, dogfooded.
+                                   #    construct → tree → steer → interpret.
+                                   #    16/16 checks; the closed algebra, dogfooded.
 
 chaincompiler demo      # construct a 'triage' language: AC + CoR + SC in one call
 sccc        demo        # chain an AC + CoR + skill into one SKILL.md
-skilltree   demo        # build a cat-breadcrumb tree, walk it, break a crumb → caught
+skilltree   demo        # build a breadcrumb tree, walk it, break a crumb → caught
 ```
 
 > **[`examples/_all`](examples/_all)** is the dogfood: not ten isolated demos, but
@@ -298,9 +298,9 @@ skilltree   demo        # build a cat-breadcrumb tree, walk it, break a crumb �
 > produces or consumes the same type (a skill dir), so the algebra actually closes.
 
 ```python
-import chaincompiler as cc
+import chainaios
 from corcc.notation import EINSTEIN
-bundle = cc.construct_language(
+bundle = chainaios.construct_language(
     "triage",
     ac_chain="[Symptom] ⇒ [Scope] ⇒ |Severity|",
     cor_persona=EINSTEIN,
@@ -314,12 +314,17 @@ bundle = cc.construct_language(
 
 ```
 chaincompiler/                 # the monorepo (this repo)
-  README · ROADMAP · FEDERATION · roadmap.json   # project surface
-  assets/ · site/ · scripts/ · .github/          # roadmap SVG, site, generators, deploy
+  DESIGN.md                                      # the design, one section per part — read first
+  README · ROADMAP · BACKLOG · roadmap.json      # project surface (the changelog is below)
+  assets/ · site/ · scripts/ · .github/          # roadmap SVG, site, generators, workflows
+  skills/ · .mcp.json · .claude-plugin/          # the plugin payload
+  personas/ · examples/ · chains/                # worked agents · end-to-end examples · skillchain specs
   packages/
-    rulecatcher/                                   # the gate (vendored; zero deps)
-    chaincompiler/   accc/   corcc/   sccc/       # substrate + the three layers
-    si/   honeyc/   skillchain-compiler/   glyphsteer/   archetype/
+    rulecatcher/   honeyc/   skillchain-compiler/  # the engine (rulecatcher: zero deps)
+    chaincompiler/                                 # the base
+    accc/   corcc/   sccc/                         # the chain tier
+    chainaios/                                     # the agent tier (owns the `chaincompiler` CLI)
+    personacc/   personapack/   goldenreq/   glyphsteer/   archetype/   framework/   si/
 ```
 
 `./install.sh` wires every package editable. **SkillTree** is published standalone on PyPI as
@@ -338,7 +343,7 @@ COR         IS A spoken AC that decides       →  COR HAS AC
 SC          IS A sequence                      →  SC HAS COR, AC, skills
 *CC         IS A syntax compiler               →  *CC PRODUCES SKILL_DIR
 skillchain  PRODUCES SKILL_DIR from SKILL_DIRs (composition closes)
-SkillTree   IS A tree of SKILL_DIRs            (wired by cat-breadcrumbs)
+SkillTree   IS A tree of SKILL_DIRs            (wired by Read-breadcrumbs)
 BANDIT      IS A ChainSelector                 (the default COR: select vs construct)
 BANDIT      PRODUCES BanditChainSystem         (roll up AC→COR→SC, CLOSE it → a domain persona)
 BanditChainSystem  HAS KB, GlyphSteer-self-improve  (the persona builds + reads itself better)
@@ -348,6 +353,16 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.1.57 — 2026-10-23
+- **ChainCompiler has a design: [`DESIGN.md`](DESIGN.md).** One section per part, in dependency order — the one type, the layers, the engine, the base, the chain compilers, personas, the agent tier and its shapes, goldenization, organization, retrieval steering, the archetype compiler, the chapter rung, the self-interpreter, the marketplace, the plugin, the project surface, publishing, the tests, and the agent that knows ChainCompiler. No design document existed before, while the code cited one (`DESIGN.md §3, §10 stage 1`, …) and a `META-APE spec §3` that is not in this repo; every such citation now points at a section of `DESIGN.md`. `REBUILD-SPEC.md`, `FEDERATION.md` and `DIETC-AIOS-REBUILD.md` are marked reference detail for the sections that own them, and the README, the orientation skill and rules 00/01/02/10/20/22 agree with it — the component and package diagrams are redrawn from the real imports, including the one lazy import cycle (the base's `persona` ⇄ glyphsteer), now listed as owed.
+- **Everything the agent tier generates agrees with the design.** Every GBA and HBA rule files a goldenization request (`goldenreq`) when a chain earns 🏆 twice — the generator had kept telling each agent to promote its own chains — and every generated instruction descends by Read, never `cat` (the GBA loop rule, the COG role and flow, the HBA select-agent, whose start path now names the real root `0-<domain>`); the `bandit-chain-system` skill in all four copies imports from `chainaios` and says the same; the two committed personas are regenerated from the fixed generator.
+- **A GBA never rebuilds over a missing body.** `construct_into` and `_apply_tree` refuse when a gated body is missing, where they had silently written a stub and still validated clean; the two personas' root bodies are tracked (they sat in `.src/dist/`, ignored as `dist/`, so a clone lost them), and both personas rebuild byte for byte from a clean checkout.
+- **The examples run again.** `examples/_all/run_all.py` — the everything example — and `bandit_self.py` called `construct_language` / `roll_up_algebra` / `hierarchicalize` on `chaincompiler`, which stopped exporting them when the agent tier moved to `chainaios`; the published `run_all.py` failed at stage 4. `examples/nutrition` imported `chaincompiler.gba` and predated the portable `gba.json`.
+- **si:** a walk resolves each relative breadcrumb at its node's folder (SkillTree ≥0.4.0 writes them so; it had resolved them against the working directory and stopped one level down), and `read_skill` finds a skill in a coordinate-addressed tree (folders named `<coord>-<name>`). Each fix has a test that fails on the old code.
+- **The plugin:** `skills/report-missed-skill` and its dev-surface twin were symlinks into `packages/skilltree/`, removed on 2026-06-27, so the plugin shipped a broken skill; restored byte-exact from this repo's history. Version 0.2.2 (the payload changed, and an installed plugin updates only when the version moves); its description lists what it ships. Every generated description is colon-free — the capability generator, the roll-up's tree descriptions and bigdog's build had each written one SkillTree or APE cannot quote — so all 113 `SKILL.md` parse, and each committed output equals what its generator writes.
+- **BACKLOG and the rest:** the BACKLOG names every defect `DESIGN.md` marks owed; no home-relative path to the author's folders remains (personapack's provenance and receipts name the private repository, rule 02's evidence names a test project); `scripts/promote.py` imports SkillTree from the installed package; the `skilltree` dev skill is a copy of SkillTree's own.
+- Suite: 240 passed (`pytest packages`); `examples/_all` 16/16, `bandit_self` 7/7, `examples/nutrition` 2/2 and the import contract kept — in a fresh environment built by `./install.sh`.
 
 ### v0.1.56 — 2026-10-23
 - **A clean install now gets everything.** `install.sh` installs the packages with `--no-deps` and names their outside dependencies by hand; that list lacked `lark` and `pyyaml` (honeyc), `click` (every CLI) and `fastmcp` (the si MCP), so a clean clone in an empty environment could not import honeyc — 17 test modules failed to collect. Found by the first clean-install test of the published repo; every non-optional dependency the packages declare is now installed. The same test found three packages `install.sh` never listed — `personacc`, `personapack` and `goldenreq` — so they are installed too, and goldenreq's ninth test (which needs `personacc`) passes. The plugin description no longer asks for a separate `pip install fastmcp`.
@@ -555,17 +570,22 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 |---|---|---|
 | `rulecatcher` | the linter / gate | 43 |
 | `honeyc` (+ `dietc`) | the compiler (+ domain proof) | 36 |
-| `chaincompiler` | substrate + umbrella | 6 |
-| `accc` / `corcc` / `sccc` | the three layers | 5 / 5 / 6 |
-| `agent-skilltree` | the organization (published on PyPI, ≥0.4.0; import `skilltree`) | — (its own suite) |
+| `chaincompiler` | the base | 14 |
+| `accc` / `corcc` / `sccc` | the chain tier | 6 / 5 / 6 |
+| `chainaios` | the agent tier (GBA · COG · HBA) | 23 |
+| `personacc` / `personapack` | personas | 14 / 20 |
+| `goldenreq` | the acceptance gate | 9 |
+| `glyphsteer` | retrieval steering | 37 |
 | `archetype` | archetype-as-state-machine compiler | 11 |
+| `framework` | the chapter rung | 6 |
+| `si` | the self-interpreter | 10 |
+| `agent-skilltree` | the organization (published on PyPI, ≥0.4.0; import `skilltree`) | — (its own suite) |
 
-**182 passing** (`pytest packages/`; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
+**240 passing** (`pytest packages/`; the examples are checked separately — `DESIGN.md` §19; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
 
 ### Not done yet (honestly)
 
-- **`execute` / `search`** — the bandit's other two arms. `construct` is end-to-end; a programmatic `skilltree walk` is sketched, not built.
-- **Global install** — nothing auto-loads into real sessions until a tree/language lands in `~/.claude/skills`.
+Every known defect is marked **⚠ OWED** in [`DESIGN.md`](DESIGN.md), with its task in [`BACKLOG.md`](BACKLOG.md) — among them: the plugin install does not yet bring the Python packages with it, and the release has three version lines.
 
 ---
 

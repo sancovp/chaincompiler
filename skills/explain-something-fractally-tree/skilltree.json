@@ -3,7 +3,7 @@
     "name": "explain-something-fractally",
     "kind": "sc",
     "skill_src": null,
-    "description": "explain-something-fractally: explain anything as an LFP roll-up \u2014 overview, enumerate the parts, define each part (what/when/how/utility), recurse into any part that needs its own pass until the fixed point closes, then compose the whole granularly",
+    "description": "explain-something-fractally \u2014 explain anything as an LFP roll-up \u2014 overview, enumerate the parts, define each part (what/when/how/utility), recurse into any part that needs its own pass until the fixed point closes, then compose the whole granularly",
     "coord": null,
     "frameworks": [],
     "children": [

@@ -1,4 +1,4 @@
-# import-linter — the layering kill-criterion (META-APE spec §3).
+# import-linter — the layering kill-criterion (DESIGN.md §2).
 # Enforces the target DAG: imports only ever point DOWN.
 #   chainaios (Bandit AIOS) > sccc > corcc > accc (cognition) > chaincompiler (compiler-compiler) > prompt_engineering (APE base)
 # The *CC are MADE FROM chaincompiler (they import it); chaincompiler imports only APE and NEVER the *CC.

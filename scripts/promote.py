@@ -11,9 +11,8 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-# canonical logic lives in the installed package
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "packages" / "skilltree" / "src"))
-from skilltree.registry import promote  # noqa: E402
+# canonical logic lives in the installed package (agent-skilltree, import `skilltree`)
+from skilltree.registry import promote
 
 ROOT = Path(__file__).resolve().parent.parent
 

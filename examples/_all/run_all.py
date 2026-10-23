@@ -10,8 +10,8 @@ green from a clean clone and proves the whole stack composes on a single artifac
     persona  → AIOS dir (legend + gated chain + SKILL.md)         [chaincompiler.persona]
     honeyc   → parse a dense-rune chain into statements           [honeyc]
     gate     → rulecatcher admits valid syntax, rejects foreign   [chaincompiler.bridge]
-    construct→ AC + CoR + SC minted in one call                   [accc · corcc · sccc]
-    organize → a cat-breadcrumb SkillTree, materialized+validated [skilltree]
+    construct→ AC + CoR + SC minted in one call                   [chainaios over accc · corcc · sccc]
+    organize → a breadcrumb SkillTree, materialized+validated [skilltree]
     steer    → glyph-faceted retrieval; markers hidden on return  [glyphsteer]
     interpret→ walk the tree + run a chain-dialect snippet        [si]
 
@@ -26,6 +26,7 @@ from pathlib import Path
 
 # the whole stack
 import chaincompiler as cc
+import chainaios
 from chaincompiler.persona import compile_persona
 from rulecatcher.db import connect
 import honeyc
@@ -87,7 +88,7 @@ def main() -> int:
     #     No cor_persona ⇒ the DEFAULT persona = corcc.BANDIT = the ChainSelector.
     #     The default agent doesn't get a flavor; it gets the selector itself.
     section(4, "construct_language — mint reviewer AC + CoR + SC; the DEFAULT CoR is the bandit")
-    bundle = cc.construct_language(
+    bundle = chainaios.construct_language(
         "reviewer",
         ac_chain="[Claim] ⇒ [Evidence] ⇒ |Grade|",
         db=db, skills_dir=str(skills), out_dir=str(dist),
@@ -98,7 +99,7 @@ def main() -> int:
     check("default persona = BanditChain (the selector)", "bandit" in paths["cor"].parent.name.lower(),
           f"CoR is {paths['cor'].parent.name} (select↔construct, not a flavor)")
 
-    # ── 5. skilltree — organize into a cat-breadcrumb tree, validate ─────────
+    # ── 5. skilltree — organize into a breadcrumb tree, validate ─────────
     section(5, "SkillTree — organize the cognition into a breadcrumb tree, materialize + validate")
     tree = SkillTree(TreeNode("reviewer", "sc", description="review & grade a claim", children=[
         TreeNode("evidence", "cor", description="weigh the evidence for a claim", children=[
@@ -150,8 +151,8 @@ def main() -> int:
     passed = sum(1 for _, ok, _ in results if ok)
     total = len(results)
     print(f"\n{'═'*60}")
-    print(f"  _all: {passed}/{total} checks passed — 7 stages across 9 packages on ONE domain")
-    print(f"  (chaincompiler · honeyc · rulecatcher · accc · corcc · sccc · skilltree · glyphsteer · si)")
+    print(f"  _all: {passed}/{total} checks passed — 7 stages across 10 packages on ONE domain")
+    print(f"  (chaincompiler · honeyc · rulecatcher · accc · corcc · sccc · chainaios · skilltree · glyphsteer · si)")
     print(f"  the ONE type round-tripped: persona→honeyc→gate→construct→tree→steer→interpret")
     print(f"{'═'*60}")
     failed = [s for s, ok, _ in results if not ok]

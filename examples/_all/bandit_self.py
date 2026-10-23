@@ -16,7 +16,7 @@ from __future__ import annotations
 import tempfile
 from pathlib import Path
 
-import chaincompiler as cc
+import chainaios
 
 results: list[tuple[str, bool, str]] = []
 
@@ -32,7 +32,7 @@ def main() -> int:
 
     # ── 1. the bandit rolls up ONE domain into a CLOSED chain system ─────────
     print("══ 1. roll up the algebra for a domain → a closed bandit chain system ══")
-    sys = cc.roll_up_algebra(
+    sys = chainaios.roll_up_algebra(
         "triage",
         ["[Symptom] ⇒ [Scope] ⇒ |Severity|", "[Repro] ⇒ [Localize] ⇒ |Cause|"],
         db=str(work / "cc.db"), skills_dir=str(work / "skills"),
@@ -50,7 +50,7 @@ def main() -> int:
 
     # ── 2. the bandit applies the SAME move to EVERYTHING IT IS MADE OF ──────
     print("\n══ 2. hierarchicalize: roll up over the bandit's own components → self-view ══")
-    view = cc.hierarchicalize(workdir=str(work / "self"))
+    view = chainaios.hierarchicalize(workdir=str(work / "self"))
     for s in view.systems:
         print(f"     - {s.domain:12s} closed={s.closed}  (AC×{len(s.ac)} · {s.cor.parent.name})")
     check("every component closed", all(s.closed for s in view.systems),

@@ -38,7 +38,7 @@ itself (`|RecurseOrClose|`), sequenced by the SC.
 3b. **GBA lane — seat the sub-domain personas deliberately.** `construct_into(g, name, atoms, persona=PersonaSpec(...))` makes that branch a **LORD** (its own `CLAUDE.md`, re-emitted from `gba.json`'s `_lord` after every materialize) — descending into its dir SEATS you as it. Omitting `persona=` deliberately leaves it the root lord's own region (rule 01's warrant clause). Verify a lord by DESCENT (Read into the dir; the persona + its scoped skill must inject), never by reading the emitter.
 4. **Plugin surface**: `skills/` IS the plugin payload — update the skill enumeration in `.claude-plugin/plugin.json` + `marketplace.json`, bump the plugin version.
 5. BACKLOG tick/row + README `## Changelog` new `### vX.Y.Z — date` block + `python3 scripts/update_site.py` (commit `site/data.json`). `roadmap.json` only if a phase moved.
-6. **The topology line (never skip):** state in the commit/report where the change is homed — "monorepo-side; upstream sync pending the authoritative-source decision" — and never resolve that decision silently.
+6. **The topology line (never skip):** state in the commit/report that the change is made at the source home and reaches the public repo through the publish pipeline on merge (`DESIGN.md` §18) — never edit the public repo.
 
 ## THE CHANGE (the call sequence)
 

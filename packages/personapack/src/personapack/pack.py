@@ -13,7 +13,7 @@ provenance strata, three honest grades (entry.GRADES):
                       (a cross-repo script, so copied rather than imported).
   tested-with-receipt Bodhisattva, SamayaReviewer, ParamitaReader — seated into
                       real GBAs by a live LLM which left artifacts under
-                      `~/aios-research/proof/`.
+                      `proof/` in the author's private aios-research repository.
 
 Honesty notes:
   - BODHISATTVA is fully recoverable (cues and all) from `proof/siddhi-test/
@@ -149,7 +149,7 @@ FBG_ACS = (
 # STRATUM 3 — VENDORED from the proof runs (tested-with-receipt)
 # ══════════════════════════════════════════════════════════════════════════════
 
-# vendored VERBATIM (cues and all) from ~/aios-research/proof/siddhi-test/build_siddhi.py
+# vendored VERBATIM (cues and all) from proof/siddhi-test/build_siddhi.py (the author's private aios-research repository)
 BODHISATTVA = PersonaSpec(
     name="Bodhisattva",
     blurb="deliberates every action through the 9 considerations, re-typed for the LLM substrate, "
@@ -485,10 +485,10 @@ def _build_pack() -> dict[str, PackEntry]:
               "attractors: deliberate an action through the 9 considerations, SEAL it with "
               "bodhicitta, and accept on PROCESS not surface — catching the facade-of-non-breaking "
               "transgression a string check misses.",
-        provenance="~/aios-research/proof/siddhi-test/build_siddhi.py — the 9 considerations "
+        provenance="aios-research (private): proof/siddhi-test/build_siddhi.py — the 9 considerations "
                    "(traditional Mahayana bodhisattva ethics) re-typed for the LLM substrate",
         grade="tested-with-receipt",
-        receipt="~/aios-research/proof/siddhi-test/ — build_siddhi.py seats BODHISATTVA into the "
+        receipt="aios-research (private): proof/siddhi-test/ — build_siddhi.py seats BODHISATTVA into the "
                 "siddhi-aios GBA (14-move CoR, closed tree, CLAUDE.md melt-gauge rendered)",
         domain="ethics/action-deliberation"))
     entries.append(_e(
@@ -498,10 +498,10 @@ def _build_pack() -> dict[str, PackEntry]:
               "to (vow → really-done → witnessed → consequences-for-lying). Seated on code review it "
               "makes leaving a findable defect unfound a broken vow: enumerate, hunt silent "
               "failures / leaks / aliasing / identity bugs / edge cases, then accept on process.",
-        provenance="~/aios-research/proof/geom-test/ — 'samaya' (Vajrayana samaya vow) bound to a "
+        provenance="aios-research (private): proof/geom-test/ — 'samaya' (Vajrayana samaya vow) bound to a "
                    "code-review CoR",
         grade="tested-with-receipt",
-        receipt="~/aios-research/proof/geom-test/ — reviewer-aios GBA seated with SAMAYA_REVIEWER; "
+        receipt="aios-research (private): proof/geom-test/ — reviewer-aios GBA seated with SAMAYA_REVIEWER; "
                 "found-A-words.md + found-B-geometry.md + BUGS-KEY2.md record 20+ real defects it "
                 "found in buggy2.py (shadowed builtins, mutable defaults, TOCTOU, resource leaks …)",
         domain="code-review/defect-finding"))
@@ -511,10 +511,10 @@ def _build_pack() -> dict[str, PackEntry]:
         notes="'paramita' (the perfections — diligence, patience) binds a no-shortcut reading "
               "discipline: never grep-and-guess; follow every import and call to the file that "
               "actually decides the value, exhaust the trace, then verify.",
-        provenance="~/aios-research/proof/retrieval-test/ — the paramitas (Mahayana perfections) "
+        provenance="aios-research (private): proof/retrieval-test/ — the paramitas (Mahayana perfections) "
                    "bound to a codebase-reading CoR",
         grade="tested-with-receipt",
-        receipt="~/aios-research/proof/retrieval-test/ — reader-aios GBA seated with PARAMITA_READER, "
+        receipt="aios-research (private): proof/retrieval-test/ — reader-aios GBA seated with PARAMITA_READER, "
                 "run over the multi-file pkg/ codebase (config→profiles→overrides→steps→pipeline "
                 "import chain) as an import-following retrieval proof",
         domain="code-retrieval/reading"))

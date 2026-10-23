@@ -30,9 +30,9 @@ not a flavor — so the result still chooses select-vs-construct, but inside one
 ## The move (do this)
 
 ```python
-import chaincompiler as cc
+import chainaios
 
-system = cc.roll_up_algebra(
+system = chainaios.roll_up_algebra(
     "triage",                                   # the domain
     ["[Symptom] ⇒ [Scope] ⇒ |Severity|",        # one or more attention chains (atoms)
      "[Repro] ⇒ [Localize] ⇒ |Cause|"],
@@ -62,7 +62,8 @@ The `CLAUDE.md` carries two standing self-instructions:
 2. **Improve yourself via GlyphSteer chains** — annotate the KB with the legend, then
    `glyphsteer.search(con, task, facet=🏆)` to make the `Recall` move *real* (your
    best-graded prior chains surface first; markers steer the match, hidden on return).
-   Promote a chain to golden when it earns 🏆 twice (mint it via `roll_up_algebra`);
+   When a chain earns 🏆 twice, file a goldenization request (`goldenreq`) with the graded
+   notes as evidence — it becomes golden only on an accepted verdict, never by itself;
    demote ❌ chains out of `Recall`. **The KB + legend ARE your bandit policy.**
 
 ## Hierarchicalize — apply the move over what you are MADE OF
@@ -73,7 +74,7 @@ skilltree, si, honeyc, rulecatcher) → a closed chain system per part, organize
 one master SkillTree. That is the homoicon — a more granular view of yourself.
 
 ```python
-view = cc.hierarchicalize(workdir="self")
+view = chainaios.hierarchicalize(workdir="self")
 assert view.closed                              # every component closed + master tree valid
 # view.systems  → one BanditChainSystem per component
 # view.tree_root → the master "bandit-self" tree (your granular self-view)

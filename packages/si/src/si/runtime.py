@@ -11,6 +11,7 @@ from pathlib import Path
 import re
 
 _CRUMB = re.compile(r"`([^`]+/SKILL\.md)`")     # the backticked SKILL.md path, verb-agnostic
+_COORD = re.compile(r"^\d+(?:\.\d+)*-")         # a coordinate-addressed folder: `0.1-<name>`
 
 
 def _skill_md(node_dir: Path, name: str) -> Path:
@@ -26,8 +27,12 @@ def _walk_md(md: Path) -> dict:
     if not md.is_file():
         node["error"] = "missing"
         return node
+    node_dir = md.parents[3]          # <node>/.claude/skills/<name>/SKILL.md → <node>
     for p in _CRUMB.findall(md.read_text(encoding="utf-8")):
-        node["children"].append(_walk_md(Path(p)))
+        child = Path(p)
+        if not child.is_absolute():       # a portable crumb is relative to the node's folder
+            child = node_dir / child      # (SkillTree ≥0.4.0); a localized one is absolute
+        node["children"].append(_walk_md(child))
     return node
 
 
@@ -48,8 +53,10 @@ def reachable(root_dir: str | Path, root_name: str) -> list[str]:
 
 
 def read_skill(root_dir: str | Path, name: str) -> str | None:
-    """Search the tree for a skill by name; return its body (the search arm)."""
+    """Search the tree for a skill by name; return its body (the search arm). A coordinate-addressed
+    tree names each skill's folder `<coord>-<name>`; the name matches with or without the coordinate."""
     for md in Path(root_dir).rglob("SKILL.md"):
-        if md.parent.name == name:
+        folder = md.parent.name
+        if folder == name or _COORD.sub("", folder) == name:
             return _strip_front(md.read_text(encoding="utf-8"))
     return None

@@ -1,6 +1,6 @@
 ---
 name: adam-curtis-narration-style
-description: adam-curtis-narration-style: calm declarative narration that binds one strange concrete story to a civilizational claim and ends unresolved — the moves are the operations the narration performs, not the topics it lands on
+description: adam-curtis-narration-style — calm declarative narration that binds one strange concrete story to a civilizational claim and ends unresolved — the moves are the operations the narration performs, not the topics it lands on
 ---
 
 SkillTree sc node `adam-curtis-narration-style`.

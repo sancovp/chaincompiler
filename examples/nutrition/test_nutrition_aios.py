@@ -14,7 +14,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from build import build  # noqa: E402
 
-from chaincompiler.gba import load_gba, search  # noqa: E402
+from chainaios.gba import load_gba, search  # noqa: E402
 
 import dietc  # noqa: E402
 from dietc import engine, load  # noqa: E402

@@ -23,7 +23,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from chaincompiler.gba import make_gba, _apply_tree, _rule_blocks
+from chainaios.gba import make_gba, _apply_tree, _resolved, _rule_blocks
 from chaincompiler.skillpack import skill_markdown, slugify
 
 HERE = Path(__file__).resolve().parent
@@ -121,7 +121,7 @@ def build(root: "Path | str" = AIOS) -> "object":
     # 2. append the two flow-skills (same mechanism make_gba uses for the loop flow):
     #    write the body to the persisted src scratch, add a tree node, re-materialize + re-index.
     src = root.parent / f".{root.name}.src"
-    tree_dict = json.loads(g.manifest.read_text())
+    tree_dict = _resolved(json.loads(g.manifest.read_text()), g.root)   # gba.json stores paths relative to the AIOS root
     for name, kind, desc, body in [
         ("nutrition-recommend", "cor", "the patch decision, spoken — weigh gaps vs caps → decide", RECOMMEND),
         ("compile-day", "sc", "the nutrition pipeline: load → day-state → gapcap → patch → safety → render", COMPILE_DAY),
@@ -131,7 +131,7 @@ def build(root: "Path | str" = AIOS) -> "object":
         (d / "SKILL.md").write_text(skill_markdown(name, desc, body))
         tree_dict["children"].append(
             {"name": slugify(name), "kind": kind, "description": desc, "skill_src": str(d)})
-    viol, n = _apply_tree(g, tree_dict)
+    viol, n, _lords = _apply_tree(g, tree_dict)
     g.report.update({"violations": viol, "indexed_skills": n})
     g.closed = g.closed and viol == 0
     return g

@@ -1,6 +1,6 @@
 ---
 name: explain-something-fractally
-description: explain-something-fractally: explain anything as an LFP roll-up — overview, enumerate the parts, define each part (what/when/how/utility), recurse into any part that needs its own pass until the fixed point closes, then compose the whole granularly
+description: explain-something-fractally — explain anything as an LFP roll-up — overview, enumerate the parts, define each part (what/when/how/utility), recurse into any part that needs its own pass until the fixed point closes, then compose the whole granularly
 ---
 
 SkillTree sc node `explain-something-fractally`.

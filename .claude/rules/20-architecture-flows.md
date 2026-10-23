@@ -33,7 +33,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant U as user / agent
-    participant CC as ChainCompiler
+    participant CC as chainaios
     participant A as ACCC
     participant C as CORCC
     participant S as SCCC
@@ -46,11 +46,11 @@ sequenceDiagram
 
 ---
 
-## 3. SkillTree — surface up, then `cat` down (progressive disclosure)
+## 3. SkillTree — surface up, then Read down (progressive disclosure)
 
 A skill dir's nested `.claude/skills` is **not** auto-loaded (the scan is
 non-recursive within `.claude/skills`). So entry points are symlinked UP to the
-top, and the agent `cat`s DOWN the breadcrumbs.
+top, and the agent Reads DOWN the breadcrumbs (`02-the-autoload-mechanism.md`).
 
 ```mermaid
 sequenceDiagram
@@ -63,7 +63,7 @@ sequenceDiagram
     ST->>User: symlink root + branches (0-root, 0.1-…)
     Note over CC,User: session start → auto-loads ONLY the top entries
     CC->>Ag: available skills = root + first layer (coord-sorted)
-    Ag->>Ag: cat <breadcrumb to child>  (= work in child subdir)
+    Ag->>Ag: Read the child's SKILL.md (its breadcrumb)  (= work in the child's folder)
     Note over Ag: on-demand load of that child's skills; leaves stay hidden until reached
 ```
 

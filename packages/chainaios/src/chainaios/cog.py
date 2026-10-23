@@ -1,4 +1,4 @@
-"""cog.py — a COG is a FLOW through three role-AIOS directories (DESIGN.md §4, §10).
+"""cog.py — a COG is a FLOW through three role-AIOS directories (DESIGN.md §8, stage 2).
 
 COG = Challenger · Observer · Generator. It is **not** a function with a return value — it is a flow
 you *walk*. Each seat is a DIRECTORY (an AIOS / GBA) you GO TO to learn the role, perform the action,
@@ -12,7 +12,7 @@ prompt, a skill in the COG's tree — that the agent reads and travels:
 
 It is **all prompts**. The Python here only GUARANTEES SHAPE at build time — it gates syntax, places
 names/coordinates, validates the tree, makes it searchable. There is no runtime engine: you travel the
-dirs and it works via skills + the cat system. (That is why there is no `run_cog`: the agent IS the run.)
+dirs and it works via skills + the Read breadcrumbs. (That is why there is no `run_cog`: the agent IS the run.)
 """
 from __future__ import annotations
 
@@ -28,7 +28,7 @@ from chaincompiler import skill_markdown, slugify   # the CC base
 
 SEATS = ("C", "O", "G")
 
-# the topology lattice (DESIGN §10 stage 4): each of C/O/G is a GBA or an HBA → 2³ patterns.
+# the topology lattice (DESIGN.md §8, stage 4): each of C/O/G is a GBA or an HBA → 2³ patterns.
 PATTERNS: dict[str, set[str]] = {
     "flat":    set(),                 # all GBA
     "G-hba":   {"G"},
@@ -76,7 +76,7 @@ def _cog_role(domain: str) -> str:
         "- **O** — Observer  — `./O/` (go there; become it; observe; feed the next C)",
         "",
         "Each seat is its own AIOS (its own CLAUDE.md, rules, tree, kb). Artifacts stay in the seat dir "
-        "or in the shared `./workspace/`. Your **default workflow is the `*-cog` flow skill** — `cat` it "
+        "or in the shared `./workspace/`. Your **default workflow is the `*-cog` flow skill** — Read it "
         "from `.claude/skills/` and walk it. It is all prompts; you travel the dirs and it works via skills.",
     ])
 
@@ -97,17 +97,17 @@ def _cog_flow(domain: str) -> str:
     return "\n".join([
         f"This is the **default workflow for the `{domain}` domain** — a flow, not a function. You don't "
         "call anything; you TRAVEL the three role-directories and perform each role. Everything is a skill; "
-        "find them via the cat system + `chaincompiler gba search`.",
+        "find them by Reading the breadcrumbs + `chaincompiler gba search`.",
         "",
         "## Walk it",
         "",
-        "1. **C — Challenger.** `cat ./C/CLAUDE.md` and become it. Frame the task; ask the questions this "
+        "1. **C — Challenger.** Read `./C/CLAUDE.md` and become it. Frame the task; ask the questions this "
         "work needs. MINT the attention/reasoning frames the Generator will need and PLACE them in G's tree:",
         "   `chaincompiler gba construct ./G <name> \"[Focus] ⇒ [Focus] ⇒ |Converge|\"` (gated + coord-addressed).",
-        "2. **G — Generator.** `cat ./G/CLAUDE.md` and become it. USE the frames C just placed to produce, "
+        "2. **G — Generator.** Read `./G/CLAUDE.md` and become it. USE the frames C just placed to produce, "
         "until the deliverable/state is reached. Put the deliverable in `./workspace/`.",
         "3. **Loop C→G** until finished.",
-        "4. **O — Observer.** `cat ./O/CLAUDE.md` and become it. Observe the run; write observations to "
+        "4. **O — Observer.** Read `./O/CLAUDE.md` and become it. Observe the run; write observations to "
         "`./O/kb/`. Next cycle, C starts from O's observations (its config already adjusted).",
         "",
         "The Python only guaranteed the shapes (syntax gated, names/coords placed, tree validated, "

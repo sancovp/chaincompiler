@@ -18,14 +18,14 @@ harness tracks where you read). It is **dynamic and in-session**, not frozen at 
 Read tool injects that dir's `.claude`; a Bash `cat` of the *same file* injects **nothing** (the
 harness hooks the Read tool's path argument; a shell `cat` is opaque to it). **Consequence: the
 generated breadcrumbs must instruct the Read tool, NOT `cat`** — a literal `cat <path>` in Bash sees
-the menu text but **silently fails to load the child's persona/rules/skills.** (`materialize`'s and
-`cohere`'s `_CRUMB` currently say `cat …` — that wording is a latent descent bug; it must say "Read".)
+the menu text but **silently fails to load the child's persona/rules/skills.** SkillTree's breadcrumbs
+say `Read` and name the child's `SKILL.md` relative to the node's folder.
 
 ## The evidence (metaformal observation — copy of the real run)
 
-- **Rules inject:** reading `~/fable_test/SSRI/SSRI-RESEARCH-SYSTEMS-FIXMAP.md` caused
+- **Rules inject:** reading `SSRI/SSRI-RESEARCH-SYSTEMS-FIXMAP.md` in a test project caused
   `SSRI/CLAUDE.md` + all four `SSRI/.claude/rules/*.md` to appear in context — none were there before.
-- **Skills inject:** a marker skill `zzz-marker-probe` planted at `~/fable_test/SSRI/cam/.claude/skills/`
+- **Skills inject:** a marker skill `zzz-marker-probe` planted at `SSRI/cam/.claude/skills/` in the same project
   was ABSENT from the menu; after reading `cam/ARCHITECTURE-ASCII.md`, it appeared in the Skill-tool
   list (and `cam/CLAUDE.md` injected too).
 - **Project-scoped:** reading `~/.claude/skills/gameworld-generator/modes/base/game.json` (a dir
@@ -39,8 +39,8 @@ the menu text but **silently fails to load the child's persona/rules/skills.** (
    its persona (`CLAUDE.md`) + rules + child skills load *right then*. You **become the lord of that
    subtree by reading into it.** There is **no need to spawn a container/subagent** for descent
    (the earlier "container problem" was an artifact of the wrong "frozen at start" assumption).
-2. **`cat`-breadcrumbs are the map, the Read is the move.** The menu's `cat <child>` links tell you
-   *which dir to read into* to descend; the Read is what actually injects the child layer.
+2. **The breadcrumbs are the map, the Read is the move.** Each breadcrumb names the child to read into
+   to descend; the Read is what actually injects the child layer.
 3. **Two melts, two fixes:**
    - **user level** (`~/.claude/skills`) auto-loads its top layer in *every* session — so a flat 133
      always melts. Fix = treeify it so only a *root* lives at the top (everything else nested, reached

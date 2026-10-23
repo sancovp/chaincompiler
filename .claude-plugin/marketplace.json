@@ -8,8 +8,8 @@
     {
       "name": "chaincompiler",
       "source": "./",
-      "description": "A compiler-compiler for cognition — meta-APE capability skills (make-prompt/make-persona/big-generator/persona-generator/forge-attention-chain/forge-cor/forge-skillchain/construct-language) + bandit-chain-system, glyphsteer + the Self-Interpreter MCP + two minted style chain-systems (adam-curtis-narration-style, explain-something-fractally).",
-      "version": "0.2.1"
+      "description": "A compiler-compiler for cognition — eight capability skills (make-prompt/make-persona/big-generator/persona-generator/forge-attention-chain/forge-cor/forge-skillchain/construct-language) + bandit-chain-system, glyphsteer, report-missed-skill, bigdog, the skill2framework chapter set, two minted style chain systems and the Self-Interpreter MCP.",
+      "version": "0.2.2"
     }
   ]
 }

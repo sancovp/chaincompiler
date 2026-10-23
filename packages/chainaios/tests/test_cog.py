@@ -1,8 +1,8 @@
-"""A COG is a FLOW through three role-AIOS dirs (DESIGN.md §4, §10) — NOT a function.
+"""A COG is a FLOW through three role-AIOS dirs (DESIGN.md §8, stage 2) — NOT a function.
 
 These are metaformal self-tests: they OBSERVE the real substrate (the dirs/skills that got emitted),
 they do not assert the return value of a stubbed orchestrator. There is no `run_cog` — the COG is run
-by an agent walking it. See ~/.claude/skills/metaformal-self-test.
+by an agent walking it. See `.claude/skills/metaformal-self-test`.
 """
 from __future__ import annotations
 

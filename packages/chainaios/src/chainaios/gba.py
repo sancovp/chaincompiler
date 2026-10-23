@@ -1,11 +1,11 @@
-"""gba.py — the General BanditAgent as a PERSISTENT native-CC AIOS (DESIGN.md §3, §10 stage 1).
+"""gba.py — the General BanditAgent as a PERSISTENT native-CC AIOS (DESIGN.md §8, stage 1).
 
 A GBA is a directory an agent *goes to and becomes*:
 
     <root>/
       CLAUDE.md                         the persona + the BanditChain loop (Select→exec|construct)
       .claude/skills/<domain>/SKILL.md   the LIVE SkillTree root (auto-loads; cat down to leaves)
-      .claude/skills/.../                the gated AC/CoR/SC bodies, organized as cat-breadcrumbs
+      .claude/skills/.../                the gated AC/CoR/SC bodies, organized as Read-breadcrumbs
       kb/                                its own knowledge base (the reward record)
       .index.db                          the FTS5 search index (DERIVED, rebuildable)
       gba.json                           the tree manifest (so construct can re-materialize)
@@ -13,7 +13,7 @@ A GBA is a directory an agent *goes to and becomes*:
 The minted gated bodies live in a sibling scratch (`.<name>.src/`, outside the indexed root) and are
 referenced by `skill_src`, so `build_index` sees the tree and only the tree. The PERSISTENT artifact is
 the AIOS dir; nothing is written to `/tmp`. `construct_into` mints a new chain, appends it to the tree,
-re-materializes, and re-indexes — the Bandit's *construct* arm made to persist (DESIGN.md §7 spine).
+re-materializes, and re-indexes — the Bandit's *construct* arm made to persist (DESIGN.md §8).
 """
 from __future__ import annotations
 
@@ -78,7 +78,7 @@ def _rule_blocks(domain: str, root_node: str) -> dict[str, str]:
         "01-bandit-loop.md": "\n".join([
             "# Rule: your default workflow is the loop flow-skill", "",
             f"Your default workflow is the **`{domain}-loop`** flow skill in your tree — find it "
-            f"(`chaincompiler gba search <this-dir> loop`), `cat` it, and walk it "
+            f"(`chaincompiler gba search <this-dir> loop`), Read it, and walk it "
             "(Task → Recall=Select(search→match) → Decide → Construct|Exec → Reward).",
             "",
             "**Addressing:** every node has a coordinate (`0` → `0.1` → `0.1.1` …). "
@@ -98,7 +98,7 @@ def _rule_blocks(domain: str, root_node: str) -> dict[str, str]:
             "# Rule: the KB reward record", "",
             "Keep a knowledge base under `kb/`: one note per topic, each headed with a grade "
             "(🏆 ✅ ⚠️ ❌) = the reward. On a new task, surface your best-graded prior chains first "
-            "(that is `Recall`). Promote a chain to golden when it earns 🏆 twice; demote ❌ out of Recall.",
+            "(that is `Recall`). When a chain earns 🏆 twice, file a goldenization request (`goldenreq`) with the graded notes as evidence — it becomes golden only on an accepted verdict, never by itself; demote ❌ out of Recall.",
         ]),
         "04-self-expansion.md": "\n".join([
             "# Rule: place + expand (never drop a skill flat)", "",
@@ -150,10 +150,27 @@ def _reindex(gba: GBA) -> int:
     return n
 
 
-def _apply_tree(gba: GBA, tree_dict: dict) -> tuple[int, int]:
+def _missing_sources(d: dict) -> list[str]:
+    """Every `skill_src` in a tree dict whose folder holds no SKILL.md."""
+    s = d.get("skill_src")
+    own = [s] if s and not (Path(s) / "SKILL.md").is_file() else []
+    return own + [m for c in d.get("children", []) for m in _missing_sources(c)]
+
+
+def _refuse_missing_sources(gba: GBA, tree_dict: dict) -> None:
+    missing = _missing_sources(tree_dict)
+    if missing:
+        raise FileNotFoundError(
+            f"cannot rebuild the GBA at {gba.root}: {len(missing)} source(s) missing — {missing}. "
+            f"A GBA rebuilds only together with its sibling `.{gba.root.name}.src/` folder.")
+
+
+def _apply_tree(gba: GBA, tree_dict: dict) -> tuple[int, int, int]:
     """The ONE path for any tree change. `materialize` does `rmtree(root)`, so we preserve the
     sidecars (kb, persona, manifest, the bandit-chain-system skill) across it, then re-index.
-    Returns (violations, indexed_skills)."""
+    Refuses a tree whose sources are missing: materialize would write a stub in place of each
+    missing body, silently. Returns (violations, indexed_skills, lords)."""
+    _refuse_missing_sources(gba, tree_dict)
     # 1. preserve sidecars that live UNDER root (kb reward-record + .claude/agents seat defs)
     #    across the rmtree. (CLAUDE.md / .claude/rules are regenerated below from the profile.)
     kb_bak = gba.root.parent / f".{gba.root.name}.kbbak"
@@ -171,7 +188,7 @@ def _apply_tree(gba: GBA, tree_dict: dict) -> tuple[int, int]:
     # 2. materialize the live tree into the AIOS root (nukes + rewrites root).
     #    coords=True ADDRESSES every node (root 0, children 0.1/0.2, …): the coord is baked into the
     #    name/desc, so the index carries it and search can be SCOPED to a subtree — "where you are
-    #    determines what you see exposed" (DESIGN.md §6 / the addressing spine).
+    #    determines what you see exposed" (DESIGN.md §10, the coordinates).
     materialize(SkillTree(_node_from(tree_dict)), gba.root, coords=True)
     viol = validate(gba.root)
     if agents_bak.exists():                                   # restore seat subagent defs (HBA)
@@ -302,7 +319,7 @@ def _node_dict(domain: str, sysd, *, root: bool, persona=None) -> dict:
                         for p in sysd.ac]}
     if root:
         return {"name": slugify(domain), "kind": "sc",
-                "description": f"{domain}: {persona.blurb}", "skill_src": str(sysd.sc.parent),
+                "description": f"{domain} — {persona.blurb}", "skill_src": str(sysd.sc.parent),
                 "children": [cor]}
     # THE WARRANT for a lord (rule 01: grow lords on warrant, never one-per-leaf) — a caller
     # SEATED a distinct persona here, so this branch deserves its own curator. A sub-domain
@@ -379,15 +396,16 @@ def make_gba(domain: str, root: str | Path, *, atoms: list[str], blurb: str = ""
 # ── construct INTO a live GBA (the Bandit's explore arm, persisted) ──────────
 def construct_into(gba: GBA, name: str, atoms: list[str], *, blurb: str = "", persona=None):
     """Mint a new AC/CoR/SC chain system, append it to the GBA's tree, re-materialize + re-index.
-    The output PERSISTS into the agent's own directory (DESIGN.md §5 step 3–4). Returns the
+    The output PERSISTS into the agent's own directory (DESIGN.md §8). Returns the
     BanditChainSystem (so a Challenger can gate its `.report['sequence']`). `persona` seats a
     custom CoR for the constructed subsystem — e.g. a minted character's own reasoning (the
     Aegis `SDNA_Synth` arm: each new character constructed carries its OWN persona, not the bandit)."""
     src = gba.root.parent / f".{gba.root.name}.src"
+    tree_dict = _resolved(json.loads(gba.manifest.read_text()), gba.root)
+    _refuse_missing_sources(gba, tree_dict)            # before minting anything into `src`
     sysd = roll_up_algebra(name, atoms, db=str(src / ".cc.db"),
                            skills_dir=str(src / "skills"), out_dir=str(src / "dist"),
                            persona_root=str(src / "personas"), blurb=blurb, persona=persona)
-    tree_dict = _resolved(json.loads(gba.manifest.read_text()), gba.root)
     tree_dict["children"].append(_node_dict(name, sysd, root=False, persona=persona))
     _, n, lords = _apply_tree(gba, tree_dict)
     gba.report.update({"indexed_skills": n, "lords": lords})
