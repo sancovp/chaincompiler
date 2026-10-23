@@ -1,0 +1,163 @@
+{
+  "skilltree": {
+    "name": "diagram-construction",
+    "kind": "sc",
+    "skill_src": "../.chainforge.src/dist/diagram-construction",
+    "description": "diagram-construction: a diagram is a formalized relationship structure, never decoration \u2014 never begin by drawing; determine what exists, how it relates, what changes, what causes what, where the boundaries are, and what loops, and only then ask what it should look like; every visual primitive must possess an interpretable function",
+    "coord": "0",
+    "frameworks": [],
+    "children": [
+      {
+        "name": "chainforge",
+        "kind": "cor",
+        "skill_src": "../.chainforge.src/skills/chainforge",
+        "description": "a diagram is a formalized relationship structure, never decoration \u2014 never begin by drawing; determine what exists, how it relates, what changes, what causes what, where the boundaries are, and what loops, and only then ask what it should look like; every visual primitive must possess an interpretable function",
+        "coord": "0.1",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "diagram-compilation",
+            "kind": "ac",
+            "skill_src": "../.chainforge.src/skills/diagram-compilation",
+            "description": "attend (diagram-construction)",
+            "coord": "0.1.1",
+            "frameworks": [],
+            "children": []
+          },
+          {
+            "name": "never-begin-by-drawing",
+            "kind": "ac",
+            "skill_src": "../.chainforge.src/skills/never-begin-by-drawing",
+            "description": "attend (diagram-construction)",
+            "coord": "0.1.2",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "diagram-construction-loop",
+        "kind": "sc",
+        "skill_src": "../.chainforge.src/loop",
+        "description": "the diagram-construction default workflow \u2014 walk it",
+        "coord": "0.2",
+        "frameworks": [],
+        "children": []
+      },
+      {
+        "name": "entity-extraction-cor",
+        "kind": "cor",
+        "skill_src": "../.chainforge.src/skills/node-typer",
+        "description": "a node represents a distinguishable unit and needs a reason to exist \u2014 type it and level it before it enters any graph",
+        "coord": "0.3",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "entity-extraction-pass",
+            "kind": "ac",
+            "skill_src": "../.chainforge.src/skills/entity-extraction-pass",
+            "description": "attend (entity-extraction)",
+            "coord": "0.3.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "edge-typing-cor",
+        "kind": "cor",
+        "skill_src": "../.chainforge.src/skills/edge-typer",
+        "description": "an arrow is not generic association, proximity is not causality, a container is not ownership \u2014 every relation gets an explicit type and a real direction",
+        "coord": "0.4",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "edge-typing-pass",
+            "kind": "ac",
+            "skill_src": "../.chainforge.src/skills/edge-typing-pass",
+            "description": "attend (edge-typing)",
+            "coord": "0.4.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "boundary-abstraction-cor",
+        "kind": "cor",
+        "skill_src": "../.chainforge.src/skills/boundary-keeper",
+        "description": "a boundary defines inside, outside, interface, and crossing conditions \u2014 and abstraction layers stay stable across every chain",
+        "coord": "0.5",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "boundary-abstraction-pass",
+            "kind": "ac",
+            "skill_src": "../.chainforge.src/skills/boundary-abstraction-pass",
+            "description": "attend (boundary-abstraction)",
+            "coord": "0.5.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "topology-selection-cor",
+        "kind": "cor",
+        "skill_src": "../.chainforge.src/skills/topology-selector",
+        "description": "the diagram type follows the system logic, never taste \u2014 relations or chronology, cycles or not, hierarchy or network, magnitude or membership",
+        "coord": "0.6",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "topology-selection-pass",
+            "kind": "ac",
+            "skill_src": "../.chainforge.src/skills/topology-selection-pass",
+            "description": "attend (topology-selection)",
+            "coord": "0.6.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "graph-validation-cor",
+        "kind": "cor",
+        "skill_src": "../.chainforge.src/skills/graph-auditor",
+        "description": "an orphan node has no reason to exist, an ambiguous arrow is a lie, and invisible feedback is a hidden loop \u2014 find them and repair the graph",
+        "coord": "0.7",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "graph-validation-pass",
+            "kind": "ac",
+            "skill_src": "../.chainforge.src/skills/graph-validation-pass",
+            "description": "attend (graph-validation)",
+            "coord": "0.7.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "legibility-render-cor",
+        "kind": "cor",
+        "skill_src": "../.chainforge.src/skills/legibility-auditor",
+        "description": "topology before styling, color as category never decoration, and a viewer must be able to infer the intended reading order \u2014 density over budget splits into overview plus subsystems",
+        "coord": "0.8",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "legibility-render-pass",
+            "kind": "ac",
+            "skill_src": "../.chainforge.src/skills/legibility-render-pass",
+            "description": "attend (legibility-render)",
+            "coord": "0.8.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

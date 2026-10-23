@@ -18,6 +18,7 @@ re-materializes, and re-indexes — the Bandit's *construct* arm made to persist
 from __future__ import annotations
 
 import json
+import os
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -111,6 +112,27 @@ def _rule_blocks(domain: str, root_node: str) -> dict[str, str]:
     }
 
 
+def _portable(d: dict, base: Path) -> dict:
+    """A copy of a tree dict whose `skill_src` paths are RELATIVE to `base` (the GBA root), so
+    the persisted `gba.json` names no machine's path. `_resolved` is the inverse."""
+    out = dict(d)
+    s = out.get("skill_src")
+    if s and os.path.isabs(s):
+        out["skill_src"] = Path(os.path.relpath(os.path.abspath(s), os.path.abspath(base))).as_posix()
+    out["children"] = [_portable(c, base) for c in d.get("children", [])]
+    return out
+
+
+def _resolved(d: dict, base: Path) -> dict:
+    """A copy of a tree dict whose relative `skill_src` paths are resolved against `base`."""
+    out = dict(d)
+    s = out.get("skill_src")
+    if s and not os.path.isabs(s):
+        out["skill_src"] = os.path.normpath(os.path.join(os.path.abspath(base), s))
+    out["children"] = [_resolved(c, base) for c in d.get("children", [])]
+    return out
+
+
 def _node_from(d: dict) -> TreeNode:
     return TreeNode(d["name"], d.get("kind", "skill"), description=d.get("description"),
                     skill_src=d.get("skill_src"),
@@ -158,7 +180,7 @@ def _apply_tree(gba: GBA, tree_dict: dict) -> tuple[int, int]:
 
     # 3. restore the sidecars (the manifest carries `domain` + an optional `_profile` — a custom
     #    role block / rule set, e.g. for an HBA — so identity survives every re-materialize)
-    gba.manifest.write_text(json.dumps({"domain": gba.domain, **tree_dict}, indent=2))
+    gba.manifest.write_text(json.dumps({"domain": gba.domain, **_portable(tree_dict, gba.root)}, indent=2))
     prof = tree_dict.get("_profile") or {}
     role = prof.get("role") or _role_block(gba.domain, domain_bandit(gba.domain).name)
     rules = prof.get("rules") or _rule_blocks(gba.domain, tree_dict["name"])
@@ -179,9 +201,14 @@ def _apply_tree(gba: GBA, tree_dict: dict) -> tuple[int, int]:
         dst.mkdir(parents=True, exist_ok=True)
         (dst / "SKILL.md").write_text(_BCS_SKILL.read_text())
 
-    # 4. the persisted, rebuildable index
+    # 4. THE LORDS — every `_lord` branch gets its own CLAUDE.md, so the tree is a
+    #    FOREST OF LORDS you descend INTO (rule 01) and not one lord holding N described
+    #    personas. Written after materialize because materialize rmtree's the root.
+    lords = _write_lords(tree_dict, gba.root, gba.root)
+
+    # 5. the persisted, rebuildable index
     n = _reindex(gba)
-    return len(viol), n
+    return len(viol), n, lords
 
 
 def _persona_role_block(domain: str, persona) -> str:
@@ -202,9 +229,71 @@ def _persona_role_block(domain: str, persona) -> str:
     ])
 
 
+def _lord_block(lord: dict, *, coord: str | None, gba_root: Path, n_children: int,
+                node_dir: Path | None = None) -> str:
+    """The branch lord's own `CLAUDE.md` — who you BECOME by reading into this dir.
+
+    Scoped, not a copy of the root: it carries this seat's melt-gauge, its curation scope
+    (`--scope <coord>` = *where you are is what you see*), and the way back UP to the domain
+    frame — so every region stays reachable from every other (rule 01's traversability clause).
+    Paths are relative to THIS folder (the lord's dir), so the file names no machine's path."""
+    moves = " → ".join(lord["moves"])
+    up = (Path(os.path.relpath(os.path.abspath(gba_root), os.path.abspath(node_dir))).as_posix()
+          if node_dir is not None else str(gba_root))
+    return "\n".join([
+        f"# {lord['name']}",
+        "",
+        f"You are the **{lord['name']}**, the lord of this branch of `{lord['domain']}`. "
+        f"{lord['blurb']}.",
+        "",
+        f"Your reasoning is the melt-gauge **{moves}** — perform the moves in order on every "
+        "task (the last move is your held convergence; skipping or scrambling them = the "
+        "persona is melting).",
+        "",
+        "## Your scope",
+        "",
+        f"You curate THIS subtree ({n_children} frame(s) below) — your chains are in "
+        "`.claude/skills/`, and they loaded when you read in here."
+        + (f" Search only your own region, from this folder: `chaincompiler gba search {up} \"<q>\" "
+           f"--scope {coord}`." if coord else ""),
+        "",
+        "## Up",
+        "",
+        f"Read `{up}/CLAUDE.md` (relative to this folder) for the domain frame, the loop, the law, and the KB "
+        "protocol. You are a seat inside it — return what you produced; do not re-plan the whole "
+        "task from here.",
+    ])
+
+
+def _write_lords(node: dict, node_dir: Path, gba_root: Path) -> int:
+    """Emit a `CLAUDE.md` at every branch carrying a `_lord` (post-materialize, since
+    `materialize` rmtree's the root). Returns how many lords were seated."""
+    n = 0
+    lord = node.get("_lord")
+    if lord and node_dir.resolve() != gba_root.resolve():
+        skills = node_dir / ".claude" / "skills"
+        hit = next(iter(sorted(skills.glob(f"*-{node['name']}"))), None)   # coord from ground truth
+        coord = hit.name.split("-", 1)[0] if hit else None
+        node_dir.mkdir(parents=True, exist_ok=True)
+        (node_dir / "CLAUDE.md").write_text(_lord_block(
+            lord, coord=coord, gba_root=gba_root, n_children=len(node.get("children", [])),
+            node_dir=node_dir))
+        n += 1
+    for child in node.get("children", []):
+        n += _write_lords(child, node_dir / child["name"], gba_root)
+    return n
+
+
 def _node_dict(domain: str, sysd, *, root: bool, persona=None) -> dict:
     """Build a tree manifest node from a rolled-up BanditChainSystem (skill_src = gated bodies).
-    `persona` (a custom CoR seat) overrides the default domain bandit for the node's name/blurb."""
+    `persona` (a custom CoR seat) overrides the default domain bandit for the node's name/blurb.
+
+    A NON-root node carries `_lord` — the persona's identity + moves — so `_apply_tree` can
+    re-emit that branch's own `CLAUDE.md` after every re-materialize. That is what makes the
+    branch a LORD you can descend INTO and BECOME (rule 01: *a branch becomes an actual lord
+    when it carries a CLAUDE.md at that dir*), rather than a persona merely DESCRIBED in a
+    skill. The root's persona needs none — it IS the root role block."""
+    seated = persona is not None          # the WARRANT: a caller seated a bespoke CoR here
     persona = persona or domain_bandit(domain)
     cor = {"name": slugify(persona.name) if root else slugify(f"{domain}-cor"), "kind": "cor",
            "description": persona.blurb, "skill_src": str(sysd.cor.parent),
@@ -215,6 +304,13 @@ def _node_dict(domain: str, sysd, *, root: bool, persona=None) -> dict:
         return {"name": slugify(domain), "kind": "sc",
                 "description": f"{domain}: {persona.blurb}", "skill_src": str(sysd.sc.parent),
                 "children": [cor]}
+    # THE WARRANT for a lord (rule 01: grow lords on warrant, never one-per-leaf) — a caller
+    # SEATED a distinct persona here, so this branch deserves its own curator. A sub-domain
+    # that took the default bandit gets NO lord: it is the root lord's own region, curated
+    # from above by `search --scope <coord>`.
+    if seated:
+        cor["_lord"] = {"name": persona.name, "blurb": persona.blurb, "domain": domain,
+                        "moves": [m.name for m in persona.moves]}
     return cor
 
 
@@ -273,8 +369,8 @@ def make_gba(domain: str, root: str | Path, *, atoms: list[str], blurb: str = ""
         tree_dict["_profile"] = {"role": role_block, "rules": rule_blocks}
 
     gba = GBA(domain=domain, root=root, closed=sysd.closed, report=dict(sysd.report))
-    viol, n = _apply_tree(gba, tree_dict)
-    gba.report.update({"violations": viol, "indexed_skills": n,
+    viol, n, lords = _apply_tree(gba, tree_dict)
+    gba.report.update({"violations": viol, "indexed_skills": n, "lords": lords,
                        "persistent": True, "root": str(root)})
     gba.closed = sysd.closed and viol == 0
     return gba
@@ -291,10 +387,10 @@ def construct_into(gba: GBA, name: str, atoms: list[str], *, blurb: str = "", pe
     sysd = roll_up_algebra(name, atoms, db=str(src / ".cc.db"),
                            skills_dir=str(src / "skills"), out_dir=str(src / "dist"),
                            persona_root=str(src / "personas"), blurb=blurb, persona=persona)
-    tree_dict = json.loads(gba.manifest.read_text())
+    tree_dict = _resolved(json.loads(gba.manifest.read_text()), gba.root)
     tree_dict["children"].append(_node_dict(name, sysd, root=False, persona=persona))
-    _, n = _apply_tree(gba, tree_dict)
-    gba.report["indexed_skills"] = n
+    _, n, lords = _apply_tree(gba, tree_dict)
+    gba.report.update({"indexed_skills": n, "lords": lords})
     return sysd
 
 

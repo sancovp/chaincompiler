@@ -1,0 +1,15 @@
+{
+  "name": "explain-something-fractally",
+  "description": "Skillchain \u2014 ac:fractal-top-pass \u2192 ac:fractal-per-part-pass \u2192 cor:fractal-explainer \u2192 FractalExplanation",
+  "steps": [
+    {
+      "skill": "fractal-top-pass"
+    },
+    {
+      "skill": "fractal-per-part-pass"
+    },
+    {
+      "skill": "fractal-explainer"
+    }
+  ]
+}

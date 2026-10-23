@@ -74,8 +74,9 @@ def glyphsteer_improve_instructions(domain: str) -> str:
         "2. **Steer** retrieval: when a new task arrives, `glyphsteer.search(con, task, facet=🏆)`",
         "   surfaces your *best-graded* prior chains first — that is the `Recall` move made real.",
         "   The markers steer the match and are stripped before you read (the HIDE invariant).",
-        "3. **Promote** — when a constructed chain earns 🏆 twice, fold it into a golden chain",
-        "   (a new AC/CoR/SC via `roll_up_algebra`). Demote ❌ chains out of `Recall`.",
+        "3. **Promote** — when a constructed chain earns 🏆 twice, FILE A GOLDENIZATION REQUEST",
+        "   (goldenreq) with the graded notes as evidence — never self-fold to golden; promotion",
+        "   happens only on an accepted verdict. Demote ❌ chains out of `Recall`.",
         "4. **Loop** — this is your reward update: the KB + the legend ARE your bandit policy,",
         "   improved by reading yourself. Re-run after every batch of tasks.",
     ])

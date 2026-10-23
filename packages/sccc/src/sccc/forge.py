@@ -89,8 +89,11 @@ def package(name: str, sequence: str, *, out_dir: str, skills_dir: str | None = 
     steps, held = parse_sequence(sequence)
     spec = {
         "name": slugify(name),
+        # NOTE: no ": " prefix in the default — write_skill (APE) does not YAML-escape
+        # the description; a plain scalar containing ": " emits unparseable frontmatter.
+        # (The step refs keep their `kind:name` form — colon-no-space is YAML-safe.)
         "description": description or (
-            f"Skillchain: {' → '.join(f'{s.kind}:{s.ref}' for s in steps)}"
+            f"Skillchain — {' → '.join(f'{s.kind}:{s.ref}' for s in steps)}"
             + (f" → {held}" if held else "")
         ),
         "steps": [{"skill": s.slug} for s in steps],

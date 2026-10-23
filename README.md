@@ -2,6 +2,14 @@
 
 # ChainCompiler
 
+<!-- SCALABLE-PUBLISHING:AUTOGEN START (managed block — do not edit between these markers) -->
+
+[Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
+
+📦 Auto-published from the monorepo • [CHANGELOG](./CHANGELOG.md) • [sancovp/chaincompiler](https://github.com/sancovp/chaincompiler)
+
+<!-- SCALABLE-PUBLISHING:AUTOGEN END -->
+
 ### A compiler-compiler for cognition.
 
 *Define a notation. Gate it so the model never malforms it. Compile it into a universally-loadable skill. Compose those skills. Organize them into a navigable tree. Code validates every step.*
@@ -337,6 +345,39 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.1.55 — 2026-10-23
+- **Every generated file is portable — no machine's path anywhere in the folder.** The generators were fixed, then their output re-made: `chainaios.gba` stores `gba.json`'s `skill_src` relative to the AIOS root (resolved back on read, so `construct_into` keeps building) and writes each lord's way UP as a path relative to its own folder; SkillTree ≥0.4.0 writes breadcrumbs relative to each node's folder and its manifest's `skill_src` relative to itself; `skills/bigdog/build.py` stores rulecatcher's evidence paths relative to the repo. The two persona AIOSes (`chainforge`, `systemic-archive-narrator`) were re-applied from their own sources through the fixed builder (0 violations, 18 and 17 skills indexed, lords intact), the two style trees relinked, bigdog rebuilt. A persona copied anywhere still validates; `skilltree relink --localize` writes absolute paths after an install.
+- `agent-skilltree>=0.4.0` everywhere it is required (`install.sh`, `framework`, `chaincompiler`, `si`). The lord test checks the relative way UP and that it resolves; a new test checks `gba.json` names no machine's path and still reconstructs. Suite: 235 passed, 1 failing as before (`si`: the installed `mcp` lacks a name it imports).
+
+### v0.1.54 — 2026-10-23
+- **No person is named anywhere in the folder.** Every place that named the author (the changelog, BACKLOG, the mint dev-flow, the metaformal-self-test skill, two docstrings, the bigdog provenance lines) now says "the author". BACKLOG's forked-version-line item is ticked: one source home, published here with a version and a changelog entry per release; the mint dev-flow's topology row says the same.
+
+### v0.1.53 — 2026-10-23
+- **This monorepo is ChainCompiler's home; `sancovp/chaincompiler` is its published output.** The four glyphsteer architecture documents that existed only in the public repo (`packages/glyphsteer/.claude/rules/{00,10,20}-*.md` and `packages/glyphsteer/.claude/skills/glyphsteer/SKILL.md`) are ported in byte for byte, so the first publish from here removes nothing of value; `packages/glyphsteer/CLAUDE.md` says what the package is. Publishing waits on the universal scan: no person's name and no machine path anywhere in the folder.
+
+### v0.1.52 — 2026-08-12
+- **⭐ THE TREE IS A FOREST OF LORDS — rule 01's named upstream debt, closed.** A GBA sub-domain constructed with its **own** persona now carries its **own `CLAUDE.md` at its own dir**, so reading into that dir *seats you as that persona* instead of merely handing you a skill that describes it. `_node_dict` persists a `_lord` (name · blurb · moves) into `gba.json`; `_write_lords` re-emits each branch's `CLAUDE.md` after every materialize (materialize rmtree's the root, so nothing hand-written could survive — this is why the fix had to be in code). **The warrant is enforced:** a sub-domain that took the default bandit gets NO lord (rule 01: *grow lords on warrant, never one-per-leaf*) — the new test caught the over-eager first cut. **Proven by live descent, not asserted:** reading `personas/chainforge/graph-validation-cor/` injects the Graph-Auditor persona + its scoped `0.7` skill. Both GBAs rebuilt on it — chainforge 7 lords, systemic-archive-narrator 6. Suites 37/37.
+- Rule 01's own debt list is now stale on that bullet and is flagged in BACKLOG for the owner's stamp (rules are not edited by the build).
+
+### v0.1.51 — 2026-08-12
+- **CHAINFORGE — the diagram-construction cognition as a persistent GBA AIOS** (`personas/chainforge/`, the second SDNA-depth build). The `Chainforge` persona (8-move melt-gauge held on `|LegibilityAudit|`, cues carrying the axioms — *never begin by drawing* · *an arrow is not generic association* · *topology before styling* · *feedback as a visible loop* · *color as category, never decoration*) over **seven closed chain systems**: the top system (the master `diagram-compilation` AC + the `never-begin-by-drawing` prime-heuristic AC) plus six `construct_into` sidechains, each with its own cue-pinned persona seat — Node-Typer (ontology), Edge-Typer (typed directed relations), Boundary-Keeper (inside/outside/interface/crossing + stable abstraction layers), Topology-Selector (diagram family from system logic), Graph-Auditor (orphans · ambiguous arrows · abstraction collisions · missing transitions · feedback visibility), Legibility-Auditor (reading order · density budget · progressive disclosure — one giant graph becomes overview + subsystems). 18 skills indexed; seat-routing proven on four probes. Notably the source axioms converge on this repo's own laws (progressive disclosure, node ≡ compressed graph = the tree law).
+
+### v0.1.50 — 2026-08-12
+- **The Adam-Curtis narrator maximized as a persistent GBA AIOS** (`personas/systemic-archive-narrator/` — the dir an agent goes to and BECOMES). The `Systemic-Archive-Narrator` persona (7-move melt-gauge, held on `|RevisableModel|`) seated over a live coordinate-addressed SkillTree of **six closed chain systems**: the top style system (the master `curtis-investigation` AC + the arc + register ACs) plus five `construct_into` sidechains, **each with its own cue-pinned persona seat** — Source-Critic (archive intake), Incentive-Mapper (actor/power), Causal-Cartographer (causal inference), Loop-Finder (feedback/emergence), Anti-Magic-Auditor (the epistemic gate — every dramatic assertion resolves into mechanism, evidence class, uncertainty, or a marked hypothesis; coordination claims require evidence of coordination). 17 skills indexed; scoped BM25 search routes to the right seat (`provenance` → archive-intake, `rival explanation` → causal-graph). This is the first real dogfood of `make_gba` + the `construct_into` persona-seat arm on a non-demo domain.
+- **Found upstream defect #2 (BACKLOG):** `agent-skilltree`'s `coords=True` materializer bakes `[coord] name: …` into descriptions — YAML-broken frontmatter for the whole tree (loader-tolerated, strict-parse broken); plus `gba.json` `skill_src` absolute-path portability wart. `.gitignore` gains the derived `.index.db`.
+
+### v0.1.49 — 2026-08-12
+- **The GAN review's findings applied.** (1) `.claude-plugin/{plugin,marketplace}.json` now enumerate the two minted style chain-systems and bump to plugin **0.2.1** — `skills/` is the plugin payload, and v0.1.47/48 changed it unregistered. (2) The two already-shipped skills with `": "`-broken frontmatter (`skills/forge-skillchain`, `.claude/skills/skilltree`) fixed — a 20-file sweep now parses 20/20. (3) The dev-flow rule `.claude/rules/22-seq-mint-attention-chain.md` authored — the read-list, coherence set, call sequence, and per-store proof for minting ACs/chain systems, including the author's content law (foci = OPERATIONS, never topics). (4) Honest gate finding recorded: `strict=True` rejected NOTHING on the v0.1.48 corpora (off-style same-shape probes gate clean; single-atom and mixed both) — AC vocabulary teeth are an open BACKLOG item, and `roll_up_algebra` can't pass `strict=` down at all. (5) The topology flag: chaincompiler's authoritative-source decision (manifest `auto_publish:false`, upstream vendored-in 2026-07-09, monorepo-side dev since) is OPEN and the author's — version line forked until ruled; BACKLOG row carries the options.
+
+### v0.1.48 — 2026-08-12
+- **The two style ACs re-forged as FULL rolled-up chain systems (supersedes v0.1.47's thin atoms in place).** The author's correction applied: topic-label foci (`[Dream] ⇒ [System]…`) do not reproduce a cognition — **the foci must be the OPERATIONS the style performs.** Each style is now `chainaios.roll_up_algebra` output with `closed=True`: `adam-curtis-narration-style` = arc AC (`[TotalizingFrame] ⇒ [ObscureConcreteSeed] ⇒ [BoldCausalLeap] ⇒ [InversionPivot] ⇒ [Entrapment] ⇒ |HauntedPresent|`) + register AC (`[ArchiveJuxtaposition] ⇒ [FlatDeclarative] ⇒ [WeAddress] ⇒ |Unease|`) + the `Adam-Curtis-Narrator` PersonaSpec CoR (cue-pinned melt-gauge — "this is a story about…", "but then something strange happened…", "end unresolved") + the SC rollup; `explain-something-fractally` = top-pass AC + the per-part recursion AC (`[Part] ⇒ [WhatWhenHowUtility] ⇒ [NeedsExpansion] ⇒ |RecurseOrClose|` — the chain re-enters itself until the fixed point closes) + the `Fractal-Explainer` CoR + the SC. Persona AIOSes land under the new top-level **`personas/`** dir (`persona_root=`), each with `CLAUDE.md` + `legend.json` + `kb/`.
+- **The `*CC` default descriptions emitted unparseable frontmatter — fixed.** All three defaults (accc/corcc/sccc) contained `": "`, which APE's unescaped `write_skill` turns into broken YAML. Colon → em-dash in the three defaults + regression test (`test_default_description_yields_parseable_frontmatter`). Suites 36/36 across accc/corcc/sccc/chainaios. The upstream escape gap in APE's `skill_markdown` stays flagged in BACKLOG.
+
+### v0.1.47 — 2026-08-12
+- **Two style ACs minted through the accc door**: `skills/adam-curtis-narration-style` (`[Dream] ⇒ [System] ⇒ [Rupture] ⇒ [Juxtaposition] ⇒ |StrangeReversal|`) and `skills/explain-something-fractally` (`[Overview] ⇒ [Parts] ⇒ [Attributes] ⇒ [Rollup] ⇒ |Compose|` — the LFP roll-up explanation shape). Each forged from a 3-chain example corpus (`packages/accc/examples/*.ac`, re-forgeable via `accc forge <name> <file>`), exemplar gated clean, packaged with `kind: attention-chain`.
+- **`install.sh` gains `glyphsteer` + `numpy`** — the editable-package list omitted glyphsteer, so a fresh install silently dropped the persona legend in `roll_up_algebra` (its try/except fallback) and `test_persona_aios_has_kb_and_glyphsteer_instructions` failed. Proven by running the accc + chainaios suites on a fresh venv (23/24 → 24/24 after the fix).
+- **Upstream gap flagged (BACKLOG)**: APE's `write_skill` does not YAML-escape descriptions — a `": "` inside one emits unparseable SKILL.md frontmatter. The two AC descriptions are authored colon-free as the workaround.
+
 ### v0.1.46 — 2026-07-10
 - **`package_plugin` repath precision (the dogfood's finding #2).** The chapter-link repath rewrote ANY filename-shaped token — including markdown link **display text** (`[blog1.md](…)` labels got mangled into bundled paths). It now rewrites only real references: path-shaped tokens (a `/` before the chapter filename) and bare-filename link **targets** (`](blog1.md)`); labels stay intact. New regression test (`test_package_plugin_preserves_link_display_text`); framework suite → 6.
 
@@ -509,7 +550,7 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 | `honeyc` (+ `dietc`) | the compiler (+ domain proof) | 36 |
 | `chaincompiler` | substrate + umbrella | 6 |
 | `accc` / `corcc` / `sccc` | the three layers | 5 / 5 / 6 |
-| `agent-skilltree` | the organization (published standalone on PyPI; import `skilltree`) | — (own repo) |
+| `agent-skilltree` | the organization (published on PyPI, ≥0.4.0; import `skilltree`) | — (its own suite) |
 | `archetype` | archetype-as-state-machine compiler | 11 |
 
 **182 passing** (`pytest packages/`; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.

@@ -1,6 +1,6 @@
 ---
 name: skilltree
-description: The primary technology — impose a navigable TREE on the flat `.claude/skills` substrate, and keep it COHERENT. Use when you see a `[SKILLTREE]` system-notification warning (the tree decohered — recohere it), when a `.claude/skills` is a flat forest you can't navigate, when you need to view/engineer/assign-coords on a skill tree, or when you must navigate a big tree without loading the pile. Triggers: "tree decoherence", "recohere", "skilltree", "treeify skills", "the tree shape", "flat forest", "bare forest", "cat down the tree".
+description: The primary technology — impose a navigable TREE on the flat `.claude/skills` substrate, and keep it COHERENT. Use when you see a `[SKILLTREE]` system-notification warning (the tree decohered — recohere it), when a `.claude/skills` is a flat forest you can't navigate, when you need to view/engineer/assign-coords on a skill tree, or when you must navigate a big tree without loading the pile. Triggers — "tree decoherence", "recohere", "skilltree", "treeify skills", "the tree shape", "flat forest", "bare forest", "cat down the tree".
 ---
 
 # skilltree — the tree is the primary technology

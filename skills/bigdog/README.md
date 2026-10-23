@@ -39,5 +39,5 @@ rulecatcher lint 'claim hello'                          → ✗ expected '::' (e
 - **As a session driver:** run another model through `INPUT-TEMPLATE.md` (idea → gated artifact).
 - **As a grader:** annotate any chain corpus with `GRADE-LADDER.md`'s vocab via glyphsteer; facet/audit by grade.
 
-Provenance: transformed from a live Isaac×LLM conversation. The arc in `INPUT-TEMPLATE.md`
+Provenance: transformed from a live author×LLM conversation. The arc in `INPUT-TEMPLATE.md`
 is the arc that produced this skill.

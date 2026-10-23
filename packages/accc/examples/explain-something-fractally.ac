@@ -1,0 +1,3 @@
+[Overview] ⇒ [EnumerateParts] ⇒ [DefineEachPart] ⇒ [Rollup] ⇒ |Compose|
+[Part] ⇒ [WhatWhenHowUtility] ⇒ [NeedsExpansion] ⇒ |RecurseOrClose|
+[Overview] ⇒ [EnumerateParts] ⇒ [DefineEachPart] ⇒ [PerPartRecursion] ⇒ [Rollup] ⇒ |Compose|

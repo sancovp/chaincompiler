@@ -1,0 +1,26 @@
+[
+  {
+    "name": "excellent",
+    "glyph": "🏆",
+    "tag": "gsxexcellent",
+    "description": "authoritative, correct, well-supported — A"
+  },
+  {
+    "name": "good",
+    "glyph": "✅",
+    "tag": "gsxgood",
+    "description": "solid and usable — B"
+  },
+  {
+    "name": "fair",
+    "glyph": "⚠️",
+    "tag": "gsxfair",
+    "description": "usable with caveats / unverified — C"
+  },
+  {
+    "name": "poor",
+    "glyph": "❌",
+    "tag": "gsxpoor",
+    "description": "wrong, unsafe, or misleading — D/F"
+  }
+]

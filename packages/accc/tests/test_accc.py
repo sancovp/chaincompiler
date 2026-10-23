@@ -45,3 +45,19 @@ def test_shape_only_language_accepts_any_vocabulary(tmp_path: Path):
     # a novel-vocabulary chain of the same SHAPE should pass
     ok, _ = gate(generic, "[Aim] ⇒ [Limits] ⇒ [Facts] ⇒ |Sketch|")
     assert ok == []
+
+
+def test_default_description_yields_parseable_frontmatter(tmp_path: Path):
+    """Regression: write_skill (APE) does not YAML-escape descriptions, so a default
+    description containing ': ' emits unparseable SKILL.md frontmatter. The *CC
+    defaults must therefore be colon-free (2026-08-12; found minting real ACs)."""
+    import yaml
+
+    from accc import package
+
+    path = package("yamlcheck", "[Symptom] ⇒ [Repro] ⇒ |Localize|", out_dir=str(tmp_path))
+    front = path.read_text(encoding="utf-8").split("---")[1]
+    meta = yaml.safe_load(front)  # raises on the ': ' defect
+    assert meta["name"] == "yamlcheck"
+    assert meta["kind"] == "attention-chain"
+    assert ": " not in meta["description"]

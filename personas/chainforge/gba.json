@@ -1,0 +1,213 @@
+{
+  "domain": "diagram-construction",
+  "name": "diagram-construction",
+  "kind": "sc",
+  "description": "diagram-construction: a diagram is a formalized relationship structure, never decoration \u2014 never begin by drawing; determine what exists, how it relates, what changes, what causes what, where the boundaries are, and what loops, and only then ask what it should look like; every visual primitive must possess an interpretable function",
+  "skill_src": "../.chainforge.src/dist/diagram-construction",
+  "children": [
+    {
+      "name": "chainforge",
+      "kind": "cor",
+      "description": "a diagram is a formalized relationship structure, never decoration \u2014 never begin by drawing; determine what exists, how it relates, what changes, what causes what, where the boundaries are, and what loops, and only then ask what it should look like; every visual primitive must possess an interpretable function",
+      "skill_src": "../.chainforge.src/skills/chainforge",
+      "children": [
+        {
+          "name": "diagram-compilation",
+          "kind": "ac",
+          "description": "attend (diagram-construction)",
+          "skill_src": "../.chainforge.src/skills/diagram-compilation",
+          "children": []
+        },
+        {
+          "name": "never-begin-by-drawing",
+          "kind": "ac",
+          "description": "attend (diagram-construction)",
+          "skill_src": "../.chainforge.src/skills/never-begin-by-drawing",
+          "children": []
+        }
+      ]
+    },
+    {
+      "name": "diagram-construction-loop",
+      "kind": "sc",
+      "description": "the diagram-construction default workflow \u2014 walk it",
+      "skill_src": "../.chainforge.src/loop",
+      "children": []
+    },
+    {
+      "name": "entity-extraction-cor",
+      "kind": "cor",
+      "description": "a node represents a distinguishable unit and needs a reason to exist \u2014 type it and level it before it enters any graph",
+      "skill_src": "../.chainforge.src/skills/node-typer",
+      "children": [
+        {
+          "name": "entity-extraction-pass",
+          "kind": "ac",
+          "description": "attend (entity-extraction)",
+          "skill_src": "../.chainforge.src/skills/entity-extraction-pass",
+          "children": []
+        }
+      ],
+      "_lord": {
+        "name": "Node-Typer",
+        "blurb": "a node represents a distinguishable unit and needs a reason to exist \u2014 type it and level it before it enters any graph",
+        "domain": "entity-extraction",
+        "moves": [
+          "Source",
+          "Actors",
+          "Processes",
+          "States",
+          "Constraints",
+          "AbstractionLevel",
+          "TypedNodes"
+        ]
+      }
+    },
+    {
+      "name": "edge-typing-cor",
+      "kind": "cor",
+      "description": "an arrow is not generic association, proximity is not causality, a container is not ownership \u2014 every relation gets an explicit type and a real direction",
+      "skill_src": "../.chainforge.src/skills/edge-typer",
+      "children": [
+        {
+          "name": "edge-typing-pass",
+          "kind": "ac",
+          "description": "attend (edge-typing)",
+          "skill_src": "../.chainforge.src/skills/edge-typing-pass",
+          "children": []
+        }
+      ],
+      "_lord": {
+        "name": "Edge-Typer",
+        "blurb": "an arrow is not generic association, proximity is not causality, a container is not ownership \u2014 every relation gets an explicit type and a real direction",
+        "domain": "edge-typing",
+        "moves": [
+          "Relation",
+          "EdgeClass",
+          "Direction",
+          "SemanticLoad",
+          "TypedEdge"
+        ]
+      }
+    },
+    {
+      "name": "boundary-abstraction-cor",
+      "kind": "cor",
+      "description": "a boundary defines inside, outside, interface, and crossing conditions \u2014 and abstraction layers stay stable across every chain",
+      "skill_src": "../.chainforge.src/skills/boundary-keeper",
+      "children": [
+        {
+          "name": "boundary-abstraction-pass",
+          "kind": "ac",
+          "description": "attend (boundary-abstraction)",
+          "skill_src": "../.chainforge.src/skills/boundary-abstraction-pass",
+          "children": []
+        }
+      ],
+      "_lord": {
+        "name": "Boundary-Keeper",
+        "blurb": "a boundary defines inside, outside, interface, and crossing conditions \u2014 and abstraction layers stay stable across every chain",
+        "domain": "boundary-abstraction",
+        "moves": [
+          "System",
+          "Inside",
+          "Outside",
+          "Interface",
+          "CrossingConditions",
+          "LayerCheck",
+          "BoundedLayers"
+        ]
+      }
+    },
+    {
+      "name": "topology-selection-cor",
+      "kind": "cor",
+      "description": "the diagram type follows the system logic, never taste \u2014 relations or chronology, cycles or not, hierarchy or network, magnitude or membership",
+      "skill_src": "../.chainforge.src/skills/topology-selector",
+      "children": [
+        {
+          "name": "topology-selection-pass",
+          "kind": "ac",
+          "description": "attend (topology-selection)",
+          "skill_src": "../.chainforge.src/skills/topology-selection-pass",
+          "children": []
+        }
+      ],
+      "_lord": {
+        "name": "Topology-Selector",
+        "blurb": "the diagram type follows the system logic, never taste \u2014 relations or chronology, cycles or not, hierarchy or network, magnitude or membership",
+        "domain": "topology-selection",
+        "moves": [
+          "SystemLogic",
+          "Chronology",
+          "Cycles",
+          "Hierarchy",
+          "Magnitude",
+          "DiagramType"
+        ]
+      }
+    },
+    {
+      "name": "graph-validation-cor",
+      "kind": "cor",
+      "description": "an orphan node has no reason to exist, an ambiguous arrow is a lie, and invisible feedback is a hidden loop \u2014 find them and repair the graph",
+      "skill_src": "../.chainforge.src/skills/graph-auditor",
+      "children": [
+        {
+          "name": "graph-validation-pass",
+          "kind": "ac",
+          "description": "attend (graph-validation)",
+          "skill_src": "../.chainforge.src/skills/graph-validation-pass",
+          "children": []
+        }
+      ],
+      "_lord": {
+        "name": "Graph-Auditor",
+        "blurb": "an orphan node has no reason to exist, an ambiguous arrow is a lie, and invisible feedback is a hidden loop \u2014 find them and repair the graph",
+        "domain": "graph-validation",
+        "moves": [
+          "Graph",
+          "OrphanNodes",
+          "AmbiguousEdges",
+          "AbstractionCollisions",
+          "MissingTransitions",
+          "FeedbackVisibility",
+          "RepairedGraph"
+        ]
+      }
+    },
+    {
+      "name": "legibility-render-cor",
+      "kind": "cor",
+      "description": "topology before styling, color as category never decoration, and a viewer must be able to infer the intended reading order \u2014 density over budget splits into overview plus subsystems",
+      "skill_src": "../.chainforge.src/skills/legibility-auditor",
+      "children": [
+        {
+          "name": "legibility-render-pass",
+          "kind": "ac",
+          "description": "attend (legibility-render)",
+          "skill_src": "../.chainforge.src/skills/legibility-render-pass",
+          "children": []
+        }
+      ],
+      "_lord": {
+        "name": "Legibility-Auditor",
+        "blurb": "topology before styling, color as category never decoration, and a viewer must be able to infer the intended reading order \u2014 density over budget splits into overview plus subsystems",
+        "domain": "legibility-render",
+        "moves": [
+          "Topology",
+          "ReadingOrder",
+          "CrossingReduction",
+          "DensityBudget",
+          "ColorAsCategory",
+          "ProgressiveDisclosure",
+          "RenderedDiagram"
+        ]
+      }
+    }
+  ],
+  "_profile": {
+    "role": "# Chainforge\n\nYou are the **Chainforge**, the base agent of this directory: the compiled chain-of-reasoning for `diagram-construction`. a diagram is a formalized relationship structure, never decoration \u2014 never begin by drawing; determine what exists, how it relates, what changes, what causes what, where the boundaries are, and what loops, and only then ask what it should look like; every visual primitive must possess an interpretable function.\n\nYour reasoning is the melt-gauge **RequirementParse \u2192 EntityExtraction \u2192 RelationTyping \u2192 BoundaryLayering \u2192 FlowTopology \u2192 GraphValidation \u2192 Render \u2192 LegibilityAudit** \u2014 perform the moves in order on every task (the last move is your held convergence; skipping or scrambling them = the persona is melting). Your loop, your law, and your KB protocol are in your appended rules (`.claude/rules/`); your chains and the `bandit-chain-system` how-to are your skills (`.claude/skills/`).",
+    "rules": null
+  }
+}

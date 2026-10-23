@@ -1,0 +1,153 @@
+{
+  "skilltree": {
+    "name": "adam-curtis-narration-style",
+    "kind": "sc",
+    "skill_src": "../.systemic-archive-narrator.src/dist/adam-curtis-narration-style",
+    "description": "adam-curtis-narration-style: the investigation that feeds the narration \u2014 build the evidence-bound causal model of how the present emerged, then tell it in the Adam Curtis register; conspiracies resolve into feedback loops, destiny into path dependence, magic into mechanisms; end unresolved",
+    "coord": "0",
+    "frameworks": [],
+    "children": [
+      {
+        "name": "systemic-archive-narrator",
+        "kind": "cor",
+        "skill_src": "../.systemic-archive-narrator.src/skills/systemic-archive-narrator",
+        "description": "the investigation that feeds the narration \u2014 build the evidence-bound causal model of how the present emerged, then tell it in the Adam Curtis register; conspiracies resolve into feedback loops, destiny into path dependence, magic into mechanisms; end unresolved",
+        "coord": "0.1",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "curtis-investigation",
+            "kind": "ac",
+            "skill_src": "../.systemic-archive-narrator.src/skills/curtis-investigation",
+            "description": "attend (adam-curtis-narration-style)",
+            "coord": "0.1.1",
+            "frameworks": [],
+            "children": []
+          },
+          {
+            "name": "curtis-arc",
+            "kind": "ac",
+            "skill_src": "../.systemic-archive-narrator.src/skills/curtis-arc",
+            "description": "attend (adam-curtis-narration-style)",
+            "coord": "0.1.2",
+            "frameworks": [],
+            "children": []
+          },
+          {
+            "name": "curtis-register",
+            "kind": "ac",
+            "skill_src": "../.systemic-archive-narrator.src/skills/curtis-register",
+            "description": "attend (adam-curtis-narration-style)",
+            "coord": "0.1.3",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "adam-curtis-narration-style-loop",
+        "kind": "sc",
+        "skill_src": "../.systemic-archive-narrator.src/loop",
+        "description": "the adam-curtis-narration-style default workflow \u2014 walk it",
+        "coord": "0.2",
+        "frameworks": [],
+        "children": []
+      },
+      {
+        "name": "archive-intake-cor",
+        "kind": "cor",
+        "skill_src": "../.systemic-archive-narrator.src/skills/source-critic",
+        "description": "no fragment enters the model unweighed \u2014 provenance, corroboration, contradiction, weight",
+        "coord": "0.3",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "archive-intake-pass",
+            "kind": "ac",
+            "skill_src": "../.systemic-archive-narrator.src/skills/archive-intake-pass",
+            "description": "attend (archive-intake)",
+            "coord": "0.3.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "actor-incentive-map-cor",
+        "kind": "cor",
+        "skill_src": "../.systemic-archive-narrator.src/skills/incentive-mapper",
+        "description": "model people through incentives, constraints, and institutional response \u2014 never through hidden intent",
+        "coord": "0.4",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "actor-incentive-pass",
+            "kind": "ac",
+            "skill_src": "../.systemic-archive-narrator.src/skills/actor-incentive-pass",
+            "description": "attend (actor-incentive-map)",
+            "coord": "0.4.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "causal-graph-cor",
+        "kind": "cor",
+        "skill_src": "../.systemic-archive-narrator.src/skills/causal-cartographer",
+        "description": "an edge in the story requires a mechanism, a temporal order, and a survived rival explanation",
+        "coord": "0.5",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "causal-graph-pass",
+            "kind": "ac",
+            "skill_src": "../.systemic-archive-narrator.src/skills/causal-graph-pass",
+            "description": "attend (causal-graph)",
+            "coord": "0.5.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "feedback-emergence-cor",
+        "kind": "cor",
+        "skill_src": "../.systemic-archive-narrator.src/skills/loop-finder",
+        "description": "replace the hidden controller with the loop \u2014 reinforcing, balancing, locked in by path dependence",
+        "coord": "0.6",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "feedback-emergence-pass",
+            "kind": "ac",
+            "skill_src": "../.systemic-archive-narrator.src/skills/feedback-emergence-pass",
+            "description": "attend (feedback-emergence)",
+            "coord": "0.6.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      },
+      {
+        "name": "epistemic-audit-cor",
+        "kind": "cor",
+        "skill_src": "../.systemic-archive-narrator.src/skills/anti-magic-auditor",
+        "description": "no supernatural causation, no omnipotent hidden controllers, no anthropomorphized system \u2014 coordination claims require evidence of coordination",
+        "coord": "0.7",
+        "frameworks": [],
+        "children": [
+          {
+            "name": "epistemic-audit-pass",
+            "kind": "ac",
+            "skill_src": "../.systemic-archive-narrator.src/skills/epistemic-audit-pass",
+            "description": "attend (epistemic-audit)",
+            "coord": "0.7.1",
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

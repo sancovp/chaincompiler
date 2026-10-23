@@ -45,8 +45,10 @@ def package(name: str, ac: str, *, out_dir: str, description: str | None = None)
     it. The dir/SKILL.md wrapper is just so any agent auto-loads it.
     """
     foci, held = parse_ac(ac)
+    # NOTE: no ": " in the default — write_skill (APE) does not YAML-escape the
+    # description, and a plain scalar containing ": " emits unparseable frontmatter.
     desc = description or (
-        f"Attention template (how to think): attend to {', '.join(foci)}"
+        f"Attention template (how to think) — attend to {', '.join(foci)}"
         + (f" → hold {held}" if held else "") + "."
     )
     body = "\n".join([

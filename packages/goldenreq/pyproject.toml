@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "goldenreq"
+version = "0.1.0"
+description = "The acceptance gate for goldenization: gauges FILE requests carrying receipts; a handler ACCEPTS/REJECTS; only an accept fires the promotion effect. Nothing self-promotes."
+requires-python = ">=3.11"
+# Deliberately dependency-free (stdlib only). The verdict record MIRRORS
+# base/acceptance's schema by shape, not by import (no cross-branch coupling).
+dependencies = []
+
+[project.scripts]
+goldenreq = "goldenreq.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

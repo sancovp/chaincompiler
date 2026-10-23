@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build the BIGDOG skill — the define-P-ness-then-emit persona, compiled in chaincompiler.
 
-Provenance: transformed from a live conversation (Isaac × LLM) about why an LLM
+Provenance: transformed from a live conversation (author × LLM) about why an LLM
 (a pure conditional sampler) emits "P without P-ness" (slop) and how a sound
 external gate + persisted detector-structure makes P-ness *emerge*. The cloze the
 LLM was forced to repeat each turn IS a CoR; this script compiles it.
@@ -116,6 +116,25 @@ def build_cor_file(chain: str) -> str:
     )
 
 
+def _portable_scope(text: str) -> str:
+    """rulecatcher records each artifact by its resolved absolute path; the committed export
+    stores it RELATIVE to the repo instead, so the file names no machine's path."""
+    data = json.loads(text)
+
+    def rel(p: str) -> str:
+        path = Path(p)
+        return path.relative_to(REPO).as_posix() if path.is_absolute() and path.is_relative_to(REPO) else p
+
+    for a in data.get("artifacts", []):
+        if "path" in a:
+            a["path"] = rel(a["path"])
+    for r in data.get("rules", []):
+        for e in r.get("evidence", []):
+            if "artifact_path" in e:
+                e["artifact_path"] = rel(e["artifact_path"])
+    return json.dumps(data, indent=2, sort_keys=True) + "\n"   # rulecatcher's own export format
+
+
 def seed_rulecatcher() -> Path | None:
     """Seed a rulecatcher scope 'bigdog' from the gated notation and export it.
 
@@ -145,7 +164,7 @@ def seed_rulecatcher() -> Path | None:
         out = subprocess.run(rc + ["export-scope", "--scope", "bigdog"],
                              cwd=REPO, check=True, capture_output=True, text=True)
         dest = HERE / "bigdog.rulecatcher.json"
-        dest.write_text(out.stdout, encoding="utf-8")
+        dest.write_text(_portable_scope(out.stdout), encoding="utf-8")
         return dest
     except (subprocess.CalledProcessError, FileNotFoundError) as e:
         print(f"  ! rulecatcher seed skipped: {e}")

@@ -2,7 +2,7 @@
   "artifacts": [
     {
       "content": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|\n[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|\n[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|\n[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|\nclaim :: G2\nclaim :: G2\nclaim :: G2\nclaim :: G2\nskin :: G8\nskin :: G8\nskin :: G8\nskin :: G8\n",
-      "path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+      "path": "skills/bigdog/seed.runes",
       "sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0"
     },
     {
@@ -15,7 +15,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "CLOSE_DELIM",
       "new_status": "adopted",
       "prefix": [
@@ -30,7 +30,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "IDENTIFIER",
       "new_status": "adopted",
       "prefix": [
@@ -44,7 +44,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "IDENTIFIER",
       "new_status": "adopted",
       "prefix": [
@@ -59,7 +59,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "OPERATOR",
       "new_status": "adopted",
       "prefix": [
@@ -74,7 +74,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "Sense",
       "new_status": "adopted",
       "prefix": [
@@ -89,7 +89,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "::",
       "new_status": "adopted",
       "prefix": [
@@ -104,7 +104,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "=>",
       "new_status": "adopted",
       "prefix": [
@@ -119,7 +119,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "]",
       "new_status": "adopted",
       "prefix": [
@@ -134,7 +134,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "]",
       "new_status": "adopted",
       "prefix": [
@@ -149,7 +149,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "G2",
       "new_status": "adopted",
       "prefix": [
@@ -164,7 +164,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "IDENTIFIER",
       "new_status": "adopted",
       "prefix": [
@@ -179,7 +179,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "::",
       "new_status": "adopted",
       "prefix": [
@@ -194,7 +194,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "Actualize",
       "new_status": "adopted",
       "prefix": [
@@ -209,7 +209,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "=>",
       "new_status": "adopted",
       "prefix": [
@@ -224,7 +224,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "=>",
       "new_status": "adopted",
       "prefix": [
@@ -239,7 +239,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "=>",
       "new_status": "adopted",
       "prefix": [
@@ -254,7 +254,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "]",
       "new_status": "adopted",
       "prefix": [
@@ -269,7 +269,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "]",
       "new_status": "adopted",
       "prefix": [
@@ -284,7 +284,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "]",
       "new_status": "adopted",
       "prefix": [
@@ -299,7 +299,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "G8",
       "new_status": "adopted",
       "prefix": [
@@ -314,7 +314,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "|",
       "new_status": "adopted",
       "prefix": [
@@ -329,7 +329,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "IDENTIFIER",
       "new_status": "adopted",
       "prefix": [
@@ -344,7 +344,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "OPERATOR",
       "new_status": "adopted",
       "prefix": [
@@ -359,7 +359,7 @@
     {
       "actor": "build",
       "automatic": false,
-      "created_at": "2026-06-28 19:31:09",
+      "created_at": "2026-10-23 20:52:38",
       "expected_token": "=>",
       "new_status": "adopted",
       "prefix": [
@@ -883,35 +883,35 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
@@ -938,35 +938,35 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Sense"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Dog"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Bitch"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "BigDog"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
@@ -992,35 +992,35 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Dog"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Bitch"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "BigDog"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Commit"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
@@ -1047,35 +1047,35 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 5,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 6,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 7,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 8,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 9,
@@ -1102,28 +1102,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Sense"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "Sense"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "Sense"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1157,28 +1157,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 5,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 6,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 7,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 8,
@@ -1212,28 +1212,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1267,28 +1267,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1322,28 +1322,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1377,28 +1377,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 5,
           "observed_token": "G2"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 6,
           "observed_token": "G2"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 7,
           "observed_token": "G2"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 8,
@@ -1432,28 +1432,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Sense"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "Sense"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "Sense"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1487,28 +1487,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 9,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 10,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 11,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 12,
@@ -1535,28 +1535,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Actualize"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "Actualize"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "Actualize"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1583,28 +1583,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1631,28 +1631,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1679,28 +1679,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1727,28 +1727,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1775,28 +1775,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1823,28 +1823,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1871,28 +1871,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 9,
           "observed_token": "G8"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 10,
           "observed_token": "G8"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 11,
           "observed_token": "G8"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 12,
@@ -1919,28 +1919,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "|"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "|"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "|"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -1967,28 +1967,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "Actualize"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "Actualize"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "Actualize"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -2015,35 +2015,35 @@
       "confidence": 0.9545454545454546,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
@@ -2069,35 +2069,35 @@
       "confidence": 0.9545454545454546,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
@@ -2124,28 +2124,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 5,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 6,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 7,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 8,
@@ -2179,28 +2179,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -2233,28 +2233,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 5,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 6,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 7,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 8,
@@ -2287,28 +2287,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -2341,28 +2341,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 5,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 6,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 7,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "claim :: G2",
           "line_no": 8,
@@ -2395,28 +2395,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 9,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 10,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 11,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 12,
@@ -2443,28 +2443,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -2491,28 +2491,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "|"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "|"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "|"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -2538,28 +2538,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -2585,28 +2585,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -2632,28 +2632,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "]"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,
@@ -2679,28 +2679,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 9,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 10,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 11,
           "observed_token": "<EOL>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 12,
@@ -2726,28 +2726,28 @@
       "confidence": 1.0,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 9,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 10,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 11,
           "observed_token": "::"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "skin :: G8",
           "line_no": 12,
@@ -2773,35 +2773,35 @@
       "confidence": 0.9545454545454546,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
@@ -2827,35 +2827,35 @@
       "confidence": 0.8095238095238095,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
@@ -2882,35 +2882,35 @@
       "confidence": 0.8095238095238095,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
@@ -2936,35 +2936,35 @@
       "confidence": 0.8095238095238095,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "["
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
@@ -2991,28 +2991,28 @@
       "confidence": 0.8,
       "evidence": [
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 1,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 2,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 3,
           "observed_token": "=>"
         },
         {
-          "artifact_path": "/Users/isaacwr/claude_code/chaincompiler/skills/bigdog/seed.runes",
+          "artifact_path": "skills/bigdog/seed.runes",
           "artifact_sha256": "24fc21c44b950dd52f4f4ba8fa2d2425c1a9f9d99e821de30f5cb28091e04ac0",
           "context": "[Sense] => [Dog] => [Bitch] => [BigDog] => [Commit] => |Actualize|",
           "line_no": 4,

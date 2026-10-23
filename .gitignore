@@ -28,3 +28,7 @@ venv/
 /.claude/launch.json
 
 .venv-rebuild/
+
+# GBA derived index (rebuildable FTS5 sqlite — _reindex regenerates it)
+.index.db
+**/.index.db

@@ -1,0 +1,40 @@
+{
+  "skilltree": {
+    "name": "explain-something-fractally",
+    "kind": "sc",
+    "skill_src": null,
+    "description": "explain-something-fractally: explain anything as an LFP roll-up \u2014 overview, enumerate the parts, define each part (what/when/how/utility), recurse into any part that needs its own pass until the fixed point closes, then compose the whole granularly",
+    "coord": null,
+    "frameworks": [],
+    "children": [
+      {
+        "name": "fractal-explainer",
+        "kind": "cor",
+        "skill_src": null,
+        "description": "explain anything as an LFP roll-up \u2014 overview, enumerate the parts, define each part (what/when/how/utility), recurse into any part that needs its own pass until the fixed point closes, then compose the whole granularly",
+        "coord": null,
+        "frameworks": [],
+        "children": [
+          {
+            "name": "fractal-top-pass",
+            "kind": "ac",
+            "skill_src": null,
+            "description": "attend (explain-something-fractally)",
+            "coord": null,
+            "frameworks": [],
+            "children": []
+          },
+          {
+            "name": "fractal-per-part-pass",
+            "kind": "ac",
+            "skill_src": null,
+            "description": "attend (explain-something-fractally)",
+            "coord": null,
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

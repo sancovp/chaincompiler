@@ -13,7 +13,7 @@ description: How to verify agent/COG/gate/AIOS behavior WITHOUT calling LLMs or 
 ## ONE TIME I needed to test whether the Challenger's gate actually works
 
 I had written a `run_cog` "test" that did `assert r.admitted is True` — but `admitted` was hardcoded
-`True` in the code. It was `assert True == True` in a costume. A hallucination. Isaac caught it and
+`True` in the code. It was `assert True == True` in a costume. A hallucination. The author caught it and
 said: there are no unit tests for this, only **metaformal self-tests** — trigger it for real, watch
 the substrate.
 

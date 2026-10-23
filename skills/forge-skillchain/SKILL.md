@@ -1,6 +1,6 @@
 ---
 name: forge-skillchain
-description: SCCC — forge a skill-chain language: resolve [ac|cor|skill] steps to packages and roll them up.
+description: SCCC — forge a skill-chain language — resolve [ac|cor|skill] steps to packages and roll them up.
 ---
 
 An SC chains forged AC/CoR/skill steps toward a goal. SCCC is made FROM CORCC+ACCC+chaincompiler.

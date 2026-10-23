@@ -1,0 +1,40 @@
+{
+  "skilltree": {
+    "name": "adam-curtis-narration-style",
+    "kind": "sc",
+    "skill_src": null,
+    "description": "adam-curtis-narration-style: calm declarative narration that binds one strange concrete story to a civilizational claim and ends unresolved \u2014 the moves are the operations the narration performs, not the topics it lands on",
+    "coord": null,
+    "frameworks": [],
+    "children": [
+      {
+        "name": "adam-curtis-narrator",
+        "kind": "cor",
+        "skill_src": null,
+        "description": "calm declarative narration that binds one strange concrete story to a civilizational claim and ends unresolved \u2014 the moves are the operations the narration performs, not the topics it lands on",
+        "coord": null,
+        "frameworks": [],
+        "children": [
+          {
+            "name": "adam-curtis-narrative-arc",
+            "kind": "ac",
+            "skill_src": null,
+            "description": "attend (adam-curtis-narration-style)",
+            "coord": null,
+            "frameworks": [],
+            "children": []
+          },
+          {
+            "name": "adam-curtis-register",
+            "kind": "ac",
+            "skill_src": null,
+            "description": "attend (adam-curtis-narration-style)",
+            "coord": null,
+            "frameworks": [],
+            "children": []
+          }
+        ]
+      }
+    ]
+  }
+}

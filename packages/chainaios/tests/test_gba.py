@@ -99,3 +99,49 @@ def test_gba_seats_a_custom_persona_cor():
     assert search(g, "assess the seeker", limit=5)
     construct_into(g, "guardian-rite", ["[Trial] ⇒ [Growth] ⇒ |Ascension|"])
     assert search(g, "ascension"), "constructed subsystem must be findable"
+
+
+def test_a_constructed_seat_is_a_LORD_you_can_descend_into():
+    """Rule 01's forest-of-lords debt, closed + gated. A sub-domain constructed WITH ITS OWN
+    persona carries its own `CLAUDE.md` at its dir — so reading into that dir seats you AS
+    that persona (the auto-loader injects a dir's CLAUDE.md + skills on Read). Before this,
+    the tree was single-lord: the seat's persona was DESCRIBED in a skill, never inhabitable."""
+    from corcc.notation import Move, PersonaSpec
+
+    seat = PersonaSpec(
+        name="Rollback-Surgeon",
+        blurb="find the change, bound the blast radius, revert the smallest safe unit",
+        moves=(Move("Change", ("what changed",)), Move("Blast", ("who is affected",)),
+               Move("Revert", ("the smallest safe unit",))),
+    )
+    g = make_gba("triage", _root(), atoms=["[Symptom] ⇒ [Scope] ⇒ |Severity|"])
+    construct_into(g, "rollback", ["[Change] ⇒ [Blast] ⇒ |Revert|"], persona=seat)
+
+    lord = g.root / "rollback-cor" / "CLAUDE.md"
+    assert lord.exists(), "a persona'd sub-domain must be a LORD (its own CLAUDE.md at its dir)"
+    text = lord.read_text()
+    assert "Rollback-Surgeon" in text                        # who you BECOME there
+    assert "Change → Blast → Revert" in text                 # its own melt-gauge, not the root's
+    assert "--scope 0." in text                              # curates its own subtree
+    assert "Read `../CLAUDE.md` (relative to this folder)" in text   # the way back UP (traversability)
+    assert (lord.parent / ".." / "CLAUDE.md").resolve() == g.claude_md.resolve()  # …and it resolves
+    assert str(g.root) not in text                           # portable: no machine's path
+    assert g.report["lords"] == 1
+
+    # a lord SURVIVES the next construct (materialize rmtree's root; lords re-emit from the manifest)
+    construct_into(g, "perf", ["[Latency] ⇒ [Profile] ⇒ |Hotspot|"])
+    assert lord.exists() and "Rollback-Surgeon" in lord.read_text()
+    # …and a sub-domain with NO persona of its own gets NO lord (rule 01: grow lords on WARRANT)
+    assert not (g.root / "perf-cor" / "CLAUDE.md").exists()
+    assert g.report["lords"] == 1
+
+
+def test_the_persisted_manifest_names_no_machine_path_and_reconstructs():
+    """gba.json stores every skill_src relative to the GBA root, so a committed AIOS names no
+    machine's path; construct_into resolves it back and keeps building."""
+    g = make_gba("triage", _root(), atoms=["[Symptom] ⇒ [Scope] ⇒ |Severity|"])
+    raw = g.manifest.read_text()
+    assert str(g.root.parent) not in raw
+    construct_into(g, "perf", ["[Latency] ⇒ [Profile] ⇒ |Hotspot|"])
+    assert str(g.root.parent) not in g.manifest.read_text()
+    assert search(g, "hotspot")

@@ -1,0 +1,15 @@
+{
+  "name": "adam-curtis-narration-style",
+  "description": "Skillchain \u2014 ac:adam-curtis-narrative-arc \u2192 ac:adam-curtis-register \u2192 cor:adam-curtis-narrator \u2192 CurtisNarration",
+  "steps": [
+    {
+      "skill": "adam-curtis-narrative-arc"
+    },
+    {
+      "skill": "adam-curtis-register"
+    },
+    {
+      "skill": "adam-curtis-narrator"
+    }
+  ]
+}

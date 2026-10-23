@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """wisdom_world — the abductive world with the consistency-penalty (option B + WISDOM).
 
-The mechanism (from the Isaac×LLM design dialogue):
+The mechanism (from the author×LLM design dialogue):
   - The world is NOT simulated forward. Facts are abduced BACKWARD from sampled
     interactions: a perception that fires WRITES the world-fact that would justify it
     (owl hoots -> dog's hear-roll fires -> "the dog was close enough" closes `near()`).

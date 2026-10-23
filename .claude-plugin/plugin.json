@@ -1,7 +1,7 @@
 {
   "name": "chaincompiler",
-  "description": "A compiler-compiler for cognition: invent a notation, gate it so the model can't malform it, compile it into a loadable skill, compose and organize them. Ships the meta-APE capability skills (make-prompt, make-persona, big-generator, persona-generator, forge-attention-chain, forge-cor, forge-skillchain, construct-language) — one per CC/*CC build-function — plus bandit-chain-system, glyphsteer, glyphsteer-dense and the Self-Interpreter MCP. Built on agent-prompt-engineering (APE, the prompt engine) over pydantic-stack-core, with the *CC (accc/corcc/sccc) made FROM chaincompiler. Requires the Python packages: ./install.sh, then `pip install fastmcp` for the MCP.",
-  "version": "0.2.0",
+  "description": "A compiler-compiler for cognition: invent a notation, gate it so the model can't malform it, compile it into a loadable skill, compose and organize them. Ships the meta-APE capability skills (make-prompt, make-persona, big-generator, persona-generator, forge-attention-chain, forge-cor, forge-skillchain, construct-language) — one per CC/*CC build-function — plus bandit-chain-system, glyphsteer, glyphsteer-dense, the Self-Interpreter MCP, and two minted style chain-systems (adam-curtis-narration-style, explain-something-fractally — each an SC rollup with its operation-grade ACs + a cue-pinned persona CoR, dogfooding roll_up_algebra). Built on agent-prompt-engineering (APE, the prompt engine) over pydantic-stack-core, with the *CC (accc/corcc/sccc) made FROM chaincompiler. Requires the Python packages: ./install.sh, then `pip install fastmcp` for the MCP.",
+  "version": "0.2.1",
   "author": {
     "name": "sancovp",
     "url": "https://github.com/sancovp"

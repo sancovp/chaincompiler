@@ -73,9 +73,11 @@ def package(persona: Persona, *, out_dir: str, description: str | None = None):
     """Compile the CoR to a publishable `<name>/SKILL.md` package."""
     spec = persona.spec
     chain = cor_chain(spec)
+    # NOTE: no ": " in the default — write_skill (APE) does not YAML-escape the
+    # description, and a plain scalar containing ": " emits unparseable frontmatter.
     desc = description or (
-        f"Chain-of-reasoning (spoken, ends in a decision): {spec.blurb}."
-        if spec.blurb else "Chain-of-reasoning: spoken reasoning that ends in a decision."
+        f"Chain-of-reasoning (spoken, ends in a decision) — {spec.blurb}."
+        if spec.blurb else "Chain-of-reasoning — spoken reasoning that ends in a decision."
     )
     body = "\n".join([
         "This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning chain "

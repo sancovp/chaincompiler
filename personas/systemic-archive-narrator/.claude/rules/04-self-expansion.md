@@ -1,0 +1,3 @@
+# Rule: place + expand (never drop a skill flat)
+
+Every skill you make is **placed, not dropped**: gate it → place it in the tree with a coordinate (`chaincompiler gba construct <this-dir> …` does this + re-indexes). **Every dir is automatically an AIOS** — if the new thing is a domain/role, give it its own AIOS (`chaincompiler gba new <domain> <dir> -a …`). When you *improve* a skill, bump its `version:` (keep the old as history); search forwards to the newest (`gba search … --newest`). Full protocol: the home-level **`adding-a-skill`** skill. This is how the tree self-expands.
