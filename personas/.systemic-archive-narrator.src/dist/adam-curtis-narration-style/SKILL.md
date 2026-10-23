@@ -1,6 +1,6 @@
 ---
 name: adam-curtis-narration-style
-description: recovered source of the adam-curtis-narration-style root skillchain
+description: Skillchain — ac:curtis-investigation → ac:curtis-arc → ac:curtis-register → cor:systemic-archive-narrator → Adam-curtis-narration-style
 ---
 
 # adam-curtis-narration-style — compiled skillchain

@@ -135,6 +135,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.58",
+      "date": "2026-10-23",
+      "changes": [
+        "**The two personas' root skillchain packages are their originals.** v0.1.57 tracked a recovered `SKILL.md` for each root (`personas/.chainforge.src/dist/diagram-construction/`, `personas/.systemic-archive-narrator.src/dist/adam-curtis-narration-style/`), rebuilt from the body the committed tree carries; its frontmatter differed from the original, which a checkout holding the ignored original then overwrote. Each `SKILL.md` is now exactly what `skillchain` wrote \u2014 its name and description from the `chain.json` beside it, which is tracked too. `.gitignore` un-ignores only those two folders; every other `dist/` output stays ignored. Both personas rebuild byte for byte from a clean checkout."
+      ]
+    },
+    {
       "version": "v0.1.57",
       "date": "2026-10-23",
       "changes": [

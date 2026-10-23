@@ -1,0 +1,15 @@
+{
+  "name": "diagram-construction",
+  "description": "Skillchain \u2014 ac:diagram-compilation \u2192 ac:never-begin-by-drawing \u2192 cor:chainforge \u2192 Diagram-construction",
+  "steps": [
+    {
+      "skill": "diagram-compilation"
+    },
+    {
+      "skill": "never-begin-by-drawing"
+    },
+    {
+      "skill": "chainforge"
+    }
+  ]
+}

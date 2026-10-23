@@ -1,6 +1,6 @@
 ---
 name: diagram-construction
-description: recovered source of the diagram-construction root skillchain
+description: Skillchain — ac:diagram-compilation → ac:never-begin-by-drawing → cor:chainforge → Diagram-construction
 ---
 
 # diagram-construction — compiled skillchain

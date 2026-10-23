@@ -33,5 +33,9 @@ venv/
 .index.db
 **/.index.db
 
-# GBA sources: the root skillchain body of each committed persona lives in its sibling .src/dist/
+# GBA sources: each committed persona's root skillchain package lives in its sibling .src/dist/; only
+# those two folders are tracked — every other dist/ output stays ignored
 !personas/.*.src/dist/
+personas/.*.src/dist/*
+!personas/.chainforge.src/dist/diagram-construction/
+!personas/.systemic-archive-narrator.src/dist/adam-curtis-narration-style/
