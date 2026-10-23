@@ -12,13 +12,17 @@ cd "$(dirname "$0")"
 #     >=0.4.0: portable trees (breadcrumbs relative to each node's folder; `relink --localize` at install);
 #     the `framework` package's fold_into_tome delegates to skilltree.tome.fold
 #   - numpy : glyphsteer's dense regime imports it at package import time
-python3 -m pip install "pydantic-stack-core>=0.1.4" "agent-prompt-engineering>=0.2.0" "agent-skilltree>=0.4.0" numpy
+#   - lark + pyyaml : honeyc's parser and its YAML lens · click : every package's CLI · fastmcp : the si MCP server
+#     (every non-optional dependency the packages declare; the optional extras — glyphsteer[dense|serve|st],
+#     honeyc[dev] — are installed only when wanted)
+python3 -m pip install "pydantic-stack-core>=0.1.4" "agent-prompt-engineering>=0.2.0" "agent-skilltree>=0.4.0" numpy lark pyyaml click fastmcp
 
 # The monorepo packages, editable. Layering (imports point DOWN, enforced by .importlinter):
 #   chainaios > sccc > corcc > accc > chaincompiler > prompt_engineering(APE).
 # rulecatcher first (the gate; the *CC import it). chainaios = the Bandit AIOS app (owns the `chaincompiler` CLI).
 # glyphsteer included: chainaios' roll_up_algebra writes the persona legend from it (silent no-legend fallback without it).
-PKGS=(rulecatcher honeyc skillchain-compiler chaincompiler accc corcc sccc chainaios si archetype framework glyphsteer)
+PKGS=(rulecatcher honeyc skillchain-compiler chaincompiler accc corcc sccc chainaios si archetype framework glyphsteer
+      personacc personapack goldenreq)
 ARGS=()
 for p in "${PKGS[@]}"; do ARGS+=(-e "packages/$p"); done
 

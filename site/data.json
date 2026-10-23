@@ -135,6 +135,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.56",
+      "date": "2026-10-23",
+      "changes": [
+        "**A clean install now gets everything.** `install.sh` installs the packages with `--no-deps` and names their outside dependencies by hand; that list lacked `lark` and `pyyaml` (honeyc), `click` (every CLI) and `fastmcp` (the si MCP), so a clean clone in an empty environment could not import honeyc \u2014 17 test modules failed to collect. Found by the first clean-install test of the published repo; every non-optional dependency the packages declare is now installed. The same test found three packages `install.sh` never listed \u2014 `personacc`, `personapack` and `goldenreq` \u2014 so they are installed too, and goldenreq's ninth test (which needs `personacc`) passes. The plugin description no longer asks for a separate `pip install fastmcp`."
+      ]
+    },
+    {
       "version": "v0.1.55",
       "date": "2026-10-23",
       "changes": [

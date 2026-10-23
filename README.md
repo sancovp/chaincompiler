@@ -4,6 +4,10 @@
 
 <!-- SCALABLE-PUBLISHING:AUTOGEN START (managed block — do not edit between these markers) -->
 
+![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_10_23-lightgrey.svg)
+
+⭐ 0 stars • 🕑 Updated 2026-10-23
+
 [Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
 
 📦 Auto-published from the monorepo • [CHANGELOG](./CHANGELOG.md) • [sancovp/chaincompiler](https://github.com/sancovp/chaincompiler)
@@ -344,6 +348,9 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.1.56 — 2026-10-23
+- **A clean install now gets everything.** `install.sh` installs the packages with `--no-deps` and names their outside dependencies by hand; that list lacked `lark` and `pyyaml` (honeyc), `click` (every CLI) and `fastmcp` (the si MCP), so a clean clone in an empty environment could not import honeyc — 17 test modules failed to collect. Found by the first clean-install test of the published repo; every non-optional dependency the packages declare is now installed. The same test found three packages `install.sh` never listed — `personacc`, `personapack` and `goldenreq` — so they are installed too, and goldenreq's ninth test (which needs `personacc`) passes. The plugin description no longer asks for a separate `pip install fastmcp`.
 
 ### v0.1.55 — 2026-10-23
 - **Every generated file is portable — no machine's path anywhere in the folder.** The generators were fixed, then their output re-made: `chainaios.gba` stores `gba.json`'s `skill_src` relative to the AIOS root (resolved back on read, so `construct_into` keeps building) and writes each lord's way UP as a path relative to its own folder; SkillTree ≥0.4.0 writes breadcrumbs relative to each node's folder and its manifest's `skill_src` relative to itself; `skills/bigdog/build.py` stores rulecatcher's evidence paths relative to the repo. The two persona AIOSes (`chainforge`, `systemic-archive-narrator`) were re-applied from their own sources through the fixed builder (0 violations, 18 and 17 skills indexed, lords intact), the two style trees relinked, bigdog rebuilt. A persona copied anywhere still validates; `skilltree relink --localize` writes absolute paths after an install.
