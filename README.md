@@ -354,6 +354,16 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.1.65 — 2026-10-24
+- **The public repository's branches are closed.** Its pull requests #1 and #2 are closed, each with a comment naming
+  v0.1.64's merge (`6aaa4e81b1`) and its publish (`ae9bf20697`). Its three branches are deleted: the two bug sweeps
+  and the backup of its history from before the rewrite. Their whole history was kept in the source home first, as
+  bundles in `not-unified/chaincompiler-internal`. `DESIGN.md` §18 owes nothing for them; the public repository holds
+  `main` alone.
+- `DESIGN.md` §18's debt of three version lines now says each package's version moves only in a release that changes
+  that package; it had said the versions were never bumped.
+- No code changed; suite: 313 passed.
+
 ### v0.1.64 — 2026-10-24
 - **The public repository's two bug sweeps are home.** The fourteen defects its branches `fix/bug-sweep` (pull request
   #1) and `fix/confirmed-bug-sweep` (#2) found are fixed here, at every door the same input reaches, each with a

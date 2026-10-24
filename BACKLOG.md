@@ -141,8 +141,10 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
   verified bundle) and the two files of that history held in no other form are in `not-unified/chaincompiler-internal`;
   the standalone folder that held the design and the package is deleted, every file confirmed folded byte for byte
   (DESIGN §18).
-- [ ] **Close the public repository's branches once their work is in the source home** — the two bug sweeps and the
-  backup of the history from before the rewrite (DESIGN §18).
+- [x] **Close the public repository's branches once their work is in the source home** (v0.1.65) — the two bug
+  sweeps' pull requests #1 and #2 closed, each with a comment naming v0.1.64's merge and its publish, and the branches
+  `fix/bug-sweep`, `fix/confirmed-bug-sweep` and `backup/pre-scrub-20260617-124016` deleted, all three histories kept
+  as bundles in `not-unified/chaincompiler-internal` first; the public repository holds `main` alone (DESIGN §18).
 
 ## Gate — set-valued / closed-class vocabulary check  `✓` (found by a metaformal self-test, fixed 2026-06-17)
 

@@ -412,11 +412,11 @@ is its own project, `not-unified/steward`; the internal design that pass relocat
 from before its rewrite, and every file of that history the source home holds in no other form are kept in
 `not-unified/chaincompiler-internal`.
 The public repository's three branches — the two bug sweeps `fix/bug-sweep` and `fix/confirmed-bug-sweep` (its pull
-requests #1 and #2) and the backup of its history from before the rewrite — are home: the sweeps' fixes are in honeyc,
-dietc, glyphsteer and corcc (§3 · §11), each with a regression test, and the whole history of all three, as git bundles,
-and the files of the backup held in no other form are in `not-unified/chaincompiler-internal`.
-⚠ OWED: the three branches are still open on the public repository; close each pull request with a comment naming
-the merge that ported it, and delete the branches (BACKLOG).
+requests #1 and #2) and the backup of its history from before the rewrite — were ported home and closed: the sweeps'
+fixes are in honeyc, dietc, glyphsteer and corcc (§3 · §11), each with a regression test, released as v0.1.64; the
+whole history of all three, as git bundles, and the files of the backup held in no other form are in
+`not-unified/chaincompiler-internal`; each pull request is closed with a comment naming the merge and the publish that
+carry its work, and the branches are deleted. The public repository holds `main` alone.
 
 Each package's distribution is named for its folder, save four whose bare names belong to other projects on PyPI:
 `accc`, `archetype` and `si` publish as `chaincompiler-accc`, `chaincompiler-archetype` and `chaincompiler-si`, and
@@ -431,8 +431,8 @@ ASPIRATIONAL: the fifteen published to PyPI under those names, each a manifest u
 one package without `--no-deps`, or an extra naming one (steward's), asks PyPI for a sibling anyone could publish
 there (BACKLOG).
 ⚠ OWED: three version lines — the release line in the README changelog, the plugin's version in
-`plugin.json`, and every package's own `pyproject.toml` version, never bumped. Owed: one line, the release
-version stamped into the plugin and the packages.
+`plugin.json`, and each package's own `pyproject.toml` version, which moves only in a release that changes that
+package. Owed: one line, the release version stamped into the plugin and the packages.
 
 ## §19 Tests and proofs
 

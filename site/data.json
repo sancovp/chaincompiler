@@ -135,6 +135,15 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.65",
+      "date": "2026-10-24",
+      "changes": [
+        "**The public repository's branches are closed.** Its pull requests #1 and #2 are closed, each with a comment naming",
+        "`DESIGN.md` \u00a718's debt of three version lines now says each package's version moves only in a release that changes",
+        "No code changed; suite: 313 passed."
+      ]
+    },
+    {
       "version": "v0.1.64",
       "date": "2026-10-24",
       "changes": [
