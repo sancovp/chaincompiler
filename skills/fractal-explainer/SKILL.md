@@ -12,7 +12,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 6 moves: Overview, EnumerateParts, DefineEachPart, RecurseOrClose, Rollup, and finally converges on Compose.
+State your reasoning as ONE paragraph that performs, in order, 6 moves: Overview, EnumerateParts, DefineEachPart, RecurseOrClose, Rollup, and finally converges on Compose.
 [Overview: …the one-breath whole…] → [EnumerateParts: …every part…] → [DefineEachPart: …what when how utility…] → [RecurseOrClose: …does this part need its own pass…] → [Rollup: …roll up to the least fixed point…] → [Compose: …compose the parts granularly…]
 
 ## Inner attention chain (use silently to generate the above)

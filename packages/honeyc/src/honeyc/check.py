@@ -4,12 +4,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Literal
 
-from .ast_nodes import Bounded, Chain, Entity, Glyph, Program, Scope, TypeAnn
-from .render import _term
-
-
-def _bounded_form(term: object) -> str:
-    return _term(Bounded(term))
+from .ast_nodes import Assignment, Bounded, Chain, Entity, Glyph, Program, Scope, Transform, TypeAnn
+from .render import _term, source
 
 
 @dataclass
@@ -45,6 +41,11 @@ def check_program(program: Program) -> list[CheckIssue]:
             visit(node.term)
         elif isinstance(node, Bounded):
             visit(node.term)
+        elif isinstance(node, Assignment):
+            visit(node.left)
+            visit(node.right)
+        elif isinstance(node, Transform):
+            visit(node.chain)
         elif isinstance(node, Entity):
             seen_entities.add(node.id)
 
@@ -74,11 +75,15 @@ def _check_chain(chain: Chain, issues: list[CheckIssue]) -> None:
                 rendered = _term(term)
                 left = _term(chain.terms[backbone[pos - 1]])
                 right = _term(chain.terms[backbone[pos + 1]])
+                # the rewrite is the whole chain in its source spelling with this one term bounded, so it parses back
+                # to the chain's own statements plus the bounding and the mediation
+                bounded_chain = Chain([Bounded(t) if k == term_index else t for k, t in enumerate(chain.terms)],
+                                      chain.connectors)
                 issues.append(
                     CheckIssue(
                         "warning",
                         f"{rendered} appears as a mediator between {left} and {right} but is not bounded.",
                         span=rendered,
-                        suggested_rewrite=f"{left} ⇔ {_bounded_form(term)} ⇔ {right}",
+                        suggested_rewrite=source(bounded_chain),
                     )
                 )

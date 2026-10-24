@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sccc"
-version = "0.1.0"
+version = "0.1.1"
 description = "Skillchain Compiler-Compiler — chains ACs + CoRs + skills into one SKILL.md"
 requires-python = ">=3.11"
-dependencies = ["accc", "corcc", "chaincompiler", "rulecatcher", "skillchain", "click"]
+dependencies = ["chaincompiler-accc", "corcc", "chaincompiler", "rulecatcher", "skillchain-compiler", "click"]
 
 [project.scripts]
 sccc = "sccc.cli:main"

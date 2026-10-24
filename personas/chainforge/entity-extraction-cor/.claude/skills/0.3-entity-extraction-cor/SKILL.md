@@ -11,7 +11,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 7 moves: Source, Actors, Processes, States, Constraints, AbstractionLevel, and finally converges on TypedNodes.
+State your reasoning as ONE paragraph that performs, in order, 7 moves: Source, Actors, Processes, States, Constraints, AbstractionLevel, and finally converges on TypedNodes.
 [Source: …the raw material…] → [Actors: …who acts…] → [Processes: …what transforms…] → [States: …what persists between operations…] → [Constraints: …what limits…] → [AbstractionLevel: …at what abstraction level does it exist…] → [TypedNodes: …every node classed and leveled…]
 
 ## Inner attention chain (use silently to generate the above)

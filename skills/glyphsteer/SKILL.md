@@ -117,8 +117,9 @@ with GlyphGrammar(SENTIMENT) as gg:
     lint.verdict, lint.fix          # "orthogonal", "😊🔥"  (canonical reorder)
     gg.lint_chain("gsxpositive -> gsxbogus").verdict                       # "syntax_break"
 ```
-Gating is over the ASCII **tag** rendering (rulecatcher drops emoji, same as FTS5). Pass a
-grammar to annotation to auto-canonicalize: `annotate_chunk(chunk, ann, vocab, grammar=gg)`
+Gating is over the ASCII **tag** rendering (rulecatcher drops emoji, same as FTS5), so `lint`
+first refuses, as `syntax_break`, whatever in a code is neither a vocabulary glyph nor the
+separator — an unknown glyph, a word — and names it. Pass a grammar to annotation to auto-canonicalize: `annotate_chunk(chunk, ann, vocab, grammar=gg)`
 (reorders `orthogonal`, raises on `syntax_break`).
 
 ## Dense regime

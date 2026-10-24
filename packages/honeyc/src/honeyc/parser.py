@@ -87,9 +87,9 @@ class _ToAst(Transformer):
         return Connector("rel", name)
 
     def rel_rev(self, token):
-        # <name-
+        # <name- : the same relation as -name->, written the other way; the spelling is kept for the lenses
         name = str(token)[1:-1]
-        return Connector("rel", name)
+        return Connector("rel", name, reverse=True)
 
     def rel_bi(self, token):
         # <name>

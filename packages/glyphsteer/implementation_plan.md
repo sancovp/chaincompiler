@@ -129,15 +129,18 @@ packages/glyphsteer/
   pyproject.toml              (deps: numpy; extras: dense=[sentence-transformers])
   src/glyphsteer/
     __init__.py
-    vocab.py      §4.1  controlled glyph vocabulary; validate; HoneyC code bridge
+    vocab.py      §4.1  controlled glyph vocabulary; validate; the one matcher; HoneyC code bridge
     annotate.py   §4.2  the annotation pass (RuleAnnotator + pluggable LLMAnnotator)
     encode.py     §4.3  THE sidecar split: indexed_form / returned_form + invariant
     index.py      §4.4  lexical FTS5 index over indexed-form; facet filter; return clean
     dense.py      §4.5  optional dense layer (lazy sentence-transformers); anchor measure
     steer.py      §4.6  bilinear metric reshape sim_eff(q,d,anchors,weights)
     eval.py       §4.7  magnitude probe + retrieval lift harness
+    legend.py     §5.1  author / persist / merge / render an LLM-authored vocabulary
+    grammar.py    §5.2  the syntax gate over glyph codes (rulecatcher, lazily)
     cli.py              annotate / index / search / probe
-  tests/                vocab, encode (the hide invariant), index (e2e), steer (math)
+  tests/                vocab, encode (the hide invariant), index (e2e), steer (math), legend, grammar,
+                        grade, the dual regime, the dense backend, and the regressions the bug sweeps found
   experiments/          magnitude_probe.py, retrieval_lift.py, emoji_collapse_check.py
     results/            magnitude_probe.json (measured artifacts)
   serve/                Dockerfile, app.py (FastAPI), requirements.txt, docker-compose.yml
@@ -150,7 +153,12 @@ packages/glyphsteer/
 `Axis(name, glyph, description)`; `Vocabulary(axes)`. Validation: glyphs unique; each glyph
 non-alphanumeric & non-ASCII (so it's a clean lexical routing key that never collides with a
 prose word); `code(glyphs)` joins to a compact string; `glyphs_in(text)` / `strip(text)`.
-Bridge: a code is a HoneyC chain (`a→b`), so `to_honeyc()` emits chain notation.
+**Matching** has one reader, `_matches`: left to right, at each place the longest glyph that starts there, never two
+that overlap — so a vocabulary may hold a glyph that is part of another (an emoji and its VS16 or skin-tone form) and
+`parse`, `glyphs_in`, `code_tags`, `strip`, `in_code_order` and the grammar's order check all read it the same way.
+`strip` removes each glyph whole, then the separator with its space, and repeats until a pass removes nothing (removing
+one glyph can join its neighbours into another). Bridge: a code is a HoneyC chain (`a→b`), so
+`to_honeyc()` emits chain notation in the code's own order (`in_code_order`) — a chain is order-significant.
 
 ### 4.2 `annotate.py`
 `Annotation(axis, glyph)`. `Annotator` protocol → `annotate(chunk_text) -> list[Annotation]`.
@@ -171,7 +179,9 @@ Bridge: a code is a HoneyC chain (`a→b`), so `to_honeyc()` emits chain notatio
 ### 4.4 `index.py`
 FTS5 table `chunks(id UNINDEXED, body, code, clean UNINDEXED)` where `body` = indexed-form.
 `search(con, query, *, facet=None)` BM25-ranked; `facet` adds `AND code MATCH glyph` (exact).
-Hits return **clean** text (the hide, enforced at the read boundary). Mirrors skilltree.search.
+Each word of the query is quoted as a literal; a query with no word is one FTS5 string, its quotes doubled, so it
+finds nothing and never errors. Hits return **clean** text (the hide, enforced at the read boundary). Mirrors
+skilltree.search.
 
 ### 4.5 `dense.py`  *(optional extra)*
 Lazy import of `sentence-transformers` (`all-MiniLM-L6-v2` default). `embed(texts)`,
@@ -228,14 +238,17 @@ dev-workflow **DW-1** in `.claude/rules/20-architecture-flows.md`.
 
 ### Status: lexical regime COMPLETE & verified. Dense regime BUILT, containerized, and
 MEASURED: emoji-direction confirmed real but model-dependent (§3.1) — bge-en collapses
-emoji, multilingual XLM-R does not; Q1 strong, Q2 modest, Q3 a controllable gain. 22 tests
-green. Remaining for the paper: dense Q4 on a real corpus.
+emoji, multilingual XLM-R does not; Q1 strong, Q2 modest, Q3 a controllable gain. 50 tests
+green (`python3 -m pytest tests`, with ChainCompiler's packages installed so the grammar tests
+run). Remaining for the paper: dense Q4 on a real corpus.
 
 ## 5.1 Legend + ChainCompiler search integration (DONE 2026-06-16)
 
 - `legend.py` — an LLM **authors** a vocabulary (`author([{name,glyph,description}])`, tag
   auto-derived), it **persists** (`save_legend`/`load_legend`, JSON), **accumulates** into a
-  master legend (`merge`, last-author-wins), and **renders** for display (`render_legend`).
+  master legend (`merge`, last-author-wins — on a clash of name, glyph or derived tag: `risk` and `Risk!`
+  both derive `gsxrisk`, and the later one is kept; an entry that clashes with nothing is always kept, since a
+  replaced or evicted entry's glyph and tag are forgotten), and **renders** for display (`render_legend`).
   The legend = the glyph↔meaning↔tag table the LLM invents and keeps.
 - `GRADE` vocabulary + `grade_label` + `experiments/grade_demo.py` — grading a RAG corpus
   ("what's good and what isn't") rides the **lexical** facet (reliable), search returns the
@@ -254,11 +267,16 @@ drops emoji, same lesson as FTS5/dense). Three verdicts mirror rulecatcher's:
 - `ok` — well-formed, canonical order.
 - `orthogonal` — known tags, wrong order → steerable; `canonicalize` reorders to vocab order
   (a partial-order check GlyphSteer owns, since n-gram grammars express partial order poorly).
-- `syntax_break` — a foreign token (rulecatcher's strength: it owns this verdict).
+- `syntax_break` — foreign content. Over a raw tag chain (`lint_chain`) rulecatcher owns it
+  (its strength: foreign-token detection). Over a glyph code (`lint`) it is caught first and
+  directly — whatever is left once the vocabulary's glyphs and the separator are stripped is
+  foreign, and is named — because the tag chain is built from the known glyphs alone, so rulecatcher
+  would never see an unknown glyph or a stray word.
 
-Wired (optional) into `annotate_chunk(..., grammar=gg)`: `orthogonal` repaired, `syntax_break`
-raises. Needs the `grammar` extra + the sibling `chaincompiler` package. `glyphsteer.grammar`
-imports the engine lazily, so importing GlyphSteer never requires it. 6 tests.
+The order check reads the code's glyphs through the vocabulary's one matcher (`in_code_order`), so a
+glyph and its variant keep their places. Wired (optional) into `annotate_chunk(..., grammar=gg)`:
+`orthogonal` repaired, `syntax_break` raises. Needs the `grammar` extra + the sibling `chaincompiler`
+package. `glyphsteer.grammar` imports the engine lazily, so importing GlyphSteer never requires it.
 
 ## 6. ASPIRATIONAL
 

@@ -3,11 +3,11 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "si"
-version = "0.1.0"
+name = "chaincompiler-si"
+version = "0.1.1"
 description = "Self-Interpreter for the ChainCompiler chain dialect — an MCP that is also a skill"
 requires-python = ">=3.11"
-dependencies = ["chaincompiler", "chainaios", "accc", "corcc", "sccc", "agent-skilltree>=0.4.0", "fastmcp"]
+dependencies = ["chaincompiler", "chainaios", "chaincompiler-accc", "corcc", "sccc", "agent-skilltree>=0.4.0", "fastmcp"]
 
 [project.scripts]
 si-server = "si.server:main"

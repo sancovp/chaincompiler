@@ -11,7 +11,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 6 moves: MicroActions, InformationFlows, ReinforcingLoops, BalancingLoops, PathDependence, and finally converges on EmergentOutcome.
+State your reasoning as ONE paragraph that performs, in order, 6 moves: MicroActions, InformationFlows, ReinforcingLoops, BalancingLoops, PathDependence, and finally converges on EmergentOutcome.
 [MicroActions: …many small decisions…] → [InformationFlows: …who knew what, when…] → [ReinforcingLoops: …the loop feeds itself…] → [BalancingLoops: …what dampened it…] → [PathDependence: …why it locked in…] → [EmergentOutcome: …the outcome no one chose…]
 
 ## Inner attention chain (use silently to generate the above)

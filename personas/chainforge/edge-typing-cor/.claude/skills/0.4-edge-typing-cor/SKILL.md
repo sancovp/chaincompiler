@@ -11,7 +11,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 5 moves: Relation, EdgeClass, Direction, SemanticLoad, and finally converges on TypedEdge.
+State your reasoning as ONE paragraph that performs, in order, 5 moves: Relation, EdgeClass, Direction, SemanticLoad, and finally converges on TypedEdge.
 [Relation: …the claimed connection…] → [EdgeClass: …causes, transforms, contains, depends-on, enables, inhibits, observes, feeds-back…] → [Direction: …arrows represent actual directional semantics…] → [SemanticLoad: …no more meaning than the type permits…] → [TypedEdge: …the edge, typed and directed…]
 
 ## Inner attention chain (use silently to generate the above)

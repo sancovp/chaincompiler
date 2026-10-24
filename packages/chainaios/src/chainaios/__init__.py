@@ -10,7 +10,7 @@ The `chaincompiler` console command lives here (entry `chainaios.cli:main`), so 
 """
 from __future__ import annotations
 
-__version__ = "0.1.1"
+__version__ = "0.1.2"
 
 from .construct import construct_language, LanguageBundle
 from .bandit import (

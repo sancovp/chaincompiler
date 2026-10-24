@@ -11,7 +11,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 6 moves: SystemLogic, Chronology, Cycles, Hierarchy, Magnitude, and finally converges on DiagramType.
+State your reasoning as ONE paragraph that performs, in order, 6 moves: SystemLogic, Chronology, Cycles, Hierarchy, Magnitude, and finally converges on DiagramType.
 [SystemLogic: …what the system actually does…] → [Chronology: …does time order it…] → [Cycles: …does anything loop…] → [Hierarchy: …does parent-child dominate…] → [Magnitude: …does flow size matter…] → [DiagramType: …the family that fits…]
 
 ## Inner attention chain (use silently to generate the above)

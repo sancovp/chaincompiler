@@ -38,8 +38,11 @@ class Placeholder:
 
 @dataclass
 class Connector:
-    kind: str          # equiv | produces | compiles | maps | arrow | trans | runtime | rel
+    kind: str          # equiv | produces | compiles | maps | arrow | trans | runtime | rel | rel:bi
     value: str         # the surface glyph or relation name
+    # kind "rel" only: written `<name-` (True) rather than `-name->` (False). The same relation either way, so it is a
+    # spelling the lenses write back and never part of the connector's identity (its repr names a transform).
+    reverse: bool = field(default=False, repr=False, compare=False)
 
 
 @dataclass

@@ -8,7 +8,7 @@ import click
 from .check import check_program
 from .emit_cypher import emit_cypher
 from .emit_prolog import emit_prolog
-from .normalize import normalize
+from .normalize import is_mediation, normalize
 from .parser import parse_path
 from .render import render
 
@@ -33,7 +33,7 @@ def parse(input: Path) -> None:
 def norm(input: Path) -> None:
     """Normalize a rune-chain into semantic triples."""
     for s in normalize(parse_path(input)):
-        if s.predicate == "mediates":
+        if is_mediation(s):
             click.echo(f"{s.subject} mediates {s.object} target={s.meta['target']}")
         else:
             click.echo(f"{s.subject} {s.predicate} {s.object}")

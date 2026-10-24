@@ -7,7 +7,7 @@ The execute arm of Compilero Bandito; the self-hosting capstone.
 """
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from .interp import interpret, make_env
 from .mcp_tree import build_tree_server, tree_to_mcp

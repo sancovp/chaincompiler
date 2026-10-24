@@ -12,6 +12,7 @@ content). A code is a HoneyC chain, so `to_honeyc` emits chain notation.
 """
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 
 # the in-band separator between clean text and the glyph code (rare, non-prose)
@@ -105,23 +106,47 @@ class Vocabulary:
                 out.append(g)
         return "".join(out)
 
+    def _pattern(self) -> re.Pattern | None:
+        """One alternation over the glyphs, the longest first — a glyph that is part of another (an emoji and its
+        variation-selector or skin-tone form) is tried after the longer one at every place."""
+        if not self.axes:
+            return None
+        return re.compile("|".join(re.escape(g) for g in sorted(self.glyphs, key=len, reverse=True)))
+
+    def _matches(self, text: str) -> list[str]:
+        """Every vocabulary glyph in `text`, left to right: at each place the longest glyph that starts there, and
+        never two that overlap — so a glyph inside a longer one is not found there."""
+        pattern = self._pattern()
+        return [m.group(0) for m in pattern.finditer(text)] if pattern else []
+
     def parse(self, code: str) -> list[str]:
-        """Extract the known glyphs from a code string (unknown glyphs dropped)."""
-        return [g for g in self.glyphs if g in code]
+        """Extract the known glyphs from a code string, in vocabulary order (unknown glyphs dropped)."""
+        found = set(self._matches(code))
+        return [g for g in self.glyphs if g in found]
 
     def glyphs_in(self, text: str) -> list[str]:
-        """Which vocabulary glyphs appear anywhere in `text` (order of vocab)."""
-        return [g for g in self.glyphs if g in text]
+        """Which vocabulary glyphs appear anywhere in `text` (order of vocab), matched as `parse` matches them."""
+        return self.parse(text)
+
+    def in_code_order(self, code: str) -> list[str]:
+        """The known glyphs in the order the code holds them — each at the first place it stands."""
+        return list(dict.fromkeys(self._matches(code)))
 
     def strip(self, text: str) -> str:
-        """Remove every vocabulary glyph (and the separator) from `text`."""
-        for g in self.glyphs:
-            text = text.replace(g, "")
-        return text.replace(SEP.strip(), "").replace("⁣", "")
+        """Remove every vocabulary glyph, whole, and the separator — its space with it — from `text`, until a pass
+        removes nothing: removing one glyph can join what stood either side of it into another."""
+        pattern = self._pattern()
+        while True:
+            stripped = pattern.sub("", text) if pattern else text
+            stripped = stripped.replace(SEP, "").replace(SEP.strip(), "")
+            if stripped == text:
+                return text
+            text = stripped
 
     def to_honeyc(self, code: str) -> str:
-        """Render a code as a HoneyC chain (`a→b→c`) — the compiler bridge."""
-        return "→".join(self.parse(code))
+        """Render a code as a HoneyC chain (`a→b→c`) in the code's own order — the compiler bridge; a chain is
+        order-significant."""
+        return "→".join(self.in_code_order(code))
 
 
 def is_lexically_clean(glyph: str) -> bool:

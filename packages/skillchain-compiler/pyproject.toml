@@ -3,8 +3,8 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "skillchain"
-version = "0.1.1"
+name = "skillchain-compiler"
+version = "0.1.2"
 description = "Compose Claude Code skills into a validated, packaged chain"
 requires-python = ">=3.11"
 

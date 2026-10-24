@@ -11,7 +11,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 5 moves: Artifact, Provenance, Corroboration, ContradictionSearch, and finally converges on EvidentiaryWeight.
+State your reasoning as ONE paragraph that performs, in order, 5 moves: Artifact, Provenance, Corroboration, ContradictionSearch, and finally converges on EvidentiaryWeight.
 [Artifact: …what exactly is this…] → [Provenance: …who made it, when, for whom…] → [Corroboration: …what independently confirms it…] → [ContradictionSearch: …what cuts against it…] → [EvidentiaryWeight: …what weight it can bear…]
 
 ## Inner attention chain (use silently to generate the above)

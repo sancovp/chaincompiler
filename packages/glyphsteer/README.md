@@ -34,6 +34,24 @@ carries two markers:
 | **glyph** | 😡 | dense | emoji has a learned direction, near-orthogonal to prose |
 | **tag** | `gsxnegative` | lexical | rare ASCII single-token ⇒ maximal IDF, exact facet |
 
+## What the vocabulary guarantees
+
+- **Matching.** A vocabulary may hold a glyph that is part of another — an emoji and its variation-selector or
+  skin-tone form (`⚠` and `⚠️`). Every reader — `parse`, `glyphs_in`, `code_tags`, `strip`, the hide check,
+  `to_honeyc` and the grammar's order check — reads left to right, at each place the longest glyph that starts there,
+  and never two that overlap: `⚠️` is one glyph, never `⚠` with a stray selector.
+- **The hide.** `strip` removes each glyph whole and the separator with its space, and goes on until a pass removes
+  nothing — removing one glyph can join its neighbours into another — so the returned form holds no glyph.
+- **Order.** `to_honeyc` writes the glyphs in the code's own order — a chain is order-significant.
+- **The gate.** `GlyphGrammar.lint` refuses (`syntax_break`) whatever in a code is neither a vocabulary glyph nor the
+  separator, and names it.
+- **Legends.** `merge` keeps the last author when two entries clash on a name, a glyph or the tag their names derive
+  (`risk` and `Risk!` both derive `gsxrisk`), and keeps every entry that clashes with nothing — a glyph a name gave
+  up, or an evicted entry held, is free again.
+- **Search.** A query with no word in it finds nothing.
+
+`tests/test_glyphsteer_regressions.py` pins each one.
+
 ## Install & use
 
 ```bash

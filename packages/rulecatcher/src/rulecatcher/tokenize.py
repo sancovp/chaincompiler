@@ -52,13 +52,6 @@ def tokenize_text(text: str) -> list[TokenLine]:
         tokens = tuple(_tokenize_line(line, index, offset))
         token_lines.append(TokenLine(index, line, offset, tokens))
         offset += len(raw_line)
-
-    if not text or text.endswith("\n"):
-        return token_lines
-
-    if "\n" not in text:
-        return token_lines
-
     return token_lines
 
 

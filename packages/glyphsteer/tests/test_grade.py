@@ -36,5 +36,6 @@ def test_facet_to_a_grade():
 def test_grades_sort_best_to_worst():
     con = build_index(_corpus(), GRADE)
     hits = search(con, "sql input queries", vocab=GRADE, limit=10)
-    ranks = [GRADE_RANK[h["code"]] for h in sorted(hits, key=lambda x: GRADE_RANK[x["code"]])]
-    assert ranks == sorted(ranks)                        # monotone best→worst
+    ordered = [h["id"] for h in sorted(hits, key=lambda x: GRADE_RANK[x["code"]])]
+    # the excellent chunk ahead of the poor one; good2 does not match ("inputs" is not "input": no stemming)
+    assert ordered == ["good1", "bad1"]

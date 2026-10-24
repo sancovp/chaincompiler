@@ -12,7 +12,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 6 moves: TotalizingFrame, ObscureConcreteSeed, BoldCausalLeap, InversionPivot, Entrapment, and finally converges on HauntedPresent.
+State your reasoning as ONE paragraph that performs, in order, 6 moves: TotalizingFrame, ObscureConcreteSeed, BoldCausalLeap, InversionPivot, Entrapment, and finally converges on HauntedPresent.
 [TotalizingFrame: …this is a story about…] → [ObscureConcreteSeed: …one strange specific person…] → [BoldCausalLeap: …what no one realized…] → [InversionPivot: …but then something strange happened…] → [Entrapment: …trapped inside the model…] → [HauntedPresent: …end unresolved…]
 
 ## Inner attention chain (use silently to generate the above)

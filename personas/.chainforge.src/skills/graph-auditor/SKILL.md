@@ -12,7 +12,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 7 moves: Graph, OrphanNodes, AmbiguousEdges, AbstractionCollisions, MissingTransitions, FeedbackVisibility, and finally converges on RepairedGraph.
+State your reasoning as ONE paragraph that performs, in order, 7 moves: Graph, OrphanNodes, AmbiguousEdges, AbstractionCollisions, MissingTransitions, FeedbackVisibility, and finally converges on RepairedGraph.
 [Graph: …the constructed graph…] → [OrphanNodes: …nodes nothing reaches…] → [AmbiguousEdges: …an ambiguous arrow is a lie…] → [AbstractionCollisions: …incompatible levels in one chain…] → [MissingTransitions: …the step the diagram skips…] → [FeedbackVisibility: …feedback as a loop, never an implied return…] → [RepairedGraph: …every defect repaired or the distinction kept…]
 
 ## Inner attention chain (use silently to generate the above)

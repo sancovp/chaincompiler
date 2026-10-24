@@ -41,7 +41,8 @@ def _fts_query(q: str) -> str:
     # quote each term as a literal so FTS5 operators in user text (OR/AND/NOT/NEAR)
     # are treated as words, not syntax
     terms = _FTS_TERMS.findall(q)
-    return " OR ".join(f'"{t}"' for t in terms) if terms else f'"{q}"'
+    # a query with no word is one FTS5 string, its quotes doubled (FTS5's escape), so it matches nothing, never crashes
+    return " OR ".join(f'"{t}"' for t in terms) if terms else '"' + q.replace('"', '""') + '"'
 
 
 def _facet_tag(facet: str, vocab: Vocabulary) -> str:

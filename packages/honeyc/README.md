@@ -36,27 +36,46 @@ honeyc check   examples/mbr.rune
 
 ## Core notation
 
-| Form | Meaning |
-|------|---------|
-| `[X]` | named entity |
-| `[X]: T` | entity `X` has type `T` |
-| `\|X\|` | `X` is bounded / stabilized / a handleable object |
-| `A ⇔ B` | operational equivalence (both directions) |
-| `A ⇒ B` | `A` produces `B` |
-| `A ⇢ B` | `A` compiles to `B` |
-| `A → B` / `A ↦ B` | points-to / maps-to |
-| `A -rel-> B` / `A <rel- B` / `A <rel> B` | forward / reverse / bidirectional relation |
-| `A:{ B, C, 📃 }` | scope: `A` contains `B`, `C`, and an expandable placeholder |
-| `📃` | drilldown placeholder (expand one level deeper) |
-| `${A ⇒ B}` | the transform from `A` to `B` as a first-class object |
+One reading of every marker the grammar (`src/honeyc/grammar.lark`) defines. **Triples** are the statements `honeyc
+norm` prints for the **Example**, leaving out each term's own marker statement (`A entity true`, `A symbol true`,
+`🍯 glyph true`) save in the three rows that define them. `tests/test_readme_notation.py` parses every example in this
+table and checks that it gives exactly these triples.
 
-**Backbone rule:** equivalence/production connectors advance the chain backbone;
-relation markers (`<is_a-` etc.) hang their operand as a *leaf* off the current
-backbone node. So `[Mbr] <is_a-🌸‍💧 ⇔ |🍯|` means `is_a(Mbr, Nectar)` **and**
-`equiv(Mbr, Honey)` — Nectar does not become the left operand of the `⇔`.
+| Marker | Reads as | Example | Triples |
+|---|---|---|---|
+| `[X]` | a named entity | `[A]` | `A entity true` |
+| `X` | a bare name: a symbol | `A` | `A symbol true` |
+| a glyph | a glyph — a run of characters that are neither structure nor an ASCII name (`symbols.py` names the known ones) | `🍯` | `🍯 glyph true` |
+| `X: T` | `X` has type `T` | `[A]: T` | `A has_type T` |
+| `\|X\|` | `X` is bounded — stabilized, a handleable object | `\|[A]\|` | `A bounded true` |
+| `A ⇔ B` | operational equivalence, both ways | `[A] ⇔ [B]` | `A equiv B` · `B equiv A` |
+| `A ⇒ B` | `A` produces `B` | `[A] ⇒ [B]` | `A produces B` |
+| `A ⇢ B` | `A` compiles to `B` | `[A] ⇢ [B]` | `A compiles_to B` |
+| `A ↦ B` | `A` maps to `B` | `[A] ↦ [B]` | `A maps_to B` |
+| `A → B` | `A` points to `B` | `[A] → [B]` | `A points_to B` |
+| `A ⟶ B` | `A` transitions to `B` | `[A] ⟶ [B]` | `A transitions_to B` |
+| `A ⟼ B` | `A` transforms into `B` at run time | `[A] ⟼ [B]` | `A runtime_transform B` |
+| `A -rel-> B` | the relation `rel(A, B)` | `[A] -owns-> [B]` | `A owns B` |
+| `A <rel- B` | the same relation `rel(A, B)`, written the other way | `[A] <owns- [B]` | `A owns B` |
+| `A <rel> B` | the relation both ways: `rel(A, B)` and `rel(B, A)` | `[A] <owns> [B]` | `A owns B` · `B owns A` |
+| `A:{ B, C }` | a scope: `A` contains `B` and `C` (a `,` separates its members) | `[A]:{ [B], [C] }` | `A contains B` · `A contains C` |
+| `{ B, C }` | a scope with no name: its owner is `_group` | `{ [B], [C] }` | `_group contains B` · `_group contains C` |
+| `📃` | a drilldown placeholder: expand this one level deeper | `[A]:{ 📃 }` | `A placeholder drilldown` |
+| `${A ⇒ B}` | the transform from `A` to `B` as a first-class object, named `xf_` and eight hex digits of a hash of its chain | `${[A] ⇒ [B]}` | `xf_… transform true` · `A produces B` · `xf_… source A` · `xf_… target B` · `xf_… operator produces` |
+| `A := B` | `A` is assigned `B` | `[A] := [B]` | `A assign B` |
 
-A bounded term sitting between two backbone links is inferred as a **mediator**:
-`[Mbr] ⇔ |🍯| ⇔ [Mbl]` ⟹ `mediates(🍯, Mbr, Mbl)`.
+**`-rel->` and `<rel-` are two spellings of one relation.** `[A] -owns-> [B]` and `[A] <owns- [B]` both read
+`owns(A, B)`; `<owns>` reads it both ways. A lens that writes the chain back writes each relation the way it was read.
+
+**Backbone rule:** every connector but a relation advances the chain's backbone; a relation hangs its operand as a
+*leaf* off the current backbone node. So `[A] -owns-> [B] ⇔ [C]` reads `owns(A, B)` **and** `equiv(A, C)` — `B` does not
+become the left operand of the `⇔`.
+
+A bounded term sitting between two backbone links is inferred as a **mediator**: `[A] ⇔ |🍯| ⇔ [B]` reads
+`mediates(🍯, A, B)` — `honeyc norm` prints `🍯 mediates A target=B`. A relation an author names `mediates`
+(`[A] -mediates-> [B]`) is an ordinary relation, `A mediates B`. `honeyc check` warns of an unbounded term in a
+mediator's place and suggests the whole chain as it was written with that term bounded: `[A] ⇔ 🍯 ⇔ [B]` →
+`[A] ⇔ |🍯| ⇔ [B]`, which parses back to the chain's statements plus `🍯 bounded true` and the mediation.
 
 ## Core example
 
@@ -64,18 +83,26 @@ A bounded term sitting between two backbone links is inferred as a **mediator**:
 [Mbr]: M*Boundary <is_a-🌸‍💧 ⇔ |🍯| ⇔ [Mbl]: M*Blanket <is_a-🍹
 ```
 
-`honeyc norm` →
+`honeyc render --as triples` (the statements, each term's own marker left out) →
 
 ```txt
 Mbr has_type M*Boundary
-Mbr is_a 🌸‍💧
 🍯 bounded true
-Mbr equiv 🍯
-🍯 equiv Mbl
 Mbl has_type M*Blanket
+Mbr is_a 🌸‍💧
+Mbr equiv 🍯
+🍯 equiv Mbr
+🍯 equiv Mbl
+Mbl equiv 🍯
 Mbl is_a 🍹
 🍯 mediates Mbr target=Mbl
 ```
+
+## The lenses
+
+`readable` writes the chain back — each relation in the spelling it was read, each known glyph with its name beside
+it (`[🌸‍💧: Nectar]`), so it is for reading; `triples`, `prose`, Prolog (`honeyc prolog`) and Cypher (`honeyc cypher`) are
+read from the statements.
 
 ## Pipeline
 
@@ -107,5 +134,5 @@ check.py      AST ⇢ warnings + suggested rewrites
 ## Tests
 
 ```bash
-pytest        # 19 tests: parser, normalize, emitters, render, check
+pytest        # the parser, normalize, the emitters, the lenses, check, this README's notation table, and dietc
 ```

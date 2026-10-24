@@ -1,7 +1,7 @@
 """Lower normalized statements into Neo4j Cypher MERGE statements (file output)."""
 from __future__ import annotations
 
-from .normalize import Statement
+from .normalize import Statement, is_mediation
 
 _KIND_LABEL = {"entity": "Entity", "glyph": "Glyph", "symbol": "Symbol", "transform": "Transform"}
 
@@ -45,7 +45,7 @@ def emit_cypher(statements: list[Statement]) -> str:
         if s.predicate == "has_type":
             see(s.object)
             label[s.object] = "Type"
-        elif s.predicate == "mediates":
+        elif is_mediation(s):
             see(s.object)
             see(s.meta["target"])
         else:
@@ -70,7 +70,7 @@ def emit_cypher(statements: list[Statement]) -> str:
                 lines.append(f'SET {sv}.name = "{_esc(s.meta["name"])}"')
         elif s.predicate == "has_type":
             lines.append(f"MERGE ({sv})-[:HAS_TYPE]->({var_of[s.object]})")
-        elif s.predicate == "mediates":
+        elif is_mediation(s):
             ov, tv = var_of[s.object], var_of[s.meta["target"]]
             lines.append(f'MERGE ({sv})-[:MEDIATES {{target:"{_esc(s.meta["target"])}"}}]->({ov})')
             lines.append(f"MERGE ({sv})-[:MEDIATES_TARGET]->({tv})")

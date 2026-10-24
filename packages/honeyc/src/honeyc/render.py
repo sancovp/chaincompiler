@@ -14,7 +14,7 @@ from .ast_nodes import (
     Transform,
     TypeAnn,
 )
-from .normalize import Statement, normalize
+from .normalize import Statement, is_mediation, normalize
 from .symbols import glyph_name
 
 _CONNECTOR_GLYPH = {
@@ -61,9 +61,9 @@ def _strip_brackets(text: str) -> str:
     return text[1:-1] if text.startswith("[") and text.endswith("]") else text
 
 
-def _connector(kind: str, value: str) -> str:
-    if kind == "rel":
-        return f"<{value}"
+def _connector(kind: str, value: str, reverse: bool = False) -> str:
+    if kind == "rel":                 # written back the way it was read: `-rel->` or `<rel-`
+        return f"<{value}-" if reverse else f"-{value}->"
     if kind == "rel:bi":
         return f"<{value}>"
     return _CONNECTOR_GLYPH.get(kind, value)
@@ -74,12 +74,53 @@ def _readable_node(node: object) -> str:
         out = [_term(node.terms[0])] if node.terms else []
         for i, c in enumerate(node.connectors):
             if i + 1 < len(node.terms):
-                out.append(_connector(c.kind, c.value))
+                out.append(_connector(c.kind, c.value, c.reverse))
                 out.append(_term(node.terms[i + 1]))
         return " ".join(out)
     if isinstance(node, Assignment):
         return f"{_term(node.left)} := {_term(node.right)}"
     return _term(node)
+
+
+def _source(t: object) -> str:
+    """A term in its source spelling — a glyph by its id alone, a typed term as `X: T` — so it parses back to the
+    statements it was read from (the readable lens names glyphs beside them, which reads back as a type)."""
+    if isinstance(t, (Chain, Assignment)):
+        return source(t)
+    if isinstance(t, Entity):
+        return f"[{t.id}]"
+    if isinstance(t, Symbol):
+        return t.name
+    if isinstance(t, Glyph):
+        return t.id
+    if isinstance(t, Placeholder):
+        return "📃"
+    if isinstance(t, TypeAnn):
+        return f"{_source(t.term)}: {t.type_name}"
+    if isinstance(t, Bounded):
+        return f"|{_source(t.term)}|"
+    if isinstance(t, Scope):
+        body = ", ".join(_source(c) for c in t.body)
+        if isinstance(t.owner, Symbol) and t.owner.name == "_group":
+            return f"{{ {body} }}"
+        return f"{_source(t.owner)}:{{ {body} }}"
+    if isinstance(t, Transform):
+        return "${" + source(t.chain) + "}"
+    return str(t)
+
+
+def source(node: object) -> str:
+    """A statement written back in its source spelling, each relation as it was spelled."""
+    if isinstance(node, Chain):
+        out = [_source(node.terms[0])] if node.terms else []
+        for i, c in enumerate(node.connectors):
+            if i + 1 < len(node.terms):
+                out.append(_connector(c.kind, c.value, c.reverse))
+                out.append(_source(node.terms[i + 1]))
+        return " ".join(out)
+    if isinstance(node, Assignment):
+        return f"{_source(node.left)} := {_source(node.right)}"
+    return _source(node)
 
 
 def render_readable(program: Program) -> str:
@@ -91,7 +132,7 @@ def render_triples(statements: list[Statement]) -> str:
     for s in statements:
         if s.predicate in _TRIPLE_SKIP:
             continue
-        if s.predicate == "mediates":
+        if is_mediation(s):
             lines.append(f"{s.subject} mediates {s.object} target={s.meta['target']}")
         else:
             lines.append(f"{s.subject} {s.predicate} {s.object}")
@@ -110,7 +151,7 @@ def render_prose(statements: list[Statement]) -> str:
             is_a[s.subject] = s.object
         elif s.predicate == "bounded":
             bounded.add(s.subject)
-        elif s.predicate == "mediates":
+        elif is_mediation(s):
             mediations.append((s.subject, s.object, s.meta["target"]))
 
     sentences: list[str] = []

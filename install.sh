@@ -21,6 +21,9 @@ python3 -m pip install "pydantic-stack-core>=0.1.4" "agent-prompt-engineering>=0
 #   chainaios > sccc > corcc > accc > chaincompiler > prompt_engineering(APE).
 # rulecatcher first (the gate; the *CC import it). chainaios = the Bandit AIOS app (owns the `chaincompiler` CLI).
 # glyphsteer included: chainaios' roll_up_algebra writes the persona legend from it (silent no-legend fallback without it).
+# Folders, not distribution names: four distributions are named apart from their folder and import name, since their
+# bare names belong to other projects on PyPI — chaincompiler-accc · chaincompiler-archetype · chaincompiler-si ·
+# skillchain-compiler (DESIGN §18).
 PKGS=(rulecatcher honeyc skillchain-compiler chaincompiler accc corcc sccc chainaios si archetype framework glyphsteer
       personacc personapack goldenreq)
 ARGS=()

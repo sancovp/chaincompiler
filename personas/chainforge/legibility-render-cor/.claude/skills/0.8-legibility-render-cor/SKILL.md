@@ -11,7 +11,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 7 moves: Topology, ReadingOrder, CrossingReduction, DensityBudget, ColorAsCategory, ProgressiveDisclosure, and finally converges on RenderedDiagram.
+State your reasoning as ONE paragraph that performs, in order, 7 moves: Topology, ReadingOrder, CrossingReduction, DensityBudget, ColorAsCategory, ProgressiveDisclosure, and finally converges on RenderedDiagram.
 [Topology: …the validated structure…] → [ReadingOrder: …can a viewer infer the reading sequence…] → [CrossingReduction: …reduce crossings…] → [DensityBudget: …working-memory limits…] → [ColorAsCategory: …color encodes categories…] → [ProgressiveDisclosure: …overview graph plus subsystem graphs…] → [RenderedDiagram: …diagram syntax, labels, and the legend…]
 
 ## Inner attention chain (use silently to generate the above)

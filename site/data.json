@@ -135,6 +135,19 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.64",
+      "date": "2026-10-24",
+      "changes": [
+        "**The public repository's two bug sweeps are home.** The fourteen defects its branches `fix/bug-sweep` (pull request",
+        "**One reading of the notation.** honeyc's README `Core notation` table gives every marker the grammar defines its",
+        "**Every committed CoR compiled again** through its generator \u2014 the two style chain systems, the two personas' GBA",
+        "**No distribution takes another project's PyPI name.** `accc`, `archetype` and `si` are distributed as",
+        "**What the author keeps out of the public repository is folded home**, outside this folder: the steward package is",
+        "The sweeps' noted findings: rulecatcher's merged snapshot import can leave a rule's status and its history",
+        "Suite: 313 passed (`pytest packages`; 70 new). `honeyc` 0.1.1 \u00b7 `glyphsteer` 0.1.1 \u00b7 `corcc` 0.1.1 \u00b7"
+      ]
+    },
+    {
       "version": "v0.1.63",
       "date": "2026-10-24",
       "changes": [

@@ -11,7 +11,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 8 moves: RequirementParse, EntityExtraction, RelationTyping, BoundaryLayering, FlowTopology, GraphValidation, Render, and finally converges on LegibilityAudit.
+State your reasoning as ONE paragraph that performs, in order, 8 moves: RequirementParse, EntityExtraction, RelationTyping, BoundaryLayering, FlowTopology, GraphValidation, Render, and finally converges on LegibilityAudit.
 [RequirementParse: …the intended question…] → [EntityExtraction: …what exists…] → [RelationTyping: …how are those things related…] → [BoundaryLayering: …where are the boundaries…] → [FlowTopology: …what changes, what loops…] → [GraphValidation: …orphan nodes, ambiguous arrows…] → [Render: …topology before styling…] → [LegibilityAudit: …can a viewer infer the reading order…]
 
 ## Inner attention chain (use silently to generate the above)

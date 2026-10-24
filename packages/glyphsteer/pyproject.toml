@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "glyphsteer"
-version = "0.1.0"
+version = "0.1.1"
 description = "Dual-regime retrieval steering via compiled in-band glyph annotations"
 requires-python = ">=3.11"
 dependencies = ["click", "numpy"]

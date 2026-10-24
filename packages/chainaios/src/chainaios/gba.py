@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -419,9 +420,15 @@ def search(gba: GBA, query: str, *, scope_coord: str | None = None, limit: int =
            newest_only: bool = False) -> list[dict]:
     """Select's search half: BM25 over the GBA's live tree (the agent does the neural-match).
     `scope_coord` restricts to a subtree (`0.1` → only `0.1` + descendants) — where you are = what you
-    see. `newest_only` forwards only the newest `version` per logical skill — the self-expansion routing."""
+    see. `newest_only` forwards only the newest `version` per logical skill — the self-expansion routing. SkillTree's
+    search hands a query's words to FTS5 unquoted, so it raises on a query with no word and on an operator word (`NOT`,
+    `AND`); this door sends it the query's words alone, lowercased — FTS5's operators are capitals and its index folds
+    case — and answers a query with no word with nothing."""
+    words = re.findall(r"\w+", query.lower())
+    if not words:
+        return []
     con = build_index(gba.root, db_path=":memory:")
-    hits = _tree_search(con, query, scope_coord=scope_coord, limit=limit, newest_only=newest_only)
+    hits = _tree_search(con, " ".join(words), scope_coord=scope_coord, limit=limit, newest_only=newest_only)
     con.close()
     return hits
 

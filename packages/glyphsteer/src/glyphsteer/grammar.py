@@ -11,11 +11,14 @@ the syntactic unit. Three verdicts, mirroring rulecatcher's own:
 
   ok           — well-formed, canonical order
   orthogonal   — known tags, wrong order (steerable → `canonicalize` reorders to vocab order)
-  syntax_break — a foreign token rulecatcher doesn't recognize (fatal; reject)
+  syntax_break — foreign content (fatal; reject)
 
-rulecatcher owns `syntax_break` (its strength: foreign-token detection). The partial-order
-`orthogonal` check is deterministic here (vocab order) because n-gram grammars express a
-partial order poorly. Needs the `grammar` extra (`pip install 'glyphsteer[grammar]'`).
+rulecatcher owns `syntax_break` over a raw tag chain (`lint_chain`; its strength: foreign-token
+detection). Over a glyph code (`lint`), foreign content is caught first, directly: whatever is left
+once the vocabulary's glyphs and the separator are stripped is foreign, since the tag chain is built
+from the known glyphs alone. The partial-order `orthogonal` check is deterministic here (vocab order)
+because n-gram grammars express a partial order poorly. Needs the `grammar` extra
+(`pip install 'glyphsteer[grammar]'`).
 """
 from __future__ import annotations
 
@@ -63,9 +66,8 @@ def canonical_examples(vocab: Vocabulary) -> list[str]:
 
 
 def _raw_order(vocab: Vocabulary, code: str) -> list[str]:
-    """Known glyphs in the order they appear in the code string."""
-    present = vocab.parse(code)                       # vocab order
-    return sorted(present, key=lambda g: code.find(g))
+    """Known glyphs in the order they appear in the code string (matched as the vocabulary matches them)."""
+    return vocab.in_code_order(code)
 
 
 class GlyphGrammar:
@@ -97,8 +99,15 @@ class GlyphGrammar:
         return GlyphLint("ok", violations)
 
     def lint(self, code: str) -> GlyphLint:
-        """Gate a glyph code: foreign-token (`syntax_break`) via rulecatcher, then
-        canonical-order (`orthogonal`) via vocab order."""
+        """Gate a glyph code: foreign content (`syntax_break`), then canonical order
+        (`orthogonal`) via vocab order.
+
+        Foreign content is caught here, before the tag chain is built: `code_tags` keeps only the
+        vocabulary's glyphs, so anything else in the code — an unknown glyph, a word — would never
+        reach rulecatcher (whose tokenizer drops emoji besides)."""
+        residue = self.vocab.strip(code).strip()
+        if residue:
+            return GlyphLint("syntax_break", [f"foreign content {residue!r} is not in the vocabulary"])
         chain = " -> ".join(self.vocab.code_tags(code))
         base = self.lint_chain(chain)
         if base.verdict == "syntax_break":

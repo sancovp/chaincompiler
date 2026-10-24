@@ -290,7 +290,10 @@ The snapshot includes:
 
 This gives another LLM a shareable JSON bundle for replaying a scope elsewhere.
 Use `import-scope --replace-scope` when you want the target scope to be rebuilt
-from the snapshot instead of merged into the existing local state.
+from the snapshot instead of merged into the existing local state. A merge keeps
+the target's own status for a rule both scopes hold while it imports the
+snapshot's decisions for it, so that rule's history can disagree with its status
+(ChainCompiler's `DESIGN.md` §3, owed).
 
 ## Evolution Compare
 

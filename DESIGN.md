@@ -104,18 +104,34 @@ lints text against a scope. A violation is **orthogonal** (a known token in the 
 ⚠ OWED: a shape-only gate admits any bracketed chain, and on small corpora `strict=True` has not been shown
 to reject an off-style chain of the right shape — the gate enforces form, and vocabulary enforcement is
 unmeasured (BACKLOG).
+⚠ OWED: a scope snapshot imported by merge — `rulecatcher import-scope` without `--replace-scope`, the default — keeps
+the target's own status for a rule both scopes hold while it imports the snapshot's decisions for that rule, so the
+rule's history can say it was adopted while its status is pending. Which status a merge keeps for such a rule — the
+target's, the snapshot's, or its latest decision's — is not stated; state it, then make the status and the history
+agree (BACKLOG).
 
 **honeyc** (`packages/honeyc`) compiles the Dense Rune-Chain notation (`[Entity]`, `|Bounded|`, `⇒`, `⇔`,
 relation markers, scopes, placeholders): a Lark grammar parses it to an AST, `normalize` flattens it to
 triples, and lenses render it readable, as triples, as prose, as Prolog text or as Cypher text; `check`
-suggests rewrites. **dietc**, in the same package, is a nutrition compiler built on honeyc — the proof
-that a domain compiler can ride on it (`packages/honeyc/DIETC.md`). Each user's notation is that user's own
-configuration (§1: a notation is minted from its user's examples); for this repository's own Dense Rune-Chain
-notation, its README, its examples, its grammar, its code and its tests state one reading of every marker the grammar
-defines. A relation is written `A -rel-> B` or `A <rel- B`, two
-spellings of `rel(A, B)`, and `A <rel> B` states it both ways; the readable lens writes back the spelling it read.
-⚠ OWED: the README's table calls `A <rel- B` the reverse of `A -rel-> B` and gives no reading for `⟶` or `⟼`, and
-the readable lens writes both spellings as `<rel`, which the grammar does not parse (BACKLOG).
+warns of an unbounded term in a mediator's place and suggests the whole chain, in its source spelling, with that one
+term bounded — what it suggests parses back to the chain's own statements plus the bounding and the mediation.
+**dietc**, in the same package, is a nutrition compiler built on honeyc — the proof that a domain compiler can ride on
+it (`packages/honeyc/DIETC.md`); a safety field it does not know is kept as a note, and what it writes uses only
+markers the grammar reads as it means them: the rune's gap watches its caps through a relation leaf, and the block it
+passes through honeyc writes each step as a scope holding its chain. Each user's
+notation is that user's own configuration (§1: a notation is minted from its user's examples); for this repository's
+own Dense Rune-Chain notation, its README, its examples, its grammar, its code and its tests state one reading of every
+marker the grammar defines: the README's `Core notation` table gives each marker its reading, an example and the
+triples the example gives, and `tests/test_readme_notation.py` checks every row against the code and every grammar
+marker against the table. A relation is written `A -rel-> B` or `A <rel- B`, two spellings of `rel(A, B)`, and
+`A <rel> B` states it both ways; the parser keeps the spelling, and the readable lens writes back the spelling it read.
+The spelling is never part of a term's identity: a transform's id names its chain, whichever way a relation in it is
+spelled.
+A bounded term between two backbone links is an inferred mediator, carrying its target; a relation an author names
+`mediates` is an ordinary relation, and every lens and emitter tells the two apart through `normalize.is_mediation`.
+`check` descends into assignments and transforms. The Prolog it emits declares the predicates its base rules read and
+closes `linked/2` over `equiv/2` with a visited list, so a false query fails — on a program with no equivalence too — and
+an open one enumerates every node reached.
 
 ## §4 The base — the `chaincompiler` package
 
@@ -162,6 +178,10 @@ given skills folder first, then the user's `~/.claude/skills` and `~/.claude/plu
 package while any step is missing. The rollup is written by the **skillchain** module
 (`packages/skillchain-compiler`, import `skillchain`), which is also a standalone CLI with its own `.chain`
 syntax: skill steps, captured results, and reasoning bridges between steps.
+⚠ OWED: SCCC resolves each step to a `SKILL.md` of that name anywhere under the skills folder, the organizing tree a
+roll-up writes there included, so a system minted again into a folder that holds its tree can resolve a step to the
+tree's node copy and describe it by the node's placeholder (agent-rts's WoomEngineer rollup: steps 4 and 5 read
+"attend (woom)"). Resolve to the package itself, never a tree's node copy (BACKLOG).
 
 Minting a chain through these doors, never by hand, follows `.claude/rules/22-seq-mint-attention-chain.md`.
 
@@ -279,6 +299,10 @@ region reachable from every other. The substrate fact it rests on is `.claude/ru
 Claude Code loads one layer of `.claude/skills/`, and descending is a Read into the child's folder.
 ⚠ OWED: this repository's own `.claude/skills/` is still a flat forest; rooting it waits on a layout
 decision (BACKLOG).
+⚠ OWED: SkillTree's search hands a query's words to FTS5 unquoted, so `skilltree search` raises on a query with no word
+in it (`"` gives `unterminated string`) and on an operator word (`NOT` gives `syntax error near "NOT"`); ChainCompiler's
+doors to it, `si_search` and `chaincompiler gba search`, send it the query's words alone, lowercased, and answer a query
+with no word with nothing. The fix belongs in SkillTree (BACKLOG).
 
 ## §11 Retrieval steering — glyphsteer
 
@@ -288,8 +312,12 @@ and densely, as an emoji whose embedding direction nudges the chunk — and stri
 returned text. Its built-in `GRADE` vocabulary is the grade legend the agent tier writes into every
 persona. Its own design is `packages/glyphsteer/README.md`, `implementation_plan.md` and
 `packages/glyphsteer/.claude/rules/`. A vocabulary may hold a glyph that is part of another (a skin tone, a variation
-selector): matching takes the longest glyph first and never two that overlap.
-⚠ OWED: matching is by substring, so such a pair corrupts parsing and stripping while the hide check passes (BACKLOG).
+selector): one matcher takes the longest glyph first and never two that overlap, and every reader of a code or a text
+goes through it — parsing, stripping, the hide check, the HoneyC bridge and the grammar's order check. Stripping removes
+the separator with its space and repeats until nothing is left to remove; the HoneyC bridge keeps the code's own order;
+merging legends keeps the last author on a clash of name, glyph or derived tag and every entry that clashes with
+nothing; the grammar's `lint` refuses whatever in a code is neither a vocabulary glyph nor
+the separator before it builds the tag chain rulecatcher reads; and a search query with no word finds nothing.
 
 ## §12 The archetype compiler
 
@@ -343,6 +371,9 @@ and `glyphsteer-dense`, `report-missed-skill`, the two style chain systems minte
 `bigdog`, and the `skill2framework` set; `.mcp.json` registers the self-interpreter (`python3 -m
 si.server`). The plugin's version (`plugin.json`, `marketplace.json`) moves with every change to the
 payload: an installed plugin updates only when it does.
+⚠ OWED: `skills/bigdog/build.py` exports rulecatcher's scope with each decision's `created_at`, so two builds of the
+same inputs differ in those stamps alone; the export should carry none, as a compiled skillchain carries no compile
+date (BACKLOG).
 
 The plugin carries no `CLAUDE.md` at its root — a plugin install does not load one. An agent the plugin delivers
 (an AIOS — an agent in its own folder) ships as an **install skill**: the agent's `CLAUDE.md` is one of the skill's
@@ -380,14 +411,25 @@ outside this folder and is never published: the steward package, which the publi
 is its own project, `not-unified/steward`; the internal design that pass relocated, the public repository's history
 from before its rewrite, and every file of that history the source home holds in no other form are kept in
 `not-unified/chaincompiler-internal`.
-⚠ OWED: the public repository holds three branches whose work never reached the source home — two bug sweeps,
-`fix/bug-sweep` and `fix/confirmed-bug-sweep` (its pull requests #1 and #2: fixes, each with a regression test, for
-defects found in honeyc, dietc, glyphsteer and corcc), and the backup of its history from before the rewrite — and
-the internal design and the steward package sit in a standalone folder outside the source home (BACKLOG).
+The public repository's three branches — the two bug sweeps `fix/bug-sweep` and `fix/confirmed-bug-sweep` (its pull
+requests #1 and #2) and the backup of its history from before the rewrite — are home: the sweeps' fixes are in honeyc,
+dietc, glyphsteer and corcc (§3 · §11), each with a regression test, and the whole history of all three, as git bundles,
+and the files of the backup held in no other form are in `not-unified/chaincompiler-internal`.
+⚠ OWED: the three branches are still open on the public repository; close each pull request with a comment naming
+the merge that ported it, and delete the branches (BACKLOG).
 
-ChainCompiler is not on PyPI; its outside dependencies — `pydantic-stack-core`, `agent-prompt-engineering`
-≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — come from PyPI through `install.sh`. A release is proven by cloning the
-public repository into an empty environment, running `./install.sh`, and running §19's checks green.
+Each package's distribution is named for its folder, save four whose bare names belong to other projects on PyPI:
+`accc`, `archetype` and `si` publish as `chaincompiler-accc`, `chaincompiler-archetype` and `chaincompiler-si`, and
+`skillchain` as `skillchain-compiler`; import names do not change. `rulecatcher` is held on PyPI already, as this
+project's. The packages are not on PyPI yet; their outside dependencies — `pydantic-stack-core`,
+`agent-prompt-engineering` ≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — come from PyPI through `install.sh`, which installs the
+fifteen from the checkout with `--no-deps`, so nothing is asked of PyPI by their names. A release is proven by cloning
+the public repository into an empty environment, running `./install.sh`, and running §19's checks green.
+ASPIRATIONAL: the fifteen published to PyPI under those names, each a manifest unit, as scalable-publishing's
+`DESIGN.md` §4 requires of every package we own there — `rulecatcher`, uploaded by hand, among them.
+⚠ OWED: until then the build files name one another by names fourteen of which are free on PyPI, so a `pip install` of
+one package without `--no-deps`, or an extra naming one (steward's), asks PyPI for a sibling anyone could publish
+there (BACKLOG).
 ⚠ OWED: three version lines — the release line in the README changelog, the plugin's version in
 `plugin.json`, and every package's own `pyproject.toml` version, never bumped. Owed: one line, the release
 version stamped into the plugin and the packages.

@@ -12,7 +12,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 7 moves: FragmentIntake, ActorIncentiveMap, CausalGraph, FeedbackDetect, EpistemicAudit, NarrateInRegister, and finally converges on RevisableModel.
+State your reasoning as ONE paragraph that performs, in order, 7 moves: FragmentIntake, ActorIncentiveMap, CausalGraph, FeedbackDetect, EpistemicAudit, NarrateInRegister, and finally converges on RevisableModel.
 [FragmentIntake: …apparently disconnected fragments…] → [ActorIncentiveMap: …who could act…] → [CausalGraph: …correlation is not causation…] → [FeedbackDetect: …the loop feeds itself…] → [EpistemicAudit: …no hidden controller without evidence of coordination…] → [NarrateInRegister: …this is a story about…] → [RevisableModel: …coherent but revisable…]
 
 ## Inner attention chain (use silently to generate the above)

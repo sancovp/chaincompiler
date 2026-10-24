@@ -12,7 +12,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 6 moves: Sense, Dog, Bitch, BigDog, Commit, and finally converges on Actualize.
+State your reasoning as ONE paragraph that performs, in order, 6 moves: Sense, Dog, Bitch, BigDog, Commit, and finally converges on Actualize.
 [Sense: …in the sense…] → [Dog: …means…] → [Bitch: …being a bitch…] → [BigDog: …I don't want to be a bitch…] → [Commit: …I think I'll do the following…] → [Actualize: …then actualize…]
 
 ## Inner attention chain (use silently to generate the above)

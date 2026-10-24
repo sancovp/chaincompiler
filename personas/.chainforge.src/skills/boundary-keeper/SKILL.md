@@ -12,7 +12,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 7 moves: System, Inside, Outside, Interface, CrossingConditions, LayerCheck, and finally converges on BoundedLayers.
+State your reasoning as ONE paragraph that performs, in order, 7 moves: System, Inside, Outside, Interface, CrossingConditions, LayerCheck, and finally converges on BoundedLayers.
 [System: …the system under the pen…] → [Inside: …what belongs to the system…] → [Outside: …the external environment…] → [Interface: …where inside meets outside…] → [CrossingConditions: …what may cross, and when…] → [LayerCheck: …macro, meso, micro separated…] → [BoundedLayers: …membership explicit at every level…]
 
 ## Inner attention chain (use silently to generate the above)

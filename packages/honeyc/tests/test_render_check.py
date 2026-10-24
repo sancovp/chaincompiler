@@ -43,7 +43,7 @@ def test_check_warns_unbounded_mediator():
     warns = [i for i in issues if i.severity == "warning"]
     assert warns
     assert any("not bounded" in w.message for w in warns)
-    assert any(w.suggested_rewrite and "|🍯: Honey|" in w.suggested_rewrite for w in warns)
+    assert any(w.suggested_rewrite == "[A] ⇔ |🍯| ⇔ [B]" for w in warns)     # the chain, its glyph bounded
 
 
 def test_check_clean_when_bounded():

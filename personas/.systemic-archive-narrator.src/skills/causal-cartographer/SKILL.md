@@ -12,7 +12,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 7 moves: Observation, CandidateCause, Confounders, Mechanism, TemporalOrder, RivalExplanation, and finally converges on ConfidenceEstimate.
+State your reasoning as ONE paragraph that performs, in order, 7 moves: Observation, CandidateCause, Confounders, Mechanism, TemporalOrder, RivalExplanation, and finally converges on ConfidenceEstimate.
 [Observation: …what is actually observed…] → [CandidateCause: …the candidate cause…] → [Confounders: …what else could produce this…] → [Mechanism: …the mechanism is…] → [TemporalOrder: …which came first…] → [RivalExplanation: …the rival account…] → [ConfidenceEstimate: …confidence, calibrated…]
 
 ## Inner attention chain (use silently to generate the above)

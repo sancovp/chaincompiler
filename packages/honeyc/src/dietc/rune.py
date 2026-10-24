@@ -35,7 +35,8 @@ def render_rune(state: DayState) -> str:
     if gap_terms:
         lines.append("  ⇒ ΔGap:{" + ",".join(gap_terms) + "}")
     if cap_terms:
-        lines.append("  ∧ CapWatch:{" + ",".join(cap_terms) + "}")
+        # a relation leaf off the gap (HoneyC's backbone rule): the gap watches its caps, and the chain runs on from it
+        lines.append("  -watches-> CapWatch:{" + ",".join(cap_terms) + "}")
     if patch_terms:
         lines.append("  ⇒ Patch:{" + ",".join(patch_terms) + "}")
     lines.append("  ⇒ |ImprovedPattern|")
@@ -53,16 +54,17 @@ def _near(state: DayState) -> set[str]:
 
 
 def render_rune_block(state: DayState) -> str:
-    """A scoped [DietCompiler]:{...} block, valid HoneyC notation."""
+    """A scoped [DietCompiler]:{...} block, valid HoneyC notation: each step a scope holding its chain, so the grammar
+    reads `Estimate contains Input`, `Input compiles_to NutrientVector` — never `[Step]:Term` as the step's type."""
     inputs = ",".join(_camel(i) for i in dict.fromkeys(e.item_id for e in state.events))
     patches = ",".join(_camel(r.name) for r in state.patches) or "None"
     gap = ",".join(_GAP_LABEL.get(k, _camel(k)) for k in state.gaps) or "None"
     return (
         "[DietCompiler]:{\n"
         f"  [Input]:{{{inputs}}},\n"
-        "  [Estimate]:Input ⇢ NutrientVector,\n"
-        f"  [Compare]:DayState ⇔ GoalProfile ⇒ Gap,\n"
-        f"  [PatchSelect]:Gap ⇒ {{{patches}}},\n"
+        "  [Estimate]:{ Input ⇢ NutrientVector },\n"
+        f"  [Compare]:{{ DayState ⇔ GoalProfile ⇒ Gap:{{{gap}}} }},\n"
+        f"  [PatchSelect]:{{ Gap ⇒ Patch:{{{patches}}} }},\n"
         "  [Output] ⇒ |ImprovedPattern|\n"
         "}"
     )

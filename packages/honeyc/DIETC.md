@@ -90,5 +90,5 @@ compilers (next: attention-chains, CoRs, skillchains) can ride on HoneyC.
 ## Tests
 
 ```bash
-pytest tests/dietc      # 16 tests: load, totals, gaps/caps, patch, render, honeyc passthrough
+pytest tests/dietc      # 20 tests: load, totals, gaps/caps, patch, render, honeyc passthrough, the sweeps' regressions
 ```

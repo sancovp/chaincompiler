@@ -8,6 +8,8 @@
 
 ⭐ 0 stars • 🕑 Updated 2026-10-24
 
+[Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
+
 📦 Auto-published from the monorepo • [CHANGELOG](./CHANGELOG.md) • [sancovp/chaincompiler](https://github.com/sancovp/chaincompiler)
 
 <!-- SCALABLE-PUBLISHING:AUTOGEN END -->
@@ -22,7 +24,7 @@
 
 <br/>
 
-![tests](https://img.shields.io/badge/tests-243%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
+![tests](https://img.shields.io/badge/tests-313%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
 
 <br/>
 
@@ -352,6 +354,52 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.1.64 — 2026-10-24
+- **The public repository's two bug sweeps are home.** The fourteen defects its branches `fix/bug-sweep` (pull request
+  #1) and `fix/confirmed-bug-sweep` (#2) found are fixed here, at every door the same input reaches, each with a
+  regression test that fails without its fix; where the two fixed one defect two ways, the fix `DESIGN.md` states is
+  kept. **honeyc:** the readable lens writes each relation back in the spelling it read (`-rel->`, `<rel-`, `<rel>`),
+  and the spelling is no part of a term's identity, so a transform's id is what it was; a relation an author names
+  `mediates` no longer crashes the triples and prose lenses, the emitters or `honeyc norm` (`normalize.is_mediation`
+  tells it from an inferred mediator); `check` descends into assignments and transforms, and suggests the whole chain,
+  in its source spelling, with the mediator bounded — what it suggests parses back to the chain's statements plus the
+  bounding; the Prolog declares its base rules' predicates and closes `linked/2` with a visited list, so a false query
+  fails, on a program with no equivalence too, and an open one enumerates every node. **dietc:** a safety field it does
+  not know is kept as a note instead of crashing the load; the rune block writes the day's gaps, and each of its steps
+  as a scope holding its chain, never `[Step]:Term`, which the grammar reads as a type; the rune writes its cap watch as
+  a relation the grammar reads. **glyphsteer:** one matcher, the longest glyph first and never two that overlap, under
+  every reader, so a glyph and its variant (`⚠`, `⚠️`) parse, strip and hide-check whole; `strip` removes the
+  separator's space and repeats until nothing is left to remove; `to_honeyc` keeps the code's order; `merge` keeps the
+  last author on a tag clash and every entry that clashes with nothing; `lint` refuses foreign content and names it; a
+  query with no word finds nothing; the vacuous grade-sort test asserts the order. **The search doors:** `si_search`
+  and `chaincompiler gba search` send SkillTree's search the query's words alone, so neither raises on a query with no
+  word or on an operator word (`NOT`) — SkillTree's own search still does (owed upstream, `DESIGN.md` §10). **corcc:**
+  the CoR directive has its verb ("a paragraph that performs, in order, N moves").
+- **One reading of the notation.** honeyc's README `Core notation` table gives every marker the grammar defines its
+  reading, an example and the triples it gives; `tests/test_readme_notation.py` checks every row against the code,
+  every grammar marker against the table, and the README's core example against what it prints. `-rel->` and `<rel-`
+  are two spellings of `rel(A, B)`.
+- **Every committed CoR compiled again** through its generator — the two style chain systems, the two personas' GBA
+  bodies, bigdog, and outside this folder CompiloApe's tower, agent-rts's WoomEngineer system, three host forks and the
+  host template's three CoRs. Their generators' descriptions are colon-free, so every frontmatter parses. The plugin is
+  0.2.4, since its payload changed; the shipped glyphsteer skill says `lint` refuses foreign content.
+- **No distribution takes another project's PyPI name.** `accc`, `archetype` and `si` are distributed as
+  `chaincompiler-accc`, `chaincompiler-archetype` and `chaincompiler-si`, `skillchain` as `skillchain-compiler`, and
+  every build file names them so; import names are unchanged, and `install.sh` installs by folder as before
+  (`DESIGN.md` §18). An environment `install.sh` built before keeps the old names' records — build it again. Owed, by
+  the author's ruling: the fifteen published to PyPI under these names.
+- **What the author keeps out of the public repository is folded home**, outside this folder: the steward package is
+  its own project, and the internal design, the history of the public repository from before its rewrite and of its
+  two bug-sweep branches, and the two files of that history held nowhere else are in `not-unified/chaincompiler-internal`
+  (`DESIGN.md` §18). Owed: the three public branches closed.
+- The sweeps' noted findings: rulecatcher's merged snapshot import can leave a rule's status and its history
+  disagreeing — owed, `DESIGN.md` §3; `scripts/promote.py`'s path insertion was already gone; the tokenizer's dead
+  branches are removed. Also owed and boarded: bigdog's build writes its build time into the scope it exports
+  (`DESIGN.md` §16); SCCC can resolve a step to the organizing tree's node copy (`DESIGN.md` §5).
+- Suite: 313 passed (`pytest packages`; 70 new). `honeyc` 0.1.1 · `glyphsteer` 0.1.1 · `corcc` 0.1.1 ·
+  `chaincompiler-si` 0.1.1 · `chainaios` 0.1.2 · `rulecatcher` 0.1.2 · `chaincompiler-accc` 0.1.1 ·
+  `chaincompiler-archetype` 0.1.1 · `skillchain-compiler` 0.1.2 · `personacc` 0.1.1 · `sccc` 0.1.1.
+
 ### v0.1.63 — 2026-10-24
 - **The design says where the unpublished work lives, and what the public repository's branches still owe.**
   `DESIGN.md` §18: a branch of the public repository is never merged there — its work is ported to the source home and
@@ -609,19 +657,19 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 | package | is | tests |
 |---|---|---|
 | `rulecatcher` | the linter / gate | 43 |
-| `honeyc` (+ `dietc`) | the compiler (+ domain proof) | 36 |
+| `honeyc` (+ `dietc`) | the compiler (+ domain proof) | 84 |
 | `chaincompiler` | the base | 14 |
-| `accc` / `corcc` / `sccc` | the chain tier | 6 / 5 / 6 |
-| `chainaios` | the agent tier (GBA · COG · HBA) | 26 |
+| `accc` / `corcc` / `sccc` | the chain tier | 6 / 7 / 6 |
+| `chainaios` | the agent tier (GBA · COG · HBA) | 28 |
 | `personacc` / `personapack` | personas | 14 / 20 |
 | `goldenreq` | the acceptance gate | 9 |
-| `glyphsteer` | retrieval steering | 37 |
+| `glyphsteer` | retrieval steering | 53 |
 | `archetype` | archetype-as-state-machine compiler | 11 |
 | `framework` | the chapter rung | 6 |
-| `si` | the self-interpreter | 10 |
+| `si` | the self-interpreter | 12 |
 | `agent-skilltree` | the organization (published on PyPI, ≥0.4.0; import `skilltree`) | — (its own suite) |
 
-**243 passing** (`pytest packages/`; the examples are checked separately — `DESIGN.md` §19; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
+**313 passing** (`pytest packages/`, with SWI-Prolog on the path — without it the two tests that run the emitted Prolog are skipped; the examples are checked separately — `DESIGN.md` §19; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
 
 ### Not done yet (honestly)
 

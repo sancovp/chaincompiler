@@ -96,23 +96,51 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [ ] **Keep a GBA's root folder in place across a rebuild** — `_apply_tree` lets `materialize` delete the root and
   write a new one, so a shell standing in the folder loses its working directory (found by a live model running
   `gba construct .` then `gba search .` in one command line) (DESIGN §8).
-- [ ] **Port the public repository's two bug sweeps** — its branches `fix/bug-sweep` (pull request #1) and
-  `fix/confirmed-bug-sweep` (#2) found defects in honeyc, dietc, glyphsteer and corcc, each fixed with a regression
-  test, and never reached the source home. Each defect is fixed here at every door the same input reaches (the
-  `mediates` crash also reaches `honeyc norm`, which neither sweep patched), or shown already fixed, its regression
-  test failing without the fix; where the two sweeps fixed one defect two ways, the fix the design states is kept
-  (DESIGN §3 · §11 · §18). The corcc directive's wording reaches every committed CoR the chain compilers wrote, so
-  each is compiled again through its generator.
-- [ ] **One reading of the notation's markers** — honeyc's README table calls `A <rel- B` the reverse of
-  `A -rel-> B` and gives no reading for `⟶` or `⟼`; the grammar, the normalizer, the examples and every test read
-  both relation spellings as `rel(A, B)`; the readable lens writes both as `<rel`, which the grammar does not parse
-  (DESIGN §3).
-- [ ] **Glyph matching takes the longest glyph first** — today it matches by substring, so a glyph that is part of
-  another corrupts parsing and stripping while the hide check passes (DESIGN §11).
-- [ ] **Fold what the author keeps out of the public repository** — the steward package into its own project
-  (`not-unified/steward`), and the internal design, the public repository's history from before its rewrite and every
-  file of that history held in no other form into `not-unified/chaincompiler-internal`; the standalone folder that
-  held the design and the package is deleted once every file is confirmed folded (DESIGN §18).
+- [x] **Port the public repository's two bug sweeps** (v0.1.64) — the fourteen defects its branches `fix/bug-sweep`
+  (pull request #1) and `fix/confirmed-bug-sweep` (#2) found in honeyc, dietc, glyphsteer and corcc are fixed here at
+  every door the same input reaches — `honeyc norm` for the `mediates` crash, and `si_search` and
+  `chaincompiler gba search` for a query with no word — each with a regression test that fails without its fix; where
+  the two sweeps fixed one defect two ways, the fix the design states is kept (DESIGN §3 · §11 · §18). Every committed
+  CoR the chain compilers wrote is compiled again through its generator — ChainCompiler's own, CompiloApe's tower and
+  agent-rts's WoomEngineer system.
+- [ ] **bigdog's build writes its build time into the rule scope it exports** — `skills/bigdog/build.py` exports
+  rulecatcher's scope with each decision's `created_at`, so two builds of the same inputs differ in those stamps alone;
+  the export should carry none, as the compiled skillchain carries no compile date since v0.1.62 (DESIGN §16).
+- [x] **No distribution takes another project's PyPI name** (v0.1.64, the author's ruling) — `accc`, `archetype` and
+  `si` publish as `chaincompiler-accc`, `chaincompiler-archetype` and `chaincompiler-si`, `skillchain` as
+  `skillchain-compiler`, and every build file names them so; import names unchanged (DESIGN §18).
+- [ ] **Publish the fifteen packages to PyPI under their names, each a manifest unit** (the author's ruling) — holds
+  the fourteen names still free there; needs scalable-publishing to state how a package inside a unit's folder gets its
+  own PyPI release (its `DESIGN.md` §4: every package we own on PyPI is a manifest unit), `rulecatcher`, uploaded by
+  hand, among them (DESIGN §18).
+- [ ] **SCCC resolves a step to the package, never to the organizing tree's node copy** — its index takes every
+  `SKILL.md` under the skills folder, so after a re-mint into a folder holding the roll-up's tree a step can resolve to
+  `<domain>-tree/…/<step>/SKILL.md` and the rollup describes it by that node's placeholder ("attend (woom)" for
+  agent-rts's WoomEngineer steps 4 and 5); pin it with a test that mints twice into one folder (DESIGN §5).
+- [ ] **A merged snapshot import makes a rule's status and history agree** — `import_scope_snapshot` without
+  `replace_scope_state` upserts each rule through `upsert_candidate_rule`, which keeps the stored status on a conflict
+  (right for a rule learned again), and then imports the snapshot's decisions; so a rule adopted in the snapshot and
+  pending in the target stays pending under a history that says it was adopted. State which status a merge keeps for a
+  rule both scopes hold, apply it, and pin it with a test that merges a snapshot whose rule was decided (DESIGN §3).
+- [ ] **SkillTree's search raises on a query with no word in it, or an operator word** (upstream) — `skilltree.search`
+  hands a query's words to FTS5 unquoted (`'"'` → `unterminated string`, `NOT` → `syntax error near "NOT"`).
+  ChainCompiler's doors to it, `si_search` and `chaincompiler gba search`, send it the query's words alone, lowercased;
+  SkillTree's own `skilltree search` still raises — quote each word there (DESIGN §10).
+- [x] **One reading of the notation's markers** (v0.1.64) — honeyc's README table gives every marker the grammar
+  defines its reading, an example and the triples it gives, `-rel->` and `<rel-` as two spellings of `rel(A, B)`;
+  `tests/test_readme_notation.py` checks each row against the code and each grammar marker against the table, and the
+  README's core example against what it prints; the readable lens writes back the spelling it read; `check`'s rewrite
+  keeps the chain's connectors; dietc's rune writes its cap watch as a relation the grammar reads (DESIGN §3).
+- [x] **Glyph matching takes the longest glyph first** (v0.1.64) — glyphsteer's one matcher, `Vocabulary._matches`,
+  reads left to right and takes at each place the longest glyph that starts there, never two that overlap; parsing,
+  stripping, the hide check, `to_honeyc` and the grammar's order check all read through it, so a vocabulary holding
+  `⚠` and `⚠️` parses, strips and hide-checks each whole; glyphsteer's README, `implementation_plan.md` and rules
+  state it (DESIGN §11).
+- [x] **Fold what the author keeps out of the public repository** (v0.1.64) — the steward package is its own project
+  (`not-unified/steward`), and the internal design, the public repository's history from before its rewrite (a
+  verified bundle) and the two files of that history held in no other form are in `not-unified/chaincompiler-internal`;
+  the standalone folder that held the design and the package is deleted, every file confirmed folded byte for byte
+  (DESIGN §18).
 - [ ] **Close the public repository's branches once their work is in the source home** — the two bug sweeps and the
   backup of the history from before the rewrite (DESIGN §18).
 

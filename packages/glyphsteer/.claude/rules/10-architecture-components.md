@@ -7,7 +7,16 @@
 ```mermaid
 flowchart TB
     subgraph lang["Language layer (the controlled vocabulary)"]
-        vocab["vocab.py<br/>Axis(glyph, tag) · Vocabulary<br/>validate · code · code_tags · strip"]
+        vocab["vocab.py<br/>Axis(glyph, tag) · Vocabulary<br/>validate · code · code_tags · strip<br/>_matches: longest glyph first, never overlapping"]
+        legend["legend.py<br/>author · save/load · merge (last author wins<br/>on a name, glyph or tag clash) · render"]
+    end
+
+    subgraph gate["Syntax gate (optional extra)"]
+        grammar["grammar.py<br/>GlyphGrammar.lint: foreign residue → syntax_break<br/>· order via in_code_order → orthogonal"]
+    end
+
+    subgraph ext["ChainCompiler (not ours — its seam)"]
+        rc["chaincompiler.bridge · rulecatcher<br/>SEAM: learn / gate (imported lazily)"]
     end
 
     subgraph annot["Annotation layer (writes the sidecar)"]
@@ -35,6 +44,10 @@ flowchart TB
 
     vocab --> annotate
     vocab --> encode
+    vocab --> legend
+    vocab --> grammar
+    grammar -.lazy.-> rc
+    encode -.grammar=.-> grammar
     annotate --> encode
     encode --> index
     encode --> evalm
@@ -91,8 +104,15 @@ flowchart LR
 - The container is **embeddings-only**; all steer/probe math stays host-side on the vectors.
 
 ## Boundary notes
+- `vocab._matches` is the **only** way a glyph is found in text: left to right, at each place the
+  longest glyph that starts there, never two that overlap. `parse`, `glyphs_in`, `code_tags`,
+  `strip`, `in_code_order`, `to_honeyc` and the grammar's order check all read through it, so a
+  vocabulary may hold a glyph that is part of another (an emoji and its VS16 or skin-tone form).
 - `encode.py` is the **only** place the indexed-form/returned-form split is defined; the
   HIDE invariant (`check_hidden`, `index.assert_hidden`) is enforced at every read boundary.
+- `grammar.py` imports ChainCompiler's bridge and rulecatcher inside `_deps()`, so importing
+  GlyphSteer never needs them; its `lint` refuses foreign content itself, before the tag chain
+  rulecatcher reads is built.
 - `dense.py` is the **only** import of `sentence-transformers`; it is lazy, so the whole
   left side runs with `pip install glyphsteer` (no extra).
 - `steer.py` is **pure numpy** — it takes vectors, never the model, so the metric math is

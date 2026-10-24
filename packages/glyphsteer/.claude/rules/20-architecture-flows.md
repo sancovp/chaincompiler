@@ -23,7 +23,8 @@ sequenceDiagram
     Idx->>Idx: body=clean · code=ASCII tags (gsxnegative …) · clean stored
     Note over U,S: QUERY TIME
     U->>S: query="pipeline", facet=😡
-    S->>S: facet glyph → tag (gsxnegative); BM25 + code MATCH
+    S->>S: each word quoted as a literal; facet glyph → tag (gsxnegative); BM25 + code MATCH
+    Note over S: a query with no word is one FTS5 string, its quotes doubled → no hits, never an error
     S-->>U: hits with CLEAN text (HIDE enforced)
 ```
 
@@ -123,6 +124,23 @@ export GLYPHSTEER_EMBED_URL=http://localhost:8088
 python experiments/emoji_collapse_check.py   # DW-6 gate
 python experiments/magnitude_probe.py        # Q1–Q3
 ```
+
+### DW-8 — Find glyphs only through the vocabulary's one matcher
+**Discovered:** porting the public repository's bug sweeps — every reader matched glyphs by
+substring, so a vocabulary holding `⚠` and `⚠️` parsed both inside `⚠️`, and `strip` left the
+orphan U+FE0F while `check_hidden` still passed. **Procedure for any code that finds a glyph in
+text:** call `Vocabulary._matches` (or `parse` · `glyphs_in` · `in_code_order` · `strip`, which
+use it), never `g in text` or `text.replace(g, …)` per glyph; then add a case to
+`tests/test_glyphsteer_regressions.py` with the overlapping `WARN` vocabulary there, and see it
+fail on the substring version before trusting it.
+
+### DW-9 — Run every search door with a query that has no word
+**Discovered:** the same port — `search(con, '"')` crashed FTS5 (`unterminated string`), and two
+of ChainCompiler's doors (`si_search`, `chaincompiler gba search`) reach SkillTree's search the
+same way, and SkillTree's raises on an operator word (`NOT`) too. **Procedure for any door that
+hands a query to FTS5:** run it with `"`, `?"!`, `""` and the operator words `NOT`, `AND`,
+`NEAR`, and expect no error — no hits for the first three, the operator words read as words; a
+door that reaches another package's search sends it the query's words alone.
 
 ## Runtime flow 4 — Dense via the sidecar (host ↔ container)
 

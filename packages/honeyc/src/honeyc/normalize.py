@@ -42,6 +42,13 @@ class Statement:
         return (self.subject, self.predicate, self.object, tuple(sorted(self.meta.items())))
 
 
+def is_mediation(statement: Statement) -> bool:
+    """An inferred bounded mediator — `|X|` between two backbone links, carrying its `target` — as against a relation
+    the author named `mediates` (`[A] -mediates-> [B]`), an ordinary triple. Every lens and emitter reads a target
+    only through this."""
+    return statement.predicate == "mediates" and "target" in statement.meta
+
+
 class _Normalizer:
     def __init__(self) -> None:
         self.statements: list[Statement] = []

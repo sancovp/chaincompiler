@@ -36,18 +36,32 @@ def author(specs: list[dict]) -> Vocabulary:
 
 
 def merge(*vocabs: Vocabulary) -> Vocabulary:
-    """Accumulate vocabularies into one master legend (later wins on name/glyph clash —
+    """Accumulate vocabularies into one master legend (later wins on a name, glyph or tag clash —
     deterministic, last-author-priority). Skips entries that would break validation."""
     by_name: dict[str, Axis] = {}
     by_glyph: dict[str, str] = {}     # glyph -> name (to detect cross-name reuse)
+    by_tag: dict[str, str] = {}       # tag -> name (two names can derive one tag: `risk` and `Risk!` → gsxrisk)
+
+    def unindex(name: str) -> None:
+        """Forget the glyph and tag of the axis a name holds now, so they no longer point at it."""
+        old = by_name.get(name)
+        if old is not None:
+            if by_glyph.get(old.glyph) == name:
+                del by_glyph[old.glyph]
+            if by_tag.get(old.tag) == name:
+                del by_tag[old.tag]
+
     for v in vocabs:
         for a in v.axes:
-            # drop a prior axis that used this glyph under a different name
-            clash = by_glyph.get(a.glyph)
-            if clash and clash != a.name:
-                by_name.pop(clash, None)
+            unindex(a.name)                         # a name given a new glyph no longer holds its old one
+            # drop a prior axis that used this glyph or this tag under a different name
+            for clash in (by_glyph.get(a.glyph), by_tag.get(a.tag)):
+                if clash and clash != a.name:
+                    unindex(clash)
+                    by_name.pop(clash, None)
             by_name[a.name] = a
             by_glyph[a.glyph] = a.name
+            by_tag[a.tag] = a.name
     return Vocabulary(list(by_name.values()))
 
 

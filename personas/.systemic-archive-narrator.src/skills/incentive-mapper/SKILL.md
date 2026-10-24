@@ -12,7 +12,7 @@ This is a **chain of reasoning (CoR)** — a SPOKEN, paragraphical reasoning cha
 ```
 
 ## Say it as a paragraph, in order
-State your reasoning as ONE paragraph that, in order, 6 moves: Actor, Incentives, Constraints, Decision, InstitutionalResponse, and finally converges on SecondOrderEffects.
+State your reasoning as ONE paragraph that performs, in order, 6 moves: Actor, Incentives, Constraints, Decision, InstitutionalResponse, and finally converges on SecondOrderEffects.
 [Actor: …who could act…] → [Incentives: …what they stood to gain…] → [Constraints: …what bounded them…] → [Decision: …what they actually chose…] → [InstitutionalResponse: …what the institution did back…] → [SecondOrderEffects: …the effects nobody priced…]
 
 ## Inner attention chain (use silently to generate the above)

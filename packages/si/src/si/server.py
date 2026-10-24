@@ -6,6 +6,7 @@ Exposes the chain dialect to any MCP client:
   - si_reachable(root_dir, root_name) list reachable skills
   - si_read_skill(root_dir, skill)    fetch a skill body by name
   - si_tree_to_mcp(root_dir, name, out) turn a tree/master into its own MCP
+  - si_search(root_dir, query)        BM25 over a tree, optionally coordinate-scoped
 
 Run:  python -m si.server   (or the `si-server` console script)
 
@@ -13,6 +14,8 @@ The tool functions stay plain callables (registered, not rebound) so they're
 usable directly and in tests, not only over the wire.
 """
 from __future__ import annotations
+
+import re
 
 from fastmcp import FastMCP
 
@@ -50,9 +53,15 @@ def si_tree_to_mcp(root_dir: str, root_name: str, out_path: str) -> str:
 
 
 def si_search(root_dir: str, query: str, scope_coord: str | None = None, limit: int = 10) -> list[dict]:
-    """Search the skill tree (BM25), optionally scoped to a coordinate subtree (e.g. '0.1')."""
+    """Search the skill tree (BM25), optionally scoped to a coordinate subtree (e.g. '0.1'). SkillTree's search hands a
+    query's words to FTS5 unquoted, so it raises on a query with no word and on an operator word (`NOT`, `AND`); this
+    door sends it the query's words alone, lowercased — FTS5's operators are capitals and its index folds case, so the
+    words match as before — and answers a query with no word with nothing."""
+    words = re.findall(r"\w+", query.lower())
+    if not words:
+        return []
     from skilltree import search_tree
-    return search_tree(root_dir, query, scope_coord=scope_coord, limit=limit)
+    return search_tree(root_dir, " ".join(words), scope_coord=scope_coord, limit=limit)
 
 
 # Register as MCP tools without rebinding the names (keep them plain callables).
