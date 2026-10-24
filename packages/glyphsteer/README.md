@@ -56,7 +56,7 @@ carries two markers:
 
 ```bash
 pip install -e .                # lexical regime, zero heavy deps
-pip install -e '.[dense]'       # adds sentence-transformers for the dense regime
+pip install -e '.[dense]'       # adds fastembed (local ONNX, no torch) for the dense regime; '.[st]' adds sentence-transformers
 ```
 
 ```python

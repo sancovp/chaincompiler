@@ -32,7 +32,7 @@ flowchart TB
     end
 
     subgraph dense["Dense regime (optional extra)"]
-        denseM["dense.py<br/>embed · measure_anchor<br/>(lazy sentence-transformers)"]
+        denseM["dense.py<br/>embed · measure_anchor<br/>(the sidecar, or lazy fastembed / sentence-transformers)"]
         steer["steer.py<br/>sim_eff = cos + Σ wₖ⟨q,âₖ⟩⟨d,âₖ⟩<br/>(pure numpy)"]
     end
 
@@ -113,7 +113,8 @@ flowchart LR
 - `grammar.py` imports ChainCompiler's bridge and rulecatcher inside `_deps()`, so importing
   GlyphSteer never needs them; its `lint` refuses foreign content itself, before the tag chain
   rulecatcher reads is built.
-- `dense.py` is the **only** import of `sentence-transformers`; it is lazy, so the whole
-  left side runs with `pip install glyphsteer` (no extra).
+- `dense.py` is the **only** import of an embedding runtime (`fastembed`, `sentence-transformers`), each lazy, so the
+  whole left side runs with the package installed from its folder and no extra (`pip install -e packages/glyphsteer`;
+  glyphsteer is not on PyPI — ChainCompiler `DESIGN.md` §18).
 - `steer.py` is **pure numpy** — it takes vectors, never the model, so the metric math is
   testable without any download.

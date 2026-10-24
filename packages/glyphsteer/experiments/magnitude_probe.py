@@ -1,6 +1,6 @@
 """Q1-Q3 probe: does an emoji glyph carry a usable, controllable direction?
 
-Needs the dense extra:  pip install 'glyphsteer[dense]'
+Needs a dense backend:  the sidecar (GLYPHSTEER_EMBED_URL), or  pip install -e '.[dense]'
 Run:                    python experiments/magnitude_probe.py
 
 Prints, per glyph:

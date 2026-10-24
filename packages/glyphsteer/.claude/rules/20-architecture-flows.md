@@ -33,7 +33,7 @@ sequenceDiagram
 ```mermaid
 sequenceDiagram
     participant E as eval.magnitude_probe
-    participant D as dense (sentence-transformers)
+    participant D as dense.embed (sidecar · fastembed · st)
     participant St as steer.sim_eff
 
     E->>D: embed(aligned word), embed(unrelated word), measure_anchor(glyph)
@@ -81,8 +81,8 @@ If it prints `(0,)` the marker is NOT lexically indexable → it must get an ASC
 The lexical regime is exact-match true and provable with zero deps; build & verify it
 first (`pytest`, `experiments/retrieval_lift.py`). The dense regime is gated on the
 magnitude probe (Q1–Q3) — do NOT wire dense retrieval into a claim until
-`experiments/magnitude_probe.py` shows the nudge is large enough to reorder. Keep
-`sentence-transformers` a lazy optional extra so CI stays fast and dep-light.
+`experiments/magnitude_probe.py` shows the nudge is large enough to reorder. Keep the
+local embedding runtimes (`fastembed`, `sentence-transformers`) lazy optional extras so CI stays fast and dep-light.
 
 ### DW-3 — The HIDE invariant is a hard gate
 Any change to encode/index must keep `check_hidden` / `assert_hidden` green: no

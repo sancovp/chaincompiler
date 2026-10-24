@@ -354,6 +354,20 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.1.66 — 2026-10-24
+- **glyphsteer says how to install it from its folder, and its documents state its dense layer as built.** Its
+  component rule, its own skill, its grammar's docstring and error, its dense backends' docstring and errors, and its
+  magnitude probe all named `pip install glyphsteer` or an extra of it, a name nothing publishes (`DESIGN.md` §18).
+  Each now names what is meant: the package installed from its folder (`pip install -e packages/glyphsteer`), the
+  runtime a missing backend needs (`fastembed`, the `dense` extra; `sentence-transformers`, the `st` extra), or
+  ChainCompiler's `./install.sh` for the grammar's engine.
+- `implementation_plan.md` §4 states the build file's real extras, the dense layer's three backends (the sidecar,
+  fastembed, sentence-transformers) and its default model, the index's five columns (`body` the clean text, `code` the
+  tags, `glyphs` the code returned for display), and the eval functions' real signatures, the dense arm of Q4 marked
+  aspirational; its status counts 53 tests. The README's `[dense]` extra adds fastembed, not sentence-transformers;
+  the flows rule and the component diagram name both local runtimes.
+- Only text changed — no logic; suite: 313 passed. `glyphsteer` 0.1.2.
+
 ### v0.1.65 — 2026-10-24
 - **The public repository's branches are closed.** Its pull requests #1 and #2 are closed, each with a comment naming
   v0.1.64's merge (`6aaa4e81b1`) and its publish (`ae9bf20697`). Its three branches are deleted: the two bug sweeps

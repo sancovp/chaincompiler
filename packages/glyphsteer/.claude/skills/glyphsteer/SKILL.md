@@ -43,8 +43,8 @@ Grading rides the **lexical** regime (a grade is a filter/display label, not a s
 direction — quality ≠ sentiment). Demo: `experiments/grade_demo.py`.
 
 ## Regimes
-- **Lexical** (`pip install glyphsteer`): exact-match facet, zero deps, *true now*.
-- **Dense** (`pip install 'glyphsteer[dense]'`): emoji direction + `steer.sim_eff` anchor
+- **Lexical** (`pip install -e packages/glyphsteer` — not on PyPI): exact-match facet, zero deps, *true now*.
+- **Dense** (`pip install -e 'packages/glyphsteer[dense]'`): emoji direction + `steer.sim_eff` anchor
   reshape — gated on the magnitude probe (`experiments/magnitude_probe.py`).
 
 It is **HoneyC pointed at the index** (a glyph code is a HoneyC chain) and the cousin of

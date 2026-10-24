@@ -135,6 +135,15 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.66",
+      "date": "2026-10-24",
+      "changes": [
+        "**glyphsteer says how to install it from its folder, and its documents state its dense layer as built.** Its",
+        "`implementation_plan.md` \u00a74 states the build file's real extras, the dense layer's three backends (the sidecar,",
+        "Only text changed \u2014 no logic; suite: 313 passed. `glyphsteer` 0.1.2."
+      ]
+    },
+    {
       "version": "v0.1.65",
       "date": "2026-10-24",
       "changes": [

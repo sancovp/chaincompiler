@@ -7,8 +7,8 @@ Q3 projection  : does the steer.py anchor reshape amplify Q2?
 Q4 retrieval   : on labeled data, does annotate→steer beat the no-annotation baseline
                  (MRR / recall@k), lexically and densely?
 
-The dense parts (Q1–Q3, and the dense arm of Q4) require the `dense` extra; the
-lexical arm of Q4 runs with zero deps.
+The dense part (Q1–Q3) needs a dense backend — the sidecar, or the `dense` or `st` extra
+(`dense.py`); the lexical arm of Q4 runs with zero deps. ASPIRATIONAL: the dense arm of Q4.
 """
 from __future__ import annotations
 

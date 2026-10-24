@@ -17,8 +17,8 @@ rulecatcher owns `syntax_break` over a raw tag chain (`lint_chain`; its strength
 detection). Over a glyph code (`lint`), foreign content is caught first, directly: whatever is left
 once the vocabulary's glyphs and the separator are stripped is foreign, since the tag chain is built
 from the known glyphs alone. The partial-order `orthogonal` check is deterministic here (vocab order)
-because n-gram grammars express a partial order poorly. Needs the `grammar` extra
-(`pip install 'glyphsteer[grammar]'`).
+because n-gram grammars express a partial order poorly. Needs ChainCompiler and rulecatcher installed beside
+GlyphSteer — ChainCompiler's `./install.sh` installs both.
 """
 from __future__ import annotations
 
@@ -46,8 +46,8 @@ def _deps():
         from rulecatcher import db
     except ImportError as e:  # pragma: no cover - environment-dependent
         raise ImportError(
-            "syntax gating needs ChainCompiler + rulecatcher. Install the extra:\n"
-            "    pip install 'glyphsteer[grammar]'\n"
+            "syntax gating needs ChainCompiler + rulecatcher installed beside GlyphSteer.\n"
+            "From a ChainCompiler checkout, ./install.sh installs both.\n"
             "(rulecatcher is ChainCompiler's lint/gate engine.)"
         ) from e
     return bridge, db

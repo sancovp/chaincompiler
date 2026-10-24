@@ -7,8 +7,8 @@ exist as fallbacks.
 
 Backend resolution (override with `backend=`):
   1. "remote"    — POST to $GLYPHSTEER_EMBED_URL/embed  (default if the env var is set)
-  2. "fastembed" — local ONNX runtime (`pip install glyphsteer[dense]`)
-  3. "st"        — local sentence-transformers (`pip install glyphsteer[st]`, heavy)
+  2. "fastembed" — local ONNX runtime (the `dense` extra: `fastembed`)
+  3. "st"        — local sentence-transformers (the `st` extra: `sentence-transformers`, heavy)
 
 `measure_anchor(glyph)` returns the glyph's learned direction — the â_k that
 `steer.sim_eff` uses to reshape the metric, and what `eval.magnitude_probe` measures.
@@ -53,7 +53,7 @@ def _fe(model: str):
     try:
         from fastembed import TextEmbedding
     except ImportError as e:  # pragma: no cover
-        raise ImportError("backend 'fastembed' needs: pip install 'glyphsteer[dense]'") from e
+        raise ImportError("backend 'fastembed' needs fastembed (the 'dense' extra): pip install fastembed") from e
     return TextEmbedding(model)
 
 
@@ -67,7 +67,8 @@ def _st(model: str):
     try:
         from sentence_transformers import SentenceTransformer
     except ImportError as e:  # pragma: no cover
-        raise ImportError("backend 'st' needs: pip install 'glyphsteer[st]'") from e
+        raise ImportError("backend 'st' needs sentence-transformers (the 'st' extra): "
+                          "pip install sentence-transformers") from e
     return SentenceTransformer(model)
 
 

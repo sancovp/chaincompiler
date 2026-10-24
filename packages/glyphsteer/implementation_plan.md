@@ -126,14 +126,15 @@ Full data: `experiments/results/magnitude_probe.json`.
 packages/glyphsteer/
   implementation_plan.md      ← this file (canonical)
   README.md
-  pyproject.toml              (deps: numpy; extras: dense=[sentence-transformers])
+  pyproject.toml              (deps: click, numpy; extras: dense=[fastembed] · st=[sentence-transformers] ·
+                              serve · grammar=[rulecatcher])
   src/glyphsteer/
     __init__.py
     vocab.py      §4.1  controlled glyph vocabulary; validate; the one matcher; HoneyC code bridge
     annotate.py   §4.2  the annotation pass (RuleAnnotator + pluggable LLMAnnotator)
     encode.py     §4.3  THE sidecar split: indexed_form / returned_form + invariant
     index.py      §4.4  lexical FTS5 index over indexed-form; facet filter; return clean
-    dense.py      §4.5  optional dense layer (lazy sentence-transformers); anchor measure
+    dense.py      §4.5  optional dense layer (the sidecar, or fastembed / sentence-transformers lazily); anchor measure
     steer.py      §4.6  bilinear metric reshape sim_eff(q,d,anchors,weights)
     eval.py       §4.7  magnitude probe + retrieval lift harness
     legend.py     §5.1  author / persist / merge / render an LLM-authored vocabulary
@@ -177,16 +178,21 @@ one glyph can join its neighbours into another). Bridge: a code is a HoneyC chai
   glyph ∈ `indexed_form(c)`.
 
 ### 4.4 `index.py`
-FTS5 table `chunks(id UNINDEXED, body, code, clean UNINDEXED)` where `body` = indexed-form.
-`search(con, query, *, facet=None)` BM25-ranked; `facet` adds `AND code MATCH glyph` (exact).
+FTS5 table `chunks(id UNINDEXED, body, code, clean UNINDEXED, glyphs UNINDEXED)`: `body` = the clean text (the
+lexical match), `code` = the code's ASCII tags (the facet — FTS5 drops the emoji), `glyphs` = the code itself, returned
+for display. `search(con, query, *, facet=None, vocab=, limit=)` BM25-ranked; `facet` (a glyph or its tag) adds
+`AND code MATCH tag` (exact).
 Each word of the query is quoted as a literal; a query with no word is one FTS5 string, its quotes doubled, so it
 finds nothing and never errors. Hits return **clean** text (the hide, enforced at the read boundary). Mirrors
 skilltree.search.
 
 ### 4.5 `dense.py`  *(optional extra)*
-Lazy import of `sentence-transformers` (`all-MiniLM-L6-v2` default). `embed(texts)`,
-`measure_anchor(glyph)` = `embed([glyph])[0]`. Raises a clear error if the extra isn't
-installed — the rest of the package works without it.
+Three backends, chosen by `backend=` or resolved in this order: `remote` — a POST to `$GLYPHSTEER_EMBED_URL/embed`,
+the `serve/` sidecar, stdlib only (the default when that variable is set); `fastembed` — local ONNX, the `dense` extra;
+`st` — local sentence-transformers, the `st` extra. Each local runtime is imported lazily. The model is
+`$GLYPHSTEER_MODEL`, else `BAAI/bge-small-en-v1.5` (which collapses emoji, §3.1 — run DW-6 first). `embed(texts)`,
+`measure_anchor(glyph)` = `embed([glyph])[0]`, and `active_model()` names the model actually serving (the sidecar's,
+when remote). A missing local runtime raises with the package to install — the rest of the package works without any.
 
 ### 4.6 `steer.py`
 Pure-numpy metric reshape (no model needed — takes vectors):
@@ -198,9 +204,9 @@ anchors, weights)`. This is the rank-k bilinear correction that makes the inheri
 direction a *controllable, query-time* axis.
 
 ### 4.7 `eval.py`
-`magnitude_probe(vocab, dense, pairs)` → Q1/Q2 table. `retrieval_lift(corpus, queries,
-labels, ...)` → MRR/recall@k baseline-vs-steered, lexical and dense. Emits a JSON report =
-the paper's results table.
+`magnitude_probe(vocab, aligned=, unrelated=, neutral=, model=)` → per glyph Q1–Q3, with the model that served.
+`retrieval_lift_lexical(corpus, queries, annotator, vocab, k=)` → MRR/recall@k baseline-vs-steered, lexical.
+ASPIRATIONAL: the dense arm of Q4. Each returns a JSON-ready report = the paper's results table.
 
 ## 4.8 VERIFIED FINDING — FTS5 drops emoji ⇒ one axis, two renderings
 
@@ -238,7 +244,7 @@ dev-workflow **DW-1** in `.claude/rules/20-architecture-flows.md`.
 
 ### Status: lexical regime COMPLETE & verified. Dense regime BUILT, containerized, and
 MEASURED: emoji-direction confirmed real but model-dependent (§3.1) — bge-en collapses
-emoji, multilingual XLM-R does not; Q1 strong, Q2 modest, Q3 a controllable gain. 50 tests
+emoji, multilingual XLM-R does not; Q1 strong, Q2 modest, Q3 a controllable gain. 53 tests
 green (`python3 -m pytest tests`, with ChainCompiler's packages installed so the grammar tests
 run). Remaining for the paper: dense Q4 on a real corpus.
 
