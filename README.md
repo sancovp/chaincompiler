@@ -354,6 +354,9 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.1.61 — 2026-10-24
+- **ChainCompiler's agent is CompiloApe.** `DESIGN.md` §20 now names CompiloApe (`base/compiloape` in the source home) as ChainCompiler's own agent — a separate project and a plugin of its own that depends on this one, climbing SkillTome's agent ladder through these doors — and states how a host Claude makes use of it: through a skill its plugin carries, which hands the installed agent a task and returns what it made, never seating the agent's persona in the host. v0.1.60 had named the host AIOS.
+
 ### v0.1.60 — 2026-10-24
 - **The design names ChainCompiler's agent and how it is delivered.** `DESIGN.md` §20: ChainCompiler's own agent is the host AIOS, a separate project and a plugin of its own that depends on this one. Its folder is forged through these doors (a persona of these operators seated into a GBA by `make_gba`, its chains minted by the chain compilers), and it climbs SkillTome's agent ladder — the folder, its agent definition, the launcher, that plugin, and the install wizard that teaches a base Claude to install all of it.
 

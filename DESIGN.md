@@ -379,13 +379,14 @@ install of §18.
 
 ## §20 The agent that knows ChainCompiler
 
-ASPIRATIONAL: ChainCompiler's own agent — an agent folder whose persona knows every operator in §1–§15 and
-makes new projects with them — is the host AIOS: a separate project and a plugin of its own that depends on this
-one. Its folder is built through ChainCompiler's own doors — a persona whose moves are these operators as performed
-on a project, seated into a GBA (§8) by `make_gba`, its chains minted by the chain compilers (§5) — and it climbs
-SkillTome's agent ladder: the folder, the agent definition in it, the launcher that runs it, that plugin, and the
-install wizard that teaches a base Claude to install all of it. The wizard is that plugin's install skill, the
-delivery shape of §16, so whoever installs it gets their own folder of the agent, filled out by their
-configuration. The worked example of an agent made this way is AEGIS, whose personas personapack carries (§6).
-Today an agent working here gets the orientation skill `.claude/skills/chaincompiler` and the
-`bandit-chain-system` skill.
+ASPIRATIONAL: ChainCompiler's own agent — the agent that knows ChainCompiler and makes agents and projects with
+it — is CompiloApe (`base/compiloape` in the source home, its design `base/compiloape/DESIGN.md`): a separate project
+and a plugin of its own that depends on this one. Its folder is built through ChainCompiler's own doors — a persona
+whose moves are this package's operations performed on a task, seated into a GBA (§8) by `make_gba`, its chains
+minted by the chain compilers (§5) — and it climbs SkillTome's agent ladder: the folder, the agent definition in it,
+the launcher that runs it, its plugin, and the install wizard that teaches a base Claude to install all of it. The
+wizard is that plugin's install skill, the delivery shape of §16, so whoever installs it gets their own folder of the
+agent, filled out by their configuration. A host Claude makes use of it through a skill the same plugin carries,
+which hands the installed agent a task and returns what it made, never seating its persona in the host. Its worked
+example is AEGIS, an agent made this way that mints further agents, whose personas personapack carries (§6). Today
+an agent working here gets the orientation skill `.claude/skills/chaincompiler` and the `bandit-chain-system` skill.
