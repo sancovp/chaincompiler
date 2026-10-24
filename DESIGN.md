@@ -380,8 +380,12 @@ install of §18.
 ## §20 The agent that knows ChainCompiler
 
 ASPIRATIONAL: ChainCompiler's own agent — an agent folder whose persona knows every operator in §1–§15 and
-makes new projects with them — built through ChainCompiler's own doors: a persona bundle (§6) seated into
-a GBA (§8), its chains minted by the chain compilers (§5), and delivered by the plugin's install skill (§16), so
-whoever installs it gets their own folder of that agent, filled out by their configuration. The worked example of
-an agent made this way is AEGIS, whose personas personapack carries (§6). Today an agent working here gets the orientation skill
-`.claude/skills/chaincompiler` and the `bandit-chain-system` skill.
+makes new projects with them — is the host AIOS: a separate project and a plugin of its own that depends on this
+one. Its folder is built through ChainCompiler's own doors — a persona whose moves are these operators as performed
+on a project, seated into a GBA (§8) by `make_gba`, its chains minted by the chain compilers (§5) — and it climbs
+SkillTome's agent ladder: the folder, the agent definition in it, the launcher that runs it, that plugin, and the
+install wizard that teaches a base Claude to install all of it. The wizard is that plugin's install skill, the
+delivery shape of §16, so whoever installs it gets their own folder of the agent, filled out by their
+configuration. The worked example of an agent made this way is AEGIS, whose personas personapack carries (§6).
+Today an agent working here gets the orientation skill `.claude/skills/chaincompiler` and the
+`bandit-chain-system` skill.

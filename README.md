@@ -4,9 +4,9 @@
 
 <!-- SCALABLE-PUBLISHING:AUTOGEN START (managed block — do not edit between these markers) -->
 
-![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_10_23-lightgrey.svg)
+![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_10_24-lightgrey.svg)
 
-⭐ 0 stars • 🕑 Updated 2026-10-23
+⭐ 0 stars • 🕑 Updated 2026-10-24
 
 [Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
 
@@ -353,6 +353,9 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.1.60 — 2026-10-24
+- **The design names ChainCompiler's agent and how it is delivered.** `DESIGN.md` §20: ChainCompiler's own agent is the host AIOS, a separate project and a plugin of its own that depends on this one. Its folder is forged through these doors (a persona of these operators seated into a GBA by `make_gba`, its chains minted by the chain compilers), and it climbs SkillTome's agent ladder — the folder, its agent definition, the launcher, that plugin, and the install wizard that teaches a base Claude to install all of it.
 
 ### v0.1.59 — 2026-10-23
 - **A board, generated from the roadmap.** `scripts/update_site.py` now also writes `.claude/rules/chaincompiler_states.md`: one row per `roadmap.json` phase, its status marked across PLANNED → IN PROGRESS → DONE, each row pointing at `BACKLOG.md`. `roadmap.json` stays the one source; `deploy.yml`'s staleness check now covers the board as well as the site and the SVG, and also fails on a generated file that was never committed.

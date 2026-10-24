@@ -135,6 +135,13 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.60",
+      "date": "2026-10-24",
+      "changes": [
+        "**The design names ChainCompiler's agent and how it is delivered.** `DESIGN.md` \u00a720: ChainCompiler's own agent is the host AIOS, a separate project and a plugin of its own that depends on this one. Its folder is forged through these doors (a persona of these operators seated into a GBA by `make_gba`, its chains minted by the chain compilers), and it climbs SkillTome's agent ladder \u2014 the folder, its agent definition, the launcher, that plugin, and the install wizard that teaches a base Claude to install all of it."
+      ]
+    },
+    {
       "version": "v0.1.59",
       "date": "2026-10-23",
       "changes": [
