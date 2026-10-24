@@ -1,5 +1,5 @@
-<svg viewBox="0 0 2562 436" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
-<rect x="0" y="0" width="2562" height="436" rx="14" fill="#ffffff"/>
+<svg viewBox="0 0 2812 436" xmlns="http://www.w3.org/2000/svg" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+<rect x="0" y="0" width="2812" height="436" rx="14" fill="#ffffff"/>
 <text x="40" y="44" font-size="22" font-weight="800" fill="#15151a">ChainCompiler — roadmap</text>
 <text x="40" y="68" font-size="13" fill="#5e5e66">A compiler-compiler for cognition.  ·  updated 2026-06-16</text>
 <rect x="40" y="96" width="232" height="300" rx="11" fill="#e9f7ef" stroke="#16a34a" stroke-width="1.6"/>
@@ -147,5 +147,21 @@
 <text x="2306" y="418" font-size="11" fill="#15151a">•  chains/skill2framework.chain + th…</text>
 <text x="2306" y="438" font-size="11" fill="#15151a">•  Deterministic spine E2E: blog → c…</text>
 <text x="2306" y="458" font-size="11" fill="#15151a">•  First real chapter through the fu…</text>
+<path d="M2520 126 h20" stroke="#c4c4bf" stroke-width="2" marker-end="url(#a)" fill="none"/>
+<rect x="2540" y="96" width="232" height="300" rx="11" fill="#f6f6f5" stroke="#c4c4bf" stroke-width="1.6"/>
+<text x="2556" y="126" font-size="12" font-weight="800" letter-spacing=".08em" fill="#9a9a96">P10</text>
+<rect x="2668" y="112" width="88" height="20" rx="10" fill="#9a9a96"/>
+<text x="2712" y="126" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">○ planned</text>
+<text x="2556" y="154" font-size="16" font-weight="800" fill="#15151a">Distribution</text>
+<text x="2556" y="176" font-size="11.5" fill="#5e5e66">The plugin installs and works</text>
+<text x="2556" y="192" font-size="11.5" fill="#5e5e66">anywhere: its fifteen packages</text>
+<text x="2556" y="208" font-size="11.5" fill="#5e5e66">on PyPI at one version, run</text>
+<text x="2556" y="224" font-size="11.5" fill="#5e5e66">through uv, proven in a clean</text>
+<text x="2556" y="240" font-size="11.5" fill="#5e5e66">Claude Code.</text>
+<text x="2556" y="266" font-size="11" fill="#15151a">•  one version line: the release ver…</text>
+<text x="2556" y="286" font-size="11" fill="#15151a">•  the GBA's bandit-chain-system ski…</text>
+<text x="2556" y="306" font-size="11" fill="#15151a">•  the MCP server and every shipped …</text>
+<text x="2556" y="326" font-size="11" fill="#15151a">•  the fifteen on PyPI under their n…</text>
+<text x="2556" y="346" font-size="11" fill="#15151a">•  the plugin proof: installed signe…</text>
 <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c4c4bf"/></marker></defs>
 </svg>

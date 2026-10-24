@@ -23,3 +23,4 @@ shipped).
 | P7 · Plugin — `../../BACKLOG.md` | ● | ● |   |
 | P8 · GlyphSteer (research) — `../../BACKLOG.md` | ● | ● |   |
 | P9 · Tome (framework → volume → tome) — `../../BACKLOG.md` | ● | ● |   |
+| P10 · Distribution — `../../BACKLOG.md` | ● |   |   |

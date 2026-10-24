@@ -36,8 +36,24 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [x] Bundle the capability skills (`skills/`) + the SI MCP (`.mcp.json`)
 - [x] Ship `report-missed-skill` (the root skill tree default)
 - [ ] Include slash `commands/` + `agents/` in the plugin
-- [ ] One-command install / distribute — **commit `.claude-plugin/`, `.mcp.json`, `skills/`** then `/plugin marketplace add github:sancovp/chaincompiler` and install-verify
 - [x] `skills/report-missed-skill` is a real file again (v0.1.57) — both entries had dangled since SkillTree left `packages/`; the dev surface links to it inside the folder
+
+## P10 — Distribution  `○`
+
+- [ ] One-command install / distribute — `claude plugin marketplace add sancovp/chaincompiler` then `claude plugin install chaincompiler@chaincompiler`, install-verified in a clean Claude Code (DESIGN §16)
+- [ ] **One version line** — stamp the release version into `plugin.json`, `marketplace.json` and every package's `pyproject.toml` (DESIGN §18).
+- [ ] **`scripts/set_version.py` and `scripts/check_versions.py`** — write the release version into every package's `version` and every `__version__` a package defines, both plugin manifests, `.mcp.json`'s pin and every shipped skill's uv line, with every dependency among the fifteen pinned `==`; refuse a tree where any of them differs from the newest changelog entry, or a shipped skill's uv line is missing or misses a distribution its imports come from (DESIGN §16 · §18).
+- [ ] **The GBA ships `bandit-chain-system` as package data** — it copies the skill from the source checkout, which a non-editable install lacks (DESIGN §8).
+- [ ] **The plugin install brings the Python packages** — today it copies the skills and registers the MCP but installs nothing; `.mcp.json` launches `uvx --from chaincompiler-si==<release> si-server`, and every shipped skill names its uv line; then prove the plugin install in a clean Claude Code (DESIGN §16).
+- [ ] **The nutrition test finds its fixtures from its own file** — it reads them beside dietc's installed module, a folder only an editable install has (DESIGN §19).
+- [ ] **Every build file declares what its source imports** — `chainaios` imports `skilltree` and, lazily, `glyphsteer`; `chaincompiler` imports `glyphsteer` lazily; `glyphsteer`'s `grammar` extra lacks `chaincompiler`; a lazy import becomes an optional extra (DESIGN §18).
+- [ ] **rulecatcher's suite tests the installed package** — its `tests/conftest.py` puts the clone's `src/` first on `sys.path` (DESIGN §19).
+- [ ] **The wheel proof** — before a merge, the fifteen built and checked by `publish_package.sh --dry-run` from the publish dry run's clone, installed non-editable, and §19's checks green against them (DESIGN §18 · §19).
+- [ ] **Publish the fifteen packages to PyPI under their names, each a manifest unit** (the author's ruling) — holds
+  the fourteen names still free there; needs scalable-publishing to state how a package inside a unit's folder gets its
+  own PyPI release (its `DESIGN.md` §4: every package we own on PyPI is a manifest unit), `rulecatcher`, uploaded by
+  hand, among them (DESIGN §18).
+- [ ] **The plugin proof** — `scripts/plugin_proof.py`: the signed-out install from the marketplace, then a headless session with the cached copy as its only addition that connects the self-interpreter, calls one of its tools and runs a capability skill's Python through its uv line; graded from the transcript and files, with negative controls (DESIGN §16).
 
 ## P8 — GlyphSteer (research)  `▸`
 
@@ -71,10 +87,7 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [x] **The version line is one again** (ruled 2026-10-23): one source home, published to `sancovp/chaincompiler` with a version and a changelog entry per release; the first publish from the source home waits only on the folder's universal scan (no person's name, no machine path).
 - [x] **`DESIGN.md` written** (v0.1.57) — the one design, a section per part; every known defect in it is marked ⚠ OWED and listed below. The code's `DESIGN.md §…` and `META-APE spec §…` citations now point at its sections.
 - [x] **The examples run again** (v0.1.57) — `examples/_all` (16/16), `bandit_self` (7/7) and `examples/nutrition` (2/2) had broken when the agent tier moved to `chainaios` and `gba.json` went portable; `si` walks a portable tree to its leaves (new depth-two test).
-- [ ] **The plugin install brings the Python packages** — today it copies the skills and registers the MCP but installs nothing; then prove the plugin install in a clean Claude Code (DESIGN §16).
-- [ ] **One version line** — stamp the release version into `plugin.json`, `marketplace.json` and every package's `pyproject.toml` (DESIGN §18).
 - [ ] **CI runs the checks** — the public repo's workflows run no tests; run `pytest packages`, the examples and `lint-imports` on every push (DESIGN §19).
-- [ ] **The GBA ships `bandit-chain-system` as package data** — it copies the skill from the source checkout, which a non-editable install lacks (DESIGN §8).
 - [ ] **personapack's evidence is checkable from a release** — the forge script and the receipts behind `proven-in-forge` and `tested-with-receipt` live in the author's private repositories (DESIGN §6).
 - [ ] **Lift the archetype spec into the repo** — `ARCHETYPE-COMPILER.md` and its correspondence map are cited throughout `packages/archetype` and live outside it (DESIGN §12).
 - [ ] **Widen the import contract** to the packages beside the tiers (DESIGN §2).
@@ -109,10 +122,6 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [x] **No distribution takes another project's PyPI name** (v0.1.64, the author's ruling) — `accc`, `archetype` and
   `si` publish as `chaincompiler-accc`, `chaincompiler-archetype` and `chaincompiler-si`, `skillchain` as
   `skillchain-compiler`, and every build file names them so; import names unchanged (DESIGN §18).
-- [ ] **Publish the fifteen packages to PyPI under their names, each a manifest unit** (the author's ruling) — holds
-  the fourteen names still free there; needs scalable-publishing to state how a package inside a unit's folder gets its
-  own PyPI release (its `DESIGN.md` §4: every package we own on PyPI is a manifest unit), `rulecatcher`, uploaded by
-  hand, among them (DESIGN §18).
 - [ ] **SCCC resolves a step to the package, never to the organizing tree's node copy** — its index takes every
   `SKILL.md` under the skills folder, so after a re-mint into a folder holding the roll-up's tree a step can resolve to
   `<domain>-tree/…/<step>/SKILL.md` and the rollup describes it by that node's placeholder ("attend (woom)" for

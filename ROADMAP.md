@@ -62,8 +62,8 @@ frontend (tree + analytics + problem-marking, launched from the root skill), and
 
 Bundle the whole thing as **ONE installable Claude Code plugin**. Done: `.claude-plugin/plugin.json` +
 `.claude-plugin/marketplace.json`, the capability skills under `skills/`, and the SI MCP in `.mcp.json`
-(`python3 -m si.server`). Pending: slash `commands/` + `agents/`, then commit/push and install-verify via
-`/plugin marketplace add github:sancovp/chaincompiler`.
+(`python3 -m si.server`). Pending: slash `commands/` + `agents/`. Installing and verifying it from its marketplace is
+P10.
 
 ## P8 — GlyphSteer (research) &nbsp;`▸ in progress`
 
@@ -75,6 +75,23 @@ returned-form, hard HIDE invariant). Shipped: the **sidecar split ✓**, **one a
 corpus) ✓, the **bilinear anchor reshape** (pure numpy) ✓, the **ONNX/fastembed dense sidecar** (no
 torch, `/embed` over HTTP) ✓, and **dense Q1–Q3 measured** (emoji-direction real but model-dependent —
 `bge-en` collapses, XLM-R doesn't) ✓. *Aspirational:* dense Q4 on a real corpus + an arXiv short paper.
+
+## P9 — Tome (framework → volume → tome) &nbsp;`▸ in progress`
+
+The chapter rung: `skill2framework` as a skill chain — two blog stages, then deterministic chapter and plugin
+operations — whose last stage folds the framework into its author's SkillTome through SkillTree's bind operation.
+Shipped: `packages/framework` (`JourneyCore` + `render_blog1`, `assemble_chapter`, `package_plugin`, `fold_into_tome`)
+✓, the six stage skills under `skills/skill2framework/` ✓, `chains/skill2framework.chain` and its compiled rollup ✓,
+the deterministic spine end to end (blog → chapter → plugin → fold → `skilltree validate` green) ✓, and a first real
+chapter through the whole chain, on the SkillTree unit ✓.
+
+## P10 — Distribution &nbsp;`○ planned`
+
+The plugin installs and works anywhere (`DESIGN.md` §16 · §18): one version line — the release version in every
+package, both plugin manifests and every pin; the GBA's `bandit-chain-system` skill shipped as `chainaios` package
+data; the MCP server and every shipped skill run from PyPI through uv; the fifteen packages on PyPI under their names,
+each a unit of the publishing manifest; and the plugin proof — installed signed out into an empty configuration, then a
+headless session that connects the server, calls it and runs a skill's Python through uv.
 
 ---
 

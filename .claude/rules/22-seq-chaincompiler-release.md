@@ -138,8 +138,9 @@ payload, because Claude Code pins an installed plugin to its `plugin.json` versi
   8. `git show --stat HEAD` lists exactly the intended files.
 - unit selection: `git diff --name-only <merge-base>..<tip> | python3 scalable-publishing/bin/select_units_for_paths.py
   --manifest scalable-publishing/publish-manifest.json` names `chaincompiler` and every other unit the change is meant
-  to republish, and no other. `generate_publish_paths.py --manifest scalable-publishing/publish-manifest.json --check`
-  exits 0.
+  to republish, and no other. `generate_publish_paths.py --manifest scalable-publishing/publish-manifest.json
+  --workflow .github/workflows/publish-on-main.yml --check` exits 0 — without `--workflow` it prints the paths and
+  checks nothing.
 - the clean install: in a fresh venv, where `command -v python3` is checked to be that venv in the same command,
   clone the dry-run result. Run `./install.sh`, then the full source-tree proof above. Also run
   `python3 -c "import si.server"`, the module the plugin's MCP launches.

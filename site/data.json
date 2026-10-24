@@ -101,7 +101,7 @@
         "plugin.json + marketplace.json manifests (done)",
         "bundles the capability skills + the SI MCP (done)",
         "commands + agents in the plugin (pending)",
-        "one-command install / distribute (pending: commit + install-verify)"
+        "one-command install / distribute \u2014 moved to P10 Distribution"
       ]
     },
     {
@@ -131,9 +131,33 @@
         "Deterministic spine E2E: blog \u2192 chapter \u2192 plugin \u2192 fold \u2192 skilltree validate green \u2713",
         "First real chapter through the full chain: dogfood on the skilltree unit PASS 2026-07-10 (scratch, all 6 stages, tome validate green) \u2713 \u2014 publishable chapters = v1"
       ]
+    },
+    {
+      "id": "P10",
+      "title": "Distribution",
+      "status": "planned",
+      "blurb": "The plugin installs and works anywhere: its fifteen packages on PyPI at one version, run through uv, proven in a clean Claude Code.",
+      "items": [
+        "one version line: the release version in every package, both plugin manifests and every pin (pending)",
+        "the GBA's bandit-chain-system skill as chainaios package data (pending)",
+        "the MCP server and every shipped skill run from PyPI through uv (pending)",
+        "the fifteen on PyPI under their names, each a publishing-manifest unit (pending)",
+        "the plugin proof: installed signed out, then a session that calls the server and runs a skill (pending)"
+      ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.1.67",
+      "date": "2026-10-24",
+      "changes": [
+        "**The design of distribution is written: the plugin installs and works anywhere.** `DESIGN.md` \u00a716 states how a",
+        "Three defects that a PyPI install would expose are named as owed: the build files do not declare everything their",
+        "The release flow's unit-selection check runs `generate_publish_paths.py` with `--workflow`; without it, the check",
+        "The roadmap gains **P10 Distribution**, which takes P7's \"one-command install / distribute\" item; its tasks are in",
+        "Only text changed \u2014 no logic; no package and no plugin payload changed; suite: 313 passed."
+      ]
+    },
     {
       "version": "v0.1.66",
       "date": "2026-10-24",

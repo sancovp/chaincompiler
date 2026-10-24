@@ -49,12 +49,16 @@ flowchart TB
         FW["framework"]
         SI["si — MCP server + skill"]
     end
-    subgraph SURFACE["The project surface — DESIGN §16 · §17"]
-        PLUG["the plugin — plugin.json · marketplace.json · skills/ · .mcp.json; an agent ships as an install skill"]
+    subgraph SURFACE["The project surface — DESIGN §16 · §17 · §18 · §19"]
+        PLUG["the plugin — plugin.json · marketplace.json · skills/ · .mcp.json (python3 -m si.server); an agent ships as an install skill"]
+        UVL["the plugin's Python from PyPI through uv — .mcp.json: uvx --from chaincompiler-si==release si-server · every shipped skill's uv line · ASPIRATIONAL"]
+        VER["one version line — set_version.py writes it, check_versions.py refuses a tree where any line or uv pin differs · ASPIRATIONAL"]
+        PPROOF["plugin_proof.py — the signed-out install from the marketplace, then a headless session at a clean seat, graded from its transcript and files · ASPIRATIONAL"]
         GEN["update_site.py → roadmap SVG · site/data.json · the board (all from roadmap.json + the README changelog)"]
     end
     subgraph PUBX["Outside this folder — DESIGN §18"]
-        PUB["scalable-publishing · SEAM: publish_unit.sh mirrors the folder to the public repository, with deletes"]
+        PUB["scalable-publishing · SEAM: publish_unit.sh mirrors the folder to the public repository, with deletes · publish_package.sh uploads each of the fifteen, a manifest unit of its own, built from the publish commit (ASPIRATIONAL)"]
+        PYPI["PyPI · SEAM: holds the fifteen at the release's version; uv resolves the plugin's environments from it · ASPIRATIONAL"]
     end
     TYPE(["THE ONE TYPE — skill dir = name/SKILL.md"])
     MINT["22-seq-mint-attention-chain — the mint dev flow"]
@@ -77,6 +81,11 @@ flowchart TB
     GS -.-> CC
     CC -.-> GS
     PLUG --> SI
+    PLUG -.-> UVL
+    UVL -.-> PYPI
+    VER -.-> PLUG
+    PPROOF -.-> PLUG
+    PUB -.-> PYPI
     CHAIN -. produces .-> TYPE
     ST -. organizes .-> TYPE
     MINT -. runs through .-> CHAIN
@@ -84,6 +93,8 @@ flowchart TB
     REL -. runs through .-> GEN
     REL -. runs through .-> PLUG
     REL -. runs through .-> PUB
+    REL -. runs through .-> VER
+    REL -. runs through .-> PPROOF
 ```
 
 ---

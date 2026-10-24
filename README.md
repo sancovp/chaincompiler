@@ -70,7 +70,7 @@ The `*CC`s are *constructors*, `skillchain` is the *composition operator*, `Skil
 <img src="assets/roadmap.svg" alt="ChainCompiler roadmap" width="900"/>
 </div>
 
-**P0 Foundation** `✓` · **P1 Project Surface** `✓` · **P2 Exchange** `✓` · **P3 Self-Hosting & SI** `✓` · **P4 Marketplace** `▸` · **P5 Federation** `✓` ([plan](FEDERATION.md)) · **P6 Skill OS** `▸` · **P7 Plugin** `▸` · **P8 GlyphSteer** `▸` · **P9 Tome** `▸`
+**P0 Foundation** `✓` · **P1 Project Surface** `✓` · **P2 Exchange** `✓` · **P3 Self-Hosting & SI** `✓` · **P4 Marketplace** `▸` · **P5 Federation** `✓` ([plan](FEDERATION.md)) · **P6 Skill OS** `▸` · **P7 Plugin** `▸` · **P8 GlyphSteer** `▸` · **P9 Tome** `▸` · **P10 Distribution** `○`
 
 Full detail in **[ROADMAP.md](ROADMAP.md)** (live on the **[site](site/)**); concrete tasks in **[BACKLOG.md](BACKLOG.md)**. The image and the site are *generated* from [`roadmap.json`](roadmap.json) by [`scripts/update_site.py`](scripts/update_site.py) — edit the data, run the script, everything updates.
 
@@ -353,6 +353,30 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.1.67 — 2026-10-24
+- **The design of distribution is written: the plugin installs and works anywhere.** `DESIGN.md` §16 states how a
+  plugin install gets its Python — from PyPI, through uv, pinned to the release: `.mcp.json` launching
+  `uvx --from chaincompiler-si==<release> si-server`, and every shipped skill naming the uv line that runs its Python
+  or its command — and the plugin proof, `scripts/plugin_proof.py`: a signed-out install into an empty configuration
+  from the marketplace, then a headless session with that cached copy as its only addition, graded from its transcript
+  and files. §18 states one version line (the release version in every package, both plugin manifests and every pin,
+  dependencies among the fifteen pinned exactly, starting at v0.3.0, written by `scripts/set_version.py` and checked
+  by `scripts/check_versions.py`) and the fifteen's road to PyPI (each a publishing-manifest unit, built from the public
+  repository at the release's publish commit and uploaded right after it, proven from wheels before the merge, every
+  check run against an install whose packages resolve into it). §8 states where the GBA's `bandit-chain-system` skill
+  will live (`chainaios` package data). All of it is ASPIRATIONAL until built.
+- Three defects that a PyPI install would expose are named as owed: the build files do not declare everything their
+  source imports (`chainaios` → `skilltree`, `glyphsteer`; `chaincompiler` → `glyphsteer`; `glyphsteer[grammar]` →
+  `chaincompiler`) (§18); the nutrition test finds its fixtures beside dietc's installed module (§19); and
+  rulecatcher's `conftest.py` puts the clone's `src/` first on `sys.path`, so its suite cannot test an installed copy
+  (§19).
+- The release flow's unit-selection check runs `generate_publish_paths.py` with `--workflow`; without it, the check
+  printed the paths and checked nothing.
+- The roadmap gains **P10 Distribution**, which takes P7's "one-command install / distribute" item; its tasks are in
+  `BACKLOG.md` under P10, the five open ones moved there from P7 and the cross-cutting list. `ROADMAP.md` now mirrors
+  P9 and P10, and the stack draws the uv launch, the version line, the plugin proof and PyPI.
+- Only text changed — no logic; no package and no plugin payload changed; suite: 313 passed.
 
 ### v0.1.66 — 2026-10-24
 - **glyphsteer says how to install it from its folder, and its documents state its dense layer as built.** Its
