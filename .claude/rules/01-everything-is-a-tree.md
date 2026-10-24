@@ -47,7 +47,7 @@ The tree is **virtual** — rendered onto the one-layer substrate by the materia
 3. **Read-breadcrumbs + index summary** — each `SKILL.md` ends with one breadcrumb per child (`Read`
    and the child's `SKILL.md` path, relative to the node's folder — descend on demand) and an index
    summary ("reachable below: …") so a hit on a leaf term still finds the branch. (See
-   `20-architecture-flows.md` §3 and `02-the-autoload-mechanism.md`.)
+   `21-architecture-diagrams.md` §7 and `02-the-autoload-mechanism.md`.)
 
 You load **one layer and walk**; you never load the pile. That is the whole technology.
 
@@ -69,7 +69,7 @@ direction). This is the self-expansion principle (every dir is an AIOS) applied 
   coordinate, make every region reachable. If you cannot traverse from any region to any other, it
   is a forest and it is wrong.
 - **A "forest of trees" at the top is allowed *only if it too has a root*** (a federation walked from
-  a root registry — see `20-architecture-flows.md` §5). A rooted forest is a tree; an unrooted one is
+  a root registry — see `21-architecture-diagrams.md` §9). A rooted forest is a tree; an unrooted one is
   the bug.
 - **When you audit the system, the question is: "where is there still a bare forest?"** Find it, root
   it.

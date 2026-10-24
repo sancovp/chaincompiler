@@ -6,9 +6,10 @@ never drift from reality. This is a hard rule, not a suggestion.
 ## The two layers
 
 - **`roadmap.json`** → the phases (P0…Pn) and their status. The *why*.
-  Rendered to `assets/roadmap.svg` + `site/data.json` by `scripts/update_site.py`,
-  and surfaced in `ROADMAP.md` and the live site. **Never hand-edit the SVG or
-  `site/data.json`** — they are generated; edit `roadmap.json` and regenerate.
+  Rendered to `assets/roadmap.svg` + `site/data.json` + the board
+  `.claude/rules/chaincompiler_states.md` by `scripts/update_site.py`, and surfaced in
+  `ROADMAP.md` and the live site. **Never hand-edit the SVG, `site/data.json` or the
+  board** — they are generated; edit `roadmap.json` and regenerate.
 - **`BACKLOG.md`** → the concrete, checkable tasks under each phase. The *what-next*.
 
 ## When you finish a unit of work, in the SAME change
@@ -22,7 +23,8 @@ never drift from reality. This is a hard rule, not a suggestion.
    block with bullets. The deploy gate (`scripts/check_changelog.py --require-new`)
    **fails the push** without a new entry, so this is enforced, not optional.
 4. **Regenerate** — run `python3 scripts/update_site.py`; commit the regenerated
-   `assets/roadmap.svg` + `site/data.json` (a staleness check fails CI otherwise).
+   `assets/roadmap.svg` + `site/data.json` + `.claude/rules/chaincompiler_states.md`
+   (a staleness check fails CI otherwise).
 
 ## Adding scope
 

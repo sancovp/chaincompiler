@@ -36,11 +36,12 @@ jobs:
       - name: Regenerate site + roadmap SVG from sources
         run: python3 scripts/update_site.py
 
-      - name: Fail if generated site is stale (not committed)
+      - name: Fail if generated site or board is stale (not committed)
         run: |
-          if ! git diff --quiet -- site/data.json assets/roadmap.svg; then
-            echo "::error::site/data.json or assets/roadmap.svg is stale — run scripts/update_site.py and commit."
-            git --no-pager diff --stat -- site/data.json assets/roadmap.svg
+          GEN="site/data.json assets/roadmap.svg .claude/rules/chaincompiler_states.md"
+          if ! git diff --quiet -- $GEN || [ -n "$(git ls-files --others --exclude-standard -- $GEN)" ]; then
+            echo "::error::a generated file (site/data.json, assets/roadmap.svg or the board) is stale — run scripts/update_site.py and commit."
+            git --no-pager diff --stat -- $GEN
             exit 1
           fi
 

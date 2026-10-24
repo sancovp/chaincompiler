@@ -41,7 +41,7 @@ installs every package editable plus the PyPI dependencies.
   **glyphsteer** (retrieval steering), **archetype**, **framework** (the chapter rung), **si** (the
   self-interpreter MCP).
 
-Diagrams: `.claude/rules/10-architecture-components.md` and `20-architecture-flows.md`.
+Diagrams: `.claude/rules/21-architecture-diagrams.md` (the stack, the algebra, the package graph and every flow).
 
 ## Discipline (enforced)
 

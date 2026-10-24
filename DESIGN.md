@@ -23,9 +23,10 @@ with its task in `BACKLOG.md`.
 document always states the current design and nothing else. What changed, what it replaced and why go in
 the README's `## Changelog` — the project's one history, gated by `scripts/check_changelog.py`.
 
-**Where work state lives.** `roadmap.json` holds the phases (P0–P9; rendered to the roadmap SVG and the site,
-and mirrored in prose by `ROADMAP.md`) and `BACKLOG.md` holds the tasks under them. Both move in the same change as the work
-(`.claude/rules/00-keeping-roadmap-and-backlog-current.md`).
+**Where work state lives.** `roadmap.json` holds the phases (P0–P9; rendered to the roadmap SVG, the site and
+the board `.claude/rules/chaincompiler_states.md`, and mirrored in prose by `ROADMAP.md`) and `BACKLOG.md` holds
+the tasks under them. Both move in the same change as the work
+(`.claude/rules/00-keeping-roadmap-and-backlog-current.md`); the board is never edited by hand.
 
 **Where the detail lives** — each is reference detail for the section that points to it:
 
@@ -38,8 +39,10 @@ and mirrored in prose by `ROADMAP.md`) and `BACKLOG.md` holds the tasks under th
 | `DIETC-AIOS-REBUILD.md` | the record of rebuilding the nutrition compiler as an agent (§8, §19) |
 | `.claude/rules/01-everything-is-a-tree.md` | the tree law (§10) |
 | `.claude/rules/02-the-autoload-mechanism.md` | what Claude Code loads when an agent reads into a folder (§8, §10) |
-| `.claude/rules/10-architecture-components.md` · `20-architecture-flows.md` | the component and sequence diagrams of everything below |
+| `.claude/rules/21-architecture-diagrams.md` | the stack, the component diagrams and the sequence diagrams of everything below, with every dev flow placed on the stack |
 | `.claude/rules/22-seq-mint-attention-chain.md` | the procedure for minting an attention chain or a chain system (§5, §7) |
+| `.claude/rules/22-seq-chaincompiler-release.md` | the procedure for cutting a release: one version everywhere, every generated file regenerated, every copy coherent, proven on a clean install of what publishes (§16, §18, §19) |
+| `.claude/rules/chaincompiler_states.md` | the board, generated from `roadmap.json` — never edited by hand |
 | `packages/*/README.md` | each package's own reference |
 
 ## §1 The one type and the closed algebra
@@ -321,6 +324,12 @@ and `glyphsteer-dense`, `report-missed-skill`, the two style chain systems minte
 `bigdog`, and the `skill2framework` set; `.mcp.json` registers the self-interpreter (`python3 -m
 si.server`). The plugin's version (`plugin.json`, `marketplace.json`) moves with every change to the
 payload: an installed plugin updates only when it does.
+
+The plugin carries no `CLAUDE.md` at its root — a plugin install does not load one. An agent the plugin delivers
+(an AIOS — an agent in its own folder) ships as an **install skill**: the agent's `CLAUDE.md` is one of the skill's
+resources, and the skill's script makes a new folder, named by whoever installs it, that holds that `CLAUDE.md`, and
+injects the rules and skills the agent needs. The folder is that installer's own instance, filled out by its
+configuration (§20).
 ⚠ OWED: installing the plugin copies the skills and registers the MCP but installs no Python. The MCP
 server and every skill that calls a package work only after `./install.sh` has run into the `python3` the
 server launches, and the plugin install has not been proven in a clean Claude Code. Owed: an install path
@@ -329,8 +338,9 @@ that brings the packages with the plugin, and that proof.
 ## §17 The project surface
 
 `README.md` is the public face and holds the changelog. `roadmap.json` is the source of the phases;
-`scripts/update_site.py` renders it into `assets/roadmap.svg` and `site/data.json` — generated files are
-never edited by hand — and `ROADMAP.md` mirrors it in prose. `site/` is the GitHub Pages site (the roadmap, a workbench, and
+`scripts/update_site.py` renders it into `assets/roadmap.svg`, `site/data.json` and the board
+`.claude/rules/chaincompiler_states.md` — generated files are never edited by hand, and `deploy.yml` fails a push
+whose generated files are stale — and `ROADMAP.md` mirrors it in prose. `site/` is the GitHub Pages site (the roadmap, a workbench, and
 the development log built by `scripts/build_blog.py`). `.claude/` is the working surface for an agent
 developing this repository: the rules named in §0 and the skills `chaincompiler` (orientation),
 `archetype-compiler`, `bandit-chain-system`, `glyphsteer`, `glyphsteer-dense`, `metaformal-self-test`
@@ -342,8 +352,8 @@ The source home is the `base/chaincompiler` folder of the author's monorepo. `gi
 is its published output, re-synced on every merge that touches the folder by a checksum-compared,
 delete-enabled copy: anything that exists only in the public repository is removed at the next publish,
 so every change is made at the source home. The public repository runs its own workflows — `deploy.yml`
-(on every push to `main`: require a new changelog entry, regenerate the site and fail if it is stale, then publish
-Pages) and `contribute.yml` (§15).
+(on every push to `main`: require a new changelog entry, regenerate the site and the board and fail if either is
+stale, then publish Pages) and `contribute.yml` (§15).
 
 ChainCompiler is not on PyPI; its outside dependencies — `pydantic-stack-core`, `agent-prompt-engineering`
 ≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — come from PyPI through `install.sh`. A release is proven by cloning the
@@ -371,6 +381,7 @@ install of §18.
 
 ASPIRATIONAL: ChainCompiler's own agent — an agent folder whose persona knows every operator in §1–§15 and
 makes new projects with them — built through ChainCompiler's own doors: a persona bundle (§6) seated into
-a GBA (§8), its chains minted by the chain compilers (§5). The worked example of an agent made this way is
-AEGIS, whose personas personapack carries (§6). Today an agent working here gets the orientation skill
+a GBA (§8), its chains minted by the chain compilers (§5), and delivered by the plugin's install skill (§16), so
+whoever installs it gets their own folder of that agent, filled out by their configuration. The worked example of
+an agent made this way is AEGIS, whose personas personapack carries (§6). Today an agent working here gets the orientation skill
 `.claude/skills/chaincompiler` and the `bandit-chain-system` skill.

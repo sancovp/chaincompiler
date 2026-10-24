@@ -135,6 +135,16 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.59",
+      "date": "2026-10-23",
+      "changes": [
+        "**A board, generated from the roadmap.** `scripts/update_site.py` now also writes `.claude/rules/chaincompiler_states.md`: one row per `roadmap.json` phase, its status marked across PLANNED \u2192 IN PROGRESS \u2192 DONE, each row pointing at `BACKLOG.md`. `roadmap.json` stays the one source; `deploy.yml`'s staleness check now covers the board as well as the site and the SVG, and also fails on a generated file that was never committed.",
+        "**The design states how the plugin delivers an agent.** A plugin install loads no root `CLAUDE.md`, so the plugin carries none; an agent it delivers ships as an install skill whose resources hold the agent's `CLAUDE.md`, and whose script makes a new folder, named by whoever installs it, holding that `CLAUDE.md` and the rules and skills the agent needs (`DESIGN.md` \u00a716, \u00a720).",
+        "**One stack file.** The component diagrams (`10-architecture-components.md`) and the sequence diagrams (`20-architecture-flows.md`) are one rule, `.claude/rules/21-architecture-diagrams.md`, a section per altitude, every diagram kept; the stack gains the project surface and the publish seam, so the release flow sits on the boxes it runs through.",
+        "**How a release is cut is now a rule.** `.claude/rules/22-seq-chaincompiler-release.md`: edit only the source home, fix the generator rather than its output, regenerate every generated file (the board included), make every copy of a shipped skill one, cut one version everywhere a version lives, keep the backlog without deleting work, and prove the release on a clean install of what the publish pipeline would put in the public repository."
+      ]
+    },
+    {
       "version": "v0.1.58",
       "date": "2026-10-23",
       "changes": [

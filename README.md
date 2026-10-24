@@ -354,6 +354,12 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.1.59 — 2026-10-23
+- **A board, generated from the roadmap.** `scripts/update_site.py` now also writes `.claude/rules/chaincompiler_states.md`: one row per `roadmap.json` phase, its status marked across PLANNED → IN PROGRESS → DONE, each row pointing at `BACKLOG.md`. `roadmap.json` stays the one source; `deploy.yml`'s staleness check now covers the board as well as the site and the SVG, and also fails on a generated file that was never committed.
+- **The design states how the plugin delivers an agent.** A plugin install loads no root `CLAUDE.md`, so the plugin carries none; an agent it delivers ships as an install skill whose resources hold the agent's `CLAUDE.md`, and whose script makes a new folder, named by whoever installs it, holding that `CLAUDE.md` and the rules and skills the agent needs (`DESIGN.md` §16, §20).
+- **One stack file.** The component diagrams (`10-architecture-components.md`) and the sequence diagrams (`20-architecture-flows.md`) are one rule, `.claude/rules/21-architecture-diagrams.md`, a section per altitude, every diagram kept; the stack gains the project surface and the publish seam, so the release flow sits on the boxes it runs through.
+- **How a release is cut is now a rule.** `.claude/rules/22-seq-chaincompiler-release.md`: edit only the source home, fix the generator rather than its output, regenerate every generated file (the board included), make every copy of a shipped skill one, cut one version everywhere a version lives, keep the backlog without deleting work, and prove the release on a clean install of what the publish pipeline would put in the public repository.
+
 ### v0.1.58 — 2026-10-23
 - **The two personas' root skillchain packages are their originals.** v0.1.57 tracked a recovered `SKILL.md` for each root (`personas/.chainforge.src/dist/diagram-construction/`, `personas/.systemic-archive-narrator.src/dist/adam-curtis-narration-style/`), rebuilt from the body the committed tree carries; its frontmatter differed from the original, which a checkout holding the ignored original then overwrote. Each `SKILL.md` is now exactly what `skillchain` wrote — its name and description from the `chain.json` beside it, which is tracked too. `.gitignore` un-ignores only those two folders; every other `dist/` output stays ignored. Both personas rebuild byte for byte from a clean checkout.
 
