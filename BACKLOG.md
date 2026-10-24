@@ -39,6 +39,10 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [ ] One-command install / distribute — **commit `.claude-plugin/`, `.mcp.json`, `skills/`** then `/plugin marketplace add github:sancovp/chaincompiler` and install-verify
 - [x] `skills/report-missed-skill` is a real file again (v0.1.57) — both entries had dangled since SkillTree left `packages/`; the dev surface links to it inside the folder
 
+## P8 — GlyphSteer (research)  `▸`
+
+- [ ] Dense Q4 on a real corpus, and the short paper on it (aspirational — `roadmap.json` P8's last item)
+
 ## P4 — Marketplace  `▸`  (aspirational tails)
 
 - [ ] Hosted marketplace endpoint (needs a backend; repo-as-registry covers the rest)
@@ -92,6 +96,25 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [ ] **Keep a GBA's root folder in place across a rebuild** — `_apply_tree` lets `materialize` delete the root and
   write a new one, so a shell standing in the folder loses its working directory (found by a live model running
   `gba construct .` then `gba search .` in one command line) (DESIGN §8).
+- [ ] **Port the public repository's two bug sweeps** — its branches `fix/bug-sweep` (pull request #1) and
+  `fix/confirmed-bug-sweep` (#2) found defects in honeyc, dietc, glyphsteer and corcc, each fixed with a regression
+  test, and never reached the source home. Each defect is fixed here at every door the same input reaches (the
+  `mediates` crash also reaches `honeyc norm`, which neither sweep patched), or shown already fixed, its regression
+  test failing without the fix; where the two sweeps fixed one defect two ways, the fix the design states is kept
+  (DESIGN §3 · §11 · §18). The corcc directive's wording reaches every committed CoR the chain compilers wrote, so
+  each is compiled again through its generator.
+- [ ] **One reading of the notation's markers** — honeyc's README table calls `A <rel- B` the reverse of
+  `A -rel-> B` and gives no reading for `⟶` or `⟼`; the grammar, the normalizer, the examples and every test read
+  both relation spellings as `rel(A, B)`; the readable lens writes both as `<rel`, which the grammar does not parse
+  (DESIGN §3).
+- [ ] **Glyph matching takes the longest glyph first** — today it matches by substring, so a glyph that is part of
+  another corrupts parsing and stripping while the hide check passes (DESIGN §11).
+- [ ] **Fold what the author keeps out of the public repository** — the steward package into its own project
+  (`not-unified/steward`), and the internal design, the public repository's history from before its rewrite and every
+  file of that history held in no other form into `not-unified/chaincompiler-internal`; the standalone folder that
+  held the design and the package is deleted once every file is confirmed folded (DESIGN §18).
+- [ ] **Close the public repository's branches once their work is in the source home** — the two bug sweeps and the
+  backup of the history from before the rewrite (DESIGN §18).
 
 ## Gate — set-valued / closed-class vocabulary check  `✓` (found by a metaformal self-test, fixed 2026-06-17)
 

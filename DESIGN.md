@@ -26,7 +26,8 @@ the README's `## Changelog` — the project's one history, gated by `scripts/che
 **Where work state lives.** `roadmap.json` holds the phases (P0–P9; rendered to the roadmap SVG, the site and
 the board `.claude/rules/chaincompiler_states.md`, and mirrored in prose by `ROADMAP.md`) and `BACKLOG.md` holds
 the tasks under them. Both move in the same change as the work
-(`.claude/rules/00-keeping-roadmap-and-backlog-current.md`); the board is never edited by hand.
+(`.claude/rules/00-keeping-roadmap-and-backlog-current.md`); the board is never edited by hand. A question only the
+author can answer is a `BACKLOG.md` task marked as the author's call.
 
 **Where the detail lives** — each is reference detail for the section that points to it:
 
@@ -108,7 +109,13 @@ unmeasured (BACKLOG).
 relation markers, scopes, placeholders): a Lark grammar parses it to an AST, `normalize` flattens it to
 triples, and lenses render it readable, as triples, as prose, as Prolog text or as Cypher text; `check`
 suggests rewrites. **dietc**, in the same package, is a nutrition compiler built on honeyc — the proof
-that a domain compiler can ride on it (`packages/honeyc/DIETC.md`).
+that a domain compiler can ride on it (`packages/honeyc/DIETC.md`). Each user's notation is that user's own
+configuration (§1: a notation is minted from its user's examples); for this repository's own Dense Rune-Chain
+notation, its README, its examples, its grammar, its code and its tests state one reading of every marker the grammar
+defines. A relation is written `A -rel-> B` or `A <rel- B`, two
+spellings of `rel(A, B)`, and `A <rel> B` states it both ways; the readable lens writes back the spelling it read.
+⚠ OWED: the README's table calls `A <rel- B` the reverse of `A -rel-> B` and gives no reading for `⟶` or `⟼`, and
+the readable lens writes both spellings as `<rel`, which the grammar does not parse (BACKLOG).
 
 ## §4 The base — the `chaincompiler` package
 
@@ -280,7 +287,9 @@ vocabulary that steers retrieval twice over — lexically, as a rare ASCII tag t
 and densely, as an emoji whose embedding direction nudges the chunk — and strips the markers from the
 returned text. Its built-in `GRADE` vocabulary is the grade legend the agent tier writes into every
 persona. Its own design is `packages/glyphsteer/README.md`, `implementation_plan.md` and
-`packages/glyphsteer/.claude/rules/`.
+`packages/glyphsteer/.claude/rules/`. A vocabulary may hold a glyph that is part of another (a skin tone, a variation
+selector): matching takes the longest glyph first and never two that overlap.
+⚠ OWED: matching is by substring, so such a pair corrupts parsing and stripping while the hide check passes (BACKLOG).
 
 ## §12 The archetype compiler
 
@@ -363,7 +372,18 @@ is its published output, re-synced on every merge that touches the folder by a c
 delete-enabled copy: anything that exists only in the public repository is removed at the next publish,
 so every change is made at the source home. The public repository runs its own workflows — `deploy.yml`
 (on every push to `main`: require a new changelog entry, regenerate the site and the board and fail if either is
-stale, then publish Pages) and `contribute.yml` (§15).
+stale, then publish Pages) and `contribute.yml` (§15). A branch of the public repository is never merged there: its
+work is ported to the source home, and the branch is then closed.
+
+The folder holds only what publishes. What the author keeps out of the public repository lives in the source home
+outside this folder and is never published: the steward package, which the public repository's release pass removed,
+is its own project, `not-unified/steward`; the internal design that pass relocated, the public repository's history
+from before its rewrite, and every file of that history the source home holds in no other form are kept in
+`not-unified/chaincompiler-internal`.
+⚠ OWED: the public repository holds three branches whose work never reached the source home — two bug sweeps,
+`fix/bug-sweep` and `fix/confirmed-bug-sweep` (its pull requests #1 and #2: fixes, each with a regression test, for
+defects found in honeyc, dietc, glyphsteer and corcc), and the backup of its history from before the rewrite — and
+the internal design and the steward package sit in a standalone folder outside the source home (BACKLOG).
 
 ChainCompiler is not on PyPI; its outside dependencies — `pydantic-stack-core`, `agent-prompt-engineering`
 ≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — come from PyPI through `install.sh`. A release is proven by cloning the

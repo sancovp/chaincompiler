@@ -135,6 +135,16 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.63",
+      "date": "2026-10-24",
+      "changes": [
+        "**The design says where the unpublished work lives, and what the public repository's branches still owe.**",
+        "**One reading of the notation.** `DESIGN.md` \u00a73: each user's notation is that user's own configuration, and this",
+        "**Glyph matching.** `DESIGN.md` \u00a711: a vocabulary may hold a glyph that is part of another; matching takes the",
+        "`DESIGN.md` \u00a70: a question only the author can answer is a `BACKLOG.md` task marked as the author's call."
+      ]
+    },
+    {
       "version": "v0.1.62",
       "date": "2026-10-24",
       "changes": [

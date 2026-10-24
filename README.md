@@ -354,6 +354,25 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.1.63 — 2026-10-24
+- **The design says where the unpublished work lives, and what the public repository's branches still owe.**
+  `DESIGN.md` §18: a branch of the public repository is never merged there — its work is ported to the source home and
+  the branch closed; the folder holds only what publishes, and what the author keeps out of the public repository
+  lives in the source home outside it — the steward package, which the release pass removed, as its own project, and
+  the internal design and the history from before the public repository's rewrite beside it. Owed: the public
+  repository's two bug sweeps (its pull requests #1 and #2: fixes, each with a regression test, for defects in honeyc,
+  dietc, glyphsteer and corcc) and the backup of the history before the rewrite never reached the source home.
+- **One reading of the notation.** `DESIGN.md` §3: each user's notation is that user's own configuration, and this
+  repository's own states one reading of every marker its grammar defines — `A -rel-> B` and `A <rel- B` are two
+  spellings of `rel(A, B)`, `A <rel> B` states it both ways, and the readable lens writes back the spelling it read.
+  Owed: the README's table calls `<rel-` the reverse and gives no reading for `⟶` or `⟼`, and the readable lens writes
+  both spellings as `<rel`, which does not parse.
+- **Glyph matching.** `DESIGN.md` §11: a vocabulary may hold a glyph that is part of another; matching takes the
+  longest glyph first and never two that overlap. Owed: it matches by substring today.
+- `DESIGN.md` §0: a question only the author can answer is a `BACKLOG.md` task marked as the author's call.
+  `BACKLOG.md`: five tasks for that work, and a P8 section with its open roadmap item. No code changed; suite: 243
+  passed.
+
 ### v0.1.62 — 2026-10-24
 - **ChainCompiler's agent, CompiloApe, is built.** `DESIGN.md` §20 states its delivery as built: a persona of this package's operations (Forge → Gate → Package → Compose → Arrange → Validate → Place) seated by `make_gba` over five minted chains, its plugin's install wizard installing this package from a checkout through `./install.sh`, and a skill a host calls to hand the installed agent a task and get back what it made.
 - **The GBA's default rule blocks are public: `chainaios.default_rule_blocks(domain)`.** `rule_blocks=` replaces the four defaults (the loop, the law, the reward record, self-expansion), so an agent adding a block of its own extends them — `{**default_rule_blocks(domain), "<its own>.md": …}` — and every rebuild writes all of them again. The HBA and the nutrition example use it in place of the private `_rule_blocks`.
