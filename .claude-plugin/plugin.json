@@ -1,7 +1,7 @@
 {
   "name": "chaincompiler",
   "description": "A compiler-compiler for cognition: invent a notation, gate it so the model can't malform it, compile it into a loadable skill, compose and organize those skills, and build agents from them. Ships the eight capability skills (make-prompt, make-persona, big-generator, persona-generator, forge-attention-chain, forge-cor, forge-skillchain, construct-language), bandit-chain-system, glyphsteer and glyphsteer-dense, report-missed-skill, bigdog, the skill2framework chapter set, two minted style chain systems (adam-curtis-narration-style, explain-something-fractally), and the Self-Interpreter MCP. Its Python packages are installed by ./install.sh.",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": {
     "name": "sancovp",
     "url": "https://github.com/sancovp"

@@ -10,20 +10,20 @@ The `chaincompiler` console command lives here (entry `chainaios.cli:main`), so 
 """
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.1.1"
 
 from .construct import construct_language, LanguageBundle
 from .bandit import (
     domain_bandit, BanditChainSystem, roll_up_algebra, SelfView, hierarchicalize, COMPONENTS,
 )
-from .gba import GBA, make_gba, construct_into, search, load_gba
+from .gba import GBA, make_gba, construct_into, search, load_gba, check_gba, default_rule_blocks
 from .hba import HBA, make_hba
 from .cog import COG, make_cog, load_cog, PATTERNS, SEATS
 
 __all__ = [
     "construct_language", "LanguageBundle",
     "domain_bandit", "BanditChainSystem", "roll_up_algebra", "SelfView", "hierarchicalize", "COMPONENTS",
-    "GBA", "make_gba", "construct_into", "search", "load_gba",
+    "GBA", "make_gba", "construct_into", "search", "load_gba", "check_gba", "default_rule_blocks",
     "HBA", "make_hba",
     "COG", "make_cog", "load_cog", "PATTERNS", "SEATS",
     "__version__",

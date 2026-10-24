@@ -135,6 +135,18 @@
   ],
   "changelog": [
     {
+      "version": "v0.1.62",
+      "date": "2026-10-24",
+      "changes": [
+        "**ChainCompiler's agent, CompiloApe, is built.** `DESIGN.md` \u00a720 states its delivery as built: a persona of this package's operations (Forge \u2192 Gate \u2192 Package \u2192 Compose \u2192 Arrange \u2192 Validate \u2192 Place) seated by `make_gba` over five minted chains, its plugin's install wizard installing this package from a checkout through `./install.sh`, and a skill a host calls to hand the installed agent a task and get back what it made.",
+        "**The GBA's default rule blocks are public: `chainaios.default_rule_blocks(domain)`.** `rule_blocks=` replaces the four defaults (the loop, the law, the reward record, self-expansion), so an agent adding a block of its own extends them \u2014 `{**default_rule_blocks(domain), \"<its own>.md\": \u2026}` \u2014 and every rebuild writes all of them again. The HBA and the nutrition example use it in place of the private `_rule_blocks`.",
+        "**`chaincompiler gba check <root>`** (`chainaios.check_gba`) reads `closed` again on disk at any time: every body the manifest names present; the materialized tree (`skilltree.json`) having the manifest's shape and validating with zero violations; every `SKILL.md` in the folder a node of that tree or the `bandit-chain-system` copy, so a skill written into it by hand is listed as unlisted and the GBA is not closed; every `SKILL.md`'s frontmatter parsing. It exits non-zero when any fails. An agent made inside the folder is checked on its own. `make_gba` reported `closed` only once, at creation.",
+        "**A compiled skillchain no longer carries its compile date**, so one sequence compiled on two days gives the same bytes. The five committed rollups that carried one \u2014 the two style chain systems, `skill2framework`, and the roots of the two personas \u2014 are compiled again without it, and the personas re-applied; the plugin is 0.2.3, since three of them are in its payload.",
+        "Found and owed (`DESIGN.md` \u00a78, `BACKLOG.md`): a rebuild deletes and rewrites the root folder, so a shell standing in it loses its working directory; and `gba check` does not compare a materialized body with its source.",
+        "Suite: 243 passed (`pytest packages`; three new `chainaios` tests: the defaults extended and kept across a rebuild, the check refusing a missing body and a broken frontmatter, and the check refusing a skill outside the tree and a tree that is not the manifest). `chainaios` 0.1.1 \u00b7 `skillchain-compiler` 0.1.1."
+      ]
+    },
+    {
       "version": "v0.1.61",
       "date": "2026-10-24",
       "changes": [

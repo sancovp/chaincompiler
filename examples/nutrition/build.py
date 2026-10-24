@@ -23,7 +23,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from chainaios.gba import make_gba, _apply_tree, _resolved, _rule_blocks
+from chainaios.gba import make_gba, _apply_tree, _resolved, default_rule_blocks
 from chaincompiler.skillpack import skill_markdown, slugify
 
 HERE = Path(__file__).resolve().parent
@@ -103,7 +103,7 @@ def build(root: "Path | str" = AIOS) -> "object":
     root = Path(root)
     # 1. scaffold: 3 AC atoms (bare labels, no colons) → gap/cap/safety attention,
     #    + the NutritionBandit CoR + the rollup SC + the loop flow-skill, coord-addressed.
-    rules = {**_rule_blocks("nutrition", "nutrition"), "90-safety.md": SAFETY_RULE}
+    rules = {**default_rule_blocks("nutrition", "nutrition"), "90-safety.md": SAFETY_RULE}
     g = make_gba(
         "nutrition", root,
         atoms=[

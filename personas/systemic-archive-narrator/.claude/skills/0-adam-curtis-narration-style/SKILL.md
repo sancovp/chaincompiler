@@ -5,7 +5,7 @@ description: "[0] adam-curtis-narration-style: the investigation that feeds the 
 
 # adam-curtis-narration-style — compiled skillchain
 
-> Compiled by `skillchain.py` on 2026-08-12. Orchestrates 4 step(s) composing 4 skill(s).
+> Compiled by `skillchain.py`. Orchestrates 4 step(s) composing 4 skill(s).
 > **Dependencies (validated present at compile time):** `curtis-arc`, `curtis-investigation`, `curtis-register`, `systemic-archive-narrator`
 
 **Execute the steps below in order.** Carry each step's result forward; where a step references `{var}`, substitute the captured value from the named earlier step.

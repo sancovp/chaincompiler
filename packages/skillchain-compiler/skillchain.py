@@ -27,7 +27,7 @@ Spec formats — see README.md. JSON is canonical; `.chain` is a light text DSL:
     ~ Given {research}, extract the 3 strongest claims and the gaps, then write an outline brief.   # '~' = CoR bridge
     > academic-paper : write the paper from the outline brief
 """
-import argparse, json, os, re, sys, pathlib, datetime
+import argparse, json, os, re, sys, pathlib
 
 HOME = pathlib.Path.home()
 SKILL_ROOTS = [HOME / ".claude" / "skills", HOME / ".claude" / "plugins"]
@@ -148,7 +148,7 @@ def compile_package(spec, idx, out_dir):
     body = []
     body.append(f"# {name} — compiled skillchain\n")
     body.append(
-        f"> Compiled by `skillchain.py` on {datetime.date.today().isoformat()}. "
+        f"> Compiled by `skillchain.py`. "
         f"Orchestrates {len(steps)} step(s) composing {len(deps)} skill(s).\n"
         f"> **Dependencies (validated present at compile time):** "
         + (", ".join(f"`{d}`" for d in deps) if deps else "none")

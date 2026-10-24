@@ -5,7 +5,7 @@ description: Skillchain — ac:adam-curtis-narrative-arc → ac:adam-curtis-regi
 
 # adam-curtis-narration-style — compiled skillchain
 
-> Compiled by `skillchain.py` on 2026-08-12. Orchestrates 3 step(s) composing 3 skill(s).
+> Compiled by `skillchain.py`. Orchestrates 3 step(s) composing 3 skill(s).
 > **Dependencies (validated present at compile time):** `adam-curtis-narrative-arc`, `adam-curtis-narrator`, `adam-curtis-register`
 
 **Execute the steps below in order.** Carry each step's result forward; where a step references `{var}`, substitute the captured value from the named earlier step.

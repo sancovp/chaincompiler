@@ -72,8 +72,11 @@ def _role_block(domain: str, bandit_name: str) -> str:
 
 
 # ── the rule blocks (equipment): everything that ISN'T the role invariant ────
-def _rule_blocks(domain: str, root_node: str) -> dict[str, str]:
-    """Rule blocks Claude Code appends to the CLAUDE.md from `.claude/rules/`."""
+def default_rule_blocks(domain: str, root_node: str | None = None) -> dict[str, str]:
+    """The four rule blocks every GBA writes by default — the loop, the law, the KB reward record,
+    self-expansion — as {file name: body}, the bodies Claude Code appends to the CLAUDE.md from
+    `.claude/rules/`. A custom `rule_blocks=` REPLACES these, so a caller that wants them kept
+    passes `{**default_rule_blocks(domain), **its_own}`."""
     return {
         "01-bandit-loop.md": "\n".join([
             "# Rule: your default workflow is the loop flow-skill", "",
@@ -200,7 +203,7 @@ def _apply_tree(gba: GBA, tree_dict: dict) -> tuple[int, int, int]:
     gba.manifest.write_text(json.dumps({"domain": gba.domain, **_portable(tree_dict, gba.root)}, indent=2))
     prof = tree_dict.get("_profile") or {}
     role = prof.get("role") or _role_block(gba.domain, domain_bandit(gba.domain).name)
-    rules = prof.get("rules") or _rule_blocks(gba.domain, tree_dict["name"])
+    rules = prof.get("rules") or default_rule_blocks(gba.domain, tree_dict["name"])
     gba.claude_md.write_text(role)                                          # CLAUDE.md = role block
     gba.rules_dir.mkdir(parents=True, exist_ok=True)                        # equipment: the rule blocks
     for fname, body in rules.items():
@@ -428,3 +431,56 @@ def load_gba(root: str | Path) -> GBA:
     root = Path(root).resolve()
     man = json.loads((root / "gba.json").read_text())
     return GBA(domain=man.get("domain", man.get("name", root.name)), root=root, closed=True)
+
+
+def _shape(node: dict) -> tuple:
+    """A tree node's name, kind and children, in order — what the manifest and the materialized tree must agree on."""
+    return (node.get("name"), node.get("kind"), tuple(_shape(c) for c in node.get("children", [])))
+
+
+def _materialized_dirs(node: dict, node_dir: Path, out: set) -> bool:
+    """Where `materialize` puts each node's `SKILL.md`: `<node dir>/.claude/skills/<coord>-<name>/`, the root's node
+    dir being the GBA root and a child's its parent's node dir plus the child's name. False when a node has no coord."""
+    if "coord" not in node:
+        return False
+    out.add((node_dir / ".claude" / "skills" / f"{node['coord']}-{node['name']}").resolve())
+    return all(_materialized_dirs(c, node_dir / c["name"], out) for c in node.get("children", []))
+
+
+def check_gba(root: str | Path) -> dict:
+    """Re-check a GBA's closure on disk, after the fact — the gate `closed` names: every body its manifest names is
+    present beside it; its materialized tree (`skilltree.json`) has the manifest's shape and validates with zero
+    violations; every `SKILL.md` in the folder is a node of that tree or the `bandit-chain-system` copy, so a skill
+    written by hand into it is UNLISTED; and every `SKILL.md` has frontmatter that parses to a `name` and a
+    `description`. A folder below it holding its own `gba.json` is another agent — it and its `.<name>.src/` beside it
+    are checked on their own. It does not
+    compare a materialized body with its source. `make_gba` reports `closed` once, at creation; this reads it again."""
+    import re
+    import yaml
+    root = Path(root).resolve()
+    manifest = json.loads((root / "gba.json").read_text())
+    missing = _missing_sources(_resolved(manifest, root))
+    violations = [str(v) for v in validate(root)]
+    tree_file = root / "skilltree.json"
+    tree = json.loads(tree_file.read_text()).get("skilltree") if tree_file.is_file() else None
+    expected = {(root / ".claude" / "skills" / "bandit-chain-system").resolve()}
+    tree_matches = (tree is not None and _shape(tree) == _shape(manifest)
+                    and _materialized_dirs(tree, root, expected))
+    nested = {d for p in root.rglob("gba.json") if p.parent.resolve() != root     # another agent and its sources
+              for d in (p.parent.resolve(), p.parent.resolve().parent / f".{p.parent.name}.src")}
+    skills, unparsed, unlisted = sorted(root.rglob("SKILL.md")), [], []
+    for p in skills:
+        rel = p.relative_to(root).as_posix()
+        if p.parent.resolve() not in expected and not any(n in p.resolve().parents for n in nested):
+            unlisted.append(rel)
+        m = re.match(r"^---\n(.*?)\n---\n", p.read_text(), re.S)
+        try:
+            fm = yaml.safe_load(m.group(1)) if m else None
+        except yaml.YAMLError:
+            fm = None
+        if not (isinstance(fm, dict) and isinstance(fm.get("name"), str) and isinstance(fm.get("description"), str)):
+            unparsed.append(rel)
+    return {"root": str(root), "skills": len(skills), "missing_sources": missing, "violations": violations,
+            "tree_matches_manifest": tree_matches, "unlisted_skills": unlisted, "unparsed_frontmatter": unparsed,
+            "closed": bool(skills) and not missing and not violations and tree_matches and not unlisted
+                      and not unparsed}

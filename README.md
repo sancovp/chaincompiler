@@ -24,7 +24,7 @@
 
 <br/>
 
-![tests](https://img.shields.io/badge/tests-240%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
+![tests](https://img.shields.io/badge/tests-243%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
 
 <br/>
 
@@ -354,6 +354,14 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.1.62 — 2026-10-24
+- **ChainCompiler's agent, CompiloApe, is built.** `DESIGN.md` §20 states its delivery as built: a persona of this package's operations (Forge → Gate → Package → Compose → Arrange → Validate → Place) seated by `make_gba` over five minted chains, its plugin's install wizard installing this package from a checkout through `./install.sh`, and a skill a host calls to hand the installed agent a task and get back what it made.
+- **The GBA's default rule blocks are public: `chainaios.default_rule_blocks(domain)`.** `rule_blocks=` replaces the four defaults (the loop, the law, the reward record, self-expansion), so an agent adding a block of its own extends them — `{**default_rule_blocks(domain), "<its own>.md": …}` — and every rebuild writes all of them again. The HBA and the nutrition example use it in place of the private `_rule_blocks`.
+- **`chaincompiler gba check <root>`** (`chainaios.check_gba`) reads `closed` again on disk at any time: every body the manifest names present; the materialized tree (`skilltree.json`) having the manifest's shape and validating with zero violations; every `SKILL.md` in the folder a node of that tree or the `bandit-chain-system` copy, so a skill written into it by hand is listed as unlisted and the GBA is not closed; every `SKILL.md`'s frontmatter parsing. It exits non-zero when any fails. An agent made inside the folder is checked on its own. `make_gba` reported `closed` only once, at creation.
+- **A compiled skillchain no longer carries its compile date**, so one sequence compiled on two days gives the same bytes. The five committed rollups that carried one — the two style chain systems, `skill2framework`, and the roots of the two personas — are compiled again without it, and the personas re-applied; the plugin is 0.2.3, since three of them are in its payload.
+- Found and owed (`DESIGN.md` §8, `BACKLOG.md`): a rebuild deletes and rewrites the root folder, so a shell standing in it loses its working directory; and `gba check` does not compare a materialized body with its source.
+- Suite: 243 passed (`pytest packages`; three new `chainaios` tests: the defaults extended and kept across a rebuild, the check refusing a missing body and a broken frontmatter, and the check refusing a skill outside the tree and a tree that is not the manifest). `chainaios` 0.1.1 · `skillchain-compiler` 0.1.1.
+
 ### v0.1.61 — 2026-10-24
 - **ChainCompiler's agent is CompiloApe.** `DESIGN.md` §20 now names CompiloApe (`base/compiloape` in the source home) as ChainCompiler's own agent — a separate project and a plugin of its own that depends on this one, climbing SkillTome's agent ladder through these doors — and states how a host Claude makes use of it: through a skill its plugin carries, which hands the installed agent a task and returns what it made, never seating the agent's persona in the host. v0.1.60 had named the host AIOS.
 
@@ -587,7 +595,7 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 | `honeyc` (+ `dietc`) | the compiler (+ domain proof) | 36 |
 | `chaincompiler` | the base | 14 |
 | `accc` / `corcc` / `sccc` | the chain tier | 6 / 5 / 6 |
-| `chainaios` | the agent tier (GBA · COG · HBA) | 23 |
+| `chainaios` | the agent tier (GBA · COG · HBA) | 26 |
 | `personacc` / `personapack` | personas | 14 / 20 |
 | `goldenreq` | the acceptance gate | 9 |
 | `glyphsteer` | retrieval steering | 37 |
@@ -596,7 +604,7 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 | `si` | the self-interpreter | 10 |
 | `agent-skilltree` | the organization (published on PyPI, ≥0.4.0; import `skilltree`) | — (its own suite) |
 
-**240 passing** (`pytest packages/`; the examples are checked separately — `DESIGN.md` §19; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
+**243 passing** (`pytest packages/`; the examples are checked separately — `DESIGN.md` §19; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
 
 ### Not done yet (honestly)
 

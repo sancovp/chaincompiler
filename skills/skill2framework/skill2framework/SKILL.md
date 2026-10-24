@@ -5,7 +5,7 @@ description: Turn an already-built AIOS/package into a framework chapter — nar
 
 # skill2framework — compiled skillchain
 
-> Compiled by `skillchain.py` on 2026-07-10. Orchestrates 10 step(s) composing 6 skill(s).
+> Compiled by `skillchain.py`. Orchestrates 10 step(s) composing 6 skill(s).
 > **Dependencies (validated present at compile time):** `assemble-chapter`, `deepdive-blog`, `fold-into-tome`, `framework-skill`, `narrative-blog`, `package-plugin`
 
 **Execute the steps below in order.** Carry each step's result forward; where a step references `{var}`, substitute the captured value from the named earlier step.

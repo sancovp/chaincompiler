@@ -149,6 +149,22 @@ def gba_search(root: Path, query: str, scope_coord: str | None, newest_only: boo
         click.echo(f"  [{h.get('coord','') or '–'}] {h['name']:28s} — {h.get('description','')}")
 
 
+@gba.command("check")
+@click.argument("root", type=click.Path(exists=True, path_type=Path))
+def gba_check(root: Path) -> None:
+    """Re-check the GBA at ROOT is closed: its bodies present, its tree the manifest's and valid, no skill outside the
+    tree, its frontmatter parsing (exit 1 if not)."""
+    from .gba import check_gba
+    r = check_gba(root)
+    click.echo(f"closed={r['closed']}  ·  {r['skills']} skills  ·  {len(r['violations'])} violations  ·  "
+               f"{len(r['missing_sources'])} missing sources  ·  tree matches manifest={r['tree_matches_manifest']}  ·  "
+               f"{len(r['unlisted_skills'])} unlisted skills  ·  {len(r['unparsed_frontmatter'])} unparsed frontmatter")
+    for kind in ("violations", "missing_sources", "unlisted_skills", "unparsed_frontmatter"):
+        for item in r[kind]:
+            click.echo(f"  {kind}: {item}")
+    raise SystemExit(0 if r["closed"] else 1)
+
+
 @gba.command("hba")
 @click.argument("domain")
 @click.argument("root", type=click.Path(path_type=Path))

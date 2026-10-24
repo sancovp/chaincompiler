@@ -78,6 +78,20 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [x] **Generated agents agree with the design** (v0.1.57) — every GBA and HBA rule now files a goldenization request instead of promoting its own chains, and every generated instruction descends by Read, not `cat`; the two committed personas regenerated from the fixed generator.
 - [x] **A GBA never rebuilds over a missing body** (v0.1.57) — `construct_into` and `_apply_tree` refuse instead of writing stubs; the two personas' root sources are tracked (they had been ignored as `dist/`), and both rebuild byte for byte from a clean checkout.
 - [x] **The plugin version moves with its payload** (v0.1.57 → plugin 0.2.2), and its description lists what it ships.
+- [x] **The GBA's default rule blocks are public** (v0.1.62) — `chainaios.default_rule_blocks(domain)`, so an agent
+  that adds a rule block of its own (CompiloApe's user binding) extends the four instead of losing them; the HBA and
+  the nutrition example use it (DESIGN §8).
+- [x] **`chaincompiler gba check`** (v0.1.62) — `check_gba` reads `closed` again on disk after the fact: bodies
+  present, the materialized tree the manifest's and valid, no `SKILL.md` outside the tree, every frontmatter parsing;
+  non-zero exit on any failure (DESIGN §7 · §8).
+- [ ] **`gba check` compares each materialized body with its source** — it lists a skill outside the tree, but a body
+  edited by hand inside the tree still passes (DESIGN §8).
+- [x] **A compiled skillchain no longer carries its compile date** (v0.1.62) — two compiles of one sequence on two days
+  gave two files; now the same sequence gives the same bytes, and the five committed rollups are compiled again
+  without it.
+- [ ] **Keep a GBA's root folder in place across a rebuild** — `_apply_tree` lets `materialize` delete the root and
+  write a new one, so a shell standing in the folder loses its working directory (found by a live model running
+  `gba construct .` then `gba search .` in one command line) (DESIGN §8).
 
 ## Gate — set-valued / closed-class vocabulary check  `✓` (found by a metaformal self-test, fixed 2026-06-17)
 

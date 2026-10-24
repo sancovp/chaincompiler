@@ -13,7 +13,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 
-from .gba import GBA, make_gba, _rule_blocks
+from .gba import GBA, make_gba, default_rule_blocks
 from chaincompiler import slugify   # the CC base
 
 
@@ -106,7 +106,7 @@ def make_hba(domain: str, root: str | Path, *, atoms: list[str]) -> HBA:
     root_node = slugify(domain)
 
     # HBA identity: the dispatch rule REPLACES the inline bandit-loop; law + KB rules are kept.
-    base = _rule_blocks(domain, root_node)
+    base = default_rule_blocks(domain, root_node)
     rules = {"01-hba-dispatch.md": _hba_dispatch_rule(domain),
              "02-the-law.md": base["02-the-law.md"],
              "03-kb-reward.md": base["03-kb-reward.md"]}

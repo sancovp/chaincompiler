@@ -179,7 +179,7 @@ repositories, not in this repository, so a reader of a release cannot check them
 ## §7 The agent tier — `chainaios`
 
 `packages/chainaios` builds on the chain compilers and installs the `chaincompiler` command (`layers`,
-`demo`, `persona`, `gba new|construct|search|hba`, `cog new|flow`).
+`demo`, `persona`, `gba new|construct|search|check|hba`, `cog new|flow`).
 
 - **`construct_language(domain, ac_chain=, cor_persona=)`** mints a domain's attention chain, its CoR (the
   BANDIT unless one is given) and a skill chain over both — three skill dirs in one call.
@@ -210,7 +210,17 @@ when a body is missing rather than writing a stub in its place.
 `construct_into` is the explore arm made to persist: it mints a new chain system, adds it to the tree,
 re-materializes and re-indexes. `search` is BM25 over the tree, scoped by coordinate. Every tree change
 goes through one path (`_apply_tree`), which keeps the knowledge base, the agent definitions and the
-identity across the rebuild.
+identity across the rebuild. The identity is the manifest's profile: `role_block=` and `rule_blocks=` persist
+there, and a custom `rule_blocks=` REPLACES the four default blocks, so `default_rule_blocks(domain)` returns
+them for a caller to extend (`{**default_rule_blocks(domain), "<its own>.md": …}`). `check_gba` — the
+`chaincompiler gba check <root>` door — reads `closed` again on disk at any time: every body the manifest names
+present; the materialized tree (`skilltree.json`) having the manifest's shape and validating with zero violations;
+every `SKILL.md` in the folder a node of that tree or the `bandit-chain-system` copy, so a skill written into it by
+hand is listed as unlisted; every `SKILL.md`'s frontmatter parsing. It exits non-zero when any fails. An agent made
+inside the folder, with its `.<name>.src/` beside it, is checked on its own.
+⚠ OWED: it does not compare a materialized body with its source, so a body edited by hand inside the tree passes.
+⚠ OWED: a rebuild deletes the root folder and writes a new one, so a shell standing in it loses its working
+directory and its next command fails until it starts afresh. Keep the root folder in place across a rebuild.
 - **Lords.** A sub-domain constructed with its own persona gets its own `CLAUDE.md`, scoped to its
   branch, with the way back up to the domain frame — reading into it seats that persona. A sub-domain
   without one stays in the root's region. Lords grow on warrant, never one per leaf.
@@ -379,14 +389,18 @@ install of §18.
 
 ## §20 The agent that knows ChainCompiler
 
-ASPIRATIONAL: ChainCompiler's own agent — the agent that knows ChainCompiler and makes agents and projects with
-it — is CompiloApe (`base/compiloape` in the source home, its design `base/compiloape/DESIGN.md`): a separate project
-and a plugin of its own that depends on this one. Its folder is built through ChainCompiler's own doors — a persona
-whose moves are this package's operations performed on a task, seated into a GBA (§8) by `make_gba`, its chains
-minted by the chain compilers (§5) — and it climbs SkillTome's agent ladder: the folder, the agent definition in it,
-the launcher that runs it, its plugin, and the install wizard that teaches a base Claude to install all of it. The
-wizard is that plugin's install skill, the delivery shape of §16, so whoever installs it gets their own folder of the
-agent, filled out by their configuration. A host Claude makes use of it through a skill the same plugin carries,
-which hands the installed agent a task and returns what it made, never seating its persona in the host. Its worked
-example is AEGIS, an agent made this way that mints further agents, whose personas personapack carries (§6). Today
-an agent working here gets the orientation skill `.claude/skills/chaincompiler` and the `bandit-chain-system` skill.
+ChainCompiler's own agent — the agent that knows ChainCompiler and makes agents and projects with it — is CompiloApe
+(`base/compiloape` in the source home, its design `base/compiloape/DESIGN.md`): a separate project and a plugin of its
+own that depends on this one. Its folder is built through ChainCompiler's own doors — a persona whose moves are this
+package's operations performed on a task (Forge → Gate → Package → Compose → Arrange → Validate → Place), seated by
+`make_gba` (§8) over five chains the chain compilers mint (§5), with `default_rule_blocks` extended by its user's
+binding — and it climbs SkillTome's agent ladder: the folder, the agent definition in it, the launcher beside it that
+runs it, its plugin, and the install wizard that teaches a base Claude to install all of it. The wizard is that
+plugin's install skill, the delivery shape of §16: it installs this package from a checkout through `./install.sh`
+(so every GBA gets its `bandit-chain-system` skill, §8) into a Python environment it names, and runs the agent's forge,
+so whoever installs it gets their own folder of the agent, filled out by their configuration. A host Claude makes use
+of it through a skill the same plugin carries, which hands the installed agent a task and returns what it made, never
+seating its persona in the host; the agent checks what it made with `chaincompiler gba check` and `skilltree validate`.
+Its worked example is AEGIS, an agent made this way that mints further agents, whose personas personapack carries (§6).
+An agent working in this repository gets the orientation skill `.claude/skills/chaincompiler` and the
+`bandit-chain-system` skill.

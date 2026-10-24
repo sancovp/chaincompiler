@@ -22,7 +22,7 @@ payload, because Claude Code pins an installed plugin to its `plugin.json` versi
 | the release surface | `README.md` badge line (anchor `badge/tests-`) · `## Quickstart` · `## Changelog` head and newest entry · `## Status` table · `BACKLOG.md` · `roadmap.json` · `ROADMAP.md` · the generated board `.claude/rules/chaincompiler_states.md` |
 | the version lines | `.claude-plugin/plugin.json` `version` · `.claude-plugin/marketplace.json` `plugins[].version` · `packages/*/pyproject.toml` line `version =` · each package's `__version__` |
 | the install path | `install.sh` (the PyPI line and the `PKGS` list) · `.mcp.json` |
-| the generators and what they write | `scripts/update_site.py` (`parse_changelog`, `render_board`, `main`) → `site/data.json`, `assets/roadmap.svg`, `.claude/rules/chaincompiler_states.md` · `scripts/build_meta_ape_skills.py` → the eight capability skills in `skills/` · `packages/chainaios/src/chainaios/gba.py` (`_BCS_SKILL`, `_rule_blocks`, `_portable`/`_resolved`, `_apply_tree`) → every GBA under `personas/` · `packages/chainaios/src/chainaios/hba.py` · `packages/chainaios/src/chainaios/cog.py` |
+| the generators and what they write | `scripts/update_site.py` (`parse_changelog`, `render_board`, `main`) → `site/data.json`, `assets/roadmap.svg`, `.claude/rules/chaincompiler_states.md` · `scripts/build_meta_ape_skills.py` → the eight capability skills in `skills/` · `packages/chainaios/src/chainaios/gba.py` (`_BCS_SKILL`, `default_rule_blocks`, `_portable`/`_resolved`, `_apply_tree`) → every GBA under `personas/` · `packages/chainaios/src/chainaios/hba.py` · `packages/chainaios/src/chainaios/cog.py` |
 | what git does not carry | `.gitignore` (its `dist/` line drops every `personas/.<name>.src/dist/` except the two un-ignored root packages; the derived `.index.db`) |
 | the public repository's gates | `.github/workflows/deploy.yml` · `scripts/check_changelog.py` · `.github/workflows/contribute.yml` · `scripts/validate_registry.py` |
 | the checks | `examples/_all/run_all.py` · `examples/_all/bandit_self.py` · `examples/_all/test_all.py` · `examples/nutrition/build.py` · `examples/nutrition/test_nutrition_aios.py` · `.importlinter` |
@@ -37,7 +37,7 @@ payload, because Claude Code pins an installed plugin to its `plugin.json` versi
    which the publisher owns. Never add a `CHANGELOG.md` to the source folder: the mirror excludes that name, so it would
    never publish. The project's history is the README's `## Changelog`.
 2. CHANGE THE CODE AND THE GENERATOR, NEVER ONLY THE OUTPUT. When an instruction, a description or a skill body is
-   wrong, fix the code that writes it — `gba.py`'s `_rule_blocks`, `hba.py`, `cog.py`, `bandit.py`,
+   wrong, fix the code that writes it — `gba.py`'s `default_rule_blocks`, `hba.py`, `cog.py`, `bandit.py`,
    `scripts/build_meta_ape_skills.py` — and then regenerate the committed outputs from it. A hand fix to a generated
    file is a defect that the next regeneration undoes.
 3. REGENERATE EVERY GENERATED FILE in the same change:
@@ -51,9 +51,9 @@ payload, because Claude Code pins an installed plugin to its `plugin.json` versi
    move it in every copy and in every generator that writes it, including the GBA rule blocks.
 5. CUT ONE VERSION and write it everywhere a version lives, in the same change:
    - a new `### vX.Y.Z — date` entry at the head of the README `## Changelog`;
-   - the `plugin.json` `version`;
-   - the `marketplace.json` `plugins[].version`;
-   - each package's `pyproject.toml` version and `__version__`, for the packages the change moved.
+   - each package's `pyproject.toml` version and `__version__`, for the packages the change moved;
+   - the `plugin.json` `version` and the `marketplace.json` `plugins[].version`, when the plugin's payload (`skills/`,
+     `.mcp.json`) changed — the plugin's version follows its payload, never a package's version (`DESIGN.md` §16).
    Also update the skill enumeration in `plugin.json` and `marketplace.json` whenever the shipped `skills/` changed.
 6. KEEP THE BACKLOG TRUE, without deleting work:
    - tick a `BACKLOG.md` item when it is done;
@@ -70,9 +70,13 @@ payload, because Claude Code pins an installed plugin to its `plugin.json` versi
 
 ## COHERENCE SET (what changes when this changes)
 
-- A package version moves, so the README changelog version, `plugin.json`, `marketplace.json` and that package's
-  `pyproject.toml` and `__version__` all move.
-- Any change under `skills/` changes the plugin version and the skill enumeration in both plugin manifests.
+- A package version moves, so the README changelog version and that package's `pyproject.toml` and `__version__` move;
+  the plugin's version moves only when its payload does.
+- Any change under `skills/` or `.mcp.json` changes the plugin version in both plugin manifests, and a change to the
+  shipped skills the skill enumeration too.
+- A generator's output text changes (a rollup's header, a rule block), so every committed output it wrote is
+  regenerated through it — `skills/`, and the bodies under `personas/.<name>.src/` with each GBA re-applied — and the
+  old sentence is grepped to 0.
 - The README changelog changes, so `site/data.json` is regenerated.
 - `roadmap.json` changes, so `site/data.json`, `assets/roadmap.svg`, the board and `ROADMAP.md` move with it.
 - A `gba.py`, `hba.py` or `cog.py` text change re-applies every committed GBA under `personas/` and every copy of the

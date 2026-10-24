@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chainaios"
-version = "0.1.0"
+version = "0.1.1"
 description = "The Bandit AIOS application on the ChainCompiler stack: mint a domain's AC+CoR+SC and roll them up into persistent BanditChain-system AIOS dirs (GBA/HBA/COG)."
 requires-python = ">=3.11"
 # The AIOS tier sits ABOVE the cognition-chain stack: it imports the *CC + the CC base. (CC + the *CC
 # never import this — that is what keeps `chaincompiler` the compiler-compiler BASE, DESIGN.md §2.)
-dependencies = ["chaincompiler", "accc", "corcc", "sccc", "click"]
+dependencies = ["chaincompiler", "accc", "corcc", "sccc", "click", "pyyaml"]
 
 # The `chaincompiler` CLI command now lives here (the AIOS commands are *CC-coupled); the command NAME is
 # unchanged so existing `chaincompiler gba/cog/hba/demo …` invocations keep working.

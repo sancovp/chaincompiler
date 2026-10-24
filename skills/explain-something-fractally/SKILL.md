@@ -5,7 +5,7 @@ description: Skillchain — ac:fractal-top-pass → ac:fractal-per-part-pass →
 
 # explain-something-fractally — compiled skillchain
 
-> Compiled by `skillchain.py` on 2026-08-12. Orchestrates 3 step(s) composing 3 skill(s).
+> Compiled by `skillchain.py`. Orchestrates 3 step(s) composing 3 skill(s).
 > **Dependencies (validated present at compile time):** `fractal-explainer`, `fractal-per-part-pass`, `fractal-top-pass`
 
 **Execute the steps below in order.** Carry each step's result forward; where a step references `{var}`, substitute the captured value from the named earlier step.

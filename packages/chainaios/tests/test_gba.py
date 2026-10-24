@@ -163,6 +163,69 @@ def test_rebuild_refuses_missing_sources_instead_of_writing_stubs():
 
 
 
+def test_the_default_rule_blocks_are_exposed_and_extended_ones_survive_every_rebuild():
+    """`rule_blocks=` replaces the four defaults, so an agent that adds its own rule (a user's binding
+    file, say) extends `default_rule_blocks` — and all five are written again on every rebuild."""
+    from chainaios import default_rule_blocks
+    four = default_rule_blocks("triage")
+    assert sorted(four) == ["01-bandit-loop.md", "02-the-law.md", "03-kb-reward.md", "04-self-expansion.md"]
+    assert "triage-loop" in four["01-bandit-loop.md"]
+    rules = {**four, "user_info.md": "# USER INFO\n\nTHE USER IS NAMED Tester\n"}
+    g = make_gba("triage", _root(), atoms=["[Symptom] ⇒ [Scope] ⇒ |Severity|"], rule_blocks=rules)
+    written = lambda: {p.name: p.read_text() for p in g.rules_dir.glob("*.md")}
+    assert written() == rules
+    construct_into(load_gba(g.root), "rollback", ["[Change] ⇒ [Blast] ⇒ |Revert|"])
+    assert written() == rules                                  # the rebuild wrote all five again
+
+
+def test_check_reads_closure_again_and_refuses_a_missing_body_or_broken_frontmatter():
+    """`check_gba` (the `chaincompiler gba check` door) re-reads `closed` on disk after the fact."""
+    import json
+    from chainaios import check_gba
+    g = make_gba("triage", _root(), atoms=["[Symptom] ⇒ [Scope] ⇒ |Severity|"])
+    ok = check_gba(g.root)
+    assert ok["closed"] is True and ok["skills"] >= 3 and not ok["violations"]
+    # a body the manifest names, removed from the sources beside it → not closed
+    src = (g.root / json.loads(g.manifest.read_text())["skill_src"]).resolve() / "SKILL.md"
+    body = src.read_text()
+    src.unlink()
+    gone = check_gba(g.root)
+    assert gone["closed"] is False and gone["missing_sources"]
+    src.write_text(body)
+    # a SKILL.md whose frontmatter no longer parses → not closed
+    leaf = next(p for p in g.root.rglob("SKILL.md") if "bandit-chain-system" not in p.as_posix())
+    leaf.write_text(leaf.read_text().replace("description: ", "description: broken: ", 1))
+    broken = check_gba(g.root)
+    assert broken["closed"] is False and broken["unparsed_frontmatter"]
+
+
+def test_check_refuses_a_skill_outside_the_tree_and_a_tree_that_is_not_the_manifest():
+    """A `SKILL.md` written into the folder by hand is no node of its tree, so `check_gba` lists it and the GBA is not
+    closed; a materialized tree that no longer has the manifest's shape is not closed either. A nested agent is its own."""
+    import json
+    from chainaios import check_gba
+    g = make_gba("triage", _root(), atoms=["[Symptom] ⇒ [Scope] ⇒ |Severity|"])
+    construct_into(g, "rollback", ["[Change] ⇒ [Blast] ⇒ |Revert|"])
+    assert check_gba(g.root)["closed"] is True and check_gba(g.root)["tree_matches_manifest"] is True
+    hand = g.skills_root / "hand-written" / "SKILL.md"
+    hand.parent.mkdir(parents=True)
+    hand.write_text("---\nname: hand-written\ndescription: written by hand\n---\n\n[A] ⇒ |B|\n")
+    planted = check_gba(g.root)
+    assert planted["closed"] is False and planted["unlisted_skills"] == [".claude/skills/hand-written/SKILL.md"]
+    hand.unlink()
+    hand.parent.rmdir()
+    # an agent made inside this one's folder is checked on its own, never listed as this one's
+    inner = make_gba("inner", g.root / "kb" / "inner", atoms=["[A] ⇒ [B] ⇒ |C|"])
+    assert check_gba(inner.root)["closed"] is True and check_gba(g.root)["unlisted_skills"] == []
+    # the materialized tree loses a node the manifest still names
+    tree_file = g.root / "skilltree.json"
+    tree = json.loads(tree_file.read_text())
+    tree["skilltree"]["children"].pop()
+    tree_file.write_text(json.dumps(tree))
+    drift = check_gba(g.root)
+    assert drift["closed"] is False and drift["tree_matches_manifest"] is False
+
+
 def test_rebuild_refuses_a_clone_missing_one_source():
     # the sibling `.<name>.src/` is present but one body is not (an ignored file a clone never
     # received): the rebuild must refuse instead of turning that body into a stub
