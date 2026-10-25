@@ -4,11 +4,9 @@
 
 <!-- SCALABLE-PUBLISHING:AUTOGEN START (managed block — do not edit between these markers) -->
 
-![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_10_24-lightgrey.svg)
+![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_10_25-lightgrey.svg)
 
-⭐ 0 stars • 🕑 Updated 2026-10-24
-
-[Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
+⭐ 0 stars • 🕑 Updated 2026-10-25
 
 📦 Auto-published from the monorepo • [CHANGELOG](./CHANGELOG.md) • [sancovp/chaincompiler](https://github.com/sancovp/chaincompiler)
 
