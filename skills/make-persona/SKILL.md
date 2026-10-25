@@ -3,6 +3,8 @@ name: make-persona
 description: Generate a full persona prompt from a small spec (block types + a chain-of-reasoning DSL block).
 ---
 
+**Run its Python** from a plugin install with `uv run --no-project --with "agent-prompt-engineering>=0.2.0" python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+
 One call → a complete persona prompt, deterministically.
 
 ```python

@@ -11,10 +11,9 @@ boundary is deliberate, and every section below keeps it.
 
 **What it ends as: a PLUGIN.** The public repository `github.com/sancovp/chaincompiler` carries a Claude
 Code plugin (`.claude-plugin/`): the skills under `skills/` and the self-interpreter MCP server
-(`.mcp.json`). The plugin's program is the fifteen Python packages under `packages/`; a clone installs them
-editable with `./install.sh`. The repository is published (§18). ASPIRATIONAL: the fifteen on PyPI at one
-version, and a plugin install that runs them from there through uv with nothing installed by hand, proven in a
-clean Claude Code (§16, §18); today the packages run only where `./install.sh` has run.
+(`.mcp.json`). The plugin's program is the fifteen Python packages under `packages/`, at one version: a plugin
+install runs them from PyPI through uv, with nothing installed by hand (§16), and a clone installs them editable
+with `./install.sh`. The repository and the packages are published on every release (§18).
 
 **How to read this document.** One section per part, in dependency order; §2 is the map of the whole.
 `ASPIRATIONAL:` marks what is designed and not built. `⚠ OWED:` marks a known defect in what is built,
@@ -252,11 +251,12 @@ directory and its next command fails until it starts afresh. Keep the root folde
 - **Lords.** A sub-domain constructed with its own persona gets its own `CLAUDE.md`, scoped to its
   branch, with the way back up to the domain frame — reading into it seats that persona. A sub-domain
   without one stays in the root's region. Lords grow on warrant, never one per leaf.
-- ⚠ OWED: the GBA copies the `bandit-chain-system` skill from the source checkout (`gba.py`'s `_BCS_SKILL`, the
-  repository's own `.claude/skills/`); from a non-editable install that path does not exist and the GBA ships without
-  it, silently. ASPIRATIONAL: the skill is package data of `chainaios`, read through `importlib.resources`, the one
-  copy every GBA receives; the repository's `.claude/skills/` copy and the plugin's `skills/` copy equal it byte for
-  byte, and a test builds a GBA from an installed wheel and finds the skill in it.
+- **The `bandit-chain-system` skill** every GBA receives is package data of `chainaios`
+  (`data/bandit-chain-system/SKILL.md`), read through `importlib.resources` (`gba.py`'s `_BCS_SKILL`) and written into
+  the GBA byte for byte, so an installed `chainaios` carries it as an editable one does. The repository's
+  `.claude/skills/` copy and the plugin's `skills/` copy equal it, each a file and not a link, and
+  `scripts/check_versions.py` refuses a copy that differs (§16). `test_make_gba_is_a_persistent_aios` finds it in a GBA
+  and compares its bytes with the package data's, whichever way `chainaios` was installed.
 
 **Stage 2 — the COG** (`chainaios.cog`). `make_cog` writes a Challenger · Generator · Observer flow: a
 flow skill in the COG's tree, a role and a rule, and three seats `C/`, `G/`, `O/` — each a GBA — around a
@@ -350,8 +350,9 @@ chapter links into the bundle and checks they resolve) and fold the framework in
 breadcrumbs, resolving each relative breadcrumb at its node's folder; `read_skill` finds a skill by name
 anywhere in the tree, with or without its coordinate prefix. `tree_to_mcp` turns a tree into
 an MCP server launcher, and `scaffold_repo` stamps a federated node repository from a tree. `si.server` is
-the MCP server the plugin registers: `si_interpret`, `si_walk`, `si_reachable`, `si_read_skill`,
-`si_tree_to_mcp`, `si_search`.
+the MCP server the plugin registers — `si_interpret`, `si_walk`, `si_reachable`, `si_read_skill`,
+`si_tree_to_mcp`, `si_search` — and the console command `si-server` (`chaincompiler-si`) runs it, the command the
+plugin launches through uv (§16).
 ⚠ `si_interpret` executes arbitrary Python with the permissions of the process running the server. It is
 an execution surface: run only programs you trust.
 
@@ -372,9 +373,9 @@ The payload is `skills/`: the eight capability skills generated from the compile
 `scripts/build_meta_ape_skills.py` (APE's four and the four `*CC`), `bandit-chain-system`, `glyphsteer`
 and `glyphsteer-dense`, `report-missed-skill`, the two style chain systems minted through the doors
 (`adam-curtis-narration-style`, `explain-something-fractally`, each with its parts and its tree),
-`bigdog`, and the `skill2framework` set; `.mcp.json` registers the self-interpreter (`python3 -m
-si.server`). The plugin's version (`plugin.json`, `marketplace.json`) moves with every change to the
-payload: an installed plugin updates only when it does.
+`bigdog`, and the `skill2framework` set; `.mcp.json` registers the self-interpreter (below). The plugin's
+version (`plugin.json`, `marketplace.json`) is the release version (§18), so it moves on every release: an installed
+plugin updates only when it does.
 ⚠ OWED: `skills/bigdog/build.py` exports rulecatcher's scope with each decision's `created_at`, so two builds of the
 same inputs differ in those stamps alone; the export should carry none, as a compiled skillchain carries no compile
 date (BACKLOG).
@@ -384,12 +385,9 @@ The plugin carries no `CLAUDE.md` at its root — a plugin install does not load
 resources, and the skill's script makes a new folder, named by whoever installs it, that holds that `CLAUDE.md`, and
 injects the rules and skills the agent needs. The folder is that installer's own instance, filled out by its
 configuration (§20).
-⚠ OWED: installing the plugin copies the skills and registers the MCP but installs no Python. The MCP
-server and every skill that calls a package work only after `./install.sh` has run into the `python3` the
-server launches, and the plugin install has not been proven in a clean Claude Code.
 
-ASPIRATIONAL — **how a plugin install gets its Python: from PyPI, through uv, pinned to the release.** uv is the
-plugin's one prerequisite, and nothing is installed into the user's own Python:
+**How a plugin install gets its Python: from PyPI, through uv, pinned to the release.** uv is the plugin's one
+prerequisite, and nothing is installed into the user's own Python:
 - `.mcp.json` launches the self-interpreter as `uvx --from chaincompiler-si==<release> si-server`, so the server
   runs in an environment uv resolves from PyPI at the release's version (§18) and caches.
 - Every shipped skill that has an agent run code from one of the fifteen, or from an outside distribution they rest
@@ -399,17 +397,18 @@ plugin's one prerequisite, and nothing is installed into the user's own Python:
   distribution installs). The line names every distribution the code it runs imports, a lazy or optional import
   included (`roll_up_algebra` writes its legend only with `glyphsteer` present), an outside one at the lower bound
   §18 states. The same line says that from a clone where `./install.sh` ran, the clone's `python3` runs it, so the copy
-  a GBA carries (§8) is true in both places.
+  a GBA carries (§8) is true in both places. The wording is `scripts/uvline.py`'s, which the two skill generators
+  (`scripts/build_meta_ape_skills.py`, `skills/bigdog/build.py`) write from and the hand-written skills carry.
 - A step that needs this repository's source — a script under `packages/*/experiments`, the dense sidecar's compose
   file, a package's test run — says it needs a clone of the public repository.
 - A shipped skill that has a working copy under the repository's own `.claude/skills/` (`bandit-chain-system`,
   `glyphsteer`, `glyphsteer-dense`) keeps that copy byte for byte, a copy and not a link.
 - The plugin's manifests describe how it gets its Python — through uv, from PyPI — and not as `./install.sh`.
 - `scripts/check_versions.py` (§18) refuses a shipped skill whose code has no such line, or whose line misses a
-  distribution the code it runs imports.
+  distribution the code it runs imports — the lazy reaches it knows are in its `LAZY` table.
 
-ASPIRATIONAL — **the proof of the plugin**, `scripts/plugin_proof.py`, run on every release once its packages are on
-PyPI (§18). It keeps THE CLEAN SEAT's discipline (CompiloApe's `DESIGN.md` §1): a marked seat in scratch space outside
+**The proof of the plugin**, `scripts/plugin_proof.py`, given the task `scripts/plugin-proof-task.md`, runs on every
+release once its packages are on PyPI (§18). It keeps THE CLEAN SEAT's discipline (CompiloApe's `DESIGN.md` §1): a marked seat in scratch space outside
 any folder holding a `CLAUDE.md` or a `.claude/rules/`, an environment holding only `HOME`, `USER`, `LOGNAME`, `PATH`,
 `LANG`, `TERM` and `TMPDIR` — the seat's own `UV_CACHE_DIR`, empty, added — the user's settings out, every grade read
 from a transcript and the files, never from the session's account.
@@ -422,9 +421,9 @@ from a transcript and the files, never from the session's account.
   server Claude Code loads at the seat is named in the proof and granted no tool. It calls one of the server's tools
   and gets a result that is not an error, and it follows one of the eight capability skills, whose Python runs through
   its uv line into a skill dir whose frontmatter parses.
-- **The grader's negative controls** — a test, beside the release's other script tests (§19): a baseline transcript
-  passes, and one whose server failed to connect, whose tool call returned an error, or whose skill ran its Python
-  without its uv line fails exactly that check.
+- **The grader's negative controls** — `scripts/tests/test_plugin_proof.py` (§19): a baseline transcript passes, and
+  one whose server failed to connect, whose tool call returned an error, or whose skill ran its Python without its uv
+  line fails exactly that check.
 
 ## §17 The project surface
 
@@ -432,7 +431,9 @@ from a transcript and the files, never from the session's account.
 `scripts/update_site.py` renders it into `assets/roadmap.svg`, `site/data.json` and the board
 `.claude/rules/chaincompiler_states.md` — generated files are never edited by hand, and `deploy.yml` fails a push
 whose generated files are stale — and `ROADMAP.md` mirrors it in prose. `site/` is the GitHub Pages site (the roadmap, a workbench, and
-the development log built by `scripts/build_blog.py`). `.claude/` is the working surface for an agent
+the development log built by `scripts/build_blog.py`). `scripts/` also holds the release's own tools —
+`set_version.py` and `check_versions.py` (§18), `uvline.py` and `plugin_proof.py` (§16), `whereimport.py` (§19) — with
+their tests in `scripts/tests/`, each listed in `scripts/CLAUDE.md`. `.claude/` is the working surface for an agent
 developing this repository: the rules named in §0 and the skills `chaincompiler` (orientation),
 `archetype-compiler`, `bandit-chain-system`, `glyphsteer`, `glyphsteer-dense`, `metaformal-self-test`
 (test by observing real runs), `report-missed-skill` and `skilltree` (a copy of SkillTree's own skill).
@@ -462,22 +463,15 @@ carry its work, and the branches are deleted. The public repository holds `main`
 Each package's distribution is named for its folder, save four whose bare names belong to other projects on PyPI:
 `accc`, `archetype` and `si` publish as `chaincompiler-accc`, `chaincompiler-archetype` and `chaincompiler-si`, and
 `skillchain` as `skillchain-compiler`; import names do not change. `rulecatcher` is held on PyPI already, as this
-project's. The packages are not on PyPI yet; their outside dependencies — `pydantic-stack-core`,
-`agent-prompt-engineering` ≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — come from PyPI through `install.sh`, which installs the
-fifteen from the checkout with `--no-deps`, so nothing is asked of PyPI by their names. A release is proven by cloning
-the public repository into an empty environment, running `./install.sh`, and running §19's checks green.
-⚠ OWED: the build files name one another by names fourteen of which are free on PyPI, so a `pip install` of one
-package without `--no-deps`, or an extra naming one (steward's), asks PyPI for a sibling anyone could publish there
+project's. In a clone, `install.sh` installs the fifteen editable with `--no-deps` and their outside dependencies —
+`pydantic-stack-core`, `agent-prompt-engineering` ≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — from PyPI. A release is proven
+by its release flow (`.claude/rules/22-seq-chaincompiler-release.md`): a clean clone of what publishes with
+`./install.sh`, the wheel proof before the merge, and after it the install from PyPI and the plugin proof (§16, §19).
+⚠ OWED: fourteen of the fifteen names are free on PyPI until a release's upload first holds them, so until then a
+`pip install` of one package, or an extra naming one (steward's), asks PyPI for a sibling anyone could publish there
 (BACKLOG).
-⚠ OWED: three version lines — the release line in the README changelog, the plugin's version in
-`plugin.json`, and each package's own `pyproject.toml` version, which moves only in a release that changes that
-package.
-⚠ OWED: the build files do not declare everything their source imports — `chainaios` imports `skilltree` and, lazily,
-`glyphsteer` without declaring either; `chaincompiler` imports `glyphsteer` lazily without declaring it; `glyphsteer`'s
-`grammar` extra brings `rulecatcher` but not `chaincompiler`, which its grammar imports — so a package installed from
-PyPI alone can lack what it imports (BACKLOG).
 
-ASPIRATIONAL — **one version line.** A release's version, its README changelog entry, is every package's `version`,
+**One version line.** A release's version, its README changelog entry, is every package's `version`,
 every `__version__` a package defines, the plugin's version in `plugin.json` and `marketplace.json`, and the pin in
 `.mcp.json` and in every shipped skill's uv line (§16) — the copies of the `bandit-chain-system` skill outside the GBAs
 among them, the release re-applying every GBA under `personas/` so each carries the same bytes (§8). Every dependency
@@ -487,13 +481,15 @@ optional extra — and a build file that declares `agent-prompt-engineering` or 
 lower bound `install.sh` states (`>=0.2.0`, `>=0.4.0`); every other outside dependency keeps the bound its own build
 file gives it. `scripts/set_version.py <version>` writes the version into every one of those places, and
 `scripts/check_versions.py` refuses a tree in which any of them differs from the newest changelog entry, a dependency
-among the fifteen is not pinned to it, or a shipped skill's uv line is missing or incomplete (§16). The line starts at
-v0.3.0, the first version above everything the three lines held (the plugin was at 0.2.4), so an installed plugin moves
-forward. Every release moves the whole line, whether or not a package changed.
+among the fifteen is not pinned to it, a build file leaves an import of its source undeclared (an AST walk of each
+`src/`, its outside modules mapped through the gate's `OUTSIDE` table), a shipped skill's uv line is missing or
+incomplete (§16), or a copy of a shipped skill differs; `scripts/tests/test_check_versions.py` plants each refusal. The
+line starts at v0.3.0, the first version above everything the three lines held before it (the plugin was at 0.2.4), so
+an installed plugin moves forward. Every release moves the whole line, whether or not a package changed.
 
-ASPIRATIONAL — **publishing to PyPI.** Each of the fifteen is a unit of the publishing manifest — its folder as
-`subdir`, `pypi` set, no public repository of its own, `auto_publish` off (scalable-publishing's `DESIGN.md` §4) —
-`rulecatcher` among them, so a hand upload is never again a path. A release's packages go to PyPI after its merge:
+**Publishing to PyPI.** Each of the fifteen is a unit of the publishing manifest — `chaincompiler-pkg-<folder>`, its
+folder as `subdir`, `pypi` set, no public repository of its own, `auto_publish` off (scalable-publishing's `DESIGN.md`
+§4) — `rulecatcher` among them, so a hand upload is never again a path. A release's packages go to PyPI after its merge:
 as soon as the publish commit naming the merge is on the public repository, each of the fifteen is built from a clone
 of the public repository at that commit and uploaded by scalable-publishing's `bin/publish_package.sh`, which refuses a
 version PyPI already holds. That runs before anything else in the release's after-merge proof, because between the
@@ -517,24 +513,23 @@ that its wheel lacks, is found before PyPI is asked to hold it.
 | `pytest examples/_all/test_all.py` (or `python examples/_all/run_all.py`) | one domain through every package end to end — persona, compile, gate, construct, organize, steer, interpret |
 | `python examples/_all/bandit_self.py` | the roll-up closes on a domain and on the system's own components |
 | `pytest examples/nutrition` | the dietc rebuild: the agent closes, and a real day computes through the tools |
+| `pytest scripts/tests` | the version gate's planted refusals and the plugin grader's negative controls |
+| `python3 scripts/check_versions.py` | the one version line, the build files' declarations, the skills' uv lines and every copy (§16, §18) |
 | `lint-imports` | the layer contract of §2 |
 
-`examples/` sits outside `packages/`, so `pytest packages` alone does not run the examples. Each release's
-counts are in its changelog entry.
-⚠ OWED: the public repository's workflows run none of these; a release is checked only by the clean
-install of §18.
-⚠ OWED: `examples/nutrition/test_nutrition_aios.py` finds its fixtures beside dietc's installed module
-(`Path(dietc.__file__).parents[2] / "examples" / "dietc"`), a folder only an editable install has; it should find them
-from its own file, as dietc's own tests do (BACKLOG).
-⚠ OWED: rulecatcher's `tests/conftest.py` puts its own `src/` first on `sys.path`, so its suite run from a clone tests
-the clone's source even when an installed rulecatcher is the one under test (BACKLOG).
-ASPIRATIONAL — two more proofs, each run on every release (§16, §18): **the wheel proof**, these checks run from the
-publish dry run's clone against the fifteen installed non-editable from their wheels; and **the plugin proof**,
-`scripts/plugin_proof.py`, the install into a clean Claude Code and a headless session there, graded from its
-transcript and files. `scripts/check_versions.py` is the gate on the one version line and the skills' uv lines. The
-tests of the scripts — `check_versions.py`'s planted refusals and `plugin_proof.py`'s grader controls — live in
-`scripts/tests/`, and `pytest scripts/tests` is one of the checks above. Every check passes with no failure, with
-SWI-Prolog on the path, at the counts the README's `## Status` states for the release.
+`examples/` sits outside `packages/`, so `pytest packages` alone does not run the examples; the nutrition example finds
+its fixtures from its own file, so it runs against an installed dietc as against an editable one. A test reaches the
+package under test through the environment's install, never a path insert into a clone's `src/`. Each release's counts
+are in its changelog entry, and every check passes with no failure, with SWI-Prolog on the path, at the counts the
+README's `## Status` states for the release.
+Two proofs run these checks against installs, on every release (§16, §18): **the wheel proof**, from the publish dry
+run's clone against the fifteen installed non-editable from their wheels, before the merge; and **the install from
+PyPI**, from a clean clone at the publish commit against the fifteen installed from PyPI, after it — in each,
+`scripts/whereimport.py` prints, inside the test session, where every package resolved, never in the clone. **The
+plugin proof**, `scripts/plugin_proof.py`, follows the install from PyPI: the install into a clean Claude Code and a
+headless session there, graded from its transcript and files.
+⚠ OWED: the public repository's workflows run none of these; a release is checked by its release flow, run from the
+source home.
 
 ## §20 The agent that knows ChainCompiler
 
@@ -546,7 +541,7 @@ package's operations performed on a task (Forge → Gate → Package → Compose
 binding — and it climbs SkillTome's agent ladder: the folder, the agent definition in it, the launcher beside it that
 runs it, its plugin, and the install wizard that teaches a base Claude to install all of it. The wizard is that
 plugin's install skill, the delivery shape of §16: it installs this package from a checkout through `./install.sh`
-(so every GBA gets its `bandit-chain-system` skill, §8) into a Python environment it names, and runs the agent's forge,
+into a Python environment it names, and runs the agent's forge,
 so whoever installs it gets their own folder of the agent, filled out by their configuration. A host Claude makes use
 of it through a skill the same plugin carries, which hands the installed agent a task and returns what it made, never
 seating its persona in the host; the agent checks what it made with `chaincompiler gba check` and `skilltree validate`.

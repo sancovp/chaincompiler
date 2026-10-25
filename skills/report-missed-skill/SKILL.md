@@ -15,6 +15,8 @@ The Skill OS grows from its own gaps. When a skill that *should* exist doesn't,
 
 ## How
 
+**Run `skilltree`** from a plugin install as `uvx --from "agent-skilltree>=0.4.0" skilltree …`, and from a clone where `./install.sh` ran, as `skilltree …` in the environment it installed into.
+
 Run:
 
 ```bash

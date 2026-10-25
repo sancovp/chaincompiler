@@ -22,6 +22,7 @@ import os
 import re
 import shutil
 from dataclasses import dataclass, field
+from importlib import resources
 from pathlib import Path
 
 from skilltree import SkillTree, TreeNode, materialize, validate, build_index, search as _tree_search
@@ -29,8 +30,9 @@ from skilltree import SkillTree, TreeNode, materialize, validate, build_index, s
 from .bandit import roll_up_algebra, domain_bandit
 from chaincompiler import skill_markdown, slugify   # the CC base
 
-# the repo skill that teaches the loop (installed into every GBA so it's loadable)
-_BCS_SKILL = Path(__file__).resolve().parents[4] / ".claude" / "skills" / "bandit-chain-system" / "SKILL.md"
+# the skill that teaches the loop, shipped as this package's data (DESIGN.md §8) — the one copy every GBA receives,
+# so an installed chainaios carries it as an editable one does
+_BCS_SKILL = resources.files("chainaios") / "data" / "bandit-chain-system" / "SKILL.md"
 
 
 @dataclass
@@ -217,10 +219,9 @@ def _apply_tree(gba: GBA, tree_dict: dict) -> tuple[int, int, int]:
         (gba.kb / "README.md").write_text(
             f"# {gba.domain} KB\n\nReward record. One note per topic, each headed with a grade "
             f"(🏆 ✅ ⚠️ ❌). See ../CLAUDE.md for the loop.\n")
-    if _BCS_SKILL.exists():
-        dst = gba.skills_root / "bandit-chain-system"
-        dst.mkdir(parents=True, exist_ok=True)
-        (dst / "SKILL.md").write_text(_BCS_SKILL.read_text())
+    dst = gba.skills_root / "bandit-chain-system"
+    dst.mkdir(parents=True, exist_ok=True)
+    (dst / "SKILL.md").write_bytes(_BCS_SKILL.read_bytes())       # byte for byte, never re-encoded
 
     # 4. THE LORDS — every `_lord` branch gets its own CLAUDE.md, so the tree is a
     #    FOREST OF LORDS you descend INTO (rule 01) and not one lord holding N described

@@ -21,6 +21,10 @@ def test_make_gba_is_a_persistent_aios():
     assert g.claude_md.exists()
     assert (g.skills_root / "0-triage" / "SKILL.md").exists()     # tree root, coord-addressed (0)
     assert (g.skills_root / "bandit-chain-system" / "SKILL.md").exists()
+    # …and it is chainaios's own package data, byte for byte, however chainaios was installed (DESIGN.md §8)
+    from importlib import resources
+    shipped = resources.files("chainaios") / "data" / "bandit-chain-system" / "SKILL.md"
+    assert (g.skills_root / "bandit-chain-system" / "SKILL.md").read_bytes() == shipped.read_bytes()
     assert g.kb.is_dir() and g.manifest.exists() and g.index_db.exists()
     # CLAUDE.md = the ROLE BLOCK only (the domain invariant / persona = who you are)
     role = g.claude_md.read_text()

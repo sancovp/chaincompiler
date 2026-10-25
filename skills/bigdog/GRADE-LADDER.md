@@ -21,7 +21,9 @@ Bands: **G0–G3 proven** · **G4–G7 mapped-under-R (state R + the promoting c
 | **G9** | 🌫️ | `gsxg9` | Vibe — associative cloud, nothing guaranteed |
 
 Usage (glyphsteer): annotate a chain corpus so search can facet by grade and
-display the badge, body stays clean:
+display the badge, body stays clean.
+
+**Run its Python** from a plugin install with `uv run --no-project --with glyphsteer==0.3.0 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
 
 ```python
 from glyphsteer import Chunk, build_index, search

@@ -70,7 +70,7 @@ The `*CC`s are *constructors*, `skillchain` is the *composition operator*, `Skil
 <img src="assets/roadmap.svg" alt="ChainCompiler roadmap" width="900"/>
 </div>
 
-**P0 Foundation** `✓` · **P1 Project Surface** `✓` · **P2 Exchange** `✓` · **P3 Self-Hosting & SI** `✓` · **P4 Marketplace** `▸` · **P5 Federation** `✓` ([plan](FEDERATION.md)) · **P6 Skill OS** `▸` · **P7 Plugin** `▸` · **P8 GlyphSteer** `▸` · **P9 Tome** `▸` · **P10 Distribution** `○`
+**P0 Foundation** `✓` · **P1 Project Surface** `✓` · **P2 Exchange** `✓` · **P3 Self-Hosting & SI** `✓` · **P4 Marketplace** `▸` · **P5 Federation** `✓` ([plan](FEDERATION.md)) · **P6 Skill OS** `▸` · **P7 Plugin** `▸` · **P8 GlyphSteer** `▸` · **P9 Tome** `▸` · **P10 Distribution** `▸`
 
 Full detail in **[ROADMAP.md](ROADMAP.md)** (live on the **[site](site/)**); concrete tasks in **[BACKLOG.md](BACKLOG.md)**. The image and the site are *generated* from [`roadmap.json`](roadmap.json) by [`scripts/update_site.py`](scripts/update_site.py) — edit the data, run the script, everything updates.
 
@@ -353,6 +353,37 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.3.0 — 2026-10-24
+- **One version line.** The release version is every package's version, every `__version__`, the plugin's version
+  in both manifests, `.mcp.json`'s pin and every uv line; every dependency among the fifteen, an optional extra's
+  included, is pinned `==` to it, so one pinned distribution brings the whole release. `scripts/set_version.py` writes
+  it; `scripts/check_versions.py` refuses a line that differs, a sibling not pinned, an undeclared import, a skill
+  without its uv line and a copy that differs, and `scripts/tests/test_check_versions.py` plants each refusal (DESIGN
+  §18). The line starts here, above everything the three old lines held (the plugin was at 0.2.4).
+- **The plugin's Python comes from PyPI through uv.** `.mcp.json` launches `uvx --from chaincompiler-si==0.3.0
+  si-server`; the sixteen shipped skills that run package code, and bigdog's grade ladder, each state their uv line
+  before their first code block, in `scripts/uvline.py`'s words, naming every distribution their code reaches — the
+  eight capability skills and the grade ladder from their generators — and every step that needs the source says it
+  needs a clone. uv is the
+  plugin's one prerequisite (DESIGN §16).
+- **The GBA's `bandit-chain-system` skill is `chainaios` package data**, read through `importlib.resources`, so a GBA
+  made from an installed wheel carries it; it shipped without it, silently, before. Every copy equals it, the two
+  personas' GBAs re-applied (DESIGN §8).
+- **The build files declare what their source imports**: `chainaios` declares `agent-skilltree` and the extra
+  `legend` (glyphsteer), `chaincompiler` the extra `persona` (glyphsteer) and APE at `>=0.2.0`, and `glyphsteer`'s
+  `grammar` extra brings `chaincompiler`; the stack's import graph is drawn from the same AST walk (DESIGN §18).
+- **Tests reach the installed package.** The nutrition test finds its fixtures from its own file, and rulecatcher's
+  `conftest.py`, which put the clone's `src/` first on `sys.path`, is gone; `scripts/whereimport.py` prints where each
+  package resolved inside a test session (DESIGN §19).
+- **The plugin proof**, `scripts/plugin_proof.py` with `scripts/plugin-proof-task.md`: a signed-out install from the
+  marketplace into an empty configuration at a clean seat, then a headless session there, graded from its transcript
+  and files, with its grader's negative controls in `scripts/tests/test_plugin_proof.py` (DESIGN §16). The fifteen
+  become units of the publishing manifest, `chaincompiler-pkg-<folder>`, built from the public repository at the
+  publish commit and uploaded after the merge (DESIGN §18, scalable-publishing DESIGN §4). The release flow carries
+  every new stage. The marketplace manifest carries a marketplace description, so `claude plugin validate --strict .`
+  passes on the marketplace as on the manifest and the skills.
+- Suite: 313 passed in `pytest packages`, 24 in `scripts/tests`; every package moves to 0.3.0.
 
 ### v0.1.67 — 2026-10-24
 - **The design of distribution is written: the plugin installs and works anywhere.** `DESIGN.md` §16 states how a
@@ -721,7 +752,7 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ### Not done yet (honestly)
 
-Every known defect is marked **⚠ OWED** in [`DESIGN.md`](DESIGN.md), with its task in [`BACKLOG.md`](BACKLOG.md) — among them: the plugin install does not yet bring the Python packages with it, and the release has three version lines.
+Every known defect is marked **⚠ OWED** in [`DESIGN.md`](DESIGN.md), with its task in [`BACKLOG.md`](BACKLOG.md).
 
 ---
 

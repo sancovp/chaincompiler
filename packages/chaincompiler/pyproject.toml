@@ -4,12 +4,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chaincompiler"
-version = "0.1.0"
+version = "0.3.0"
 description = "The printing press for agent cognition chains: learn → gate → compile → prime"
 requires-python = ">=3.11"
 # honeyc + the *CC are vendored in this monorepo (packages/); install.sh wires them.
 # agent-prompt-engineering is the published prompt-engine BASE chaincompiler imports DOWN onto.
-dependencies = ["honeyc", "rulecatcher", "agent-skilltree>=0.4.0", "agent-prompt-engineering"]
+dependencies = ["honeyc==0.3.0", "rulecatcher==0.3.0", "agent-skilltree>=0.4.0", "agent-prompt-engineering>=0.2.0"]
+
+# A lazy import is an optional extra (DESIGN.md §18): the `persona` front end imports glyphsteer inside its functions.
+[project.optional-dependencies]
+persona = ["glyphsteer==0.3.0"]
 
 # NOTE: the `chaincompiler` CLI command moved to the `chainaios` package (its AIOS subcommands are
 # *CC-coupled, which would make this BASE import the *CC). The command NAME is unchanged — see

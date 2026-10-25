@@ -14,6 +14,8 @@ A chapter = Blog 1 + Blog 2, wired with cross-links and CTAs, plus a manifest.
 The blogs' prose is NEVER rewritten — the op only appends the link/CTA block.
 
 ## Do
+**Run its Python** from a plugin install with `uv run --no-project --with framework==0.3.0 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+
 ```python
 from framework import assemble_chapter
 rep = assemble_chapter(BLOG1, BLOG2, chapter_dir=CHAPTER_DIR,

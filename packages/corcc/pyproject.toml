@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "corcc"
-version = "0.1.1"
+version = "0.3.0"
 description = "Chain-of-Reasoning Compiler-Compiler — spoken reasoning + persona-melt gauge"
 requires-python = ">=3.11"
-dependencies = ["chaincompiler-accc", "chaincompiler", "honeyc", "rulecatcher", "click"]
+dependencies = ["chaincompiler-accc==0.3.0", "chaincompiler==0.3.0", "honeyc==0.3.0", "rulecatcher==0.3.0", "click"]
 
 [project.scripts]
 corcc = "corcc.cli:main"

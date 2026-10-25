@@ -3,6 +3,8 @@ name: persona-generator
 description: A named persona from a ROLE-intro block + a chain sequence; XML by default, or markdown mode.
 ---
 
+**Run its Python** from a plugin install with `uv run --no-project --with "agent-prompt-engineering>=0.2.0" python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+
 Subclass of the big generator: a system-prompt name + a ROLE-intro block wrapping the chains.
 
 ```python

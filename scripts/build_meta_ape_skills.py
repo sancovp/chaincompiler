@@ -14,9 +14,23 @@ import sys
 from pathlib import Path
 
 from prompt_engineering import Capability, APE_CAPABILITIES, emit_meta_ape
+from chaincompiler import __version__ as RELEASE        # the one version line (DESIGN.md §18)
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from uvline import python_line                           # noqa: E402  (the one wording of a skill's uv line)
 
 REPO = Path(__file__).resolve().parent.parent
 SKILLS_DIR = REPO / "skills"
+
+# the distributions each capability's Python imports (DESIGN.md §16): APE's at the lower bound §18 states, ours pinned
+APE_RUN = ["agent-prompt-engineering>=0.2.0"]
+CC_RUN = {"forge-attention-chain": [f"chaincompiler-accc=={RELEASE}"], "forge-cor": [f"corcc=={RELEASE}"],
+          "forge-skillchain": [f"sccc=={RELEASE}"], "construct-language": [f"chainaios=={RELEASE}"]}
+
+
+def with_run_line(cap: Capability, specs: list[str]) -> Capability:
+    """The capability with its uv line stated before its body, so the skill says how a plugin install runs it."""
+    return Capability(cap.name, cap.description, python_line(specs) + "\n\n" + cap.body)
 
 
 # ── the *CC build-function catalog (made of CC/*CC objects: accc / corcc / sccc / chainaios) ──────────
@@ -72,7 +86,8 @@ CC_CAPABILITIES = [
 
 
 def main() -> int:
-    catalog = APE_CAPABILITIES + CC_CAPABILITIES
+    catalog = ([with_run_line(c, APE_RUN) for c in APE_CAPABILITIES]
+               + [with_run_line(c, CC_RUN[c.name]) for c in CC_CAPABILITIES])
     # flat skill dirs (skills/<name>/SKILL.md) — the plugin layout Claude Code auto-loads.
     rep = emit_meta_ape(SKILLS_DIR, caps=catalog, coordinate=False)
     print(f"══ meta-APE: emitted {len(rep['skills'])} capability skills into {SKILLS_DIR} ══")

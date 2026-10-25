@@ -135,14 +135,14 @@
     {
       "id": "P10",
       "title": "Distribution",
-      "status": "planned",
+      "status": "in_progress",
       "blurb": "The plugin installs and works anywhere: its fifteen packages on PyPI at one version, run through uv, proven in a clean Claude Code.",
       "items": [
-        "one version line: the release version in every package, both plugin manifests and every pin (pending)",
-        "the GBA's bandit-chain-system skill as chainaios package data (pending)",
-        "the MCP server and every shipped skill run from PyPI through uv (pending)",
-        "the fifteen on PyPI under their names, each a publishing-manifest unit (pending)",
-        "the plugin proof: installed signed out, then a session that calls the server and runs a skill (pending)"
+        "one version line: the release version in every package, both plugin manifests and every pin (done, v0.3.0)",
+        "the GBA's bandit-chain-system skill as chainaios package data (done, v0.3.0)",
+        "the MCP server and every shipped skill run from PyPI through uv (done, v0.3.0)",
+        "the fifteen on PyPI under their names, each a publishing-manifest unit (units done, v0.3.0; upload pending)",
+        "the plugin proof: installed signed out, then a session that calls the server and runs a skill (built; pending)"
       ]
     }
   ]

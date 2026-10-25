@@ -20,6 +20,8 @@ one persona; the grade ladder keeps every correspondence from rounding up.
 
 ## Build / verify (the seedling gate — it runs or it isn't shipped)
 
+From a clone of the public repository where `./install.sh` ran:
+
 ```bash
 cd .../chaincompiler
 python3 skills/bigdog/build.py        # forges, proves the gate, packages SKILL.md, writes vocab + rules

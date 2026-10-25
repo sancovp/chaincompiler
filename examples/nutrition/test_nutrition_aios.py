@@ -16,10 +16,10 @@ from build import build  # noqa: E402
 
 from chainaios.gba import load_gba, search  # noqa: E402
 
-import dietc  # noqa: E402
 from dietc import engine, load  # noqa: E402
 
-FIX = Path(dietc.__file__).resolve().parents[2] / "examples" / "dietc"
+# the fixtures sit in the repository beside dietc's own tests, found from this file — an installed dietc carries none
+FIX = Path(__file__).resolve().parents[2] / "packages" / "honeyc" / "examples" / "dietc"
 
 
 def test_nutrition_aios_emits_closed_and_safe(tmp_path):

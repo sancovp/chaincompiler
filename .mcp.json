@@ -1,8 +1,8 @@
 {
   "mcpServers": {
     "self-interpreter": {
-      "command": "python3",
-      "args": ["-m", "si.server"]
+      "command": "uvx",
+      "args": ["--from", "chaincompiler-si==0.3.0", "si-server"]
     }
   }
 }

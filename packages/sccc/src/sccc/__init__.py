@@ -5,7 +5,7 @@ Same *CC shape (catch → lint → compile → package as SKILL.md). Built on th
 """
 from __future__ import annotations
 
-__version__ = "0.1.1"
+__version__ = "0.3.0"
 
 from .forge import SCLanguage, StepRef, forge, lint, package, parse_sequence, resolve_steps
 

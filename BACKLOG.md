@@ -38,17 +38,17 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [ ] Include slash `commands/` + `agents/` in the plugin
 - [x] `skills/report-missed-skill` is a real file again (v0.1.57) — both entries had dangled since SkillTree left `packages/`; the dev surface links to it inside the folder
 
-## P10 — Distribution  `○`
+## P10 — Distribution  `▸`
 
 - [ ] One-command install / distribute — `claude plugin marketplace add sancovp/chaincompiler` then `claude plugin install chaincompiler@chaincompiler`, install-verified in a clean Claude Code (DESIGN §16)
-- [ ] **One version line** — stamp the release version into `plugin.json`, `marketplace.json` and every package's `pyproject.toml` (DESIGN §18).
-- [ ] **`scripts/set_version.py` and `scripts/check_versions.py`** — write the release version into every package's `version` and every `__version__` a package defines, both plugin manifests, `.mcp.json`'s pin and every shipped skill's uv line, with every dependency among the fifteen pinned `==`; refuse a tree where any of them differs from the newest changelog entry, or a shipped skill's uv line is missing or misses a distribution its imports come from (DESIGN §16 · §18).
-- [ ] **The GBA ships `bandit-chain-system` as package data** — it copies the skill from the source checkout, which a non-editable install lacks (DESIGN §8).
-- [ ] **The plugin install brings the Python packages** — today it copies the skills and registers the MCP but installs nothing; `.mcp.json` launches `uvx --from chaincompiler-si==<release> si-server`, and every shipped skill names its uv line; then prove the plugin install in a clean Claude Code (DESIGN §16).
-- [ ] **The nutrition test finds its fixtures from its own file** — it reads them beside dietc's installed module, a folder only an editable install has (DESIGN §19).
-- [ ] **Every build file declares what its source imports** — `chainaios` imports `skilltree` and, lazily, `glyphsteer`; `chaincompiler` imports `glyphsteer` lazily; `glyphsteer`'s `grammar` extra lacks `chaincompiler`; a lazy import becomes an optional extra (DESIGN §18).
-- [ ] **rulecatcher's suite tests the installed package** — its `tests/conftest.py` puts the clone's `src/` first on `sys.path` (DESIGN §19).
-- [ ] **The wheel proof** — before a merge, the fifteen built and checked by `publish_package.sh --dry-run` from the publish dry run's clone, installed non-editable, and §19's checks green against them (DESIGN §18 · §19).
+- [x] **One version line** (v0.3.0) — the release version in `plugin.json`, `marketplace.json`, every package's `pyproject.toml` and `__version__`, `.mcp.json` and every uv line, the line starting at v0.3.0 (DESIGN §18).
+- [x] **`scripts/set_version.py` and `scripts/check_versions.py`** (v0.3.0, planted refusals in `scripts/tests/test_check_versions.py`) — write the release version into every package's `version` and every `__version__` a package defines, both plugin manifests, `.mcp.json`'s pin and every shipped skill's uv line, with every dependency among the fifteen pinned `==`; refuse a tree where any of them differs from the newest changelog entry, or a shipped skill's uv line is missing or misses a distribution its imports come from (DESIGN §16 · §18).
+- [x] **The GBA ships `bandit-chain-system` as package data** (v0.3.0) — `chainaios/data/bandit-chain-system/SKILL.md`, read through `importlib.resources`; a GBA made from a wheel install carries it (DESIGN §8).
+- [ ] **The plugin install brings the Python packages** — `.mcp.json` launches `uvx --from chaincompiler-si==<release> si-server`, and every shipped skill names its uv line (v0.3.0); then prove the plugin install in a clean Claude Code (DESIGN §16).
+- [x] **The nutrition test finds its fixtures from its own file** (v0.3.0) — it read them beside dietc's installed module, a folder only an editable install has (DESIGN §19).
+- [x] **Every build file declares what its source imports** (v0.3.0) — `chainaios` declares `agent-skilltree` and the extra `legend` (glyphsteer); `chaincompiler` the extra `persona` (glyphsteer); `glyphsteer`'s `grammar` extra brings `chaincompiler`; `check_versions.py` refuses an undeclared import (DESIGN §18).
+- [x] **rulecatcher's suite tests the installed package** (v0.3.0) — its `tests/conftest.py`, which put the clone's `src/` first on `sys.path`, is gone (DESIGN §19).
+- [x] **The wheel proof** (v0.3.0, a stage of the release flow) — before a merge, the fifteen built and checked by `publish_package.sh --dry-run` from the publish dry run's clone, installed non-editable, and §19's checks green against them (DESIGN §18 · §19).
 - [ ] **Publish the fifteen packages to PyPI under their names, each a manifest unit** (the author's ruling) — holds
   the fourteen names still free there; needs scalable-publishing to state how a package inside a unit's folder gets its
   own PyPI release (its `DESIGN.md` §4: every package we own on PyPI is a manifest unit), `rulecatcher`, uploaded by

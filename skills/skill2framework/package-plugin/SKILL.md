@@ -13,6 +13,8 @@ A framework package is ALWAYS a plugin. The op builds the skeleton, bundles the
 chapter, and repaths ONLY the chapter links in the copied skill (never the prose).
 
 ## Do
+**Run its Python** from a plugin install with `uv run --no-project --with framework==0.3.0 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+
 ```python
 from framework import package_plugin
 rep = package_plugin(FRAMEWORK_SKILL_MD, CHAPTER_DIR, out_dir=PLUGIN_DIR,

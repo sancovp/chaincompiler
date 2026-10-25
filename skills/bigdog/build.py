@@ -32,7 +32,11 @@ for pkg in ("corcc", "accc", "chaincompiler", "glyphsteer", "rulecatcher"):
 
 from corcc.notation import Move, PersonaSpec          # noqa: E402
 from corcc.forge import forge_persona, lint, package  # noqa: E402
+import glyphsteer                                      # noqa: E402
 from glyphsteer.vocab import Axis, Vocabulary          # noqa: E402
+
+sys.path.insert(0, str(REPO / "scripts"))
+from uvline import python_line                         # noqa: E402  (the one wording of a skill's uv line)
 
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -97,7 +101,8 @@ def build_grade_legend() -> str:
         "· **G8–G9 salience only (inspiration, never evidence)**.\n\n"
         "| Grade | glyph | tag | meaning |\n|---|---|---|---|\n" + rows + "\n\n"
         "Usage (glyphsteer): annotate a chain corpus so search can facet by grade and\n"
-        "display the badge, body stays clean:\n\n"
+        "display the badge, body stays clean.\n\n"
+        + python_line([f"glyphsteer=={glyphsteer.__version__}"]) + "\n\n"
         "```python\n"
         "from glyphsteer import Chunk, build_index, search\n"
         "# each claim-chunk annotated with its grade glyph (e.g. 🟢=gsxg2, 🔴=gsxg8)\n"

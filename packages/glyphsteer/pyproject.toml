@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "glyphsteer"
-version = "0.1.2"
+version = "0.3.0"
 description = "Dual-regime retrieval steering via compiled in-band glyph annotations"
 requires-python = ">=3.11"
 dependencies = ["click", "numpy"]
@@ -16,9 +16,9 @@ dense = ["fastembed"]
 st = ["sentence-transformers"]
 # build the embedding sidecar locally (normally you just `docker compose up`)
 serve = ["fastapi", "uvicorn", "fastembed"]
-# syntax gating via rulecatcher — needs the sibling `chaincompiler` package (lint/gate
-# engine) installed too: `pip install -e packages/chaincompiler`
-grammar = ["rulecatcher"]
+# syntax gating: the grammar imports ChainCompiler's lint/gate engine (`chaincompiler.bridge`) and rulecatcher's
+# store inside its functions, so the extra brings both
+grammar = ["rulecatcher==0.3.0", "chaincompiler==0.3.0"]
 
 [project.scripts]
 glyphsteer = "glyphsteer.cli:main"

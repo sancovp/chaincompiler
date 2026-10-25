@@ -11,6 +11,8 @@ flavors: given a task you pick an arm — **select** a golden chain (exploit) or
 **construct** a new one (explore). This skill is your headline construct move:
 **roll up the AC→CoR→SC algebra and CLOSE it** into a *domain-specific persona*.
 
+**Run its Python** from a plugin install with `uv run --no-project --with chainaios==0.3.0 --with glyphsteer==0.3.0 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+
 ## What "roll up an algebra and close it" means
 
 The system is a **closed algebra over one type — the skill dir** (`<name>/SKILL.md`):

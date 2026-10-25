@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chaincompiler-accc"
-version = "0.1.1"
+version = "0.3.0"
 description = "Attention-Chain Compiler-Compiler — the atom of the cognition-chain stack"
 requires-python = ">=3.11"
-dependencies = ["chaincompiler", "honeyc", "rulecatcher", "click"]
+dependencies = ["chaincompiler==0.3.0", "honeyc==0.3.0", "rulecatcher==0.3.0", "click"]
 
 [project.scripts]
 accc = "accc.cli:main"

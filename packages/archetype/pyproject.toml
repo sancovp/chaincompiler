@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chaincompiler-archetype"
-version = "0.1.1"
+version = "0.3.0"
 description = "The Archetype Compiler — archetype as state machine (Persona/Shadow/Self/Odyssey/Becoming), compiled to the one type"
 requires-python = ">=3.11"
-dependencies = ["chaincompiler", "click"]
+dependencies = ["chaincompiler==0.3.0", "click"]
 
 [project.scripts]
 archetype = "archetype.cli:main"

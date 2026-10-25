@@ -50,15 +50,15 @@ flowchart TB
         SI["si — MCP server + skill"]
     end
     subgraph SURFACE["The project surface — DESIGN §16 · §17 · §18 · §19"]
-        PLUG["the plugin — plugin.json · marketplace.json · skills/ · .mcp.json (python3 -m si.server); an agent ships as an install skill"]
-        UVL["the plugin's Python from PyPI through uv — .mcp.json: uvx --from chaincompiler-si==release si-server · every shipped skill's uv line · ASPIRATIONAL"]
-        VER["one version line — set_version.py writes it, check_versions.py refuses a tree where any line or uv pin differs · ASPIRATIONAL"]
-        PPROOF["plugin_proof.py — the signed-out install from the marketplace, then a headless session at a clean seat, graded from its transcript and files · ASPIRATIONAL"]
+        PLUG["the plugin — plugin.json · marketplace.json · skills/ · .mcp.json; an agent ships as an install skill"]
+        UVL["the plugin's Python from PyPI through uv — .mcp.json: uvx --from chaincompiler-si==release si-server · every shipped skill's uv line, in uvline.py's words"]
+        VER["one version line — set_version.py writes it; check_versions.py refuses a tree where any line, pin, build-file declaration, uv line or copy is off"]
+        PPROOF["plugin_proof.py — the signed-out install from the marketplace, then a headless session at a clean seat given plugin-proof-task.md, graded from its transcript and files"]
         GEN["update_site.py → roadmap SVG · site/data.json · the board (all from roadmap.json + the README changelog)"]
     end
     subgraph PUBX["Outside this folder — DESIGN §18"]
-        PUB["scalable-publishing · SEAM: publish_unit.sh mirrors the folder to the public repository, with deletes · publish_package.sh uploads each of the fifteen, a manifest unit of its own, built from the publish commit (ASPIRATIONAL)"]
-        PYPI["PyPI · SEAM: holds the fifteen at the release's version; uv resolves the plugin's environments from it · ASPIRATIONAL"]
+        PUB["scalable-publishing · SEAM: publish_unit.sh mirrors the folder to the public repository, with deletes · publish_package.sh uploads each of the fifteen, a chaincompiler-pkg-* manifest unit, built from a clone at the publish commit"]
+        PYPI["PyPI · SEAM: the fifteen at each release's version, uploaded right after its publish commit; uv resolves the plugin's environments from it"]
     end
     TYPE(["THE ONE TYPE — skill dir = name/SKILL.md"])
     MINT["22-seq-mint-attention-chain — the mint dev flow"]
@@ -149,7 +149,9 @@ frontend and the improver agent (`BACKLOG.md` P6).
 ## 4. Package dependency graph
 
 Arrows point from a package to what it depends on (declared in its `pyproject.toml` and imported in its
-source; dotted = optional or lazy).
+source; dotted = imported only inside a function, a lazy import — declared as an optional extra when the build file
+does not need it whole, `DESIGN.md` §18). Drawn from an AST walk of each package's `src/`, the walk
+`scripts/check_versions.py` makes.
 
 ```mermaid
 flowchart BT
@@ -167,6 +169,8 @@ flowchart BT
     sccc --> chaincompiler
     sccc --> rulecatcher
     sccc --> skillchain
+    sccc -.-> accc
+    sccc -.-> corcc
     chainaios --> chaincompiler
     chainaios --> accc
     chainaios --> corcc
@@ -178,13 +182,13 @@ flowchart BT
     personacc --> chaincompiler
     personapack --> personacc
     personapack --> corcc
-    si --> chainaios
-    si --> sccc
-    si --> corcc
-    si --> accc
-    si --> chaincompiler
     si --> ST
-    archetype --> chaincompiler
+    si -.-> chainaios
+    si -.-> sccc
+    si -.-> corcc
+    si -.-> accc
+    si -.-> chaincompiler
+    archetype -.-> chaincompiler
     framework --> ST
     glyphsteer -.-> chaincompiler
     glyphsteer -.-> rulecatcher

@@ -31,6 +31,8 @@ From the journey source, extract the Hero arc AS ACTUALLY LIVED:
 capabilities or results. Mark each field GROUNDED (cite where) vs INFERRED in your report.
 
 ## Step 2 — fill + render (the whole mechanism)
+**Run its Python** from a plugin install with `uv run --no-project --with framework==0.3.0 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+
 ```python
 from framework import JourneyCore, render_blog1
 core = JourneyCore(journey_name="...", domain="...", hook="...",

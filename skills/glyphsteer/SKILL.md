@@ -7,11 +7,14 @@ description: Use when steering retrieval with hidden in-band glyph markers — a
 
 Dual-regime retrieval steering via **compiled in-band glyph annotations**. An LLM writes a
 controlled glyph vocabulary onto a corpus; the markers steer retrieval and then **vanish
-from the output**. Package: `glyphsteer` (in this repo: `packages/glyphsteer`). Install:
-`python3 -m pip install -e packages/glyphsteer`.
+from the output**. Package: `glyphsteer`, with its `grammar` extra for the syntax gate.
 
-> Run all `packages/...` commands from the **repo root** (`.../chaincompiler`) — the paths
-> are repo-root-relative.
+**Run its Python** from a plugin install with `uv run --no-project --with "glyphsteer[grammar]==0.3.0" --with "agent-skilltree>=0.4.0" python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+
+**Run `skilltree`** from a plugin install as `uvx --from "agent-skilltree>=0.4.0" skilltree …`, and from a clone where `./install.sh` ran, as `skilltree …` in the environment it installed into.
+
+> A `packages/...` path below is in a clone of the public repository: run it from the clone's
+> root (`.../chaincompiler`).
 
 ## The mental model (3 facts)
 
@@ -66,7 +69,7 @@ audit = facet_only(con, POOR, vocab=GRADE)              # the "what's bad" view
 ```
 Grading rides the **lexical** regime — a grade is a filter/display label, NOT a semantic
 direction (quality ≠ sentiment: a correct chunk can be grim, an upbeat one can be junk).
-Runnable demo: `python3 packages/glyphsteer/experiments/grade_demo.py`.
+Runnable demo, from a clone: `python3 packages/glyphsteer/experiments/grade_demo.py`.
 
 ## Author your own glyph language + keep a legend
 
@@ -86,8 +89,8 @@ print(render_legend(master))
 
 ## Wire it into ChainCompiler's skill search
 
-`skilltree.search` facets the skill corpus by glyph. First install skilltree
-(`python3 -m pip install agent-skilltree`). **The legend you pass MUST contain the
+`skilltree.search` facets the skill corpus by glyph (SkillTree is `agent-skilltree`, which
+the uv line above names). **The legend you pass MUST contain the
 glyph you facet on** — here we use the built-in `GRADE` vocab (which defines 🏆) and save it
 as the legend. Put `glyphs: 🏆` in a SKILL.md's frontmatter, then:
 
@@ -104,8 +107,8 @@ CLI: `skilltree search ROOT "query" --facet 🏆 --legend grade_legend.json`.
 ## Syntax consistency (rulecatcher under it)
 
 A glyph code is a little DSL, so it goes through ChainCompiler's lint/gate engine
-(**rulecatcher**, via `chaincompiler.bridge`) — the same gate the `*CC` compilers use. Needs
-`pip install -e packages/chaincompiler` (+ rulecatcher). Three verdicts:
+(**rulecatcher**, via `chaincompiler.bridge`) — the same gate the `*CC` compilers use; the
+`grammar` extra brings ChainCompiler and rulecatcher (the uv line above names it). Three verdicts:
 `ok` · `orthogonal` (known glyphs, wrong order → steerable) · `syntax_break` (foreign token → fatal).
 
 ```python
@@ -126,11 +129,9 @@ separator — an unknown glyph, a word — and names it. Pass a grammar to annot
 The emoji-direction half needs an embedding model and has caveats (some models collapse all
 emoji to one token). See the **glyphsteer-dense** skill before using it.
 
-## Verify your understanding (run this)
+## Verify your understanding (run this, from a clone of the public repository where `./install.sh` ran)
 ```bash
-python3 -m pip install -e packages/glyphsteer -q
-python3 -m pip install agent-skilltree -q     # needed for the search integration
 python3 packages/glyphsteer/experiments/grade_demo.py
 python3 -m pytest packages/glyphsteer -q
 ```
-Full design: `packages/glyphsteer/implementation_plan.md`.
+Full design, in the clone: `packages/glyphsteer/implementation_plan.md`.
