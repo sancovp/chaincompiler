@@ -54,11 +54,13 @@ def skill_pins(text: str, names: list[str], version: str) -> str:
 
 
 def skill_files(root: Path = ROOT) -> list[Path]:
-    """Every file a uv line can live in: the shipped skills, their working copies and the package-data copy."""
+    """Every file a uv line can live in: the shipped skills, their working copies, the package-data copy and a package's
+    own copy of a shipped skill."""
     files = [p for p in (root / "skills").rglob("*.md")]
     for name in ("bandit-chain-system", "glyphsteer", "glyphsteer-dense"):
         files += list((root / ".claude" / "skills" / name).rglob("*.md"))
     files += list((root / "packages").glob("*/src/*/data/**/*.md"))
+    files += list((root / "packages").glob("*/.claude/skills/**/*.md"))     # a package's own copy of a shipped skill
     return sorted(set(files))
 
 

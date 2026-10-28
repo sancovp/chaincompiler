@@ -2,6 +2,17 @@
 
 The **persona** compiler of the cognition-chain stack: `ACCC → CORCC → PersonaCC`.
 
+## Install
+
+```bash
+pip install personacc
+```
+
+It brings [`chaincompiler-accc`](https://pypi.org/project/chaincompiler-accc/), [`corcc`](https://pypi.org/project/corcc/)
+and [`chaincompiler`](https://pypi.org/project/chaincompiler/) at the same release. It is one of the fifteen packages of
+[ChainCompiler](https://github.com/sancovp/chaincompiler); to work on it, clone the repository and run `./install.sh`,
+which installs all fifteen editable.
+
 ## The ratified definition
 
 > **A persona = a specific set of DESCRIPTION BLOCKS + a set of ACs + at least one

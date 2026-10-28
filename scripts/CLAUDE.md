@@ -11,6 +11,7 @@ What builds, checks and releases ChainCompiler, run from the repository root (`D
 | `uvline.py` | the one wording of a shipped skill's uv line, read by the generators and the version gate |
 | `set_version.py` | writes one release version into every version line and pin |
 | `check_versions.py` | the gate on the one version line, the build files' declarations, the skills' uv lines and every copy |
+| `upload_release.py` | the upload of a release's fifteen packages to PyPI from a clone at its publish commit, in dependency order, within PyPI's daily quota of new projects, resuming from PyPI's state |
 | `plugin_proof.py` · `plugin-proof-task.md` | the plugin proof: a signed-out install at a clean seat, then a headless session there given that task, graded |
 | `whereimport.py` | a pytest plugin that prints where each named package resolved inside a test session — the proof that a check ran against an install, never a clone's source |
 | `validate_registry.py` · `promote.py` | the marketplace registry's contribution gate and its promotion (§15) |

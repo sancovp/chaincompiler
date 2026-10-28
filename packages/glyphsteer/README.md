@@ -55,9 +55,14 @@ carries two markers:
 ## Install & use
 
 ```bash
-pip install -e .                # lexical regime, zero heavy deps
-pip install -e '.[dense]'       # adds fastembed (local ONNX, no torch) for the dense regime; '.[st]' adds sentence-transformers
+pip install glyphsteer              # lexical regime, zero heavy deps
+pip install "glyphsteer[dense]"     # adds fastembed (local ONNX, no torch) for the dense regime; [st] adds sentence-transformers
+pip install "glyphsteer[grammar]"   # adds the syntax gate's engine (chaincompiler + rulecatcher) for GlyphGrammar
 ```
+
+It installs the `glyphsteer` command. It is one of the fifteen packages of
+[ChainCompiler](https://github.com/sancovp/chaincompiler); to work on it, clone the repository and run `./install.sh`,
+which installs all fifteen editable.
 
 ```python
 from glyphsteer import SENTIMENT, Chunk, RuleAnnotator, annotate_chunk, build_index, search
@@ -125,6 +130,7 @@ python experiments/magnitude_probe.py               # Q1–Q3
   §3.1 and `experiments/results/magnitude_probe.json`.
 
 ## Layout
-See [`implementation_plan.md`](implementation_plan.md) (canonical) and
-[`.claude/rules/`](.claude/rules) for the component/flow diagrams and the discovered
+See [`implementation_plan.md`](https://github.com/sancovp/chaincompiler/blob/main/packages/glyphsteer/implementation_plan.md)
+(canonical) and [`.claude/rules/`](https://github.com/sancovp/chaincompiler/tree/main/packages/glyphsteer/.claude/rules) for
+the component/flow diagrams and the discovered
 development workflows.

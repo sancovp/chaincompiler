@@ -1,6 +1,6 @@
 ---
 name: fold-into-tome
-description: "WHAT: the TERMINAL stage — fold a finished framework into the author's SkillTome (the top-level holder + search of all their frameworks) by running framework.fold_into_tome, which registers the framework as a row on a tome volume node's generated ## Frameworks table via skilltree's bind op. WHEN: when a framework package is finished and must be registered in the author's tome/volume, or when the user says fold into the tome / nomicon / skill2framework fold (any of)."
+description: "WHAT: the TERMINAL stage — fold a finished framework into the author's SkillTome (the top-level holder + search of all their frameworks) by running skill2framework.fold_into_tome, which registers the framework as a row on a tome volume node's generated ## Frameworks table via skilltree's bind op. WHEN: when a framework package is finished and must be registered in the author's tome/volume, or when the user says fold into the tome / nomicon / skill2framework fold (any of)."
 ---
 
 # fold-into-tome — register the framework in the SkillTome (stage 6, terminal)
@@ -16,12 +16,12 @@ frameworks as tome-table rows. An agent equips the tome to search "which of the
 author's frameworks fits this task?" and route into it.
 
 ## Do
-**Run its Python** from a plugin install with `uv run --no-project --with framework==0.3.0 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+**Run its Python** from a plugin install with `uv run --no-project --with skill2framework==0.3.1 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
 
 **Run `skilltree`** from a plugin install as `uvx --from "agent-skilltree>=0.4.0" skilltree …`, and from a clone where `./install.sh` ran, as `skilltree …` in the environment it installed into.
 
 ```python
-from framework import fold_into_tome
+from skill2framework import fold_into_tome
 rep = fold_into_tome(FRAMEWORK_SKILL_DIR, volume=VOLUME_NODE, tome_root=TOME_ROOT,
                      what_for=ONE_LINE_SUMMARY)      # relative=True by default (repo-portable)
 assert rep["ok"], rep

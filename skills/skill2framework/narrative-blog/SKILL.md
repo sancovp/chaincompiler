@@ -1,13 +1,13 @@
 ---
 name: narrative-blog
-description: "WHAT: produce Blog 1 of a framework CHAPTER — the narrative chapter-opener — for an already-built AIOS/package by reconstructing its journey from its own dir (CLAUDE.md, README, dev log) and FILLING framework.JourneyCore, then rendering with render_blog1 (never hand-write the blog). WHEN: when making a framework/chapter from something already built, when you need the story post that opens a chapter, or when the user says blog organ / narrative blog / skill2framework (any of)."
+description: "WHAT: produce Blog 1 of a framework CHAPTER — the narrative chapter-opener — for an already-built AIOS/package by reconstructing its journey from its own dir (CLAUDE.md, README, dev log) and FILLING skill2framework.JourneyCore, then rendering with render_blog1 (never hand-write the blog). WHEN: when making a framework/chapter from something already built, when you need the story post that opens a chapter, or when the user says blog organ / narrative blog / skill2framework (any of)."
 ---
 
 # narrative-blog — Blog 1, the narrative opener (stage 1 of skill2framework)
 
 > Ported 2026-07-10 from the proven doc-mirror `narrative-blog-from-aios` prompt-skill
 > (score 1.00, FULL_E2E 2026-06-03). DIY adaptation: the journey source is the AIOS's
-> OWN dir (CLAUDE.md + README + any dev log), and the renderer is `framework.journey`
+> OWN dir (CLAUDE.md + README + any dev log), and the renderer is `skill2framework.journey`
 > (no external renderer dependency). This port has not itself been E2E-scored yet.
 
 Your ONE job: turn the AIOS's real journey into **Blog 1** by FILLING the
@@ -31,10 +31,10 @@ From the journey source, extract the Hero arc AS ACTUALLY LIVED:
 capabilities or results. Mark each field GROUNDED (cite where) vs INFERRED in your report.
 
 ## Step 2 — fill + render (the whole mechanism)
-**Run its Python** from a plugin install with `uv run --no-project --with framework==0.3.0 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+**Run its Python** from a plugin install with `uv run --no-project --with skill2framework==0.3.1 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
 
 ```python
-from framework import JourneyCore, render_blog1
+from skill2framework import JourneyCore, render_blog1
 core = JourneyCore(journey_name="...", domain="...", hook="...",
                    status_quo="...", obstacle="...", overcome="...",
                    accomplishment="...", the_boon="...", demo_description="...",

@@ -25,7 +25,8 @@ SKILLS_DIR = REPO / "skills"
 # the distributions each capability's Python imports (DESIGN.md §16): APE's at the lower bound §18 states, ours pinned
 APE_RUN = ["agent-prompt-engineering>=0.2.0"]
 CC_RUN = {"forge-attention-chain": [f"chaincompiler-accc=={RELEASE}"], "forge-cor": [f"corcc=={RELEASE}"],
-          "forge-skillchain": [f"sccc=={RELEASE}"], "construct-language": [f"chainaios=={RELEASE}"]}
+          "forge-skillchain": [f"sccc=={RELEASE}", f"chaincompiler-accc=={RELEASE}", f"corcc=={RELEASE}"],
+          "construct-language": [f"chainaios=={RELEASE}"]}
 
 
 def with_run_line(cap: Capability, specs: list[str]) -> Capability:
@@ -61,9 +62,14 @@ CC_CAPABILITIES = [
     Capability(
         "forge-skillchain",
         "SCCC — forge a skill-chain language — resolve [ac|cor|skill] steps to packages and roll them up.",
-        "An SC chains forged AC/CoR/skill steps toward a goal. SCCC is made FROM CORCC+ACCC+chaincompiler.\n\n"
+        "An SC chains forged AC/CoR/skill steps toward a goal. SCCC is made FROM CORCC+ACCC+chaincompiler. Every step "
+        "must already be a skill dir in `skills_dir` (or your skills), so this makes its two steps first.\n\n"
         "```python\n"
-        "import sccc\n"
+        "import accc, corcc, sccc\n"
+        "from corcc.notation import Move, PersonaSpec\n"
+        "accc.package('debug', '[Symptom] ⇒ [Repro] ⇒ |Localize|', out_dir='skills')          # the [ac:debug] step\n"
+        "spec = PersonaSpec(name='Debugger', moves=(Move('Symptom', ()), Move('Repro', ())))\n"
+        "corcc.package(corcc.forge_persona(spec, db='cc.db'), out_dir='skills')                  # the [cor:Debugger] step\n"
         "seq = '[ac:debug] ⇒ [cor:Debugger] ⇒ |ShippedFix|'\n"
         "sccc.forge('ship', [seq], db='cc.db')\n"
         "sccc.package('ship', seq, out_dir='dist', skills_dir='skills')   # → rollup <name>/SKILL.md\n"

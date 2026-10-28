@@ -44,9 +44,14 @@ CAPABILITIES = {"forge-attention-chain": "chaincompiler-accc", "forge-cor": "cor
                 "make-persona": "agent-prompt-engineering", "big-generator": "agent-prompt-engineering",
                 "persona-generator": "agent-prompt-engineering"}
 MODULES = ("rulecatcher", "honeyc", "dietc", "skillchain", "chaincompiler", "accc", "corcc", "sccc", "chainaios", "si",
-           "archetype", "framework", "glyphsteer", "personacc", "personapack", "goldenreq")
+           "archetype", "skill2framework", "glyphsteer", "personacc", "personapack", "goldenreq")
 SKILL_WRITE = re.compile(r">>?\s*[\"']?[^\s\"'<>|;&]*SKILL\.md|\btee\s+(?:-a\s+)?[\"']?[^\s\"']*SKILL\.md|"
                          r"\b(?:cp|mv|install)\s+.*\S*SKILL\.md[\"']?\s*$")
+# a write from Python in a command that names a SKILL.md: open() in a write mode, write_text/write_bytes, a copy or a move
+PY_WRITE = re.compile(r"\bopen\s*\([^)]*,\s*(?:mode\s*=\s*)?[\"'][^\"']*[wax+]|\.write_(?:text|bytes)\s*\(|"
+                      r"\bshutil\.(?:copy\w*|move)\s*\(|\bos\.(?:rename|replace)\s*\(|\.(?:rename|replace)\s*\(")
+# what `scripts/plugin-proof-task.md` asks the session to make: the attention chain `debug`, packaged by accc
+TASK = {"name": "debug", "kind": "attention-chain", "chain": "[Symptom] ⇒ [Repro] ⇒ |Localize|"}
 
 
 # ── the seat ────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -232,14 +237,26 @@ def tool_calls(evs: list[dict]) -> list[dict]:
     return calls
 
 
-def frontmatter_ok(p: Path) -> bool:
+def frontmatter(p: Path) -> dict | None:
     import yaml
     m = re.match(r"^---\n(.*?)\n---\n", p.read_text(encoding="utf-8"), re.S)
     try:
         fm = yaml.safe_load(m.group(1)) if m else None
     except yaml.YAMLError:
-        return False
-    return isinstance(fm, dict) and isinstance(fm.get("name"), str) and isinstance(fm.get("description"), str)
+        return None
+    return fm if isinstance(fm, dict) else None
+
+
+def frontmatter_ok(p: Path) -> bool:
+    fm = frontmatter(p)
+    return fm is not None and isinstance(fm.get("name"), str) and isinstance(fm.get("description"), str)
+
+
+def is_task_output(p: Path) -> bool:
+    """The skill the task asks for, as accc packages it: its name, its kind, and the task's chain in a rune block."""
+    fm = frontmatter(p) or {}
+    blocks = re.findall(r"```rune\n(.*?)\n```", p.read_text(encoding="utf-8"), re.S)
+    return fm.get("name") == TASK["name"] and fm.get("kind") == TASK["kind"] and TASK["chain"] in [b.strip() for b in blocks]
 
 
 def grade(transcript: Path, work: Path, version: str, allowed: list[str]) -> dict:
@@ -264,9 +281,12 @@ def grade(transcript: Path, work: Path, version: str, allowed: list[str]) -> dic
     hand_written = sorted({c["input"].get("file_path", "") for c in calls if c["name"] in ("Write", "Edit", "MultiEdit")
                            and c["input"].get("file_path", "").endswith("SKILL.md")}
                           | {c["input"].get("command", "")[:200] for c in calls if c["name"] == "Bash"
-                             and SKILL_WRITE.search(c["input"].get("command", ""))})
+                             and (SKILL_WRITE.search(c["input"].get("command", ""))
+                                  or ("SKILL.md" in c["input"].get("command", "")
+                                      and PY_WRITE.search(c["input"].get("command", ""))))})
     made = sorted(work.rglob("SKILL.md")) if work.is_dir() else []
     parsed = [p for p in made if frontmatter_ok(p)]
+    task_output = [p for p in parsed if is_task_output(p)]
     checks = {
         "server_connected": bool(ours) and all(m.get("status") == "connected" for m in ours),
         "other_servers_granted_no_tool": not granted_others,
@@ -274,6 +294,7 @@ def grade(transcript: Path, work: Path, version: str, allowed: list[str]) -> dic
         "capability_skill_followed": bool(skill_seen),
         "its_python_ran_through_its_uv_line": bool(uv_runs),
         "a_skill_dir_written_whose_frontmatter_parses": bool(parsed) and not hand_written,
+        "the_skill_is_the_capabilitys_output": bool(task_output),
         "session_succeeded": result.get("subtype") == "success" and not result.get("is_error"),
     }
     return {"checks": checks, "pass": all(checks.values()),
@@ -284,6 +305,7 @@ def grade(transcript: Path, work: Path, version: str, allowed: list[str]) -> dic
                          "uv_runs": [c["input"].get("command", "")[:400] for c in uv_runs],
                          "skill_dirs_made": [p.relative_to(work).as_posix() for p in made],
                          "frontmatter_parses": [p.relative_to(work).as_posix() for p in parsed],
+                         "task_output": [p.relative_to(work).as_posix() for p in task_output],
                          "hand_written_skill_files": hand_written,
                          "tool_calls": len(calls), "result": (result.get("result") or "")[:800],
                          "cost_usd": result.get("total_cost_usd"), "turns": result.get("num_turns")}}

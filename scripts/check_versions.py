@@ -9,12 +9,17 @@ The release version is the newest README changelog entry. Refused, each named wi
   - a dependency among the fifteen, an optional extra's included, not pinned `==` to it;
   - a declared `agent-prompt-engineering` or `agent-skilltree` without the lower bound §18 states;
   - a module a package's source imports that its build file does not declare (a lazy import as an optional extra);
+  - a build file that does not give its package's page on PyPI its README (`readme = "README.md"`, the file present)
+    and the repository's license (`license = "MIT"`), or whose `setuptools` build requirement is below 77, the first
+    release that reads a license written that way;
   - a `.mcp.json` that does not launch `uvx --from chaincompiler-si==<release> si-server`;
   - a shipped skill whose code has no uv line before its first code block, or a uv line that misses a distribution
     the code it runs imports (a lazy or optional import included), pins a sibling to another version, or names an
     outside distribution without its lower bound;
-  - a copy of `bandit-chain-system`, `glyphsteer` or `glyphsteer-dense` that is not byte-identical to its source, or
-    is a link.
+  - a copy of `bandit-chain-system`, `glyphsteer` or `glyphsteer-dense` — and any other `SKILL.md` under a
+    `.claude/skills/` folder or a package's own folder that carries a shipped skill's name — that is not byte-identical
+    to its source, or is a link;
+  - a package folder whose `LICENSE` is missing or differs from the repository's.
 Exit 0 with nothing refused; exit 1 naming every refusal.
 """
 from __future__ import annotations
@@ -33,6 +38,8 @@ sys.path.insert(0, str(HERE))
 from update_site import parse_changelog  # noqa: E402
 
 LOWER = {"agent-prompt-engineering": "0.2.0", "agent-skilltree": "0.4.0"}
+LICENSE = "MIT"         # the repository's LICENSE, as every package's metadata states it
+SETUPTOOLS = 77         # the first setuptools that reads `license = "MIT"` (an SPDX expression)
 
 # a module root → its distribution, for the modules the fifteen import from outside themselves
 OUTSIDE = {"skilltree": "agent-skilltree", "prompt_engineering": "agent-prompt-engineering",
@@ -73,7 +80,8 @@ def packages(root: Path) -> dict[str, dict]:
         proj, folder = d["project"], pp.parent
         owned = {p.name for p in (folder / "src").glob("*") if p.is_dir() and (p / "__init__.py").exists()}
         owned |= set(d.get("tool", {}).get("setuptools", {}).get("py-modules", []))
-        out[proj["name"]] = {"project": proj, "folder": folder, "owned": owned, "file": pp}
+        out[proj["name"]] = {"project": proj, "folder": folder, "owned": owned, "file": pp,
+                             "build": d.get("build-system", {})}
     return out
 
 
@@ -112,6 +120,15 @@ def check_packages(root: Path, version: str, r: Report) -> dict[str, dict]:
         proj = p["project"]
         if proj.get("version") != version:
             r.refuse(rel, f"version {proj.get('version')!r} is not the release {version}")
+        if proj.get("readme") != "README.md" or not (p["folder"] / "README.md").is_file():
+            r.refuse(rel, "does not declare its folder's README.md as `readme`, so its page on PyPI has no description")
+        if proj.get("license") != LICENSE:
+            r.refuse(rel, f"license {proj.get('license')!r} is not the repository's {LICENSE!r}")
+        tools = [req_name(x)[2] for x in p["build"].get("requires", []) if req_name(x)[0] == "setuptools"]
+        floor = [int(m.group(1)) for s in tools for m in [re.match(r"^>=\s*(\d+)", s)] if m]
+        if not floor or floor[0] < SETUPTOOLS:
+            r.refuse(rel, f"its build requirement {tools or 'none'} for setuptools is not >={SETUPTOOLS}, the first that "
+                          "reads `license` written as an expression")
         reqs = [(None, x) for x in proj.get("dependencies", [])]
         reqs += [(extra, x) for extra, xs in proj.get("optional-dependencies", {}).items() for x in xs]
         declared_top, declared_all = set(), set()
@@ -282,12 +299,34 @@ def check_skills(root: Path, version: str, pkgs: dict[str, dict], r: Report) -> 
                 r.refuse(where, f"its uvx line names {name}{spec}, not >={LOWER[name]}")
 
 
+def skill_name(p: Path) -> str | None:
+    """A SKILL.md's frontmatter `name`, read without a YAML parser (a name is one plain scalar)."""
+    m = re.match(r"^---\n(.*?)\n---\n", p.read_text(encoding="utf-8"), re.S)
+    n = re.search(r"(?m)^name:\s*(.+?)\s*$", m.group(1)) if m else None
+    return n.group(1).strip("'\"") if n else None
+
+
 def check_copies(root: Path, r: Report) -> None:
     pairs = [(root / "packages/chainaios/src/chainaios/data/bandit-chain-system/SKILL.md", root / "skills/bandit-chain-system/SKILL.md"),
              (root / "packages/chainaios/src/chainaios/data/bandit-chain-system/SKILL.md", root / ".claude/skills/bandit-chain-system/SKILL.md"),
              (root / "skills/glyphsteer/SKILL.md", root / ".claude/skills/glyphsteer/SKILL.md"),
              (root / "skills/glyphsteer-dense/SKILL.md", root / ".claude/skills/glyphsteer-dense/SKILL.md")]
     pairs += [(pairs[0][0], p) for p in sorted((root / "personas").glob("*/.claude/skills/bandit-chain-system/SKILL.md"))]
+    # every other hand-kept SKILL.md carrying a shipped skill's name — under a `.claude/skills/` folder or a package's own
+    # folder — is a copy of it (a SkillTree node under `skills/*-tree/` and a GBA's generated body are not: the
+    # regeneration diffs check those)
+    shipped = {skill_name(p): p for p in sorted((root / "skills").rglob("SKILL.md"))
+               if ".claude" not in p.relative_to(root / "skills").parts}
+    # every package folder carries the repository's LICENSE, which its wheel ships
+    pairs += [(root / "LICENSE", folder / "LICENSE") for folder in sorted((root / "packages").glob("*/"))
+              if (folder / "pyproject.toml").is_file()]
+    listed = {copy for _, copy in pairs}
+    for p in sorted(root.rglob("SKILL.md")):
+        rel = p.relative_to(root).parts
+        if p in listed or rel[0] in ("skills", "personas") or not (".claude" in rel or rel[0] == "packages"):
+            continue
+        if skill_name(p) in shipped:
+            pairs.append((shipped[skill_name(p)], p))
     for src, copy in pairs:
         where = copy.relative_to(root).as_posix()
         if copy.is_symlink():

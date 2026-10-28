@@ -1,10 +1,10 @@
-"""framework package tests: the deterministic glue of the chapter rung."""
+"""skill2framework package tests: the deterministic glue of the chapter rung."""
 from __future__ import annotations
 
 import json
 from pathlib import Path
 
-from framework import (
+from skill2framework import (
     JourneyCore,
     assemble_chapter,
     fold_into_tome,

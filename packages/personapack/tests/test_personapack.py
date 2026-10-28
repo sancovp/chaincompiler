@@ -74,10 +74,12 @@ def test_seat_returns_make_gba_kwargs():
     assert kw["persona"].name == "SamayaReviewer"
 
 
-def test_seat_smoke_builds_a_gba(tmp_path: Path):
-    # a receipt-grade persona seats + builds a closed GBA (BODHISATTVA — full cues).
+@pytest.mark.parametrize("name", sorted(pp.PACK))
+def test_every_entry_seats_and_builds_a_closed_gba(name, tmp_path: Path):
+    # every entry seats into make_gba as its docstring shows — the recovered personas whose moves carry no cue
+    # phrases (SamayaReviewer, ParamitaReader) among them
     from chainaios.gba import make_gba
-    g = make_gba("bodhi", tmp_path / "aios", **pp.seat("bodhisattva"))
+    g = make_gba(name, tmp_path / "aios", **pp.seat(name))
     assert g.claude_md.exists()
     assert g.closed
 

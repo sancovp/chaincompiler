@@ -114,7 +114,7 @@ flowchart LR
   GlyphSteer never needs them; its `lint` refuses foreign content itself, before the tag chain
   rulecatcher reads is built.
 - `dense.py` is the **only** import of an embedding runtime (`fastembed`, `sentence-transformers`), each lazy, so the
-  whole left side runs with the package installed from its folder and no extra (`pip install -e packages/glyphsteer`;
-  glyphsteer is not on PyPI — ChainCompiler `DESIGN.md` §18).
+  whole left side runs with the package installed and no extra (`pip install glyphsteer` from PyPI, or
+  `pip install -e packages/glyphsteer` in a clone — ChainCompiler `DESIGN.md` §18).
 - `steer.py` is **pure numpy** — it takes vectors, never the model, so the metric math is
   testable without any download.

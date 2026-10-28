@@ -27,7 +27,7 @@ def gate(root: Path) -> subprocess.CompletedProcess:
 def tree(tmp_path: Path) -> Path:
     root = tmp_path / "chaincompiler"
     root.mkdir()
-    for name in ("README.md", ".mcp.json"):
+    for name in ("README.md", ".mcp.json", "LICENSE"):
         shutil.copy2(REPO / name, root / name)
     for d in ("packages", "skills", ".claude-plugin", "personas"):
         shutil.copytree(REPO / d, root / d, ignore=SKIP, symlinks=True)
@@ -97,8 +97,23 @@ def test_an_extra_sibling_not_pinned_exactly_is_refused(tree):
 
 
 def test_an_outside_dependency_without_its_lower_bound_is_refused(tree):
-    sub(tree / "packages/framework/pyproject.toml", '"agent-skilltree>=0.4.0"', '"agent-skilltree"')
-    refused(tree, "packages/framework/pyproject.toml", "lower bound >=0.4.0")
+    sub(tree / "packages/skill2framework/pyproject.toml", '"agent-skilltree>=0.4.0"', '"agent-skilltree"')
+    refused(tree, "packages/skill2framework/pyproject.toml", "lower bound >=0.4.0")
+
+
+def test_a_build_file_without_its_readme_is_refused(tree):
+    sub(tree / "packages/sccc/pyproject.toml", 'readme = "README.md"\n', "")
+    refused(tree, "packages/sccc/pyproject.toml", "does not declare its folder's README.md")
+
+
+def test_a_build_file_without_the_license_is_refused(tree):
+    sub(tree / "packages/goldenreq/pyproject.toml", 'license = "MIT"', 'license = "Apache-2.0"')
+    refused(tree, "packages/goldenreq/pyproject.toml", "license 'Apache-2.0' is not the repository's 'MIT'")
+
+
+def test_a_setuptools_too_old_for_the_license_is_refused(tree):
+    sub(tree / "packages/rulecatcher/pyproject.toml", '"setuptools>=77"', '"setuptools>=61.0"')
+    refused(tree, "packages/rulecatcher/pyproject.toml", "is not >=77")
 
 
 def test_an_undeclared_import_is_refused(tree):
@@ -142,6 +157,17 @@ def test_a_copy_that_differs_is_refused(tree):
     p = tree / ".claude/skills/glyphsteer/SKILL.md"
     p.write_text(p.read_text(encoding="utf-8") + "\nan edit made in one copy only\n", encoding="utf-8")
     refused(tree, ".claude/skills/glyphsteer/SKILL.md", "differs from skills/glyphsteer/SKILL.md")
+
+
+def test_a_packages_own_copy_of_a_shipped_skill_that_differs_is_refused(tree):
+    p = tree / "packages/glyphsteer/.claude/skills/glyphsteer/SKILL.md"
+    p.write_text(p.read_text(encoding="utf-8") + "\nan older reading kept in the package's own copy\n", encoding="utf-8")
+    refused(tree, "packages/glyphsteer/.claude/skills/glyphsteer/SKILL.md", "differs from skills/glyphsteer/SKILL.md")
+
+
+def test_a_package_without_the_license_is_refused(tree):
+    (tree / "packages/sccc/LICENSE").unlink()
+    refused(tree, "packages/sccc/LICENSE: is missing")
 
 
 def test_a_copy_that_is_a_link_is_refused(tree):

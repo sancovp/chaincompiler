@@ -125,7 +125,7 @@
       "status": "in_progress",
       "blurb": "The chapter rung: skill2framework as a skillchain (2 blog stages + deterministic chapter/plugin ops) whose terminal stage folds the framework into the author's SkillTome via skilltree's bind op (agent-skilltree \u22650.3.0). SkillVolume = the per-AIOS pattern book (was {aios}-nomicon); SkillTome = the author's overall corpus.",
       "items": [
-        "packages/framework: JourneyCore + render_blog1, assemble_chapter, package_plugin, fold_into_tome (delegates to skilltree.tome.fold) \u2713",
+        "packages/skill2framework: JourneyCore + render_blog1, assemble_chapter, package_plugin, fold_into_tome (delegates to skilltree.tome.fold) \u2713",
         "skills/skill2framework/*: the 6 stage prompt-skills (DIY port of the proven doc-mirror set) \u2713",
         "chains/skill2framework.chain + the compiled rollup skill \u2713",
         "Deterministic spine E2E: blog \u2192 chapter \u2192 plugin \u2192 fold \u2192 skilltree validate green \u2713",
@@ -141,12 +141,28 @@
         "one version line: the release version in every package, both plugin manifests and every pin (done, v0.3.0)",
         "the GBA's bandit-chain-system skill as chainaios package data (done, v0.3.0)",
         "the MCP server and every shipped skill run from PyPI through uv (done, v0.3.0)",
-        "the fifteen on PyPI under their names, each a publishing-manifest unit (units done, v0.3.0; upload pending)",
+        "the fifteen on PyPI under their names, each a publishing-manifest unit (units done, v0.3.0; fourteen uploaded; the chapter rung as skill2framework, v0.3.1)",
         "the plugin proof: installed signed out, then a session that calls the server and runs a skill (built; pending)"
       ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.3.1",
+      "date": "2026-10-28",
+      "changes": [
+        "**The upload in dependency order.** `scripts/upload_release.py` uploads the fifteen from a clone of the public",
+        "**Each package's page on PyPI.** Every build file declares its folder's `README.md` as `readme` and the MIT license",
+        "**`install.sh` installs `setuptools>=77` first**, the build backend every build file requires, because it builds the",
+        "**Every personapack persona seats.** A move with no cue phrase is cued by its own name, so SamayaReviewer and",
+        "**Every copy of a shipped skill is one.** `check_versions.py` refuses any `SKILL.md` under a `.claude/skills/` folder",
+        "**Every capability skill's Python block runs alone.** `forge-skillchain`'s example makes its two steps and names",
+        "**The plugin proof's grader** requires the capability's own output \u2014 its name, kind and chain \u2014 and counts a write",
+        "**The chapter rung is `skill2framework`.** PyPI does not allow the name `framework` \u2014 its upload answered",
+        "**PyPI's quota and refusals, as measured.** The four new projects are four in any 86,400 seconds, counted from the",
+        "Suite: 324 passed in `pytest packages`, 51 in `scripts/tests`; every package moves to 0.3.1."
+      ]
+    },
     {
       "version": "v0.3.0",
       "date": "2026-10-24",

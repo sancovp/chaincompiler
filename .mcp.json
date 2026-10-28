@@ -2,7 +2,7 @@
   "mcpServers": {
     "self-interpreter": {
       "command": "uvx",
-      "args": ["--from", "chaincompiler-si==0.3.0", "si-server"]
+      "args": ["--from", "chaincompiler-si==0.3.1", "si-server"]
     }
   }
 }

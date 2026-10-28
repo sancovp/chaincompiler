@@ -125,7 +125,7 @@
       "status": "in_progress",
       "blurb": "The chapter rung: skill2framework as a skillchain (2 blog stages + deterministic chapter/plugin ops) whose terminal stage folds the framework into the author's SkillTome via skilltree's bind op (agent-skilltree ≥0.3.0). SkillVolume = the per-AIOS pattern book (was {aios}-nomicon); SkillTome = the author's overall corpus.",
       "items": [
-        "packages/framework: JourneyCore + render_blog1, assemble_chapter, package_plugin, fold_into_tome (delegates to skilltree.tome.fold) ✓",
+        "packages/skill2framework: JourneyCore + render_blog1, assemble_chapter, package_plugin, fold_into_tome (delegates to skilltree.tome.fold) ✓",
         "skills/skill2framework/*: the 6 stage prompt-skills (DIY port of the proven doc-mirror set) ✓",
         "chains/skill2framework.chain + the compiled rollup skill ✓",
         "Deterministic spine E2E: blog → chapter → plugin → fold → skilltree validate green ✓",
@@ -141,7 +141,7 @@
         "one version line: the release version in every package, both plugin manifests and every pin (done, v0.3.0)",
         "the GBA's bandit-chain-system skill as chainaios package data (done, v0.3.0)",
         "the MCP server and every shipped skill run from PyPI through uv (done, v0.3.0)",
-        "the fifteen on PyPI under their names, each a publishing-manifest unit (units done, v0.3.0; upload pending)",
+        "the fifteen on PyPI under their names, each a publishing-manifest unit (units done, v0.3.0; fourteen uploaded; the chapter rung as skill2framework, v0.3.1)",
         "the plugin proof: installed signed out, then a session that calls the server and runs a skill (built; pending)"
       ]
     }

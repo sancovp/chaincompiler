@@ -44,7 +44,7 @@ author can answer is a `BACKLOG.md` task marked as the author's call.
 | `.claude/rules/22-seq-mint-attention-chain.md` | the procedure for minting an attention chain or a chain system (§5, §7) |
 | `.claude/rules/22-seq-chaincompiler-release.md` | the procedure for cutting a release: one version everywhere, every generated file regenerated, every copy coherent, proven on a clean install of what publishes (§16, §18, §19) |
 | `.claude/rules/chaincompiler_states.md` | the board, generated from `roadmap.json` — never edited by hand |
-| `packages/*/README.md` | each package's own reference |
+| `packages/*/README.md` | each package's own reference, and its page on PyPI (§18) |
 
 ## §1 The one type and the closed algebra
 
@@ -81,7 +81,7 @@ agent tier          chainaios                      imports the chain tier, the b
 beside the tiers    personacc → personapack        persona bundles (§6)
                     goldenreq                      the acceptance gate, stdlib only (§9)
                     glyphsteer                     retrieval steering (§11)
-                    archetype · framework · si     §12 · §13 · §14
+                    archetype · skill2framework · si §12 · §13 · §14
 ```
 
 `.importlinter` enforces the six-layer chain `chainaios > sccc > corcc > accc > chaincompiler >
@@ -163,7 +163,9 @@ template for how to think, converging on the held focus. `forge` (kind `ac`), `g
 
 **CORCC** (`packages/corcc`) compiles **chains of reasoning**: a CoR is spoken — a paragraph that performs
 ordered moves and ends in a decision. A `PersonaSpec` is the ordered `Move`s, each with the cue phrases
-that count as evidence it was performed; the last move is the held convergence. `forge_persona` forges
+that count as evidence it was performed; the last move is the held convergence. A move that carries no cue phrase (a
+persona recovered without them, as personapack's SamayaReviewer and ParamitaReader are) is cued by its own name in the
+paragraph skeleton, so every persona packages and seats. `forge_persona` forges
 the move chain as an attention-chain language, and `lint` gates the spoken CoR against it: drift out of
 the syntax is the persona *melting* — the melt-gauge. `package` writes the CoR with its paragraph
 skeleton (rendered through APE's `cor_skeleton`) and its inner attention chain. Seed personas: **BANDIT**
@@ -333,14 +335,16 @@ triples, Prolog, Cypher, JSON or a `SKILL.md`.
 ⚠ OWED: its specification, `ARCHETYPE-COMPILER.md` (cited throughout the package), and its companion
 correspondence map are not in this repository.
 
-## §13 The chapter rung — framework and skill2framework
+## §13 The chapter rung — skill2framework
 
 Roadmap P9 turns a finished agent into a chapter of its author's SkillTome. `chains/skill2framework.chain`
 compiles to the `skills/skill2framework/` rollup: two prompt stages write the narrative post and the
-deep-dive post, then deterministic operations in **framework** (`packages/framework`) assemble the chapter
-(`assemble_chapter`), write the volume skill, package a plugin (`package_plugin`, which repaths the
-chapter links into the bundle and checks they resolve) and fold the framework into the tome
-(`fold_into_tome`, SkillTree's `tome.fold`). The SkillTome is its own project, built on ChainCompiler.
+deep-dive post, then deterministic operations in the package **skill2framework** (`packages/skill2framework`)
+assemble the chapter (`assemble_chapter`), write the volume skill, package a plugin (`package_plugin`, which repaths
+the chapter links into the bundle and checks they resolve) and fold the framework into the tome
+(`fold_into_tome`, SkillTree's `tome.fold`). The chain and the package carry one name: the package's folder, its
+distribution on PyPI and its import name are all `skill2framework`. The SkillTome is its own project, built on
+ChainCompiler.
 
 ## §14 The self-interpreter — si
 
@@ -402,7 +406,9 @@ prerequisite, and nothing is installed into the user's own Python:
 - A step that needs this repository's source — a script under `packages/*/experiments`, the dense sidecar's compose
   file, a package's test run — says it needs a clone of the public repository.
 - A shipped skill that has a working copy under the repository's own `.claude/skills/` (`bandit-chain-system`,
-  `glyphsteer`, `glyphsteer-dense`) keeps that copy byte for byte, a copy and not a link.
+  `glyphsteer`, `glyphsteer-dense`) keeps that copy byte for byte, a copy and not a link, and so does every other
+  `SKILL.md` under a `.claude/skills/` folder or a package's own folder that carries a shipped skill's name (the
+  glyphsteer package keeps one in its own `.claude/skills/`).
 - The plugin's manifests describe how it gets its Python — through uv, from PyPI — and not as `./install.sh`.
 - `scripts/check_versions.py` (§18) refuses a shipped skill whose code has no such line, or whose line misses a
   distribution the code it runs imports — the lazy reaches it knows are in its `LAZY` table.
@@ -420,10 +426,12 @@ from a transcript and the files, never from the session's account.
   environment before the session). Its init event shows the plugin's self-interpreter connected, and any other MCP
   server Claude Code loads at the seat is named in the proof and granted no tool. It calls one of the server's tools
   and gets a result that is not an error, and it follows one of the eight capability skills, whose Python runs through
-  its uv line into a skill dir whose frontmatter parses.
+  its uv line into the skill dir the task asks for, as that capability packages it — its name, its kind and its chain
+  — written by no tool, shell write or Python of the session's own.
 - **The grader's negative controls** — `scripts/tests/test_plugin_proof.py` (§19): a baseline transcript passes, and
-  one whose server failed to connect, whose tool call returned an error, or whose skill ran its Python without its uv
-  line fails exactly that check.
+  one whose server failed to connect, whose tool call returned an error, whose skill ran its Python without its uv
+  line, whose skill dir was written by hand (a tool, a shell write or a write from Python) or is not the capability's
+  output fails exactly that check.
 
 ## §17 The project surface
 
@@ -432,7 +440,8 @@ from a transcript and the files, never from the session's account.
 `.claude/rules/chaincompiler_states.md` — generated files are never edited by hand, and `deploy.yml` fails a push
 whose generated files are stale — and `ROADMAP.md` mirrors it in prose. `site/` is the GitHub Pages site (the roadmap, a workbench, and
 the development log built by `scripts/build_blog.py`). `scripts/` also holds the release's own tools —
-`set_version.py` and `check_versions.py` (§18), `uvline.py` and `plugin_proof.py` (§16), `whereimport.py` (§19) — with
+`set_version.py`, `check_versions.py` and `upload_release.py` (§18), `uvline.py` and `plugin_proof.py` (§16),
+`whereimport.py` (§19) — with
 their tests in `scripts/tests/`, each listed in `scripts/CLAUDE.md`. `.claude/` is the working surface for an agent
 developing this repository: the rules named in §0 and the skills `chaincompiler` (orientation),
 `archetype-compiler`, `bandit-chain-system`, `glyphsteer`, `glyphsteer-dense`, `metaformal-self-test`
@@ -467,9 +476,9 @@ project's. In a clone, `install.sh` installs the fifteen editable with `--no-dep
 `pydantic-stack-core`, `agent-prompt-engineering` ≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — from PyPI. A release is proven
 by its release flow (`.claude/rules/22-seq-chaincompiler-release.md`): a clean clone of what publishes with
 `./install.sh`, the wheel proof before the merge, and after it the install from PyPI and the plugin proof (§16, §19).
-⚠ OWED: fourteen of the fifteen names are free on PyPI until a release's upload first holds them, so until then a
-`pip install` of one package, or an extra naming one (steward's), asks PyPI for a sibling anyone could publish there
-(BACKLOG).
+⚠ OWED: PyPI holds fourteen of the fifteen at v0.3.0 and does not allow the name `framework`, so the plugin's four
+chapter-rung skills, whose uv lines name `framework==0.3.0`, do not run from a plugin install, and the chapter rung
+installs from no index until v0.3.1 publishes it as `skill2framework` (§13, BACKLOG).
 
 **One version line.** A release's version, its README changelog entry, is every package's `version`,
 every `__version__` a package defines, the plugin's version in `plugin.json` and `marketplace.json`, and the pin in
@@ -482,8 +491,11 @@ lower bound `install.sh` states (`>=0.2.0`, `>=0.4.0`); every other outside depe
 file gives it. `scripts/set_version.py <version>` writes the version into every one of those places, and
 `scripts/check_versions.py` refuses a tree in which any of them differs from the newest changelog entry, a dependency
 among the fifteen is not pinned to it, a build file leaves an import of its source undeclared (an AST walk of each
-`src/`, its outside modules mapped through the gate's `OUTSIDE` table), a shipped skill's uv line is missing or
-incomplete (§16), or a copy of a shipped skill differs; `scripts/tests/test_check_versions.py` plants each refusal. The
+`src/`, its outside modules mapped through the gate's `OUTSIDE` table), a build file does not give its package's page on
+PyPI its folder's `README.md` (`readme`) and the repository's MIT license (`license = "MIT"`, under a `setuptools` build
+requirement of at least 77, the first that reads a license written that way), a package folder lacks the repository's
+`LICENSE` (each wheel ships it), a shipped skill's uv line is missing or incomplete (§16), or a copy of a shipped skill
+differs; `scripts/tests/test_check_versions.py` plants each refusal. The
 line starts at v0.3.0, the first version above everything the three lines held before it (the plugin was at 0.2.4), so
 an installed plugin moves forward. Every release moves the whole line, whether or not a package changed.
 
@@ -491,11 +503,24 @@ an installed plugin moves forward. Every release moves the whole line, whether o
 folder as `subdir`, `pypi` set, no public repository of its own, `auto_publish` off (scalable-publishing's `DESIGN.md`
 §4) — `rulecatcher` among them, so a hand upload is never again a path. A release's packages go to PyPI after its merge:
 as soon as the publish commit naming the merge is on the public repository, each of the fifteen is built from a clone
-of the public repository at that commit and uploaded by scalable-publishing's `bin/publish_package.sh`, which refuses a
-version PyPI already holds. That runs before anything else in the release's after-merge proof, because between the
-publish commit and the upload the published plugin pins a version PyPI does not hold. A pass that stops partway is run
-again, and it reads `publish_package.sh`'s refusal of a package PyPI already holds at the release's own version as that
-package uploaded. Then a fresh environment installs the release from PyPI alone — pip's install report showing every
+of the public repository at that commit and uploaded by `scripts/upload_release.py`, through scalable-publishing's
+`bin/publish_package.sh`, which refuses a version PyPI already holds. That runs before anything else in the release's
+after-merge proof, because between the publish commit and the upload the published plugin pins a version PyPI does not
+hold. The driver uploads in dependency order — the self-interpreter's closure, then the packages the shipped skills'
+uv lines name, then the rest — and uploads a package only once PyPI holds every sibling it requires, since a package
+whose sibling is missing installs for no one and names in its metadata a sibling anyone could publish. PyPI lets one
+account, and one address, create four new projects in any 86,400 seconds, counted from the creations themselves (its
+`RateLimit-Policy` response header states the quota, `q=4;w=86400`; a refused try counts for nothing), and answers
+`429 Too many new projects created` past it, while a version of a project it already holds uploads at once; so a
+release that brings names PyPI does not hold yet takes as many runs of the driver as its new names need, each started
+at least a day after the last creation of the run before and reading PyPI's state afresh, and reading a refusal of a
+version PyPI holds at the release's own version as that package uploaded. PyPI also refuses some names outright — a
+`400 Bad Request` on a new project whose build passed `twine check` — as it refused `framework`; no run uploads such a
+name, so the package is renamed in the next release (§13). A failed upload is reported by the error lines twine and the
+publish script printed — PyPI's own words after an `HTTPError` — never by the output's last line, which is the build's
+progress. The next release merges only once PyPI holds this one whole, or holds every package of it but one whose name
+PyPI refuses, that package renamed in the next release, which is then the line's next whole version: v0.3.0 is short
+of `framework` for good, and v0.3.1 carries it as `skill2framework`. Then a fresh environment installs the release from PyPI alone — pip's install report showing every
 one of the fifteen downloaded from PyPI — and §19's checks pass from a clean clone at that commit, against those
 installs; then the plugin proof runs (§16). In every proof against an install, each package the checks import
 resolves into that environment, never into the clone's source.
@@ -513,7 +538,7 @@ that its wheel lacks, is found before PyPI is asked to hold it.
 | `pytest examples/_all/test_all.py` (or `python examples/_all/run_all.py`) | one domain through every package end to end — persona, compile, gate, construct, organize, steer, interpret |
 | `python examples/_all/bandit_self.py` | the roll-up closes on a domain and on the system's own components |
 | `pytest examples/nutrition` | the dietc rebuild: the agent closes, and a real day computes through the tools |
-| `pytest scripts/tests` | the version gate's planted refusals and the plugin grader's negative controls |
+| `pytest scripts/tests` | the version gate's planted refusals, the plugin grader's negative controls, and every Python block of the eight capability skills and `bandit-chain-system` run alone in an empty folder |
 | `python3 scripts/check_versions.py` | the one version line, the build files' declarations, the skills' uv lines and every copy (§16, §18) |
 | `lint-imports` | the layer contract of §2 |
 

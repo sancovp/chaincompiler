@@ -154,11 +154,18 @@ unchanged from prior behaviour.
 
 ## Example
 
-See [examples/runes.txt](examples/runes.txt) and [examples/runes_broken.txt](examples/runes_broken.txt).
+See [examples/runes.txt](https://github.com/sancovp/chaincompiler/blob/main/packages/rulecatcher/examples/runes.txt) and
+[examples/runes_broken.txt](https://github.com/sancovp/chaincompiler/blob/main/packages/rulecatcher/examples/runes_broken.txt).
 
 ## Installation
 
-For normal development:
+```bash
+pip install rulecatcher
+```
+
+It depends on nothing outside the standard library, and it installs the `rulecatcher` command. It is one of the fifteen
+packages of [ChainCompiler](https://github.com/sancovp/chaincompiler), whose gate it is; to work on it, clone the
+repository and run `./install.sh`, which installs all fifteen editable, or in this folder:
 
 ```bash
 python3 -m pip install --no-build-isolation -e .

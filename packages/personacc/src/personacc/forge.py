@@ -24,7 +24,7 @@ from accc import Language as ACLanguage
 from accc import forge as ac_forge
 from accc import gate as ac_gate
 from accc import parse_ac
-from corcc import Persona, cor_chain, forge_persona, inner_template, prime as cor_prime
+from corcc import Persona, cor_chain, forge_persona, prime as cor_prime
 from chaincompiler import slugify, write_skill  # made FROM CC (CC re-exports APE's write_skill/slugify)
 
 from .notation import Block, PersonaBundle
@@ -265,32 +265,6 @@ def forge_bundle(bundle: PersonaBundle, *, db: str, strict_uses: bool = False) -
     )
 
 
-def _safe_prime(persona: Persona) -> str:
-    """CORCC's persona PRIME, with a cue-free fallback.
-
-    Some CoR specs recovered from the proof GBAs have no per-move `cues` persisted
-    (the original build scripts weren't retained — honest under-specification, not
-    invented). CORCC's cue-based paragraph skeleton can't render those, so fall
-    back to a cue-free prime (inner chain + the ordered moves)."""
-    try:
-        return cor_prime(persona)
-    except Exception:
-        spec = persona.spec
-        moves = " → ".join(m.name for m in spec.moves)
-        return "\n".join([
-            f'# PRIME — persona "{spec.name}"',
-            f"({spec.blurb})" if spec.blurb else "",
-            "",
-            "## Inner attention chain (use silently)",
-            inner_template(persona),
-            "",
-            "## Chain-of-reasoning moves (perform in order; the last is the held convergence)",
-            moves,
-            "",
-            "_(per-move cue phrases were not persisted for this recovered persona.)_",
-        ])
-
-
 # ── render / package ─────────────────────────────────────────────────────────
 def render_blocks(bundle: PersonaBundle) -> str:
     """The description blocks rendered as markdown sections (one `##` per block)."""
@@ -353,7 +327,7 @@ def package(bundle: PersonaBundle, out_dir: str, *, db: str | None = None,
         parts.append("")
         parts += ["# Chains of reasoning (spoken; you MUST perform these, in order)", ""]
         for p in personas:
-            parts.append(_safe_prime(p))
+            parts.append(cor_prime(p))       # a move recovered without its cues is cued by its name (CORCC)
             parts.append("")
         return "\n".join(parts).rstrip()
 

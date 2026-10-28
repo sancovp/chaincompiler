@@ -49,10 +49,22 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [x] **Every build file declares what its source imports** (v0.3.0) — `chainaios` declares `agent-skilltree` and the extra `legend` (glyphsteer); `chaincompiler` the extra `persona` (glyphsteer); `glyphsteer`'s `grammar` extra brings `chaincompiler`; `check_versions.py` refuses an undeclared import (DESIGN §18).
 - [x] **rulecatcher's suite tests the installed package** (v0.3.0) — its `tests/conftest.py`, which put the clone's `src/` first on `sys.path`, is gone (DESIGN §19).
 - [x] **The wheel proof** (v0.3.0, a stage of the release flow) — before a merge, the fifteen built and checked by `publish_package.sh --dry-run` from the publish dry run's clone, installed non-editable, and §19's checks green against them (DESIGN §18 · §19).
-- [ ] **Publish the fifteen packages to PyPI under their names, each a manifest unit** (the author's ruling) — holds
-  the fourteen names still free there; needs scalable-publishing to state how a package inside a unit's folder gets its
+- [ ] **Publish the fifteen packages to PyPI under their names, each a manifest unit** (the author's ruling) — PyPI
+  holds fourteen at v0.3.0, and the fifteenth publishes as `skill2framework` (the task below); needs scalable-publishing to state how a package inside a unit's folder gets its
   own PyPI release (its `DESIGN.md` §4: every package we own on PyPI is a manifest unit), `rulecatcher`, uploaded by
   hand, among them (DESIGN §18).
+- [x] **The chapter rung is `skill2framework`** (v0.3.1, the author's ruling) — PyPI does not allow the name
+  `framework` (its upload answers `400 Bad Request`), so v0.3.0 holds fourteen of the fifteen and the plugin's four
+  chapter-rung skills name a distribution no index holds; the package's folder, distribution and import are
+  `skill2framework`, every reference with them — `install.sh`, `scripts/plugin_proof.py`, the upload and version-gate
+  tests, the package's tests, the chain and its four skills (their imports, their operations and their uv lines, the
+  rollup recompiled), both READMEs, the release flow, the stack, the orientation skill, the publishing manifest's unit
+  and PromptWorld's deploy; v0.3.1's upload publishes it (the item above · DESIGN §13 · §18).
+- [x] **Each package's page on PyPI** (v0.3.1) — every build file declares its folder's `README.md` as `readme` and the
+  repository's MIT license as `license = "MIT"`, under `setuptools>=77`, and every package folder carries the
+  repository's `LICENSE`, which its wheel ships; the eight packages that had no README get one, and the seven that had
+  one say how to install from PyPI; `check_versions.py` refuses a build file without either and a folder without the
+  `LICENSE` (DESIGN §0 · §18).
 - [ ] **The plugin proof** — `scripts/plugin_proof.py`: the signed-out install from the marketplace, then a headless session with the cached copy as its only addition that connects the self-interpreter, calls one of its tools and runs a capability skill's Python through its uv line; graded from the transcript and files, with negative controls (DESIGN §16).
 
 ## P8 — GlyphSteer (research)  `▸`
@@ -122,6 +134,11 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [x] **No distribution takes another project's PyPI name** (v0.1.64, the author's ruling) — `accc`, `archetype` and
   `si` publish as `chaincompiler-accc`, `chaincompiler-archetype` and `chaincompiler-si`, `skillchain` as
   `skillchain-compiler`, and every build file names them so; import names unchanged (DESIGN §18).
+- [x] **Every personapack persona seats** (v0.3.1) — corcc's `cor_template` took each move's first cue phrase, so the two
+  personas recovered without theirs (SamayaReviewer, ParamitaReader) raised `IndexError` in `corcc.package` and
+  `make_gba(**personapack.seat(name))` crashed for both; a move with no cue is cued by its own name, personacc's
+  catch-all fallback around the crash is gone, and every pack entry seats into a closed GBA in personapack's suite
+  (DESIGN §5 · §6).
 - [ ] **SCCC resolves a step to the package, never to the organizing tree's node copy** — its index takes every
   `SKILL.md` under the skills folder, so after a re-mint into a folder holding the roll-up's tree a step can resolve to
   `<domain>-tree/…/<step>/SKILL.md` and the rollup describes it by that node's placeholder ("attend (woom)" for
@@ -189,9 +206,9 @@ P0 Foundation · P1 Project Surface (live site) · P2 Exchange · P3 Self-Hostin
 P5 Federation · the public repo + CI + Pages · coordinate addressing · the
 `report-missed-skill` keystone.
 
-## P9 — Tome: the chapter rung (`skill2framework` + `framework`)  (2026-07-10)
+## P9 — Tome: the chapter rung (`skill2framework`, the chain and its package)  (2026-07-10)
 
-- [x] **`packages/framework`** — the deterministic glue: `JourneyCore`+`render_blog1` (fill,
+- [x] **`packages/skill2framework`** — the deterministic glue: `JourneyCore`+`render_blog1` (fill,
   never hand-write), `assemble_chapter`, `package_plugin`, `fold_into_tome` (delegates to
   `skilltree.tome.fold`, `agent-skilltree>=0.3.0`). 5 tests.
 - [x] **`skills/skill2framework/*`** — the 6 stage prompt-skills (DIY port of the proven

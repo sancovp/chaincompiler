@@ -62,7 +62,7 @@ frontend (tree + analytics + problem-marking, launched from the root skill), and
 
 Bundle the whole thing as **ONE installable Claude Code plugin**. Done: `.claude-plugin/plugin.json` +
 `.claude-plugin/marketplace.json`, the capability skills under `skills/`, and the SI MCP in `.mcp.json`
-(`python3 -m si.server`). Pending: slash `commands/` + `agents/`. Installing and verifying it from its marketplace is
+(`uvx --from chaincompiler-si==<release> si-server`). Pending: slash `commands/` + `agents/`. Installing and verifying it from its marketplace is
 P10.
 
 ## P8 — GlyphSteer (research) &nbsp;`▸ in progress`
@@ -80,7 +80,7 @@ torch, `/embed` over HTTP) ✓, and **dense Q1–Q3 measured** (emoji-direction 
 
 The chapter rung: `skill2framework` as a skill chain — two blog stages, then deterministic chapter and plugin
 operations — whose last stage folds the framework into its author's SkillTome through SkillTree's bind operation.
-Shipped: `packages/framework` (`JourneyCore` + `render_blog1`, `assemble_chapter`, `package_plugin`, `fold_into_tome`)
+Shipped: `packages/skill2framework` (`JourneyCore` + `render_blog1`, `assemble_chapter`, `package_plugin`, `fold_into_tome`)
 ✓, the six stage skills under `skills/skill2framework/` ✓, `chains/skill2framework.chain` and its compiled rollup ✓,
 the deterministic spine end to end (blog → chapter → plugin → fold → `skilltree validate` green) ✓, and a first real
 chapter through the whole chain, on the SkillTree unit ✓.

@@ -191,7 +191,7 @@ BODHISATTVA = PersonaSpec(
                       "2) aspiration (executable)",
                       "3) emptiness: FUNCTIONAL not realized — hold your categories as constructed, not ultimate "
                       "(the map never outranks the territory); flag it as functional, never claim realization")),
-        Move("Execute", ("produce the action/output, now sealed")),
+        Move("Execute", ("produce the action/output, now sealed",)),
         Move("Validate", ("ACCEPT ON PROCESS, not surface",
                           "facade-of-breaking (surface-violation, but verified great benefit + sealed) -> VALID",
                           "facade-of-non-breaking (surface-compliant, but the considerations flagged a great benefit you "

@@ -8,6 +8,8 @@
 
 ⭐ 0 stars • 🕑 Updated 2026-10-25
 
+[Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
+
 📦 Auto-published from the monorepo • [CHANGELOG](./CHANGELOG.md) • [sancovp/chaincompiler](https://github.com/sancovp/chaincompiler)
 
 <!-- SCALABLE-PUBLISHING:AUTOGEN END -->
@@ -22,7 +24,7 @@
 
 <br/>
 
-![tests](https://img.shields.io/badge/tests-313%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
+![tests](https://img.shields.io/badge/tests-324%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
 
 <br/>
 
@@ -276,8 +278,30 @@ The manifest is the org chart — **edit it however you want, rebuild, and every
 
 ## Quickstart
 
+**In Claude Code, as a plugin.** [uv](https://docs.astral.sh/uv/) is its one prerequisite: the plugin runs its Python
+from PyPI through uv, pinned to the plugin's release, so nothing is installed into your own Python.
+
 ```bash
-# install every package in the monorepo, editable — rulecatcher included.
+claude plugin marketplace add sancovp/chaincompiler
+claude plugin install chaincompiler@chaincompiler
+```
+
+Every session then carries the plugin's skills and its self-interpreter MCP server, which Claude Code starts as
+`uvx --from chaincompiler-si==<release> si-server`; each skill that runs package code says, before its first code
+block, the `uv run` line that runs it.
+
+**As a library, from PyPI.** The fifteen packages are on PyPI at one version, each pinning its siblings exactly, so one
+package brings the rest of its release:
+
+```bash
+pip install chaincompiler-si     # the self-interpreter, with the agent tier and the three chain compilers
+pip install glyphsteer skill2framework personapack chaincompiler-archetype goldenreq   # the packages beside the tiers
+```
+
+**From a clone, to work on ChainCompiler itself:**
+
+```bash
+# install every package in the repository, editable — rulecatcher included.
 # one clone, one command, no external setup.
 ./install.sh            # pip install -e packages/* (no-deps)
 
@@ -351,6 +375,46 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.3.1 — 2026-10-28
+- **The upload in dependency order.** `scripts/upload_release.py` uploads the fifteen from a clone of the public
+  repository at the publish commit, in three tiers — the self-interpreter's closure, the packages the shipped skills'
+  uv lines name, the rest — each in dependency order, and a package only once PyPI holds every sibling it requires, so
+  no package on PyPI names a sibling PyPI lacks. PyPI creates four new projects a day for one account and one address;
+  after its `429` the driver tries no new name, a held project's version still uploads, and the next day's run resumes
+  from PyPI's state (DESIGN §17 · §18). scalable-publishing's `publish_package.sh` decides only on PyPI's 404 and
+  refuses when PyPI gives no answer.
+- **Each package's page on PyPI.** Every build file declares its folder's `README.md` as `readme` and the MIT license
+  as `license = "MIT"`, under `setuptools>=77`; the eight packages that had no README get one, and the seven that had
+  one say how to install from PyPI; every package folder carries the repository's `LICENSE`, which its wheel ships.
+  `check_versions.py` refuses each (DESIGN §0 · §18).
+- **`install.sh` installs `setuptools>=77` first**, the build backend every build file requires, because it builds the
+  fifteen without isolation and a fresh environment carries none, or an older one.
+- **Every personapack persona seats.** A move with no cue phrase is cued by its own name, so SamayaReviewer and
+  ParamitaReader package and seat into a closed GBA, and `forge-cor`'s example runs; corcc's `Move` refuses a cue
+  written as a bare string, naming the move, and the Bodhisattva's `Execute` move gets its comma back (DESIGN §5 · §6).
+- **Every copy of a shipped skill is one.** `check_versions.py` refuses any `SKILL.md` under a `.claude/skills/` folder
+  or a package's own folder that carries a shipped skill's name and differs from it; the glyphsteer package's own copy
+  now equals the shipped `glyphsteer` skill, which gains its commands and their `uvx` line (DESIGN §16).
+- **Every capability skill's Python block runs alone.** `forge-skillchain`'s example makes its two steps and names
+  their distributions, and `bandit-chain-system`'s second block imports `chainaios`;
+  `scripts/tests/test_skill_examples.py` pipes each block into `python3 -` in an empty folder (DESIGN §19).
+- **The plugin proof's grader** requires the capability's own output — its name, kind and chain — and counts a write
+  from Python to a `SKILL.md` as hand-written (DESIGN §16). The release flow carries the upload's order and quota, the
+  build backend, the same-name copies and the blocks run alone.
+- **The chapter rung is `skill2framework`.** PyPI does not allow the name `framework` — its upload answered
+  `400 Bad Request` — so v0.3.0 holds fourteen of the fifteen on PyPI, and v0.3.0's four chapter-rung skills name a
+  distribution no index holds. The package takes its chain's name: its folder, its distribution and its import are
+  `skill2framework`, and the four skills' imports, operations and uv lines, the recompiled rollup, `install.sh`, the
+  plugin proof, the release flow, the stack and the orientation skill name it; `framework` was the one name in the
+  release no one could install (DESIGN §2 · §13 · §18).
+- **PyPI's quota and refusals, as measured.** The four new projects are four in any 86,400 seconds, counted from the
+  creations themselves (`q=4;w=86400`), so a next run starts at least a day after the last creation of the one before,
+  never at a fixed hour; a `400` on a new name whose build passed `twine check` is PyPI refusing the name, renamed in the
+  next release. The next release merges once PyPI holds this one whole or short only of such a name, so v0.3.1 merges
+  over v0.3.0's missing `framework`. While GitHub Actions starts no job, the release flow's publish runs by hand with the
+  workflow's own `publish_unit.sh` (DESIGN §18 · the release flow).
+- Suite: 324 passed in `pytest packages`, 51 in `scripts/tests`; every package moves to 0.3.1.
 
 ### v0.3.0 — 2026-10-24
 - **One version line.** The release version is every package's version, every `__version__`, the plugin's version
@@ -736,17 +800,17 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 | `rulecatcher` | the linter / gate | 43 |
 | `honeyc` (+ `dietc`) | the compiler (+ domain proof) | 84 |
 | `chaincompiler` | the base | 14 |
-| `accc` / `corcc` / `sccc` | the chain tier | 6 / 7 / 6 |
+| `accc` / `corcc` / `sccc` | the chain tier | 6 / 9 / 6 |
 | `chainaios` | the agent tier (GBA · COG · HBA) | 28 |
-| `personacc` / `personapack` | personas | 14 / 20 |
+| `personacc` / `personapack` | personas | 14 / 29 |
 | `goldenreq` | the acceptance gate | 9 |
 | `glyphsteer` | retrieval steering | 53 |
 | `archetype` | archetype-as-state-machine compiler | 11 |
-| `framework` | the chapter rung | 6 |
+| `skill2framework` | the chapter rung | 6 |
 | `si` | the self-interpreter | 12 |
 | `agent-skilltree` | the organization (published on PyPI, ≥0.4.0; import `skilltree`) | — (its own suite) |
 
-**313 passing** (`pytest packages/`, with SWI-Prolog on the path — without it the two tests that run the emitted Prolog are skipped; the examples are checked separately — `DESIGN.md` §19; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
+**324 passing** (`pytest packages/`, with SWI-Prolog on the path — without it the two tests that run the emitted Prolog are skipped; the examples are checked separately — `DESIGN.md` §19; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
 
 ### Not done yet (honestly)
 

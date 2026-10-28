@@ -1,13 +1,15 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "sccc"
-version = "0.3.0"
+version = "0.3.1"
 description = "Skillchain Compiler-Compiler — chains ACs + CoRs + skills into one SKILL.md"
+readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["chaincompiler-accc==0.3.0", "corcc==0.3.0", "chaincompiler==0.3.0", "rulecatcher==0.3.0", "skillchain-compiler==0.3.0", "click"]
+license = "MIT"
+dependencies = ["chaincompiler-accc==0.3.1", "corcc==0.3.1", "chaincompiler==0.3.1", "rulecatcher==0.3.1", "skillchain-compiler==0.3.1", "click"]
 
 [project.scripts]
 sccc = "sccc.cli:main"

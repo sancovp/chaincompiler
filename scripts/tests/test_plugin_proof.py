@@ -1,8 +1,8 @@
 """The plugin proof's grader, held to its negative controls (`scripts/plugin_proof.py`, DESIGN.md §16).
 
 A baseline session — the plugin's self-interpreter connected, one of its tools answered, a capability skill followed
-with its Python run through the skill's uv line into a skill dir whose frontmatter parses, a successful result —
-passes. Each bad session plants ONE failure and fails exactly the check it names. Run from the repository root:
+with its Python run through the skill's uv line into the skill dir the task asks for, as accc packages it, a successful
+result — passes. Each bad session plants ONE failure and fails exactly the check it names. Run from the repository root:
 `python3 -m pytest scripts/tests`.
 """
 from __future__ import annotations
@@ -14,11 +14,14 @@ from pathlib import Path
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from plugin_proof import grade  # noqa: E402
+from plugin_proof import TASK, grade  # noqa: E402
+
+import accc  # noqa: E402
 
 V = "0.3.0"
 SERVER_TOOL = "mcp__plugin_chaincompiler_self-interpreter__si_reachable"
-UV = f"uv run --no-project --with chaincompiler-accc=={V} python3 - <<'PY'\nimport accc\naccc.package('debug', '[A] ⇒ |B|', out_dir='skills')\nPY"
+UV = (f"uv run --no-project --with chaincompiler-accc=={V} python3 - <<'PY'\nimport accc\n"
+      f"accc.package('{TASK['name']}', '{TASK['chain']}', out_dir='skills')\nPY")
 
 
 def event(kind: str, **kw) -> dict:
@@ -47,8 +50,7 @@ def session(status: str = "connected", server_error: bool = False, bash: str = U
 @pytest.fixture()
 def work(tmp_path: Path) -> Path:
     w = tmp_path / "work"
-    (w / "skills" / "debug").mkdir(parents=True)
-    (w / "skills" / "debug" / "SKILL.md").write_text("---\nname: debug\ndescription: attend\n---\n\n[A] ⇒ |B|\n")
+    accc.package(TASK["name"], TASK["chain"], out_dir=str(w / "skills"))     # the capability's own output
     return w
 
 
@@ -78,7 +80,8 @@ def test_a_server_tool_that_returned_an_error_fails_exactly_that(tmp_path, work)
 
 
 def test_python_run_without_the_skills_uv_line_fails_exactly_that(tmp_path, work):
-    g = graded(tmp_path, work, session(bash="python3 -c \"import accc; accc.package('debug', '[A] ⇒ |B|', out_dir='skills')\""))
+    bash = f"python3 - <<'PY'\nimport accc\naccc.package('{TASK['name']}', '{TASK['chain']}', out_dir='skills')\nPY"
+    g = graded(tmp_path, work, session(bash=bash))
     assert only_failing(g) == ["its_python_ran_through_its_uv_line"]
 
 
@@ -102,3 +105,28 @@ def test_another_server_listed_but_granted_nothing_passes(tmp_path, work):
 def test_a_skill_written_by_hand_fails_the_skill_dir_check(tmp_path, work):
     g = graded(tmp_path, work, session(writes=(str(work / "skills" / "debug" / "SKILL.md"),)))
     assert only_failing(g) == ["a_skill_dir_written_whose_frontmatter_parses"]
+
+
+def test_a_skill_written_from_python_fails_the_skill_dir_check(tmp_path, work):
+    # the uv line run on nothing, then the SKILL.md written by Python's open()
+    bash = (f"uv run --no-project --with chaincompiler-accc=={V} python3 -c 'pass' && python3 -c \"open('skills/debug/"
+            "SKILL.md', 'w').write('---\\nname: debug\\ndescription: x\\n---\\n')\"")
+    g = graded(tmp_path, work, session(bash=bash))
+    assert only_failing(g) == ["a_skill_dir_written_whose_frontmatter_parses"]
+
+
+def test_a_skill_that_is_not_the_capabilitys_output_fails_exactly_that(tmp_path, work):
+    (work / "skills" / "debug" / "SKILL.md").write_text("---\nname: debug\ndescription: attend\n---\n\n[A] ⇒ |B|\n")
+    g = graded(tmp_path, work, session())
+    assert only_failing(g) == ["the_skill_is_the_capabilitys_output"]
+
+
+def test_reading_the_skill_from_python_is_no_write(tmp_path, work):
+    bash = UV + "\npython3 -c \"print(open('skills/debug/SKILL.md').read())\""
+    g = graded(tmp_path, work, session(bash=bash), [SERVER_TOOL])
+    assert g["pass"] is True, only_failing(g)
+
+
+def test_the_task_file_asks_for_the_skill_the_grader_checks():
+    task = (Path(__file__).resolve().parents[1] / "plugin-proof-task.md").read_text(encoding="utf-8")
+    assert f"named `{TASK['name']}`" in task and TASK["chain"] in task and "forge-attention-chain" in task

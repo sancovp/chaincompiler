@@ -16,7 +16,7 @@
       "capture": "blog2"
     },
     {
-      "cor": "Both posts exist ({blog1}, {blog2}). They become ONE publishable unit \u2014 the chapter \u2014 via the deterministic op (framework.assemble_chapter). Decide the skill links to wire (the framework's decomposed skills) and a two-line abstract before running it."
+      "cor": "Both posts exist ({blog1}, {blog2}). They become ONE publishable unit \u2014 the chapter \u2014 via the deterministic op (skill2framework.assemble_chapter). Decide the skill links to wire (the framework's decomposed skills) and a two-line abstract before running it."
     },
     {
       "skill": "assemble-chapter",
@@ -33,7 +33,7 @@
     },
     {
       "skill": "package-plugin",
-      "args": "framework skill={volume_skill}; chapter={chapter}; assemble the plugin dir (framework.package_plugin)",
+      "args": "framework skill={volume_skill}; chapter={chapter}; assemble the plugin dir (skill2framework.package_plugin)",
       "capture": "plugin"
     },
     {
@@ -41,7 +41,7 @@
     },
     {
       "skill": "fold-into-tome",
-      "args": "framework skill dir from {volume_skill}; the tome root + volume node; run framework.fold_into_tome, then skilltree validate the tome"
+      "args": "framework skill dir from {volume_skill}; the tome root + volume node; run skill2framework.fold_into_tome, then skilltree validate the tome"
     }
   ]
 }

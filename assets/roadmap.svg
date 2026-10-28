@@ -142,7 +142,7 @@
 <text x="2306" y="320" font-size="11.5" fill="#5e5e66">pattern book (was</text>
 <text x="2306" y="336" font-size="11.5" fill="#5e5e66">{aios}-nomicon); SkillTome =</text>
 <text x="2306" y="352" font-size="11.5" fill="#5e5e66">the author's overall corpus.</text>
-<text x="2306" y="378" font-size="11" fill="#15151a">•  packages/framework: JourneyCore +…</text>
+<text x="2306" y="378" font-size="11" fill="#15151a">•  packages/skill2framework: Journey…</text>
 <text x="2306" y="398" font-size="11" fill="#15151a">•  skills/skill2framework/*: the 6 s…</text>
 <text x="2306" y="418" font-size="11" fill="#15151a">•  chains/skill2framework.chain + th…</text>
 <text x="2306" y="438" font-size="11" fill="#15151a">•  Deterministic spine E2E: blog → c…</text>

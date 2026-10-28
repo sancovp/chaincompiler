@@ -20,6 +20,13 @@ class Move:
     name: str
     cues: tuple[str, ...]
 
+    def __post_init__(self) -> None:
+        # a one-phrase tuple written without its comma is a bare string, whose first letter would become the cue
+        if isinstance(self.cues, str):
+            raise TypeError(f"Move {self.name!r}: cues is the string {self.cues!r}, not a tuple of cue phrases — "
+                            f"write ({self.cues!r},)")
+        object.__setattr__(self, "cues", tuple(self.cues))
+
 
 @dataclass(frozen=True)
 class PersonaSpec:

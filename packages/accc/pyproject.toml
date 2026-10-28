@@ -1,13 +1,15 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "chaincompiler-accc"
-version = "0.3.0"
+version = "0.3.1"
 description = "Attention-Chain Compiler-Compiler — the atom of the cognition-chain stack"
+readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["chaincompiler==0.3.0", "honeyc==0.3.0", "rulecatcher==0.3.0", "click"]
+license = "MIT"
+dependencies = ["chaincompiler==0.3.1", "honeyc==0.3.1", "rulecatcher==0.3.1", "click"]
 
 [project.scripts]
 accc = "accc.cli:main"

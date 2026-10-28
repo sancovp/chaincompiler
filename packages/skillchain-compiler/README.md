@@ -12,12 +12,26 @@ The compiler **(1)** indexes every skill under `~/.claude/skills` + `~/.claude/p
 the CoR bridges, **(4)** exports a **skill package** (`<out>/<name>/SKILL.md` + `chain.json`)
 that, when invoked, executes the chain in order.
 
-## Use
+## Install
+
 ```bash
-python3 skillchain.py list                       # list indexed skills
-python3 skillchain.py validate examples/offer_builder.chain
-python3 skillchain.py compile  examples/offer_builder.chain --out dist
-python3 skillchain.py compile  examples/offer_builder.chain --install   # -> ~/.claude/skills
+pip install skillchain-compiler
+```
+
+Import it as `skillchain`; it installs the `skillchain` command and depends on nothing outside the standard library. It
+is one of the fifteen packages of [ChainCompiler](https://github.com/sancovp/chaincompiler), where
+[`sccc`](https://pypi.org/project/sccc/) writes its rollups through it; to work on it, clone the repository and run
+`./install.sh`, which installs all fifteen editable.
+
+## Use
+
+Write a chain in the `.chain` format below as `my_chain.chain`, then:
+
+```bash
+skillchain list                              # list indexed skills
+skillchain validate my_chain.chain
+skillchain compile  my_chain.chain --out dist
+skillchain compile  my_chain.chain --install   # -> ~/.claude/skills
 ```
 `--install` writes the compiled package straight into `~/.claude/skills/<name>/` so it becomes
 an invokable skill (after a reload). Otherwise it lands in `./dist/<name>/`.

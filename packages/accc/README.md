@@ -20,11 +20,11 @@ it; `prime()` emits the re-injectable block.
 
 ## The stack it sits in
 
-| layer | chain of… | each node expands to… | built |
+| layer | chain of… | each node expands to… | package |
 |------|-----------|-----------------------|-------|
-| **ACCC** | attention foci | — (the atom) | ✅ |
-| CORCC | reasoning steps | a forged **AC** | next |
-| SCCC | skills | a **CoR** (+ can forge new languages) | after |
+| **ACCC** | attention foci | — (the atom) | `chaincompiler-accc` |
+| CORCC | reasoning steps | a forged **AC** | [`corcc`](https://pypi.org/project/corcc/) |
+| SCCC | skills | a **CoR** (+ can forge new languages) | [`sccc`](https://pypi.org/project/sccc/) |
 
 Composition is HoneyC scope/drilldown: a CoR step `[Frame]:{ <ac> }` *contains*
 the attention chain that powers it.
@@ -37,13 +37,23 @@ the attention chain that powers it.
 - **chaincompiler** — the generic `learn → gate → compile → prime` loop. ACCC is
   the first domain layer on it.
 
+## Install
+
+```bash
+pip install chaincompiler-accc
+```
+
+Import it as `accc`. It installs the `accc` command and brings [`chaincompiler`](https://pypi.org/project/chaincompiler/),
+[`honeyc`](https://pypi.org/project/honeyc/) and [`rulecatcher`](https://pypi.org/project/rulecatcher/) at the same
+release. It is one of the fifteen packages of [ChainCompiler](https://github.com/sancovp/chaincompiler); to work on it,
+clone the repository and run `./install.sh`, which installs all fifteen editable.
+
 ## Run
 
 ```bash
-pip install --no-build-isolation --no-deps -e .   # rulecatcher/honeyc/chaincompiler already installed
 accc demo                                          # forge 2 AC languages, gate, prime
-accc forge debug examples/debug.ac --strict        # mint a domain AC language
-pytest                                             # 5 tests
+accc forge debug examples/debug.ac --strict        # mint a domain AC language (examples/ is in a clone of the repository)
+pytest                                             # from a clone: 6 tests
 ```
 
 ## What the demo shows
@@ -56,7 +66,7 @@ pytest                                             # 5 tests
    with verdict **`orthogonal`** (valid identifier, wrong vocabulary → steerable),
    fix: insert `Symptom`.
 
-## API (what CORCC will consume)
+## API (what CORCC consumes)
 
 ```python
 from accc import forge, gate, prime, attention_block, parse_ac

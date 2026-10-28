@@ -11,6 +11,16 @@ gate. Before, chainaios's bandit rule told the agent to self-fold a 2×🏆 chai
 into golden — self-certification. Now the rule says: **file a goldenization
 request; promotion happens only on an accepted verdict.**
 
+## Install
+
+```bash
+pip install goldenreq
+```
+
+It depends on nothing outside the standard library, and it installs the `goldenreq` command. It is one of the fifteen
+packages of [ChainCompiler](https://github.com/sancovp/chaincompiler); to work on it, clone the repository and run
+`./install.sh`, which installs all fifteen editable.
+
 ## The flow
 
 ```

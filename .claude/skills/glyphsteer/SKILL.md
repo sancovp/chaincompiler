@@ -7,9 +7,13 @@ description: Use when steering retrieval with hidden in-band glyph markers — a
 
 Dual-regime retrieval steering via **compiled in-band glyph annotations**. An LLM writes a
 controlled glyph vocabulary onto a corpus; the markers steer retrieval and then **vanish
-from the output**. Package: `glyphsteer`, with its `grammar` extra for the syntax gate.
+from the output**. Package: `glyphsteer`, with its `grammar` extra for the syntax gate. It is HoneyC pointed at the
+index — a glyph code is a HoneyC chain — and a cousin of Anthropic's Contextual Retrieval (the embedded form differs
+from the displayed form), with a compiled, controlled vocabulary in place of free text.
 
-**Run its Python** from a plugin install with `uv run --no-project --with "glyphsteer[grammar]==0.3.0" --with "agent-skilltree>=0.4.0" python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+**Run its Python** from a plugin install with `uv run --no-project --with "glyphsteer[grammar]==0.3.1" --with "agent-skilltree>=0.4.0" python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+
+**Run `glyphsteer`** from a plugin install as `uvx --from glyphsteer==0.3.1 glyphsteer …`, and from a clone where `./install.sh` ran, as `glyphsteer …` in the environment it installed into.
 
 **Run `skilltree`** from a plugin install as `uvx --from "agent-skilltree>=0.4.0" skilltree …`, and from a clone where `./install.sh` ran, as `skilltree …` in the environment it installed into.
 
@@ -50,6 +54,8 @@ print(hits[0]["text"])   # CLEAN text — the glyph is NOT in it (the hide)
 Key calls: `annotate_chunk(chunk, annotator, vocab)` · `build_index(chunks, vocab)` ·
 `search(con, query, facet=glyph, vocab=...)` · `facet_only(con, glyph, vocab=...)`.
 The hide invariant: `from glyphsteer import check_hidden; assert check_hidden(chunk, vocab)`.
+From the shell, over a JSONL corpus: `glyphsteer vocab` (the sentiment vocabulary) ·
+`glyphsteer annotate corpus.jsonl -k 😡=failed,broke` · `glyphsteer query corpus.jsonl "deployment" -f 😡`.
 
 ## Grade a corpus, search shows grades (the flagship)
 

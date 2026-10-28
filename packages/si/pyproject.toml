@@ -1,13 +1,15 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "chaincompiler-si"
-version = "0.3.0"
+version = "0.3.1"
 description = "Self-Interpreter for the ChainCompiler chain dialect — an MCP that is also a skill"
+readme = "README.md"
 requires-python = ">=3.11"
-dependencies = ["chaincompiler==0.3.0", "chainaios==0.3.0", "chaincompiler-accc==0.3.0", "corcc==0.3.0", "sccc==0.3.0", "agent-skilltree>=0.4.0", "fastmcp"]
+license = "MIT"
+dependencies = ["chaincompiler==0.3.1", "chainaios==0.3.1", "chaincompiler-accc==0.3.1", "corcc==0.3.1", "sccc==0.3.1", "agent-skilltree>=0.4.0", "fastmcp"]
 
 [project.scripts]
 si-server = "si.server:main"

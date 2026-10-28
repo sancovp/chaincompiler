@@ -20,8 +20,13 @@ attention-chains / CoRs / skillchains) sit on top.
 ## Install
 
 ```bash
-python3 -m pip install --no-build-isolation -e .
+pip install honeyc
 ```
+
+It installs the `honeyc` and `dietc` commands. It is one of the fifteen packages of
+[ChainCompiler](https://github.com/sancovp/chaincompiler); to work on it, clone the repository and run `./install.sh`,
+which installs all fifteen editable (`python3 -m pip install --no-build-isolation -e .` in this folder installs it
+alone). The CLI's examples below (`examples/`) are in a clone.
 
 ## CLI
 

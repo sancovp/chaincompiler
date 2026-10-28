@@ -46,7 +46,7 @@ flowchart TB
         GR["goldenreq"]
         GS["glyphsteer"]
         ARC["archetype"]
-        FW["framework"]
+        FW["skill2framework"]
         SI["si — MCP server + skill"]
     end
     subgraph SURFACE["The project surface — DESIGN §16 · §17 · §18 · §19"]
@@ -54,6 +54,7 @@ flowchart TB
         UVL["the plugin's Python from PyPI through uv — .mcp.json: uvx --from chaincompiler-si==release si-server · every shipped skill's uv line, in uvline.py's words"]
         VER["one version line — set_version.py writes it; check_versions.py refuses a tree where any line, pin, build-file declaration, uv line or copy is off"]
         PPROOF["plugin_proof.py — the signed-out install from the marketplace, then a headless session at a clean seat given plugin-proof-task.md, graded from its transcript and files"]
+        UPL["upload_release.py — the fifteen to PyPI from a clone at the publish commit, in dependency order (the self-interpreter's closure first), a package only once its siblings are held, within PyPI's four new projects a day, resuming from PyPI's state"]
         GEN["update_site.py → roadmap SVG · site/data.json · the board (all from roadmap.json + the README changelog)"]
     end
     subgraph PUBX["Outside this folder — DESIGN §18"]
@@ -86,6 +87,7 @@ flowchart TB
     VER -.-> PLUG
     PPROOF -.-> PLUG
     PUB -.-> PYPI
+    UPL -.->|"publish_package.sh, one package at a time"| PUB
     CHAIN -. produces .-> TYPE
     ST -. organizes .-> TYPE
     MINT -. runs through .-> CHAIN
@@ -95,6 +97,7 @@ flowchart TB
     REL -. runs through .-> PUB
     REL -. runs through .-> VER
     REL -. runs through .-> PPROOF
+    REL -. runs through .-> UPL
 ```
 
 ---
@@ -189,7 +192,7 @@ flowchart BT
     si -.-> accc
     si -.-> chaincompiler
     archetype -.-> chaincompiler
-    framework --> ST
+    skill2framework --> ST
     glyphsteer -.-> chaincompiler
     glyphsteer -.-> rulecatcher
     chaincompiler -.-> glyphsteer

@@ -9,7 +9,7 @@ The dense half steers retrieval by the emoji's **learned direction** in embeddin
 The heavy neural runtime lives in a Docker sidecar (`fastembed → onnxruntime`, **no torch**);
 the host calls it over HTTP and the steer/probe math runs host-side in pure numpy.
 
-**Run its Python** from a plugin install with `uv run --no-project --with glyphsteer==0.3.0 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`. For the local fastembed backend instead of the sidecar, run it with `uv run --no-project --with "glyphsteer[dense]==0.3.0" python3`.
+**Run its Python** from a plugin install with `uv run --no-project --with glyphsteer==0.3.1 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`. For the local fastembed backend instead of the sidecar, run it with `uv run --no-project --with "glyphsteer[dense]==0.3.1" python3`.
 
 > The sidecar's compose file and the probes below are in a clone of the public repository: run every
 > `packages/...` command from the clone's root (`.../chaincompiler`).

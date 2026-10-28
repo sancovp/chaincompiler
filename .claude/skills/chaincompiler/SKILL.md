@@ -19,7 +19,7 @@ packages/  rulecatcher · honeyc · skillchain-compiler # the engine
            chaincompiler                              # the base
            accc · corcc · sccc                        # the chain tier
            chainaios                                  # the agent tier (installs the chaincompiler CLI)
-           personacc · personapack · goldenreq · glyphsteer · archetype · framework · si
+           personacc · personapack · goldenreq · glyphsteer · archetype · skill2framework · si
 skills/ · .mcp.json · .claude-plugin/                 # the plugin payload
 personas/ · examples/ · chains/                       # worked agents · end-to-end examples · skillchain specs
 assets/ · site/ · scripts/ · .github/                 # generated roadmap + site, generators, workflows
@@ -38,7 +38,7 @@ installs every package editable plus the PyPI dependencies.
 - **chainaios** = the agent tier: `construct_language`, `roll_up_algebra` (closure), `hierarchicalize`,
   and the agent shapes GBA · COG · HBA (`DESIGN.md` §7–§8).
 - Beside the tiers: **personacc/personapack** (personas), **goldenreq** (nothing promotes itself),
-  **glyphsteer** (retrieval steering), **archetype**, **framework** (the chapter rung), **si** (the
+  **glyphsteer** (retrieval steering), **archetype**, **skill2framework** (the chapter rung), **si** (the
   self-interpreter MCP).
 
 Diagrams: `.claude/rules/21-architecture-diagrams.md` (the stack, the algebra, the package graph and every flow).

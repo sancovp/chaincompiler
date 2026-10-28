@@ -18,7 +18,7 @@ corpus is drop-in for that reader (field mapping: see `verdict.py`).
 """
 from __future__ import annotations
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
 from .queue import KINDS, file_request, list_pending, get_request
 from .verdict import accept, reject, list_verdicts

@@ -14,7 +14,7 @@ Usage:
 """
 from __future__ import annotations
 
-__version__ = "0.3.0"
+__version__ = "0.3.1"
 
 from .entry import PackEntry, GRADES
 from .pack import PACK, get, bundle, by_domain, by_grade, seat

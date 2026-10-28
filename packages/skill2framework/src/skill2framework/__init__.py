@@ -1,4 +1,4 @@
-"""framework — the chapter rung of the ladder (skill2framework's deterministic glue).
+"""skill2framework — the chapter rung of the ladder (the skill2framework chain's deterministic glue).
 
 A FRAMEWORK is a chapter: Blog 1 (narrative) + Blog 2 (deep dive) + a plugin +
 the {aios}-volume index skill, folded into the author's SkillTome. The LLM
