@@ -12,7 +12,9 @@ The release version is the newest README changelog entry. Refused, each named wi
   - a build file that does not give its package's page on PyPI its README (`readme = "README.md"`, the file present)
     and the repository's license (`license = "MIT"`), or whose `setuptools` build requirement is below 77, the first
     release that reads a license written that way;
-  - a `.mcp.json` that does not launch `uvx --from chaincompiler-si==<release> si-server`;
+  - a `.mcp.json` whose self-interpreter is not `uvline.server_launch(<release>)` — uv running the plugin's
+    `server/launch.py` with `--from chaincompiler-si==<release> si-server` — or a plugin without that launcher and
+    its `initialize.json` and `tools.json`;
   - a shipped skill whose code has no uv line before its first code block, or a uv line that misses a distribution
     the code it runs imports (a lazy or optional import included), pins a sibling to another version, or names an
     outside distribution without its lower bound;
@@ -36,6 +38,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 from update_site import parse_changelog  # noqa: E402
+from uvline import server_launch  # noqa: E402
 
 LOWER = {"agent-prompt-engineering": "0.2.0", "agent-skilltree": "0.4.0"}
 LICENSE = "MIT"         # the repository's LICENSE, as every package's metadata states it
@@ -170,9 +173,12 @@ def check_plugin(root: Path, version: str, r: Report) -> None:
             r.refuse(".claude-plugin/marketplace.json", f"plugin version {p.get('version')!r} is not the release {version}")
     servers = json.loads((root / ".mcp.json").read_text(encoding="utf-8")).get("mcpServers", {})
     si = servers.get("self-interpreter", {})
-    want = ["--from", f"chaincompiler-si=={version}", "si-server"]
-    if si.get("command") != "uvx" or si.get("args") != want:
-        r.refuse(".mcp.json", f"the self-interpreter does not launch as uvx {' '.join(want)}")
+    want = server_launch(version)
+    if {k: si.get(k) for k in want} != want:
+        r.refuse(".mcp.json", f"the self-interpreter does not launch as {want['command']} {' '.join(want['args'])}")
+    for part in ("server/launch.py", "server/initialize.json", "server/tools.json"):
+        if not (root / part).is_file():
+            r.refuse(part, "the plugin's server launcher is missing (DESIGN.md §16)")
 
 
 def blocks(text: str) -> list[tuple[int, str, str]]:

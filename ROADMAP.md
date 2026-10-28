@@ -61,8 +61,9 @@ frontend (tree + analytics + problem-marking, launched from the root skill), and
 ## P7 — Plugin &nbsp;`▸ in progress`
 
 Bundle the whole thing as **ONE installable Claude Code plugin**. Done: `.claude-plugin/plugin.json` +
-`.claude-plugin/marketplace.json`, the capability skills under `skills/`, and the SI MCP in `.mcp.json`
-(`uvx --from chaincompiler-si==<release> si-server`). Pending: slash `commands/` + `agents/`. Installing and verifying it from its marketplace is
+`.claude-plugin/marketplace.json`, the capability skills under `skills/`, and the SI MCP in `.mcp.json` (the plugin's
+launcher `server/launch.py`, which answers Claude Code at once and starts `si-server` from
+`chaincompiler-si==<release>` behind it). Pending: slash `commands/` + `agents/`. Installing and verifying it from its marketplace is
 P10.
 
 ## P8 — GlyphSteer (research) &nbsp;`▸ in progress`

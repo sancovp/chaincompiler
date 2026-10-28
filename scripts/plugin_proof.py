@@ -33,11 +33,16 @@ import sys
 import tempfile
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from uvline import server_launch  # noqa: E402  (the one wording of the plugin's server launch)
+
 PREFIX, MARKER = "seat-", ".plugin-seat"
 KEEP_ENV = ("HOME", "USER", "LOGNAME", "PATH", "LANG", "TERM", "TMPDIR")
 REPO = Path(__file__).resolve().parent.parent
 PLUGIN, MARKETPLACE = "chaincompiler", "chaincompiler"
 SERVER = "self-interpreter"
+# Claude Code's note, in a tool search's result, that a configured server did not connect — naming this one
+FAILED_NOTE = re.compile(rf"configured MCP servers failed to connect.*?plugin:{PLUGIN}:{re.escape(SERVER)} \(", re.S)
 # the eight capability skills and the distributions each one's uv line names (DESIGN.md §16)
 CAPABILITIES = {"forge-attention-chain": "chaincompiler-accc", "forge-cor": "corcc", "forge-skillchain": "sccc",
                 "construct-language": "chainaios", "make-prompt": "agent-prompt-engineering",
@@ -149,8 +154,9 @@ def cmd_install(seat: str, version: str, marketplace: str) -> int:
         "plugin_installed": steps[2]["exit"] == 0,
         "listed_enabled_at_the_release": entry.get("enabled") is True and entry.get("version") == version,
         "cached_copy_holds_every_shipped_skill": bool(cached_skills) and cached_skills == shipped_skills(REPO),
-        "mcp_pins_the_release": server.get("command") == "uvx"
-                                and server.get("args") == ["--from", f"chaincompiler-si=={version}", "si-server"],
+        "mcp_pins_the_release": {k: server.get(k) for k in server_launch(version)} == server_launch(version)
+                                and bool(cached) and all((cached / "server" / f).is_file()
+                                                         for f in ("launch.py", "initialize.json", "tools.json")),
     }
     report = {"checks": checks, "pass": all(checks.values()), "steps": steps,
               "cached_copy": strip(str(cached), s) if cached else None, "cached_skills": cached_skills,
@@ -223,7 +229,8 @@ def tool_calls(evs: list[dict]) -> list[dict]:
         if e.get("type") == "assistant":
             for c in e["message"].get("content", []):
                 if c.get("type") == "tool_use":
-                    call = {"name": c["name"], "input": c["input"], "result": "", "error": False, "answered": False}
+                    call = {"name": c["name"], "input": c["input"], "result": "", "error": False, "answered": False,
+                            "asked_at": e.get("timestamp"), "answered_at": None}
                     calls.append(call)
                     by_id[c.get("id")] = call
         elif e.get("type") == "user":
@@ -233,8 +240,31 @@ def tool_calls(evs: list[dict]) -> list[dict]:
                     body = c.get("content")
                     if isinstance(body, list):
                         body = " ".join(x.get("text", "") for x in body if isinstance(x, dict))
-                    by_id[c["tool_use_id"]].update(result=str(body), error=bool(c.get("is_error")), answered=True)
+                    by_id[c["tool_use_id"]].update(result=str(body), error=bool(c.get("is_error")), answered=True,
+                                                   answered_at=e.get("timestamp"))
     return calls
+
+
+def seconds(start: str | None, end: str | None) -> float | None:
+    """The seconds between two of the transcript's timestamps — a server tool's wait, uv's install on a cold seat."""
+    from datetime import datetime
+    try:
+        return round((datetime.fromisoformat(end.replace("Z", "+00:00"))
+                      - datetime.fromisoformat(start.replace("Z", "+00:00"))).total_seconds(), 1)
+    except (AttributeError, TypeError, ValueError):
+        return None
+
+
+def tool_references(evs: list[dict]) -> list[str]:
+    """Every tool a tool search offered the session — the `tool_reference` blocks of its results."""
+    out = []
+    for e in evs:
+        content = e.get("message", {}).get("content", []) if e.get("type") == "user" else []
+        for c in content if isinstance(content, list) else []:
+            if isinstance(c, dict) and c.get("type") == "tool_result" and isinstance(c.get("content"), list):
+                out += [x.get("tool_name", "") for x in c["content"]
+                        if isinstance(x, dict) and x.get("type") == "tool_reference"]
+    return out
 
 
 def frontmatter(p: Path) -> dict | None:
@@ -287,10 +317,20 @@ def grade(transcript: Path, work: Path, version: str, allowed: list[str]) -> dic
     made = sorted(work.rglob("SKILL.md")) if work.is_dir() else []
     parsed = [p for p in made if frontmatter_ok(p)]
     task_output = [p for p in parsed if is_task_output(p)]
+    # The session's start lists a server still connecting as `pending`; it connected when the session was then offered
+    # or answered one of its tools, and it did not when Claude Code's own note — written into a tool search's result —
+    # names it as failed to connect. Text the session read elsewhere (the plugin's README and DESIGN carry the same
+    # words) is never that note. Connected proves the plugin's launcher answered; the real server is proven by its tool's
+    # answer (`server_tool_answered_without_error`).
+    offered = [t for t in tool_references(evs) if SERVER.replace("-", "_") in norm(t)]
+    answered = any(c["answered"] and not c["error"] for c in server_calls)
+    failed_notes = [c["result"][:300] for c in calls if c["name"] == "ToolSearch" and FAILED_NOTE.search(c["result"])]
     checks = {
-        "server_connected": bool(ours) and all(m.get("status") == "connected" for m in ours),
+        "server_connected": bool(ours) and not failed_notes
+                            and all(m.get("status") in ("connected", "pending") for m in ours)
+                            and (all(m.get("status") == "connected" for m in ours) or bool(offered) or answered),
         "other_servers_granted_no_tool": not granted_others,
-        "server_tool_answered_without_error": any(c["answered"] and not c["error"] for c in server_calls),
+        "server_tool_answered_without_error": answered,
         "capability_skill_followed": bool(skill_seen),
         "its_python_ran_through_its_uv_line": bool(uv_runs),
         "a_skill_dir_written_whose_frontmatter_parses": bool(parsed) and not hand_written,
@@ -299,7 +339,9 @@ def grade(transcript: Path, work: Path, version: str, allowed: list[str]) -> dic
     }
     return {"checks": checks, "pass": all(checks.values()),
             "evidence": {"mcp_servers": servers, "other_servers": others, "allowed_tools": allowed,
-                         "server_calls": [{"name": c["name"], "error": c["error"], "result": c["result"][:300]}
+                         "server_tools_offered": offered, "server_failed_to_connect": failed_notes,
+                         "server_calls": [{"name": c["name"], "error": c["error"], "result": c["result"][:300],
+                                           "seconds_to_answer": seconds(c["asked_at"], c["answered_at"])}
                                           for c in server_calls],
                          "capability_skills_seen": sorted(set(skill_seen)),
                          "uv_runs": [c["input"].get("command", "")[:400] for c in uv_runs],

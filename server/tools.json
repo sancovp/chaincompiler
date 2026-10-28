@@ -1,0 +1,246 @@
+{
+ "tools": [
+  {
+   "_meta": {
+    "fastmcp": {
+     "tags": []
+    }
+   },
+   "description": "Interpret a ChainCompiler chain-dialect program; returns repr(result).",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "source": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "source"
+    ],
+    "type": "object"
+   },
+   "name": "si_interpret",
+   "outputSchema": {
+    "properties": {
+     "result": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "result"
+    ],
+    "type": "object",
+    "x-fastmcp-wrap-result": true
+   },
+   "title": "Si Interpret"
+  },
+  {
+   "_meta": {
+    "fastmcp": {
+     "tags": []
+    }
+   },
+   "description": "Traverse a materialized skill tree by following its breadcrumbs.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "root_dir": {
+      "type": "string"
+     },
+     "root_name": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "root_dir",
+     "root_name"
+    ],
+    "type": "object"
+   },
+   "name": "si_walk",
+   "outputSchema": {
+    "additionalProperties": true,
+    "type": "object"
+   },
+   "title": "Si Walk"
+  },
+  {
+   "_meta": {
+    "fastmcp": {
+     "tags": []
+    }
+   },
+   "description": "List every skill reachable from a tree's root.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "root_dir": {
+      "type": "string"
+     },
+     "root_name": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "root_dir",
+     "root_name"
+    ],
+    "type": "object"
+   },
+   "name": "si_reachable",
+   "outputSchema": {
+    "properties": {
+     "result": {
+      "items": {
+       "type": "string"
+      },
+      "type": "array"
+     }
+    },
+    "required": [
+     "result"
+    ],
+    "type": "object",
+    "x-fastmcp-wrap-result": true
+   },
+   "title": "Si Reachable"
+  },
+  {
+   "_meta": {
+    "fastmcp": {
+     "tags": []
+    }
+   },
+   "description": "Search a tree for a skill by name and return its body.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "root_dir": {
+      "type": "string"
+     },
+     "skill": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "root_dir",
+     "skill"
+    ],
+    "type": "object"
+   },
+   "name": "si_read_skill",
+   "outputSchema": {
+    "properties": {
+     "result": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "result"
+    ],
+    "type": "object",
+    "x-fastmcp-wrap-result": true
+   },
+   "title": "Si Read Skill"
+  },
+  {
+   "_meta": {
+    "fastmcp": {
+     "tags": []
+    }
+   },
+   "description": "Turn a skill tree (or exchange master) into a runnable MCP launcher.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "out_path": {
+      "type": "string"
+     },
+     "root_dir": {
+      "type": "string"
+     },
+     "root_name": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "root_dir",
+     "root_name",
+     "out_path"
+    ],
+    "type": "object"
+   },
+   "name": "si_tree_to_mcp",
+   "outputSchema": {
+    "properties": {
+     "result": {
+      "type": "string"
+     }
+    },
+    "required": [
+     "result"
+    ],
+    "type": "object",
+    "x-fastmcp-wrap-result": true
+   },
+   "title": "Si Tree To Mcp"
+  },
+  {
+   "_meta": {
+    "fastmcp": {
+     "tags": []
+    }
+   },
+   "description": "Search the skill tree (BM25), optionally scoped to a coordinate subtree (e.g. '0.1'). SkillTree's search hands a\nquery's words to FTS5 unquoted, so it raises on a query with no word and on an operator word (`NOT`, `AND`); this\ndoor sends it the query's words alone, lowercased — FTS5's operators are capitals and its index folds case, so the\nwords match as before — and answers a query with no word with nothing.",
+   "inputSchema": {
+    "additionalProperties": false,
+    "properties": {
+     "limit": {
+      "default": 10,
+      "type": "integer"
+     },
+     "query": {
+      "type": "string"
+     },
+     "root_dir": {
+      "type": "string"
+     },
+     "scope_coord": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "default": null
+     }
+    },
+    "required": [
+     "root_dir",
+     "query"
+    ],
+    "type": "object"
+   },
+   "name": "si_search",
+   "outputSchema": {
+    "properties": {
+     "result": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "type": "array"
+     }
+    },
+    "required": [
+     "result"
+    ],
+    "type": "object",
+    "x-fastmcp-wrap-result": true
+   },
+   "title": "Si Search"
+  }
+ ]
+}

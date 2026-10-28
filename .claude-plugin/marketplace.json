@@ -10,7 +10,7 @@
       "name": "chaincompiler",
       "source": "./",
       "description": "A compiler-compiler for cognition — eight capability skills (make-prompt/make-persona/big-generator/persona-generator/forge-attention-chain/forge-cor/forge-skillchain/construct-language) + bandit-chain-system, glyphsteer, report-missed-skill, bigdog, the skill2framework chapter set, two minted style chain systems and the Self-Interpreter MCP. Its Python comes from PyPI through uv, pinned to the plugin's release.",
-      "version": "0.3.1"
+      "version": "0.3.2"
     }
   ]
 }

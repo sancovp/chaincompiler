@@ -4,9 +4,9 @@
 
 <!-- SCALABLE-PUBLISHING:AUTOGEN START (managed block — do not edit between these markers) -->
 
-![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_10_25-lightgrey.svg)
+![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_10_28-lightgrey.svg)
 
-⭐ 0 stars • 🕑 Updated 2026-10-25
+⭐ 0 stars • 🕑 Updated 2026-10-28
 
 [Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
 
@@ -286,9 +286,11 @@ claude plugin marketplace add sancovp/chaincompiler
 claude plugin install chaincompiler@chaincompiler
 ```
 
-Every session then carries the plugin's skills and its self-interpreter MCP server, which Claude Code starts as
-`uvx --from chaincompiler-si==<release> si-server`; each skill that runs package code says, before its first code
-block, the `uv run` line that runs it.
+Every session then carries the plugin's skills and its self-interpreter MCP server. Claude Code starts the plugin's
+small launcher (`server/launch.py`, through `uv run`), which answers at once and starts the server itself —
+`si-server` from `chaincompiler-si==<release>` — behind it, so the first session connects even while uv is still
+installing the server's packages; each skill that runs package code says, before its first code block, the `uv run`
+line that runs it.
 
 **As a library, from PyPI.** The fifteen packages are on PyPI at one version, each pinning its siblings exactly, so one
 package brings the rest of its release:
@@ -375,6 +377,38 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.3.2 — 2026-10-28
+- **The plugin's server connects on a new machine.** Claude Code gives an MCP server thirty seconds to answer, and a
+  plugin cannot give it longer. The plugin launched its self-interpreter straight through `uvx`, and on a machine whose
+  uv cache was empty that server answered 75.5 s after it started — uv installing its 75 packages, then the first
+  import of them all — so v0.3.1's plugin proof, a first session at a clean seat, had no server. `.mcp.json` now runs
+  `server/launch.py`, a launcher that needs nothing but the standard library: it answers `initialize`, `tools/list` and
+  `ping` at once — in 0.4–2.6 s on an empty cache, 12.3 s where uv must also download a Python — as the real server
+  would (its newest protocol version for a newer request, its tools as the one capability), refuses the
+  `server/discover` probe a newer Claude Code opens with so it goes straight to `initialize`, starts `si-server` behind
+  it through `uv tool run --compile-bytecode`, and once that server answers passes every message through unchanged, as
+  bytes, written to the server by one thread in the order it came. A tool call made before then waits for it, and
+  every request the launcher cannot deliver — the server ended first, the client closed first, the server's input
+  refused it — is answered with an error naming why. Its stored answers, `server/initialize.json` and
+  `server/tools.json`, are written from the real server by `scripts/build_server_tools.py`, whose `--check` refuses a
+  stale one, and `si` bounds `fastmcp` to the major they were written under (`>=4.1,<5`); `scripts/uvline.py`'s
+  `server_launch` is the one wording of the launch, and `check_versions.py` refuses the old one. Measured through
+  Claude Code with the real server held back 40 s: `server/discover` refused at 0.00 s, `initialize` answered at
+  0.05 s, the call answered `2` once the server was up (DESIGN §14 · §16 · §17).
+- **The plugin proof reads a server still connecting.** A session's start lists a server Claude Code is still
+  connecting as `pending`; the grader counts it connected when the session is then offered or answered one of its
+  tools, and not when Claude Code's own note, in a tool search's result, says it failed to connect — never when the
+  session only read the plugin's README, which carries the same words. Connected proves the launcher; the server
+  behind it is proven by its tool's answer, whose wait the grade records. v0.3.1's transcript grades as the failure it
+  was, and a session with this tree's plugin on an empty cache, which called `si_interpret` and got `2` after 87.8 s of
+  uv installing the server, as connected (DESIGN §16).
+- **The records of v0.3.1, and PyPI's measured behaviour, in the release flow.** DESIGN §18 states PyPI's state —
+  all fifteen at v0.3.1, v0.3.0 short of `framework` — and the backlog and roadmap tick the fifteen's upload; the
+  release flow starts the install from PyPI only once PyPI's simple index, which pip reads and which trails its JSON by
+  a minute or more, lists all fifteen (v0.3.1's first install from PyPI failed on exactly that), and regenerates and
+  checks the launcher's stored answers, and holds the launcher to being a pipe (DESIGN §18 · the release flow).
+- Suite: 324 passed in `pytest packages`, 70 in `scripts/tests`; every package moves to 0.3.2.
 
 ### v0.3.1 — 2026-10-28
 - **The upload in dependency order.** `scripts/upload_release.py` uploads the fifteen from a clone of the public

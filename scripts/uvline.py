@@ -1,4 +1,4 @@
-"""uvline.py — the one wording of a shipped skill's uv line (DESIGN.md §16).
+"""uvline.py — the one wording of a shipped skill's uv line, and of the plugin's server launch (DESIGN.md §16).
 
 A plugin install runs the packages from PyPI through uv, pinned to the release; a clone where `./install.sh` ran runs
 them with its own `python3`. Every shipped skill that has an agent run package code says so once, before its first
@@ -22,6 +22,14 @@ def python_line(specs: list[str]) -> str:
     return (f"**Run its Python** from a plugin install with `uv run --no-project {withs} python3` — pipe a block in "
             "as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with "
             "the clone's `python3`.")
+
+
+def server_launch(version: str) -> dict:
+    """The plugin's `.mcp.json` entry for its self-interpreter: uv runs the launcher beside the plugin
+    (`server/launch.py`, standard library only), which answers Claude Code at once and starts `si-server` from PyPI,
+    pinned to the release, behind it (DESIGN.md §16)."""
+    return {"command": "uv", "args": ["run", "--no-project", "--quiet", "${CLAUDE_PLUGIN_ROOT}/server/launch.py",
+                                      "--from", f"chaincompiler-si=={version}", "si-server"]}
 
 
 def command_line(requirement: str, command: str) -> str:

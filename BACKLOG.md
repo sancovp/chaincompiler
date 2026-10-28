@@ -44,15 +44,22 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [x] **One version line** (v0.3.0) — the release version in `plugin.json`, `marketplace.json`, every package's `pyproject.toml` and `__version__`, `.mcp.json` and every uv line, the line starting at v0.3.0 (DESIGN §18).
 - [x] **`scripts/set_version.py` and `scripts/check_versions.py`** (v0.3.0, planted refusals in `scripts/tests/test_check_versions.py`) — write the release version into every package's `version` and every `__version__` a package defines, both plugin manifests, `.mcp.json`'s pin and every shipped skill's uv line, with every dependency among the fifteen pinned `==`; refuse a tree where any of them differs from the newest changelog entry, or a shipped skill's uv line is missing or misses a distribution its imports come from (DESIGN §16 · §18).
 - [x] **The GBA ships `bandit-chain-system` as package data** (v0.3.0) — `chainaios/data/bandit-chain-system/SKILL.md`, read through `importlib.resources`; a GBA made from a wheel install carries it (DESIGN §8).
-- [ ] **The plugin install brings the Python packages** — `.mcp.json` launches `uvx --from chaincompiler-si==<release> si-server`, and every shipped skill names its uv line (v0.3.0); then prove the plugin install in a clean Claude Code (DESIGN §16).
+- [ ] **The plugin install brings the Python packages** — `.mcp.json` launches the self-interpreter from `chaincompiler-si==<release>`, and every shipped skill names its uv line (v0.3.0); then prove the plugin install in a clean Claude Code (DESIGN §16).
+- [x] **The plugin's server answers Claude Code inside its thirty seconds** (v0.3.2) — v0.3.1's plugin proof found the
+  self-interpreter, launched straight through `uvx`, answering 75.5 s after its start on an empty uv cache, so a new
+  user's first session had no server; `server/launch.py` (standard library only) answers `initialize` and `tools/list`
+  at once from `server/tools.json` (written by `scripts/build_server_tools.py` from the real server), starts `si-server`
+  behind it and passes every message through; measured on an empty cache it answers in 0.4–2.6 s, 12.3 s where uv
+  must also download a Python; `check_versions.py` refuses the old launch, and the grader reads a server still
+  connecting at the start (`pending`) by what the session then did (DESIGN §16).
 - [x] **The nutrition test finds its fixtures from its own file** (v0.3.0) — it read them beside dietc's installed module, a folder only an editable install has (DESIGN §19).
 - [x] **Every build file declares what its source imports** (v0.3.0) — `chainaios` declares `agent-skilltree` and the extra `legend` (glyphsteer); `chaincompiler` the extra `persona` (glyphsteer); `glyphsteer`'s `grammar` extra brings `chaincompiler`; `check_versions.py` refuses an undeclared import (DESIGN §18).
 - [x] **rulecatcher's suite tests the installed package** (v0.3.0) — its `tests/conftest.py`, which put the clone's `src/` first on `sys.path`, is gone (DESIGN §19).
 - [x] **The wheel proof** (v0.3.0, a stage of the release flow) — before a merge, the fifteen built and checked by `publish_package.sh --dry-run` from the publish dry run's clone, installed non-editable, and §19's checks green against them (DESIGN §18 · §19).
-- [ ] **Publish the fifteen packages to PyPI under their names, each a manifest unit** (the author's ruling) — PyPI
-  holds fourteen at v0.3.0, and the fifteenth publishes as `skill2framework` (the task below); needs scalable-publishing to state how a package inside a unit's folder gets its
-  own PyPI release (its `DESIGN.md` §4: every package we own on PyPI is a manifest unit), `rulecatcher`, uploaded by
-  hand, among them (DESIGN §18).
+- [x] **Publish the fifteen packages to PyPI under their names, each a manifest unit** (v0.3.1, the author's ruling) —
+  PyPI holds all fifteen at v0.3.1, each a `chaincompiler-pkg-<folder>` unit of scalable-publishing's manifest (its
+  `DESIGN.md` §4), uploaded by `scripts/upload_release.py` through `publish_package.sh`, `rulecatcher` among them;
+  v0.3.0 holds fourteen, short of `framework` (the task below · DESIGN §18).
 - [x] **The chapter rung is `skill2framework`** (v0.3.1, the author's ruling) — PyPI does not allow the name
   `framework` (its upload answers `400 Bad Request`), so v0.3.0 holds fourteen of the fifteen and the plugin's four
   chapter-rung skills name a distribution no index holds; the package's folder, distribution and import are

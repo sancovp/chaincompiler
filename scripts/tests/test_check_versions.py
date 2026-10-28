@@ -5,6 +5,7 @@ root: `python3 -m pytest scripts/tests`.
 """
 from __future__ import annotations
 
+import json
 import re
 import shutil
 import subprocess
@@ -29,7 +30,7 @@ def tree(tmp_path: Path) -> Path:
     root.mkdir()
     for name in ("README.md", ".mcp.json", "LICENSE"):
         shutil.copy2(REPO / name, root / name)
-    for d in ("packages", "skills", ".claude-plugin", "personas"):
+    for d in ("packages", "skills", ".claude-plugin", "personas", "server"):
         shutil.copytree(REPO / d, root / d, ignore=SKIP, symlinks=True)
     (root / ".claude" / "skills").mkdir(parents=True)
     for s in ("bandit-chain-system", "glyphsteer", "glyphsteer-dense"):
@@ -126,6 +127,19 @@ def test_a_mcp_pin_that_differs_is_refused(tree):
     v = release(tree)
     sub(tree / ".mcp.json", f"chaincompiler-si=={v}", "chaincompiler-si==9.9.9")
     refused(tree, ".mcp.json")
+
+
+def test_a_server_launched_straight_through_uvx_is_refused(tree):
+    # the launch Claude Code times out on a fresh machine: no launcher answering first
+    v = release(tree)
+    (tree / ".mcp.json").write_text(json.dumps({"mcpServers": {"self-interpreter": {
+        "command": "uvx", "args": ["--from", f"chaincompiler-si=={v}", "si-server"]}}}))
+    refused(tree, ".mcp.json", "does not launch as uv run")
+
+
+def test_a_plugin_without_its_server_launcher_is_refused(tree):
+    (tree / "server" / "tools.json").unlink()
+    refused(tree, "server/tools.json", "launcher is missing")
 
 
 def test_a_skill_whose_code_has_no_uv_line_is_refused(tree):

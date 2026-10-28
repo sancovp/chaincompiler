@@ -34,15 +34,26 @@ def call(i: int, name: str, inp: dict, result: str, error: bool = False) -> list
                                                  "is_error": error}]})]
 
 
+TIMED_OUT = ("No matching deferred tools found. Note: these configured MCP servers failed to connect, so their tools are "
+             "unavailable for this session: plugin:chaincompiler:self-interpreter (CONNECT_TIMEOUT): \"MCP server "
+             "plugin:chaincompiler:self-interpreter connection timed out after 30000ms\".")
+
+
 def session(status: str = "connected", server_error: bool = False, bash: str = UV,
-            extra_servers: tuple = (), writes: tuple = ()) -> list[dict]:
+            extra_servers: tuple = (), writes: tuple = (), search: object = None, server_call: bool = True,
+            reads: tuple = ()) -> list[dict]:
     servers = [{"name": f"plugin:chaincompiler:self-interpreter", "status": status}, *extra_servers]
     evs = [event("system", subtype="init", mcp_servers=servers, plugins=[{"name": "chaincompiler"}], skills=[])]
+    if search is not None:                    # a tool search first: what it offered, or Claude Code's note
+        evs += call(0, "ToolSearch", {"query": "self-interpreter"}, search)
     evs += call(1, "Skill", {"skill": "chaincompiler:forge-attention-chain"}, "Run its Python … ACCC")
-    evs += call(2, SERVER_TOOL, {"root_dir": ".", "root_name": "x"}, "[]", error=server_error)
+    if server_call:
+        evs += call(2, SERVER_TOOL, {"root_dir": ".", "root_name": "x"}, "[]", error=server_error)
     evs += call(3, "Bash", {"command": bash}, "skills/debug/SKILL.md")
     for i, path in enumerate(writes, start=4):
         evs += call(i, "Write", {"file_path": path, "content": "---\nname: x\ndescription: y\n---\n"}, "ok")
+    for i, (path, text) in enumerate(reads, start=40):
+        evs += call(i, "Read", {"file_path": path}, text)
     evs.append(event("result", subtype="success", is_error=False, result="made skills/debug", num_turns=4))
     return evs
 
@@ -72,6 +83,46 @@ def test_the_baseline_passes(tmp_path, work):
 def test_a_server_that_failed_to_connect_fails_exactly_that(tmp_path, work):
     g = graded(tmp_path, work, session(status="failed"))
     assert only_failing(g) == ["server_connected"]
+
+
+def test_a_server_still_connecting_at_the_start_that_then_answers_passes(tmp_path, work):
+    # the session's start lists the server `pending`; its tool offered by a search, then answered
+    offered = [{"type": "tool_reference", "tool_name": SERVER_TOOL}]
+    g = graded(tmp_path, work, session(status="pending", search=offered), [SERVER_TOOL])
+    assert g["pass"] is True, only_failing(g)
+
+
+def test_a_server_that_timed_out_connecting_fails_the_connection_and_its_tool(tmp_path, work):
+    # v0.3.1's real failure: pending at the start, Claude Code's note that it timed out, no tool of it ever answered
+    g = graded(tmp_path, work, session(status="pending", search=TIMED_OUT, server_call=False))
+    assert only_failing(g) == ["server_connected", "server_tool_answered_without_error"]
+    assert g["evidence"]["server_failed_to_connect"]
+
+
+def test_a_failed_to_connect_note_fails_the_connection_whatever_else_answered(tmp_path, work):
+    g = graded(tmp_path, work, session(status="pending", search=TIMED_OUT))
+    assert only_failing(g) == ["server_connected"]
+
+
+def test_a_working_session_that_read_the_plugins_own_docs_still_passes(tmp_path, work):
+    # the plugin's README and DESIGN name the same words Claude Code's note uses; reading them is no failure
+    readme = (Path(__file__).resolve().parents[2] / "README.md").read_text(encoding="utf-8")
+    assert "failed to connect" in TIMED_OUT and "self-interpreter" in readme
+    docs = (("README.md", readme), ("notes.md", "the self-interpreter failed to connect once; " + TIMED_OUT[:40]))
+    g = graded(tmp_path, work, session(status="pending", search=[{"type": "tool_reference", "tool_name": SERVER_TOOL}],
+                                       reads=docs), [SERVER_TOOL])
+    assert g["pass"] is True, only_failing(g)
+
+
+def test_a_server_that_never_came_up_behind_the_launcher_fails(tmp_path, work):
+    # the launcher answered (connected at the start), but every call of the server's tools is the launcher's error
+    g = graded(tmp_path, work, session(server_error=True))
+    assert only_failing(g) == ["server_tool_answered_without_error"] and g["pass"] is False
+
+
+def test_a_server_pending_with_no_tool_offered_or_answered_is_not_connected(tmp_path, work):
+    g = graded(tmp_path, work, session(status="pending", server_call=False))
+    assert only_failing(g) == ["server_connected", "server_tool_answered_without_error"]
 
 
 def test_a_server_tool_that_returned_an_error_fails_exactly_that(tmp_path, work):

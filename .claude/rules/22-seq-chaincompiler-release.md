@@ -17,7 +17,13 @@ plugin to its `plugin.json` version until that version changes · between the pu
 published plugin pins a version PyPI does not hold, so the upload is the first thing done after the merge · a package
 on PyPI whose sibling is not there installs for no one, and its metadata names a sibling anyone could publish under
 that name, so the upload goes in dependency order and a release is whole only when PyPI holds all fifteen at its
-version · an install proves what it installed only when every check imports that install, never a clone's source]
+version · an install proves what it installed only when every check imports that install, never a clone's source ·
+the plugin's server is reached through its launcher, which answers Claude Code before the real server is installed, so
+what Claude Code is shown at connect time — the launcher's own answers, from `server/initialize.json` and
+`server/tools.json` — is what the session
+keeps, and each must be what the real server at the release would have answered; once the real server is up the
+launcher is a pipe that loses, reorders and re-encodes nothing, and a request it cannot deliver is answered with an
+error, never dropped]
 
 ## RETRIEVE (in this order; whole file unless a section or a function is named — read that whole)
 
@@ -28,7 +34,8 @@ version · an install proves what it installed only when every check imports tha
 | the mint flow, when a skill or chain is minted | `.claude/rules/22-seq-mint-attention-chain.md` |
 | the release surface | `README.md` badge line (anchor `badge/tests-`) · `## Quickstart` · `## Changelog` head and newest entry · `## Status` table · `BACKLOG.md` · `roadmap.json` · `ROADMAP.md` · the generated board `.claude/rules/chaincompiler_states.md` |
 | the version line and its gate | `scripts/set_version.py` · `scripts/check_versions.py` (its `LAZY` and `OUTSIDE` tables, `check_copies`) · `scripts/uvline.py` · `scripts/tests/test_check_versions.py` · what they write and read: `.claude-plugin/plugin.json` `version` · `.claude-plugin/marketplace.json` `plugins[].version` · `packages/*/pyproject.toml` (`version`, `readme`, `license`, the `setuptools` build requirement, every dependency and optional extra) · each `__version__` · `.mcp.json` · every uv line in `skills/` |
-| the install path | `install.sh` (the PyPI line and the `PKGS` list; it installs the fifteen with `--no-build-isolation`, so the environment's own setuptools builds them) · `.mcp.json` (`uvx --from chaincompiler-si==<release> si-server`) |
+| the install path | `install.sh` (the PyPI line and the `PKGS` list; it installs the fifteen with `--no-build-isolation`, so the environment's own setuptools builds them) · `.mcp.json` (uv running `server/launch.py --from chaincompiler-si==<release> si-server`, `scripts/uvline.py`'s `server_launch`) · `scripts/set_version.py`'s rewrite of that pin |
+| the plugin's server, as Claude Code meets it | `server/launch.py` whole (`Launcher.run` · `start` · `to_server` · `pump_out` · `pump_err` · `go` · `fail`, `server_command`, `release`, `negotiate`) · `server/initialize.json`, `server/tools.json` and `scripts/build_server_tools.py` whole · `scripts/tests/test_server_launch.py` whole · `packages/si/src/si/server.py` (what the real server registers: tools only) · `packages/si/pyproject.toml` (its `fastmcp` requirement, which decides the `tools/list` a user's install answers) · the real server's stdio transport, the installed `mcp` package's `server/stdio.py` (it reads and writes UTF-8 whatever the locale) · what Claude Code sends a stdio server and what the real server answers, MEASURED at this tip, never recalled: the tee probe of THE PROOF below logs the first client message (Claude Code's MCP client opens with `server/discover` in the 2026-07-28 envelope and falls back to `initialize` when that is refused or unanswered), the `initialize` params (`protocolVersion`, `capabilities`), and the real server's own answers to `initialize`, `server/discover` and `prompts/list` |
 | the generators and what they write | `scripts/update_site.py` (`parse_changelog`, `render_board`, `main`) → `site/data.json`, `assets/roadmap.svg`, `.claude/rules/chaincompiler_states.md` · `scripts/build_meta_ape_skills.py` (`APE_RUN`, `CC_RUN`, `CC_CAPABILITIES`, `with_run_line`) → the eight capability skills in `skills/` · `skills/bigdog/build.py` (`build_grade_legend`) → `skills/bigdog/GRADE-LADDER.md` · `packages/chainaios/src/chainaios/gba.py` (`_BCS_SKILL`, `default_rule_blocks`, `_portable`/`_resolved`, `_apply_tree`) → every GBA under `personas/` · `packages/chainaios/src/chainaios/hba.py` · `packages/chainaios/src/chainaios/cog.py` |
 | what git does not carry | `.gitignore` (its `dist/` line drops every `personas/.<name>.src/dist/` except the two un-ignored root packages; the derived `.index.db`) |
 | the public repository's gates | `.github/workflows/deploy.yml` · `scripts/check_changelog.py` · `.github/workflows/contribute.yml` · `scripts/validate_registry.py` |
@@ -56,6 +63,11 @@ version · an install proves what it installed only when every check imports tha
    - `python3 scripts/build_meta_ape_skills.py`, on every release (each capability's uv line carries the release; it
      reads the release from the `chaincompiler` its `python3` imports, so run it in the editable environment
      `./install.sh` built from this tree);
+   - `python3 scripts/build_server_tools.py`, in that environment, on every release — it writes `server/initialize.json`
+     and `server/tools.json` from the real server's own answers to `initialize` (asking for a protocol version newer than
+     any, so it answers its newest) and `tools/list` — with that environment's `fastmcp` first brought to the newest release
+     PyPI's JSON names inside the bound `si`'s build file gives it, because a plugin install resolves `fastmcp` afresh
+     and Claude Code is shown the stored list, never its own server's, for the whole session;
    - each committed GBA under `personas/`, re-applied through `_apply_tree` from its own `gba.json` with its sibling
      `.<name>.src/` present, on every release (the `bandit-chain-system` skill it carries holds the release's uv line)
      and whenever `gba.py`, `hba.py`, `cog.py` or SkillTree changed.
@@ -84,21 +96,36 @@ version · an install proves what it installed only when every check imports tha
    new lazy edge goes into the build files and, when a skill can reach it, into `check_versions.py`'s tables. Each
    Python block of a capability skill runs on its own, as the uv line says it is run — piped in alone, in an empty
    folder — so a block that needs what another skill made says so and makes it.
-7. KEEP THE BUILD FILES TRUE: every package's `pyproject.toml` declares every distribution its source imports — a lazy
+7. KEEP THE PLUGIN'S SERVER CONNECTING, AND KEEP ITS LAUNCHER A PIPE. Whatever `server/launch.py` answers before the
+   real server is up is what the real server at the release answers to the same message: `initialize` with the
+   `protocolVersion` the real server negotiates for the client's request (the one asked for when it is no newer than
+   the real server's newest, read from it into `server/initialize.json`; else that newest) and capabilities that are a
+   subset of the real server's, every list they advertise answered at once from what is stored — `tools/list`
+   from `server/tools.json` — and `ping`; and a message Claude Code sends first to probe for a newer protocol era
+   (`server/discover`) is refused at once with a JSON-RPC error, so Claude Code falls back to `initialize` without
+   waiting on a server that is still installing. Every other message waits and is delivered in the order it came. Both
+   streams are UTF-8 whatever the machine's locale, as the real server's own transport is (Windows' default code page
+   cannot decode every UTF-8 byte), the held messages are written by a thread that is not the one reading the real
+   server's output, a request that cannot be delivered — the server ended, the client closed its input first, a write
+   failed — is answered with an error naming why, and a line that is JSON but not an object is answered with an error,
+   never a crash. The launch line lives only in `scripts/uvline.py`'s `server_launch`.
+8. KEEP THE BUILD FILES TRUE: every package's `pyproject.toml` declares every distribution its source imports — a lazy
    import as an optional extra — its folder's `README.md` as `readme` and `license = "MIT"`, and a new outside module
-   goes into `check_versions.py`'s `OUTSIDE` table with its distribution. `install.sh` installs the build backend the
+   goes into `check_versions.py`'s `OUTSIDE` table with its distribution. `si`'s build file bounds `fastmcp` to the
+   major `server/tools.json` was written under, because Claude Code shows the session that list and a user's install
+   resolves its own `fastmcp`. `install.sh` installs the build backend the
    build files require (`setuptools` at their lower bound) in its first `pip install`, before the editable installs,
    because it builds them without isolation and a fresh environment carries no setuptools, or an older one.
-8. KEEP THE BACKLOG TRUE, without deleting work:
+9. KEEP THE BACKLOG TRUE, without deleting work:
    - tick a `BACKLOG.md` item when it is done;
    - add an item when work is found;
    - never delete an open `[ ]` item. Move it, or tick it with the reason;
    - every `roadmap.json` phase still `in_progress` keeps at least one open task in `BACKLOG.md`.
-9. REWRITE `DESIGN.md` where the design changed. Every factual sentence must be checked against the code at this tip
-   before it is written, and none states a fact about this release that only its own after-merge proof makes true. Every
-   known defect is `⚠ OWED` with its BACKLOG task; an `⚠ OWED` that counts something (names free on PyPI, tests) states
-   the count PyPI or the suite gives at this tip.
-10. MOVE THE RECORDS ABOVE THE FOLDER when the release changes what they state, each checked against PyPI and the code
+10. REWRITE `DESIGN.md` where the design changed. Every factual sentence must be checked against the code at this tip
+    before it is written, and none states a fact about this release that only its own after-merge proof makes true.
+    Every known defect is `⚠ OWED` with its BACKLOG task; an `⚠ OWED` that counts something (names free on PyPI, tests)
+    states the count PyPI or the suite gives at this tip.
+11. MOVE THE RECORDS ABOVE THE FOLDER when the release changes what they state, each checked against PyPI and the code
     at this tip, never ahead of the upload:
     - the publish manifest's `chaincompiler` unit `readme.description`;
     - the source home's project registry section — PyPI's state of the fifteen as measured (which names it holds, at
@@ -116,6 +143,24 @@ version · an install proves what it installed only when every check imports tha
 - A generator's output text changes (a rollup's header, a rule block, a uv line), so every committed output it wrote is
   regenerated through it — `skills/`, and the bodies under `personas/.<name>.src/` with each GBA re-applied — and the
   old sentence is grepped to 0.
+- A tool of `si.server` changes, or `fastmcp`'s newest release inside `si`'s bound lists one differently, so
+  `server/tools.json` is written again by `scripts/build_server_tools.py`; a prompt or a resource added to `si.server`
+  changes the real server's capabilities, which `build_server_tools.py --check` sees as a changed `server/initialize.json`,
+  and moves the capabilities the launcher answers `initialize` with and the lists it answers itself. The launch line changes only in `scripts/uvline.py`'s `server_launch`, which `.mcp.json`,
+  `set_version.py`'s pin rewrite, `check_versions.py` and `plugin_proof.py`'s install check all read.
+- What Claude Code sends a stdio server first, or the protocol era it asks for, changes, or the real server's own answer
+  to `initialize` or `server/discover` changes (a `fastmcp` or `mcp` release), so the set of messages the launcher
+  answers itself, its tests and `DESIGN.md` §16 move together, re-measured by the tee probe below.
+- A sentence about how the plugin's server starts or connects is grepped across the source home and moves in every
+  place that states it: `DESIGN.md` §14 · §16 · §17 · §19, the README Quickstart and the release's changelog entry,
+  `BACKLOG.md`, `roadmap.json`, `ROADMAP.md` P7, `server/CLAUDE.md`, `scripts/CLAUDE.md`, the SURFACE subgraph of
+  `21-architecture-diagrams.md`, and the docstrings of `server/launch.py`, `scripts/uvline.py` and
+  `scripts/check_versions.py`; older changelog entries keep their own words.
+- A grader check that reads text in a transcript reads only where Claude Code writes that text: the failed-to-connect
+  note only in a tool search's result naming the plugin's server, never a file the session read — the plugin's own
+  `README.md` and `DESIGN.md`, which a session may read, carry both phrases. With the launcher answering at once, the
+  init event's `connected` proves the launcher; the self-interpreter itself is proven only by one of its tools
+  answering without an error.
 - The README changelog changes, so `site/data.json` is regenerated.
 - `roadmap.json` changes, so `site/data.json`, `assets/roadmap.svg`, the board and `ROADMAP.md` move with it.
 - A `gba.py`, `hba.py` or `cog.py` text change re-applies every committed GBA under `personas/`, every copy of the
@@ -149,7 +194,8 @@ version · an install proves what it installed only when every check imports tha
   - `python examples/_all/run_all.py` shows all checks ✓;
   - `python examples/_all/bandit_self.py` shows all checks ✓;
   - `pytest examples/nutrition` passes;
-  - `pytest scripts/tests` passes — the version gate's planted refusals and the plugin grader's negative controls;
+  - `pytest scripts/tests` passes — the version gate's planted refusals, the plugin grader's negative controls and the
+    launcher's tests against a fake `uv`;
   - `lint-imports` reports the contract KEPT;
   - `python3 scripts/check_changelog.py` exits 0;
   - `python3 scripts/check_versions.py` exits 0, naming the release;
@@ -164,6 +210,35 @@ version · an install proves what it installed only when every check imports tha
     copy, excluding `.index.db`. It must be empty;
   - count `SKILL.md` bodies reading `SkillTree <kind> node \`` (stubs). The count must equal the count before the
     re-apply.
+- the plugin's server, each store measured on the default branch's tree (before) and on this tip (after), every
+  command run with `PYTHONDONTWRITEBYTECODE=1` and pytest's `-p no:cacheprovider` when the editable install points into
+  a tree another process is using:
+  - `.mcp.json` — before: `git show <default>:<folder>/.mcp.json`; after: its `self-interpreter` entry equals
+    `uvline.server_launch(<release>)` (`check_versions.py` exits 0), and in a copy of the tree
+    `set_version.py 9.9.9` changes exactly the one pin in it (`diff`).
+  - `server/initialize.json` · `server/tools.json` — the environment's `fastmcp` (`pip show fastmcp`) is the newest
+    release PyPI's JSON names inside `si`'s bound, and `build_server_tools.py --check` exits 0;
+    `git diff <default> -- server/` shows only the changes the release intends.
+  - the launcher's stdio, against a fake `uv` (`scripts/tests/test_server_launch.py`): `initialize`, `tools/list` and
+    `ping` answered before a slow server is up; `server/discover` refused at once with an error; `initialize`'s
+    `protocolVersion` and capabilities what the real server answers to the same request; a burst of requests across
+    the moment the server becomes ready each delivered once, in order; held requests larger than a pipe, to a server
+    that answers each before reading the next, all answered; a non-ASCII and an astral-plane argument and result
+    (`é`, `⇒`, `🐉`) relayed byte for byte with every text stream of the launcher put in `cp1252`, Windows' default;
+    a request held when the client closes its input answered with an error; a JSON line that is not an object
+    answered with an error; a server that ends before it answers turning every call into an error naming why.
+  - the launcher with Claude Code, THE TEE PROBE: in a marked seat, an environment holding only `HOME`, `USER`,
+    `LOGNAME`, `PATH`, `LANG`, `TERM` and `TMPDIR`, a headless `claude -p` on a small model with
+    `--strict-mcp-config --mcp-config <scratch config> --setting-sources project,local`, whose server is a scratch
+    wrapper that loads this tree's `server/launch.py`, tees both of its streams to a log with timestamps, and starts
+    the real server (`python3 -m si.server` of the editable environment) after a sleep longer than Claude Code's thirty
+    seconds, asked to call `si_interpret` with `1+1`: the init event lists the server `connected`; the log shows the
+    first client message, `initialize` answered within one second of it, `tools/list` answered from
+    `server/tools.json`, the `tools/call` forwarded after the real server's own `initialize` and answered with
+    `{"result":"2"}`, and every client request id answered exactly once; the session's result is `2`.
+  - the grader (`scripts/tests/test_plugin_proof.py`): besides its controls, a passing session that also reads the
+    plugin's `README.md` and `DESIGN.md` still passes, and a session whose server never came up behind the launcher
+    (connected at the start, every call of its tools an error naming why) fails.
 - skill loader: every `SKILL.md` under `skills/`, `.claude/skills/`, `personas/` and `packages/` is checked with
   `yaml.safe_load` on its frontmatter. Each must give a mapping with string `name` and `description`, found with a
   recursive walk that enters dot-directories, and every failure is named. Every `SKILL.md` whose `name` is a shipped
@@ -199,7 +274,7 @@ version · an install proves what it installed only when every check imports tha
   where `command -v python3` is checked to be that venv in the same command, run `./install.sh`, then the full
   source-tree proof above — once on Python 3.11 and once on the newest Python uv offers, since the build files admit
   every Python from 3.11 and a plugin install's uv takes whichever one the machine has. Also run
-  `python3 -c "import si.server"`, the module the plugin's MCP launches.
+  `python3 -c "import si.server"`, the module the plugin's launcher starts.
 - THE WHEEL PROOF, before the merge, from the dry-run clone: `scalable-publishing/bin/publish_package.sh
   packages/<folder> --dry-run` for each of the fifteen passes `twine check` and finds the version not yet on PyPI;
   `python -m build --wheel` builds each into a folder the proof keeps; a fresh venv, checked to be the `python3` in use,
@@ -233,7 +308,9 @@ version · an install proves what it installed only when every check imports tha
      fixed hour, reading PyPI's state afresh. A pass run again reads a refusal of a version PyPI already holds at the
      release's own version as that package uploaded. A `400 Bad Request` on a new name whose build passed `twine check`
      is PyPI refusing the name itself: no run uploads it, and the package is renamed in the next release (`DESIGN.md`
-     §18). PyPI's JSON (`https://pypi.org/pypi/<name>/json`) names the release for all fifteen before stage 2 starts.
+     §18). PyPI's JSON (`https://pypi.org/pypi/<name>/json`) names the release for all fifteen, and its simple index
+     (`https://pypi.org/simple/<name>/`), which pip and uv read and which lists a new file a minute or more after the
+     JSON does, lists the release's files for all fifteen, before stage 2 starts.
   2. THE INSTALL FROM PYPI: a fresh venv, checked, `pip install --no-cache-dir --report <file>` of `chaincompiler-si`,
      `glyphsteer`, `skill2framework`, `personapack`, `chaincompiler-archetype` and `goldenreq` at `==<release>` with no index
      but PyPI; the report shows every one of the fifteen downloaded from PyPI; `pip check` is clean; the source-tree
@@ -242,11 +319,14 @@ version · an install proves what it installed only when every check imports tha
   3. THE PLUGIN PROOF: `scripts/plugin_proof.py new <root>` (a scratch root outside the world dir), `install <seat>
      --version <release>` passing every check, `run <seat> --prompt-file scripts/plugin-proof-task.md --out <t>.jsonl
      --allowed-tools Skill Read 'Bash(uv:*)' 'Bash(uvx:*)' mcp__plugin_chaincompiler_self-interpreter__si_interpret`
-     exiting 0, `grade` passing every check, then `remove`; every proof names the seat `<seat>`.
+     exiting 0, `grade` passing every check, then `remove`; every proof names the seat `<seat>`. The seat's uv cache
+     starts empty, so this is the cold start: the transcript's init event proves only that the launcher answered, the
+     `si_interpret` answer of `2` proves the real server, and the proof records the seconds from the init event to that
+     answer — uv's install of the server — beside the grade.
   4. the public repository: `gh run list -R <owner>/<name>` shows `deploy-site` succeeded on the publish commit, and a
      clean clone of it passes the clean-install proof.
   5. when the release touched what CompiloApe's forge reads, CompiloApe's forge flow runs whole against it.
-  6. the records that state PyPI's state (step 10) are rewritten to it once stage 1 is whole.
+  6. the records that state PyPI's state (step 11) are rewritten to it once stage 1 is whole.
   The next release merges only after this one is whole on PyPI and stages 2–5 have run, so every version PyPI holds is
   a whole, installable line — save a release short only of a package whose name PyPI refuses: stages 2–5, which need all
   fifteen, do not run for it, and the next release, which renames that package, merges and runs them (`DESIGN.md` §18).
@@ -264,7 +344,12 @@ venv happens to carry a new enough setuptools · run the plugin proof's session 
 marked seat · delete an open backlog task · claim a GBA rebuilds from a copy whose `skill_src` resolves outside the
 copied folder or into an ignored `dist/` · trust `validate()` as proof a rebuild kept its bodies (it checks frontmatter
 and breadcrumbs, not content) · write `cat` as the way to descend into a node · push the dry run anywhere · pip install
-into an environment without checking which `python3` it is · state a record's PyPI fact ahead of the upload]
+into an environment without checking which `python3` it is · state a record's PyPI fact ahead of the upload · let the
+launcher answer what the real server would not (a protocol version it does not hold, a capability it lacks, a tool list
+of another `fastmcp`) · hold a protocol-era probe until the real server is up · read or write either of the launcher's
+streams in the machine's locale encoding · swallow a request the launcher cannot deliver · write held requests from the
+thread that reads the real server's output · read "connected" at the session's start as proof of the self-interpreter ·
+match a grader's failure phrase in a file the session read · write the launch line anywhere but `uvline.py`]
 
 COMPOSES:[`.claude/rules/00-keeping-roadmap-and-backlog-current.md` — the same-change discipline this flow runs at
 release grain · `.claude/rules/22-seq-mint-attention-chain.md` — the flow for minting what a release ships ·
@@ -277,6 +362,9 @@ the skills' uv lines, and every copy of a shipped skill, every `SKILL.md` under 
 package's own folder that carries a shipped skill's name among them · `scripts/tests/test_skill_examples.py` — a
 capability skill's Python block that does not run alone · `scripts/upload_release.py` — the upload in dependency order
 from the kept clone, refusing a package whose sibling PyPI lacks, stopping its new names at PyPI's quota and resuming
-from PyPI's state · `scripts/plugin_proof.py grade` — a plugin install that does not work · and, still owed in
-`scripts/`: a script that runs the generated-file diffs, the frontmatter sweep, the grep for each rewritten sentence and
-the publish dry run, exiting non-zero on any finding, before the release's PR is opened]
+from PyPI's state · `scripts/build_server_tools.py --check` — launcher answers (`initialize.json`, `tools.json`) that
+are not the real server's under the environment's `fastmcp` · `scripts/tests/test_server_launch.py` — a launcher that waits where it must
+answer, answers what the real server would not, loses, reorders or re-encodes a message, or leaves a request
+unanswered · `scripts/plugin_proof.py grade` — a plugin install that does not work · and, still owed in
+`scripts/`: a script that runs the generated-file diffs, the frontmatter sweep, the grep for each rewritten sentence,
+the publish dry run and the tee probe, exiting non-zero on any finding, before the release's PR is opened]

@@ -11,9 +11,9 @@ from the output**. Package: `glyphsteer`, with its `grammar` extra for the synta
 index — a glyph code is a HoneyC chain — and a cousin of Anthropic's Contextual Retrieval (the embedded form differs
 from the displayed form), with a compiled, controlled vocabulary in place of free text.
 
-**Run its Python** from a plugin install with `uv run --no-project --with "glyphsteer[grammar]==0.3.1" --with "agent-skilltree>=0.4.0" python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+**Run its Python** from a plugin install with `uv run --no-project --with "glyphsteer[grammar]==0.3.2" --with "agent-skilltree>=0.4.0" python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
 
-**Run `glyphsteer`** from a plugin install as `uvx --from glyphsteer==0.3.1 glyphsteer …`, and from a clone where `./install.sh` ran, as `glyphsteer …` in the environment it installed into.
+**Run `glyphsteer`** from a plugin install as `uvx --from glyphsteer==0.3.2 glyphsteer …`, and from a clone where `./install.sh` ran, as `glyphsteer …` in the environment it installed into.
 
 **Run `skilltree`** from a plugin install as `uvx --from "agent-skilltree>=0.4.0" skilltree …`, and from a clone where `./install.sh` ran, as `skilltree …` in the environment it installed into.
 

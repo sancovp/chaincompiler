@@ -18,7 +18,7 @@ cd "$(dirname "$0")"
 #   - setuptools>=77 : the build backend every package's build file requires (77 is the first that reads
 #     `license = "MIT"`); the packages below build without isolation, so this environment's own setuptools builds
 #     them, and a fresh environment carries none, or an older one
-python3 -m pip install "setuptools>=77" "pydantic-stack-core>=0.1.4" "agent-prompt-engineering>=0.2.0" "agent-skilltree>=0.4.0" numpy lark pyyaml click fastmcp
+python3 -m pip install "setuptools>=77" "pydantic-stack-core>=0.1.4" "agent-prompt-engineering>=0.2.0" "agent-skilltree>=0.4.0" numpy lark pyyaml click "fastmcp>=4.1,<5"
 
 # The monorepo packages, editable. Layering (imports point DOWN, enforced by .importlinter):
 #   chainaios > sccc > corcc > accc > chaincompiler > prompt_engineering(APE).

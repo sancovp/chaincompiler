@@ -51,10 +51,11 @@ flowchart TB
     end
     subgraph SURFACE["The project surface — DESIGN §16 · §17 · §18 · §19"]
         PLUG["the plugin — plugin.json · marketplace.json · skills/ · .mcp.json; an agent ships as an install skill"]
-        UVL["the plugin's Python from PyPI through uv — .mcp.json: uvx --from chaincompiler-si==release si-server · every shipped skill's uv line, in uvline.py's words"]
+        UVL["the plugin's Python from PyPI through uv — .mcp.json: uv runs server/launch.py --from chaincompiler-si==release si-server · every shipped skill's uv line, in uvline.py's words"]
+        LAUNCH["server/launch.py — standard library only: answers initialize and tools/list at once (server/tools.json, written by build_server_tools.py from the real server), starts si-server through uv tool run, then passes every message through"]
         VER["one version line — set_version.py writes it; check_versions.py refuses a tree where any line, pin, build-file declaration, uv line or copy is off"]
         PPROOF["plugin_proof.py — the signed-out install from the marketplace, then a headless session at a clean seat given plugin-proof-task.md, graded from its transcript and files"]
-        UPL["upload_release.py — the fifteen to PyPI from a clone at the publish commit, in dependency order (the self-interpreter's closure first), a package only once its siblings are held, within PyPI's four new projects a day, resuming from PyPI's state"]
+        UPL["upload_release.py — the fifteen to PyPI from a clone at the publish commit, in dependency order (the self-interpreter's closure first), a package only once its siblings are held, within PyPI's four new projects in any 86,400 s, resuming from PyPI's state"]
         GEN["update_site.py → roadmap SVG · site/data.json · the board (all from roadmap.json + the README changelog)"]
     end
     subgraph PUBX["Outside this folder — DESIGN §18"]
@@ -81,7 +82,8 @@ flowchart TB
     ARC --> CC
     GS -.-> CC
     CC -.-> GS
-    PLUG --> SI
+    PLUG --> LAUNCH
+    LAUNCH --> SI
     PLUG -.-> UVL
     UVL -.-> PYPI
     VER -.-> PLUG

@@ -1,8 +1,9 @@
 {
   "mcpServers": {
     "self-interpreter": {
-      "command": "uvx",
-      "args": ["--from", "chaincompiler-si==0.3.1", "si-server"]
+      "command": "uv",
+      "args": ["run", "--no-project", "--quiet", "${CLAUDE_PLUGIN_ROOT}/server/launch.py",
+               "--from", "chaincompiler-si==0.3.2", "si-server"]
     }
   }
 }

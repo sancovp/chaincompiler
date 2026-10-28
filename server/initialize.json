@@ -1,0 +1,20 @@
+{
+ "capabilities": {
+  "logging": {},
+  "prompts": {
+   "listChanged": true
+  },
+  "resources": {
+   "listChanged": true,
+   "subscribe": false
+  },
+  "tools": {
+   "listChanged": true
+  }
+ },
+ "protocolVersion": "2025-11-25",
+ "serverInfo": {
+  "name": "self-interpreter",
+  "version": "4.1.4"
+ }
+}

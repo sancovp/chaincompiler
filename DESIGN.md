@@ -356,7 +356,7 @@ anywhere in the tree, with or without its coordinate prefix. `tree_to_mcp` turns
 an MCP server launcher, and `scaffold_repo` stamps a federated node repository from a tree. `si.server` is
 the MCP server the plugin registers — `si_interpret`, `si_walk`, `si_reachable`, `si_read_skill`,
 `si_tree_to_mcp`, `si_search` — and the console command `si-server` (`chaincompiler-si`) runs it, the command the
-plugin launches through uv (§16).
+plugin's launcher starts through uv (§16).
 ⚠ `si_interpret` executes arbitrary Python with the permissions of the process running the server. It is
 an execution surface: run only programs you trust.
 
@@ -392,8 +392,26 @@ configuration (§20).
 
 **How a plugin install gets its Python: from PyPI, through uv, pinned to the release.** uv is the plugin's one
 prerequisite, and nothing is installed into the user's own Python:
-- `.mcp.json` launches the self-interpreter as `uvx --from chaincompiler-si==<release> si-server`, so the server
-  runs in an environment uv resolves from PyPI at the release's version (§18) and caches.
+- `.mcp.json` launches the self-interpreter through the plugin's own launcher, `server/launch.py`, as
+  `uv run --no-project --quiet ${CLAUDE_PLUGIN_ROOT}/server/launch.py --from chaincompiler-si==<release> si-server`
+  (`scripts/uvline.py`'s `server_launch`). Claude Code gives a server thirty seconds to answer `initialize`, a plugin
+  cannot lengthen that, and the real server cannot meet it on a new machine: there uv first installs its seventy-odd
+  packages, so `si-server` answers more than a minute after it is started. The launcher needs nothing but the standard
+  library, so uv starts it at once, and what it answers before the real server is up is what the real server would
+  answer: `initialize` with the protocol version the client asks for, or the real server's newest when the client asks
+  for a newer one, and the one capability it serves, its tools; `tools/list` from the stored list; `ping`. Both stored
+  answers, `server/initialize.json` and `server/tools.json`, are the real server's own, written by
+  `scripts/build_server_tools.py` (whose `--check` refuses a stale one), and `si`'s build file bounds `fastmcp` to the
+  major they were written under. The probe a newer Claude Code opens with, `server/discover`, is refused at once, so it
+  goes straight to `initialize` instead of waiting out the probe. The launcher starts the real server behind it as
+  `uv tool run --compile-bytecode --from chaincompiler-si==<release> si-server`, in an environment uv resolves from PyPI
+  at the release's version (§18), compiles once and caches. Once the real server has answered its own `initialize`,
+  every message passes through unchanged, both ways, as bytes — the real server's transport is UTF-8 and nothing in the
+  launcher decodes what passes, so no locale or Windows code page touches it — written to the server by one thread in
+  the order it came, never by the thread reading the server's answers. A request that arrives before then waits for it;
+  every request the launcher cannot deliver is answered with an error naming why — the server ended before it answered,
+  the client closed first, the server's input refused it — and a line that is not one JSON object is answered with an
+  error; a server that ends after serving ends the launcher with it.
 - Every shipped skill that has an agent run code from one of the fifteen, or from an outside distribution they rest
   on (`agent-prompt-engineering`, `agent-skilltree`), names how a plugin install runs it, once, before its first code
   block, covering every block and command in the skill: `uv run --no-project --with <distribution>==<release>
@@ -420,18 +438,30 @@ any folder holding a `CLAUDE.md` or a `.claude/rules/`, an environment holding o
 from a transcript and the files, never from the session's account.
 - **The install** — with an empty `CLAUDE_CONFIG_DIR`, signed out: `claude plugin marketplace add sancovp/chaincompiler`
   and `claude plugin install chaincompiler@chaincompiler` exit 0, `claude plugin list` names the plugin enabled at the
-  release's version, and its cached copy holds every shipped skill and a `.mcp.json` pinning that release.
+  release's version, and its cached copy holds every shipped skill, the launcher with its `initialize.json` and
+  `tools.json`, and a `.mcp.json` launching it pinned to that release.
 - **The run** — a headless session on the user's own login (the install's configuration is signed out), whose only
   addition is that cached copy (`--plugin-dir`), and whose `python3` imports none of the fifteen (checked in the same
-  environment before the session). Its init event shows the plugin's self-interpreter connected, and any other MCP
-  server Claude Code loads at the seat is named in the proof and granted no tool. It calls one of the server's tools
-  and gets a result that is not an error, and it follows one of the eight capability skills, whose Python runs through
+  environment before the session). The plugin's server connects — the session's start lists it connected, or still
+  connecting (`pending`) and the session is then offered or answered one of its tools, and no note of Claude Code's,
+  in a tool search's result, says it failed to connect; that proves the launcher answered, and only one of the
+  server's tools answering without an error proves the self-interpreter behind it. Any other MCP server Claude Code
+  loads at the seat is named in the proof and granted no tool. The session calls one of the server's tools and gets a
+  result that is not an error — on the seat's empty uv cache, after uv installs the server, the seconds from the
+  session's start to that answer recorded with the grade — and it follows one of the eight capability skills, whose Python runs through
   its uv line into the skill dir the task asks for, as that capability packages it — its name, its kind and its chain
   — written by no tool, shell write or Python of the session's own.
 - **The grader's negative controls** — `scripts/tests/test_plugin_proof.py` (§19): a baseline transcript passes, and
-  one whose server failed to connect, whose tool call returned an error, whose skill ran its Python without its uv
-  line, whose skill dir was written by hand (a tool, a shell write or a write from Python) or is not the capability's
-  output fails exactly that check.
+  so do one whose server was still connecting at the start and then answered and one that also read the plugin's own
+  README; one whose server failed to connect or timed out connecting, whose server never came up behind the launcher,
+  whose tool call returned an error, whose skill ran its Python without its uv line, whose skill dir was written by hand
+  (a tool, a shell write or a write from Python) or is not the capability's output fails exactly that check. The
+  launcher's own tests, `scripts/tests/test_server_launch.py`, run it against a fake `uv`: it answers before a slow
+  server is up and then passes a call through; refuses `server/discover` at once; answers the version the real server
+  would; relays text unchanged under a Windows code page and a C locale; delivers held input larger than a pipe to a
+  server that answers one message at a time; delivers a burst across the moment the server is ready once each, in
+  order; answers with an error a request held when the server ends first or the client closes first, and a line that
+  is not one JSON object; and its stored answers are the real server's.
 
 ## §17 The project surface
 
@@ -439,10 +469,10 @@ from a transcript and the files, never from the session's account.
 `scripts/update_site.py` renders it into `assets/roadmap.svg`, `site/data.json` and the board
 `.claude/rules/chaincompiler_states.md` — generated files are never edited by hand, and `deploy.yml` fails a push
 whose generated files are stale — and `ROADMAP.md` mirrors it in prose. `site/` is the GitHub Pages site (the roadmap, a workbench, and
-the development log built by `scripts/build_blog.py`). `scripts/` also holds the release's own tools —
-`set_version.py`, `check_versions.py` and `upload_release.py` (§18), `uvline.py` and `plugin_proof.py` (§16),
-`whereimport.py` (§19) — with
-their tests in `scripts/tests/`, each listed in `scripts/CLAUDE.md`. `.claude/` is the working surface for an agent
+the development log built by `scripts/build_blog.py`). `server/` holds the plugin's server launcher and its tool list
+(§16). `scripts/` also holds the release's own tools — `set_version.py`, `check_versions.py` and `upload_release.py`
+(§18), `uvline.py`, `build_server_tools.py` and `plugin_proof.py` (§16), `whereimport.py` (§19) — with their tests in
+`scripts/tests/`, each listed in `scripts/CLAUDE.md`. `.claude/` is the working surface for an agent
 developing this repository: the rules named in §0 and the skills `chaincompiler` (orientation),
 `archetype-compiler`, `bandit-chain-system`, `glyphsteer`, `glyphsteer-dense`, `metaformal-self-test`
 (test by observing real runs), `report-missed-skill` and `skilltree` (a copy of SkillTree's own skill).
@@ -476,9 +506,8 @@ project's. In a clone, `install.sh` installs the fifteen editable with `--no-dep
 `pydantic-stack-core`, `agent-prompt-engineering` ≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — from PyPI. A release is proven
 by its release flow (`.claude/rules/22-seq-chaincompiler-release.md`): a clean clone of what publishes with
 `./install.sh`, the wheel proof before the merge, and after it the install from PyPI and the plugin proof (§16, §19).
-⚠ OWED: PyPI holds fourteen of the fifteen at v0.3.0 and does not allow the name `framework`, so the plugin's four
-chapter-rung skills, whose uv lines name `framework==0.3.0`, do not run from a plugin install, and the chapter rung
-installs from no index until v0.3.1 publishes it as `skill2framework` (§13, BACKLOG).
+PyPI holds all fifteen names as this project's, every one at v0.3.1, the first whole version of the line; v0.3.0 holds
+fourteen, short of `framework`, a name PyPI does not allow, which v0.3.1 carries as `skill2framework` (§13).
 
 **One version line.** A release's version, its README changelog entry, is every package's `version`,
 every `__version__` a package defines, the plugin's version in `plugin.json` and `marketplace.json`, and the pin in
@@ -538,7 +567,7 @@ that its wheel lacks, is found before PyPI is asked to hold it.
 | `pytest examples/_all/test_all.py` (or `python examples/_all/run_all.py`) | one domain through every package end to end — persona, compile, gate, construct, organize, steer, interpret |
 | `python examples/_all/bandit_self.py` | the roll-up closes on a domain and on the system's own components |
 | `pytest examples/nutrition` | the dietc rebuild: the agent closes, and a real day computes through the tools |
-| `pytest scripts/tests` | the version gate's planted refusals, the plugin grader's negative controls, and every Python block of the eight capability skills and `bandit-chain-system` run alone in an empty folder |
+| `pytest scripts/tests` | the version gate's planted refusals, the plugin grader's negative controls, the server launcher against a fake `uv` and its tool list against the real server, and every Python block of the eight capability skills and `bandit-chain-system` run alone in an empty folder |
 | `python3 scripts/check_versions.py` | the one version line, the build files' declarations, the skills' uv lines and every copy (§16, §18) |
 | `lint-imports` | the layer contract of §2 |
 
