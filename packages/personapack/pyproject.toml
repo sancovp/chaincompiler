@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "personapack"
-version = "0.3.3"
+version = "0.3.4"
 description = "A library of pre-bound PersonaBundles (description blocks + attention chains + ≥1 CoR) ready to seat into make_gba(**seat(name))"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-dependencies = ["personacc==0.3.3", "corcc==0.3.3"]
+dependencies = ["personacc==0.3.4", "corcc==0.3.4"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

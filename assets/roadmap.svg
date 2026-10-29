@@ -165,5 +165,6 @@
 <text x="2556" y="346" font-size="11" fill="#15151a">•  the fifteen on PyPI under their n…</text>
 <text x="2556" y="366" font-size="11" fill="#15151a">•  the plugin proof: installed signe…</text>
 <text x="2556" y="386" font-size="11" fill="#15151a">•  a release's own checks in one com…</text>
+<text x="2556" y="406" font-size="11" fill="#15151a">•  the install from PyPI waits until…</text>
 <defs><marker id="a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#c4c4bf"/></marker></defs>
 </svg>

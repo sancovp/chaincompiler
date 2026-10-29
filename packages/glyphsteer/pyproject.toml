@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "glyphsteer"
-version = "0.3.3"
+version = "0.3.4"
 description = "Dual-regime retrieval steering via compiled in-band glyph annotations"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -20,7 +20,7 @@ st = ["sentence-transformers"]
 serve = ["fastapi", "uvicorn", "fastembed"]
 # syntax gating: the grammar imports ChainCompiler's lint/gate engine (`chaincompiler.bridge`) and rulecatcher's
 # store inside its functions, so the extra brings both
-grammar = ["rulecatcher==0.3.3", "chaincompiler==0.3.3"]
+grammar = ["rulecatcher==0.3.4", "chaincompiler==0.3.4"]
 
 [project.scripts]
 glyphsteer = "glyphsteer.cli:main"

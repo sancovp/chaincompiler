@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "goldenreq"
-version = "0.3.3"
+version = "0.3.4"
 description = "The acceptance gate for goldenization: gauges FILE requests carrying receipts; a handler ACCEPTS/REJECTS; only an accept fires the promotion effect. Nothing self-promotes."
 readme = "README.md"
 requires-python = ">=3.11"

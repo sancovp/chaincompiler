@@ -41,9 +41,9 @@ error, never dropped]
 | the public repository's gates | `.github/workflows/deploy.yml` · `scripts/check_changelog.py` · `.github/workflows/contribute.yml` · `scripts/validate_registry.py` |
 | the checks | `examples/_all/run_all.py` · `examples/_all/bandit_self.py` · `examples/_all/test_all.py` · `examples/nutrition/build.py` · `examples/nutrition/test_nutrition_aios.py` · `scripts/tests/` · `scripts/whereimport.py` · `.importlinter` |
 | the plugin proof | `scripts/plugin_proof.py` (`new`, `install`, `run`, `grade`, `remove`; `CAPABILITIES`, `KEEP_ENV`; the `<transcript>.env.json` sidecar `run` writes twice — before its pre-check, then `started_at` just before the session — and `grade` reads) · `scripts/plugin-proof-task.md` · `scripts/tests/test_plugin_proof.py` · the clean seat it keeps: CompiloApe's `DESIGN.md` §1 THE CLEAN SEAT |
-| the release check and the upload driver | `scripts/release_check.py` whole (`extract` · `tree_diff` · `part_generated` · `part_frontmatter` · `history_line` · `part_sentences` · `part_publish` · `WRAPPER` · `read_tee_log` · `part_tee`) · `scripts/tests/test_release_check.py` whole · `scripts/upload_release.py` whole (`fetch` · `held` · `indexed` · `whole` · `run`) · `scripts/tests/test_upload_release.py` whole · and what each part stands in for, read beside it: the public repository's `.github/workflows/deploy.yml` (its staleness gate fails a generated file that differs AND one that is untracked) · `scalable-publishing/bin/publish_unit.sh` and `scalable-publishing/bin/generate_unit_readme.py` (the published README is the source README with a managed badge block) · `server/launch.py`'s `handle`, `pump_out`, `go` and `to_server` (the launcher swallows the client's `notifications/initialized` and sends its own only once the real server answered its `initialize`) · the README's section order (its history is `## Changelog` up to the next `## ` heading; `## Status` and `## License` come after it and are current text) |
+| the release check and the upload driver | `scripts/release_check.py` whole (`extract` · `tree_diff` · `part_generated` · `part_frontmatter` · `history_line` · `part_sentences` · `part_publish` · `WRAPPER` · `read_tee_log` · `part_tee`) · `scripts/tests/test_release_check.py` whole · `scripts/upload_release.py` whole (`fetch` · `max_age` · `uploaded_at` · `held` · `indexed` · `whole` · `run`) · `scripts/tests/test_upload_release.py` whole · and what each part stands in for, read beside it: the public repository's `.github/workflows/deploy.yml` (its staleness gate fails a generated file that differs AND one that is untracked) · `scalable-publishing/bin/publish_unit.sh` and `scalable-publishing/bin/generate_unit_readme.py` (the published README is the source README with a managed badge block) · `server/launch.py`'s `handle`, `pump_out`, `go` and `to_server` (the launcher swallows the client's `notifications/initialized` and sends its own only once the real server answered its `initialize`) · the README's section order (its history is `## Changelog` up to the next `## ` heading; `## Status` and `## License` come after it and are current text) |
 | the publish pipeline (in the source home's repository, outside this folder) | `scalable-publishing/publish-manifest.json` — the `chaincompiler` unit, the fifteen `chaincompiler-pkg-*` units and the `sancrev-marketplace` unit (its `watch_paths`) · `.github/workflows/publish-on-main.yml` · `.github/workflows/publish-subdir.yml` · `scalable-publishing/bin/select_units_for_paths.py` · `scalable-publishing/bin/publish_unit.sh` · `scalable-publishing/bin/publish_package.sh` (it builds a copy of one package folder in a fresh environment and refuses a version PyPI holds) · `scalable-publishing/bin/generate_unit_readme.py` · `scalable-publishing/bin/generate_marketplace.py` · `scalable-publishing/bin/generate_publish_paths.py` · `scalable-publishing/templates/readme-refresh.yml` · its edit flow, the skill `scalable-publishing/skills/edit-scalable-publishing` |
-| PyPI's state of the fifteen | `https://pypi.org/pypi/<name>/<version>/json` for whether PyPI holds a version (200 once it does, 404 before — it answers the moment an upload lands) · `https://pypi.org/simple/<name>/`, which pip and uv read, for whether an install can find the version's files · `https://pypi.org/pypi/<name>/json` for which versions it holds and each held release's `requires_dist` — the project's JSON and the simple index list a new version minutes after its upload (scalable-publishing `DESIGN.md` §4) |
+| PyPI's state of the fifteen | `https://pypi.org/pypi/<name>/<version>/json` for whether PyPI holds a version (200 once it does, 404 before) and when its files were uploaded (`urls[].upload_time_iso_8601`) · `https://pypi.org/simple/<name>/`, which pip and uv read, in both its forms — the HTML page and the JSON form pip and uv ask for first (`Accept: application/vnd.pypi.simple.v1+json`) — for whether an install can find the version's files · `https://pypi.org/pypi/<name>/json` for which versions it holds and each held release's `requires_dist` — each served through a cache that can still answer as before an upload: the simple index for up to its `cache-control` max-age (600 s), its two forms cached apart, and a version's JSON 404 for up to 72 s after v0.3.3's uploads, so one reader can see a new version the next does not (scalable-publishing `DESIGN.md` §4) |
 | an agent built on this one | CompiloApe's forge flow `base/compiloape/.claude/rules/22-seq-forge-compiloape.md`, whenever the change touches `make_gba`, `construct_into`, `_apply_tree`, `default_rule_blocks`, `check_gba`, `roll_up_algebra` or the `bandit-chain-system` skill |
 | the records above the folder | the source home's project registry, section `base/chaincompiler` · the source home's root `CHANGELOG.md` tail · `scalable-publishing/CHANGELOG.md` tail · THE TOP-LEVEL DESIGN's publishing bridge (the list of published units) · every other project that installs or names the fifteen (the steward project's build file, stack and messages) |
 | every other copy of what the change edits | `git grep -n '<name, path or sentence changed>' HEAD -- .` across the whole source home — each hit's file read whole, a package's own `.claude/` (`packages/glyphsteer/.claude/rules/` and `.claude/skills/glyphsteer/`) among them; for a shipped skill, every `SKILL.md` carrying its `name` and every generator that writes it |
@@ -179,9 +179,10 @@ error, never dropped]
   `plugin_proof.py`'s seat · `server/launch.py` · `publish_unit.sh`.
 - `server/launch.py` changes which messages it answers itself or how it tells the real server the client is
   initialized (`go`, `to_server`), so the tee probe's wrapper and `read_tee_log`'s checks move with it.
-- What PyPI answers on which page changes (a version's JSON, the project's JSON, the simple index), so
-  `upload_release.py`'s `held`, `indexed` and `whole`, the stand-in PyPI in `scripts/tests/test_upload_release.py`,
-  stage 1 below, `DESIGN.md` §18 and scalable-publishing's `DESIGN.md` §4 move together.
+- What PyPI answers on which page changes (a version's JSON, the project's JSON, the simple index), in which form, or
+  for how long its cache serves it, so `upload_release.py`'s `held`, `indexed`, `max_age`, `uploaded_at` and `whole`,
+  the stand-in PyPI in `scripts/tests/test_upload_release.py`, stage 1 below, `DESIGN.md` §18 and scalable-publishing's
+  `DESIGN.md` §4 move together.
 - `roadmap.json` changes, so `site/data.json`, `assets/roadmap.svg`, the board and `ROADMAP.md` move with it.
 - A `gba.py`, `hba.py` or `cog.py` text change re-applies every committed GBA under `personas/`, every copy of the
   `bandit-chain-system` skill, and runs CompiloApe's forge flow whole.
@@ -355,13 +356,17 @@ error, never dropped]
      is PyPI refusing the name itself: no run uploads it, and the package is renamed in the next release (`DESIGN.md`
      §18). Before stage 2 starts, `python3 scripts/upload_release.py --clone <the clone> --whole` exits 0: it reads
      whether PyPI holds the release from each of the fifteen's version JSON (`https://pypi.org/pypi/<name>/<version>/json`),
-     which answers the moment an upload lands, and whether the simple index (`https://pypi.org/simple/<name>/`), which pip
-     and uv read, lists the release's files. Before the upload it exits 4, every version JSON 404 (recorded as the
-     store's before); after it, 0. The project's JSON and the simple index list a new version minutes after its upload
-     (scalable-publishing `DESIGN.md` §4), so an exit 3 — every version JSON 200, the simple index not listing them all
-     yet — is read again a minute later; an exit 4 names each package whose version JSON answers 404, one PyPI does not
-     hold — an upload not run, failed or refused — which no wait changes: the upload driver runs again, or the name is
-     treated as refused. A release is never called short from the project's JSON.
+     whether both forms of the simple index (`https://pypi.org/simple/<name>/`, its HTML page and the JSON form pip and uv
+     ask for first) list the release's files, and whether each package was uploaded longer ago than the index's cache life
+     (its `cache-control` max-age), the upload time read from the version's JSON. Before the upload it exits 4, every
+     version JSON 404 (recorded as the store's before); after it, 0. Each of PyPI's pages is served through a cache that
+     can still answer as before the upload — the simple index until its max-age (600 s) ends, each form apart, and a
+     version's JSON 404 for up to 72 s after v0.3.3's uploads (scalable-publishing `DESIGN.md` §4) — so an exit 3,
+     every version JSON 200 and a form of the simple index not listing them all or an upload still within its cache
+     life, is read again a minute later, and so is an exit 4 in the minutes after an upload; an exit 4 that stands over
+     readings several minutes apart names a package PyPI does not hold — an upload not run, failed or refused — and the
+     upload driver runs again (`publish_package.sh` refuses a version PyPI holds), or the name is treated as refused. A
+     release is never called short from the project's JSON.
   2. THE INSTALL FROM PYPI: a fresh venv, checked, `pip install --no-cache-dir --report <file>` of `chaincompiler-si`,
      `glyphsteer`, `skill2framework`, `personapack`, `chaincompiler-archetype` and `goldenreq` at `==<release>` with no index
      but PyPI; the report shows every one of the fifteen downloaded from PyPI; `pip check` is clean; the source-tree
@@ -394,7 +399,7 @@ name with other bytes · move one version line without the others · merge a cha
 changelog version · upload a package built from anything but a clone of the public repository at the release's publish
 commit · run anything else in the after-merge proof before the upload · upload a package before every sibling it
 requires is on PyPI at the release · merge the next release while this one is not whole on PyPI, a name PyPI refuses excepted, renamed in it · reuse a version PyPI
-holds · call a release short from the project's JSON, which lists a new version minutes after its upload · let a
+holds · call a release short from the project's JSON · let a
 check against an install import a clone's source · prove the clean install only on an interpreter whose
 venv happens to carry a new enough setuptools · run the plugin proof's session with the user's settings or outside a
 marked seat · delete an open backlog task · claim a GBA rebuilds from a copy whose `skill_src` resolves outside the
@@ -409,8 +414,9 @@ match a grader's failure phrase in a file the session read · write the launch l
 release check on a dirty tree, or with a `python3` that imports another tree's packages · except a line from the
 replaced-reading grep because it mentions `git grep` · read the README below `## Status` as history · time the
 launcher's `initialize` answer from anything but the client's first message · take the launcher's own
-`notifications/initialized` as the only proof that the real server answered · wait on a version PyPI answers 404 for
-as if it were the simple index's lag]
+`notifications/initialized` as the only proof that the real server answered · upload a version again on a 404 read
+in the minutes after its upload, before reading it again · start the install from PyPI before `--whole` exits 0 · read
+the simple index in one form only]
 
 COMPOSES:[`.claude/rules/00-keeping-roadmap-and-backlog-current.md` — the same-change discipline this flow runs at
 release grain · `.claude/rules/22-seq-mint-attention-chain.md` — the flow for minting what a release ships ·
@@ -423,8 +429,9 @@ the skills' uv lines, and every copy of a shipped skill, every `SKILL.md` under 
 package's own folder that carries a shipped skill's name among them · `scripts/tests/test_skill_examples.py` — a
 capability skill's Python block that does not run alone · `scripts/upload_release.py` — the upload in dependency order
 from the kept clone, refusing a package whose sibling PyPI lacks, stopping its new names at PyPI's quota and resuming
-from PyPI's state; its `--whole`, a release not yet held by each version's JSON (exit 4, a 404 no wait changes) or not
-yet listed by the simple index (its lag, read again) · `scripts/build_server_tools.py --check` — launcher answers (`initialize.json`, `tools.json`) that
+from PyPI's state; its `--whole`, a release not yet held by each version's JSON (exit 4, read again in the minutes
+after an upload, since a cache can hold a 404), not yet listed by both forms of the simple index, or uploaded within the
+index's cache life (exit 3, read again) · `scripts/build_server_tools.py --check` — launcher answers (`initialize.json`, `tools.json`) that
 are not the real server's under the environment's `fastmcp` · `scripts/tests/test_server_launch.py` — a launcher that waits where it must
 answer, answers what the real server would not, loses, reorders or re-encodes a message, or leaves a request
 unanswered · `scripts/plugin_proof.py grade` — a plugin install that does not work · `scripts/release_check.py` — a

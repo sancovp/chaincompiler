@@ -515,8 +515,8 @@ project's. In a clone, `install.sh` installs the fifteen editable with `--no-dep
 `pydantic-stack-core`, `agent-prompt-engineering` ≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — from PyPI. A release is proven
 by its release flow (`.claude/rules/22-seq-chaincompiler-release.md`): a clean clone of what publishes with
 `./install.sh`, the wheel proof before the merge, and after it the install from PyPI and the plugin proof (§16, §19).
-PyPI holds all fifteen names as this project's, every one at v0.3.1, the first whole version of the line, and at
-v0.3.2; v0.3.0 holds fourteen, short of `framework`, a name PyPI does not allow, which v0.3.1 carries as
+PyPI holds all fifteen names as this project's, every one at v0.3.1, the first whole version of the line, at v0.3.2
+and at v0.3.3; v0.3.0 holds fourteen, short of `framework`, a name PyPI does not allow, which v0.3.1 carries as
 `skill2framework` (§13).
 
 **One version line.** A release's version, its README changelog entry, is every package's `version`,
@@ -560,9 +560,15 @@ publish script printed — PyPI's own words after an `HTTPError` — never by th
 progress. The next release merges only once PyPI holds this one whole, or holds every package of it but one whose name
 PyPI refuses, that package renamed in the next release, which is then the line's next whole version: v0.3.0 is short
 of `framework` for good, and v0.3.1 carries it as `skill2framework`. Whether PyPI holds the release is read from each
-package's version JSON, which answers the moment an upload lands, and the install from PyPI starts only once the simple
-index pip and uv read lists the release's files: `upload_release.py --whole` reads both, never the project's JSON, which
-lists a new version minutes after its upload (scalable-publishing's `DESIGN.md` §4). Then a fresh environment installs the release from PyPI alone — pip's install report showing every
+package's version JSON, never the project's JSON, and the install from PyPI starts only once both forms of the simple
+index list the release's files — its HTML page and the JSON form pip and uv ask for first, which PyPI's cache keeps apart
+(`Vary: Accept`) — and every package was uploaded longer ago than the index's cache life, its `cache-control` max-age
+(600 s): `upload_release.py --whole` reads all of it. Each of PyPI's pages is served through a cache, so in the minutes
+after an upload one reader can be served a page's answer from before it while the next is served the new one — the
+simple index for up to its max-age, each form apart: v0.3.3's fifteen were named by each version's JSON and the HTML
+pages within 72 seconds of each upload, while pip, about five minutes after `chaincompiler-si`'s upload, found no 0.3.3
+(the goal `chaincompiler-distribution-whole`'s C26 proof). So a version that reads 404 in the minutes after its upload
+is read again before it is uploaded again (scalable-publishing's `DESIGN.md` §4). Then a fresh environment installs the release from PyPI alone — pip's install report showing every
 one of the fifteen downloaded from PyPI — and §19's checks pass from a clean clone at that commit, against those
 installs; then the plugin proof runs (§16). In every proof against an install, each package the checks import
 resolves into that environment, never into the clone's source.

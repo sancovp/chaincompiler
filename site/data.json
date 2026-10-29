@@ -144,11 +144,21 @@
         "the MCP server answers Claude Code inside its thirty seconds on a new machine, through a launcher that starts it behind (done, v0.3.2)",
         "the fifteen on PyPI under their names, each a publishing-manifest unit (done, v0.3.1)",
         "the plugin proof: installed signed out, then a session that calls the server and runs a skill (passing, v0.3.2)",
-        "a release's own checks in one command before its PR, and PyPI's state read where it answers first (done, v0.3.3)"
+        "a release's own checks in one command before its PR, and PyPI's state read from each version's JSON and the simple index (done, v0.3.3)",
+        "the install from PyPI waits until no cache can still serve pip or uv a copy from before the upload (done, v0.3.4)"
       ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.3.4",
+      "date": "2026-10-29",
+      "changes": [
+        "**The install from PyPI waits until no cache can still serve pip or uv a copy from before the upload.** v0.3.3's first",
+        "**What PyPI's pages say after an upload, as measured.** v0.3.3's fifteen were named by each version's JSON and by the",
+        "Suite: 324 passed in `pytest packages`, 110 in `scripts/tests` (107 and 3 skipped in a clone of the public"
+      ]
+    },
     {
       "version": "v0.3.3",
       "date": "2026-10-29",

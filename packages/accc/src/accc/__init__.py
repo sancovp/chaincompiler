@@ -4,7 +4,7 @@ ACCC → CORCC → SCCC: a CoR step embeds a forged AC; a skill embeds a CoR.
 """
 from __future__ import annotations
 
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 
 from .forge import Language, forge, gate, grammar, package, prime
 from .render import attention_block, parse_ac

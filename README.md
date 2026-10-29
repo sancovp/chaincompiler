@@ -4,9 +4,9 @@
 
 <!-- SCALABLE-PUBLISHING:AUTOGEN START (managed block — do not edit between these markers) -->
 
-![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_10_28-lightgrey.svg)
+![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_10_29-lightgrey.svg)
 
-⭐ 0 stars • 🕑 Updated 2026-10-28
+⭐ 0 stars • 🕑 Updated 2026-10-29
 
 [Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
 
@@ -377,6 +377,24 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.3.4 — 2026-10-29
+- **The install from PyPI waits until no cache can still serve pip or uv a copy from before the upload.** v0.3.3's first
+  install from PyPI, about five minutes after its uploads, found no `chaincompiler-si==0.3.3`, though
+  `scripts/upload_release.py --whole` had just read every package listed by PyPI's simple index. PyPI serves the simple
+  index through a cache for up to 600 s and keeps its HTML page and the JSON form pip and uv ask for first apart
+  (`Vary: Accept`): `--whole` read the HTML page, pip the JSON form. `--whole` now reads both forms, and waits until every
+  package was uploaded longer ago than the index's `cache-control` max-age, the upload time read from the version's JSON;
+  its tests stand up a PyPI whose JSON form trails its HTML page and a reading 281 s after an upload, each failing on
+  v0.3.3's reader. v0.3.3's install from PyPI, run again 26 minutes after the upload, passed (the goal
+  `chaincompiler-distribution-whole`'s C26 proof; DESIGN §18 · scalable-publishing `DESIGN.md` §4).
+- **What PyPI's pages say after an upload, as measured.** v0.3.3's fifteen were named by each version's JSON and by the
+  HTML pages within 72 s of each upload, in no fixed order — neither the version's JSON at once nor the others minutes
+  later, as v0.3.3's entry, DESIGN §18 and scalable-publishing's `DESIGN.md` §4 said; a version's JSON read 404 in those
+  seconds is read again before it is uploaded again, and `--whole`'s exit 4 says so (DESIGN §18).
+- Suite: 324 passed in `pytest packages`, 110 in `scripts/tests` (107 and 3 skipped in a clone of the public
+  repository, where the publish dry run's three tests have no source home's publisher beside them), 2 in
+  `examples/nutrition`; every package moves to 0.3.4.
 
 ### v0.3.3 — 2026-10-29
 - **P10 Distribution is done.** The plugin installs and works on a new machine from PyPI alone: at v0.3.2, PyPI holds

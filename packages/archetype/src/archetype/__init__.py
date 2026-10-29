@@ -9,7 +9,7 @@ compile the transformation law, don't list the archetypes. Spec: ARCHETYPE-COMPI
 """
 from __future__ import annotations
 
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 
 from .model import HJ, KNOBS, MetaArchetype, Seed
 from .stdlib import CYBERNETIC_CITY, CYCLE, PANTHEON, next_in_cycle, seed_for

@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "personacc"
-version = "0.3.3"
+version = "0.3.4"
 description = "Persona Compiler-Compiler — compiles a persona bundle (description blocks + attention chains + ≥1 chain-of-reasoning that uses them) and seats it into make_gba"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-dependencies = ["chaincompiler-accc==0.3.3", "corcc==0.3.3", "chaincompiler==0.3.3"]
+dependencies = ["chaincompiler-accc==0.3.4", "corcc==0.3.4", "chaincompiler==0.3.4"]
 
 [tool.setuptools.packages.find]
 where = ["src"]

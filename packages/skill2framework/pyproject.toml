@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "skill2framework"
-version = "0.3.3"
+version = "0.3.4"
 description = "The chapter rung: blogs → chapter → plugin → fold into the SkillTome (the skill2framework chain's deterministic glue)"
 readme = "README.md"
 requires-python = ">=3.11"

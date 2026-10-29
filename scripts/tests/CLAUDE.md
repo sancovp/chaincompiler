@@ -7,6 +7,7 @@ session's start; `test_server_launch.py` runs the plugin's server launcher again
 answers against the real server; `test_skill_examples.py` runs every Python block of the eight capability skills and of
 `bandit-chain-system` alone, piped into `python3 -` in an empty folder, as a skill's uv line says to;
 `test_upload_release.py` holds the upload driver's order and its decisions against a stand-in PyPI, and its reading of
-whether PyPI holds a release against a PyPI whose project JSON trails its version JSON; `test_release_check.py` plants
+whether PyPI holds a release against a PyPI whose project JSON trails its version JSON, whose simple index lists a
+release in one form and not the other, and whose cache can still serve a copy from before the upload; `test_release_check.py` plants
 each kind of finding of `../release_check.py` and sees it named, each part finding nothing on a clean stand-in, and the
 command itself exiting 1 naming a finding, 0 with none (`DESIGN.md` §16 · §17 · §18 · §19). Run them from the repository root: `python3 -m pytest scripts/tests`.

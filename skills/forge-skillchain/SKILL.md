@@ -3,7 +3,7 @@ name: forge-skillchain
 description: SCCC — forge a skill-chain language — resolve [ac|cor|skill] steps to packages and roll them up.
 ---
 
-**Run its Python** from a plugin install with `uv run --no-project --with sccc==0.3.3 --with chaincompiler-accc==0.3.3 --with corcc==0.3.3 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+**Run its Python** from a plugin install with `uv run --no-project --with sccc==0.3.4 --with chaincompiler-accc==0.3.4 --with corcc==0.3.4 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
 
 An SC chains forged AC/CoR/skill steps toward a goal. SCCC is made FROM CORCC+ACCC+chaincompiler. Every step must already be a skill dir in `skills_dir` (or your skills), so this makes its two steps first.
 

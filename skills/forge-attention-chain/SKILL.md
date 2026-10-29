@@ -3,7 +3,7 @@ name: forge-attention-chain
 description: ACCC — forge an attention-chain language, gate candidates against it, package it as a SKILL.md.
 ---
 
-**Run its Python** from a plugin install with `uv run --no-project --with chaincompiler-accc==0.3.3 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+**Run its Python** from a plugin install with `uv run --no-project --with chaincompiler-accc==0.3.4 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
 
 An attention chain is an INNER 'how to think' template. ACCC is made FROM chaincompiler's forge.
 

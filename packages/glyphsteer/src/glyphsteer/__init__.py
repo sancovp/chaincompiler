@@ -11,7 +11,7 @@ everything else (vocab, encode, the lexical index, the steer math) is dependency
 """
 from __future__ import annotations
 
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 
 from .annotate import Annotation, Annotator, LLMAnnotator, RuleAnnotator
 from .encode import Chunk, annotate_chunk, check_hidden, indexed_form, returned_form

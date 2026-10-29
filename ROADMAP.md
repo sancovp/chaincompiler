@@ -96,7 +96,10 @@ plugin proof built (`scripts/plugin_proof.py`). In v0.3.1: the fifteen on PyPI u
 package named `skill2framework`. In v0.3.2: the plugin's server answering Claude Code inside its thirty seconds on a new
 machine, through its launcher, and the plugin proof passing — installed signed out into an empty configuration, then a
 headless session that connects the server, calls it and runs a skill's Python through uv. In v0.3.3: a release's own
-checks in one command before its PR (`scripts/release_check.py`), and PyPI's state read where it answers first.
+checks in one command before its PR (`scripts/release_check.py`), and PyPI's state read from each version's JSON and the
+simple index, never the project's JSON. In v0.3.4: the install from PyPI waits until no cache can still serve pip or uv
+a copy from before the upload — both forms of the simple index listing the release, every upload older than its cache
+life.
 
 ---
 

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import sys
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
@@ -110,58 +111,93 @@ def test_everything_held_uploads_nothing(capsys):
     assert code == 0 and pypi.uploads == []
 
 
-class LaggingPyPI:
-    """PyPI's three pages as they stand minutes after an upload (scalable-publishing DESIGN.md §4): each version's JSON
-    holds the release at once, the project's JSON still names the version before it, and the simple index lists the
-    release's files for the names in `indexed` only."""
-    def __init__(self, indexed: set[str], silent: set[str] = frozenset()):
-        self.indexed, self.silent, self.asked = set(indexed), set(silent), []
+UPLOADED = datetime(2026, 1, 1, 12, 0, 0, tzinfo=timezone.utc)
+LATER = UPLOADED + timedelta(hours=1)                # every cache life long past
 
-    def get(self, url: str) -> tuple[int, str]:
-        self.asked.append(url)
+
+class LaggingPyPI:
+    """PyPI's pages as they can stand after an upload (scalable-publishing DESIGN.md §4): each version's JSON holds the
+    release, its newest file uploaded at UPLOADED; the project's JSON still names the version before it, as v0.3.2's
+    read did; and the simple index — its HTML form and the JSON form pip and uv ask for, which PyPI's cache keeps apart,
+    each cached up to 600 s — lists the release's files for the names in `html` and in `json` only."""
+    def __init__(self, html: set[str], json_form: set[str] | None = None, silent: set[str] = frozenset()):
+        self.html, self.json = set(html), set(html if json_form is None else json_form)
+        self.silent, self.asked = set(silent), []
+
+    def get(self, url: str, accept: str | None = None) -> tuple[int, str, dict]:
+        self.asked.append((url, accept))
         name = url.split("/")[4]
         if name in self.silent:
-            return 0, ""
+            return 0, "", {}
         if url.endswith(f"/{V}/json"):
-            return 200, json.dumps({"info": {"name": name, "version": V}})
+            return 200, json.dumps({"info": {"name": name, "version": V}, "urls": [
+                {"filename": f"{name}-{V}.tar.gz", "upload_time_iso_8601": "2026-01-01T11:59:40.000000Z"},
+                {"filename": f"{name}-{V}-py3-none-any.whl", "upload_time_iso_8601": "2026-01-01T12:00:00.000000Z"}]}), \
+                {"cache-control": "max-age=900, public"}
         if url.endswith(f"/pypi/{name}/json"):
-            return 200, json.dumps({"info": {"name": name, "version": "0.0.1"}, "releases": {"0.0.1": [{}]}})
+            return 200, json.dumps({"info": {"name": name, "version": "0.0.1"}, "releases": {"0.0.1": [{}]}}), {}
         if url.endswith(f"/simple/{name}/"):
-            files = f'<a href="x">{name.replace("-", "_")}-0.0.1.tar.gz</a>'
-            if name in self.indexed:
-                files += f'<a href="y">{name.replace("-", "_")}-{V}-py3-none-any.whl</a>'
-            return 200, files
-        return 404, ""
+            files = [f"{name.replace('-', '_')}-0.0.1.tar.gz"]
+            in_json = accept == "application/vnd.pypi.simple.v1+json"
+            if name in (self.json if in_json else self.html):
+                files.append(f"{name.replace('-', '_')}-{V}-py3-none-any.whl")
+            body = (json.dumps({"files": [{"filename": f} for f in files]}) if in_json
+                    else "".join(f'<a href="x">{f}</a>' for f in files))
+            return 200, body, {"cache-control": "max-age=600, public", "vary": "Accept-Encoding, Accept"}
+        return 404, "", {}
 
 
 def test_whole_reads_each_versions_json_never_the_projects(capsys):
     # the project's JSON still names 0.0.1; a reading of it would call the release short
-    web = LaggingPyPI(indexed=set(PKGS))
-    code = whole(REPO, get=web.get)
+    web = LaggingPyPI(html=set(PKGS))
+    code = whole(REPO, get=web.get, now=LATER)
     out = capsys.readouterr().out
     assert code == 0, out
     assert f"PyPI holds {V} whole" in out
-    assert not [u for u in web.asked if u.endswith("/json") and not u.endswith(f"/{V}/json")]
+    assert not [u for u, _ in web.asked if u.endswith("/json") and not u.endswith(f"/{V}/json")]
 
 
 def test_whole_waits_until_the_simple_index_lists_the_release(capsys):
-    web = LaggingPyPI(indexed=set(PKGS) - {"goldenreq"})
-    code = whole(REPO, get=web.get)
+    web = LaggingPyPI(html=set(PKGS) - {"goldenreq"})
+    code = whole(REPO, get=web.get, now=LATER)
     out = capsys.readouterr().out
-    assert code == 3 and "for goldenreq" in out and "goldenreq" in out and "does not list it" in out
+    assert code == 3 and "for goldenreq" in out and "HTML does not list it" in out
+
+
+def test_whole_waits_until_the_form_pip_reads_lists_the_release(capsys):
+    # v0.3.3's first install: the HTML form listed chaincompiler-si's release while the JSON form pip reads did not
+    web = LaggingPyPI(html=set(PKGS), json_form=set(PKGS) - {"chaincompiler-si"})
+    code = whole(REPO, get=web.get, now=LATER)
+    out = capsys.readouterr().out
+    assert code == 3 and "for chaincompiler-si" in out, out
+    line = next(l for l in out.splitlines() if l.strip().startswith("chaincompiler-si "))
+    assert "HTML lists it · JSON does not list it" in line
+    assert ("https://pypi.org/simple/chaincompiler-si/", "application/vnd.pypi.simple.v1+json") in web.asked
+
+
+def test_whole_waits_out_the_index_cache_after_an_upload(capsys):
+    # both forms list it, but the newest upload is 281 s old and the index is cached up to 600 s: another reader can still
+    # be served a copy from before the upload, so the release is not yet called whole
+    web = LaggingPyPI(html=set(PKGS))
+    code = whole(REPO, get=web.get, now=UPLOADED + timedelta(seconds=281))
+    out = capsys.readouterr().out
+    assert code == 3 and "uploaded within the index's cache life" in out, out
+    assert "(281 s ago)" in out and "cached up to 600 s" in out
+    assert whole(REPO, get=web.get, now=UPLOADED + timedelta(seconds=601)) == 0
 
 
 def test_a_version_pypi_does_not_hold_is_told_apart_from_the_index_lag(capsys):
-    # a 404 on the version's JSON is an upload that never landed: no wait changes it
-    web = LaggingPyPI(indexed=set(PKGS))
+    # a 404 on the version's JSON: read again first, since in the minutes after an upload a cache can still serve it
+    web = LaggingPyPI(html=set(PKGS))
     real = web.get
-    web.get = lambda url: (404, "") if url.endswith(f"/goldenreq/{V}/json") else real(url)
-    code = whole(REPO, get=web.get)
+    web.get = lambda url, accept=None: (404, "", {}) if url.endswith(f"/goldenreq/{V}/json") else real(url, accept)
+    code = whole(REPO, get=web.get, now=LATER)
     out = capsys.readouterr().out
-    assert code == 4 and f"PyPI does not hold {V} for goldenreq — no wait changes that" in out
+    assert code == 4 and f"PyPI does not hold {V} for goldenreq by its version's JSON" in out
+    assert "read again in a minute; if it still answers 404, run the upload again" in out
 
 
 def test_whole_decides_nothing_without_pypis_answer(capsys):
-    web = LaggingPyPI(indexed=set(PKGS), silent={"honeyc"})
-    code = whole(REPO, get=web.get)
+    web = LaggingPyPI(html=set(PKGS), silent={"honeyc"})
+    code = whole(REPO, get=web.get, now=LATER)
     assert code == 1 and "no answer for honeyc" in capsys.readouterr().out

@@ -7,7 +7,7 @@ template). ACCC → CORCC → SCCC.
 """
 from __future__ import annotations
 
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 
 from .forge import (
     Persona,
