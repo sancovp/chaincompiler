@@ -16,7 +16,7 @@ frameworks as tome-table rows. An agent equips the tome to search "which of the
 author's frameworks fits this task?" and route into it.
 
 ## Do
-**Run its Python** from a plugin install with `uv run --no-project --with skill2framework==0.3.2 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
+**Run its Python** from a plugin install with `uv run --no-project --with skill2framework==0.3.3 python3` — pipe a block in as `python3 - <<'PY'` … `PY` — and from a clone of the public repository where `./install.sh` ran, with the clone's `python3`.
 
 **Run `skilltree`** from a plugin install as `uvx --from "agent-skilltree>=0.4.0" skilltree …`, and from a clone where `./install.sh` ran, as `skilltree …` in the environment it installed into.
 

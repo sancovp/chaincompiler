@@ -135,7 +135,7 @@
     {
       "id": "P10",
       "title": "Distribution",
-      "status": "in_progress",
+      "status": "done",
       "blurb": "The plugin installs and works anywhere: its fifteen packages on PyPI at one version, run through uv, proven in a clean Claude Code.",
       "items": [
         "one version line: the release version in every package, both plugin manifests and every pin (done, v0.3.0)",
@@ -143,11 +143,26 @@
         "the MCP server and every shipped skill run from PyPI through uv (done, v0.3.0)",
         "the MCP server answers Claude Code inside its thirty seconds on a new machine, through a launcher that starts it behind (done, v0.3.2)",
         "the fifteen on PyPI under their names, each a publishing-manifest unit (done, v0.3.1)",
-        "the plugin proof: installed signed out, then a session that calls the server and runs a skill (built; pending)"
+        "the plugin proof: installed signed out, then a session that calls the server and runs a skill (passing, v0.3.2)",
+        "a release's own checks in one command before its PR, and PyPI's state read where it answers first (done, v0.3.3)"
       ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.3.3",
+      "date": "2026-10-29",
+      "changes": [
+        "**P10 Distribution is done.** The plugin installs and works on a new machine from PyPI alone: at v0.3.2, PyPI holds",
+        "**Stage 1 reads PyPI where it answers first.** Right after an upload, each version's own JSON holds it at once, while",
+        "**The release check.** `scripts/release_check.py` runs a release's own checks on its tip, in one command, before its",
+        "**The plugin proof records the seconds from the session's start to the server's answer**, as DESIGN \u00a716 asks, where",
+        "**Every working copy of a shipped skill is a file of its own.** `.claude/skills/report-missed-skill` was a link to the",
+        "**Both manifests list what `skills/` holds**: `marketplace.json` now names `glyphsteer-dense` and the two style",
+        "**DESIGN \u00a72 states the whole import graph** \u2014 what the packages beside the tiers import, as the stack's \u00a74 draws it",
+        "Suite: 324 passed in `pytest packages`, 108 in `scripts/tests` (105 and 3 skipped in a clone of the public"
+      ]
+    },
     {
       "version": "v0.3.2",
       "date": "2026-10-28",

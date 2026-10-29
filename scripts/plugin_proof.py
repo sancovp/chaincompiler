@@ -31,6 +31,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -204,6 +205,9 @@ def cmd_run(seat: str, prompt_file: str, out: str, allowed: list[str]) -> int:
            "--setting-sources", "project,local", "--plugin-dir", entry["installPath"]]
     if allowed:
         cmd += ["--allowedTools", *allowed]
+    sidecar = Path(out).with_suffix(".env.json")       # the session's start: its init event carries no timestamp
+    sidecar.write_text(json.dumps({**json.loads(sidecar.read_text()),
+                                   "started_at": datetime.now(timezone.utc).isoformat()}, indent=2))
     with open(out, "w") as sink:
         code = subprocess.run(cmd, cwd=work, env=env, stdin=subprocess.DEVNULL, stdout=sink,
                               stderr=subprocess.STDOUT).returncode
@@ -247,7 +251,6 @@ def tool_calls(evs: list[dict]) -> list[dict]:
 
 def seconds(start: str | None, end: str | None) -> float | None:
     """The seconds between two of the transcript's timestamps — a server tool's wait, uv's install on a cold seat."""
-    from datetime import datetime
     try:
         return round((datetime.fromisoformat(end.replace("Z", "+00:00"))
                       - datetime.fromisoformat(start.replace("Z", "+00:00"))).total_seconds(), 1)
@@ -324,6 +327,15 @@ def grade(transcript: Path, work: Path, version: str, allowed: list[str]) -> dic
     # answer (`server_tool_answered_without_error`).
     offered = [t for t in tool_references(evs) if SERVER.replace("-", "_") in norm(t)]
     answered = any(c["answered"] and not c["error"] for c in server_calls)
+    # the session's start: the time `run` wrote beside the transcript, else its first timestamped event
+    sidecar = transcript.with_suffix(".env.json")
+    started = json.loads(sidecar.read_text()).get("started_at") if sidecar.is_file() else None
+    start_from = "the started_at run wrote beside the transcript"
+    if not started:                                   # a transcript `run` wrote before it recorded the start
+        started = next((e["timestamp"] for e in evs if e.get("timestamp")), None)
+        start_from = ("the transcript's first timestamped event, later than the session's start, so the seconds are a "
+                      "lower bound")
+    first_answer = next((c["answered_at"] for c in server_calls if c["answered"] and not c["error"]), None)
     failed_notes = [c["result"][:300] for c in calls if c["name"] == "ToolSearch" and FAILED_NOTE.search(c["result"])]
     checks = {
         "server_connected": bool(ours) and not failed_notes
@@ -343,6 +355,8 @@ def grade(transcript: Path, work: Path, version: str, allowed: list[str]) -> dic
                          "server_calls": [{"name": c["name"], "error": c["error"], "result": c["result"][:300],
                                            "seconds_to_answer": seconds(c["asked_at"], c["answered_at"])}
                                           for c in server_calls],
+                         "session_started_at": started, "session_start_from": start_from,
+                         "seconds_from_session_start_to_server_answer": seconds(started, first_answer),
                          "capability_skills_seen": sorted(set(skill_seen)),
                          "uv_runs": [c["input"].get("command", "")[:400] for c in uv_runs],
                          "skill_dirs_made": [p.relative_to(work).as_posix() for p in made],

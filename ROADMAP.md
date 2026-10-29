@@ -86,15 +86,17 @@ Shipped: `packages/skill2framework` (`JourneyCore` + `render_blog1`, `assemble_c
 the deterministic spine end to end (blog → chapter → plugin → fold → `skilltree validate` green) ✓, and a first real
 chapter through the whole chain, on the SkillTree unit ✓.
 
-## P10 — Distribution &nbsp;`▸ in progress`
+## P10 — Distribution &nbsp;`✓ done`
 
 The plugin installs and works anywhere (`DESIGN.md` §16 · §18). Done in v0.3.0: one version line — the release version
 in every package, both plugin manifests and every pin, written by `scripts/set_version.py` and gated by
 `scripts/check_versions.py`; the GBA's `bandit-chain-system` skill shipped as `chainaios` package data; the MCP server
 and every shipped skill run from PyPI through uv; the fifteen packages made units of the publishing manifest; the
-plugin proof built (`scripts/plugin_proof.py`). Pending: the fifteen on PyPI under their names, and the plugin proof
-passing — installed signed out into an empty configuration, then a headless session that connects the server, calls it
-and runs a skill's Python through uv.
+plugin proof built (`scripts/plugin_proof.py`). In v0.3.1: the fifteen on PyPI under their names, the chapter rung's
+package named `skill2framework`. In v0.3.2: the plugin's server answering Claude Code inside its thirty seconds on a new
+machine, through its launcher, and the plugin proof passing — installed signed out into an empty configuration, then a
+headless session that connects the server, calls it and runs a skill's Python through uv. In v0.3.3: a release's own
+checks in one command before its PR (`scripts/release_check.py`), and PyPI's state read where it answers first.
 
 ---
 

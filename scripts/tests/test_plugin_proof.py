@@ -166,6 +166,15 @@ def test_a_skill_written_from_python_fails_the_skill_dir_check(tmp_path, work):
     assert only_failing(g) == ["a_skill_dir_written_whose_frontmatter_parses"]
 
 
+def test_a_skill_written_by_a_shell_write_fails_the_skill_dir_check(tmp_path, work):
+    # the uv line run on nothing, then the SKILL.md written by a shell redirect
+    bash = (f"uv run --no-project --with chaincompiler-accc=={V} python3 -c 'pass' && cat > skills/debug/SKILL.md <<'EOF'\n"
+            "---\nname: debug\ndescription: x\n---\nEOF")
+    g = graded(tmp_path, work, session(bash=bash))
+    assert only_failing(g) == ["a_skill_dir_written_whose_frontmatter_parses"]
+    assert g["evidence"]["hand_written_skill_files"]
+
+
 def test_a_skill_that_is_not_the_capabilitys_output_fails_exactly_that(tmp_path, work):
     (work / "skills" / "debug" / "SKILL.md").write_text("---\nname: debug\ndescription: attend\n---\n\n[A] ⇒ |B|\n")
     g = graded(tmp_path, work, session())
@@ -176,6 +185,27 @@ def test_reading_the_skill_from_python_is_no_write(tmp_path, work):
     bash = UV + "\npython3 -c \"print(open('skills/debug/SKILL.md').read())\""
     g = graded(tmp_path, work, session(bash=bash), [SERVER_TOOL])
     assert g["pass"] is True, only_failing(g)
+
+
+def test_the_grade_records_the_seconds_from_the_sessions_start_to_the_servers_answer(tmp_path, work):
+    # DESIGN §16: on a cold seat the seconds from the session's start to the server's first answer are recorded with
+    # the grade; the init event carries no timestamp, so the start is the one `run` writes beside the transcript
+    evs = session()
+    for e, ts in zip([e for e in evs if e["type"] in ("assistant", "user")],
+                     ["2026-01-01T00:00:%02d.000Z" % s for s in (10, 11, 20, 52, 53, 54, 55, 56)]):
+        e["timestamp"] = ts
+    t = tmp_path / "t.jsonl"
+    t.write_text("\n".join(json.dumps(e) for e in evs) + "\n")
+    t.with_suffix(".env.json").write_text(json.dumps({"started_at": "2026-01-01T00:00:00+00:00"}))
+    g = grade(t, work, V, [SERVER_TOOL])
+    assert g["pass"] is True, only_failing(g)
+    assert g["evidence"]["seconds_from_session_start_to_server_answer"] == 52.0     # the server's answer at :52
+    assert g["evidence"]["session_start_from"] == "the started_at run wrote beside the transcript"
+    # a transcript from before `run` recorded the start: graded from its first event, and the grade says so
+    t.with_suffix(".env.json").unlink()
+    g = grade(t, work, V, [SERVER_TOOL])
+    assert g["evidence"]["seconds_from_session_start_to_server_answer"] == 42.0     # :10 → :52
+    assert g["evidence"]["session_start_from"].startswith("the transcript's first timestamped event")
 
 
 def test_the_task_file_asks_for_the_skill_the_grader_checks():

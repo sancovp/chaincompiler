@@ -189,3 +189,19 @@ def test_a_copy_that_is_a_link_is_refused(tree):
     p.unlink()
     p.symlink_to(tree / "skills/bandit-chain-system/SKILL.md")
     refused(tree, "personas/chainforge/.claude/skills/bandit-chain-system/SKILL.md", "is a link")
+
+
+def test_a_copy_reached_through_a_linked_folder_is_refused(tree):
+    # the working copy's folder is a link to the shipped skill's: its SKILL.md is no file of its own, and a walk that
+    # does not enter linked folders never sees it
+    (tree / ".claude/skills/report-missed-skill").symlink_to("../../skills/report-missed-skill")
+    refused(tree, ".claude/skills/report-missed-skill", "is reached through the link")
+
+
+def test_a_copy_under_a_linked_folder_above_it_is_refused(tree):
+    # the link sits higher: a package's whole `.claude/skills/` linked to the shipped skills
+    skills = tree / "packages/glyphsteer/.claude/skills"
+    shutil.rmtree(skills)
+    skills.symlink_to("../../../skills")
+    refused(tree, "packages/glyphsteer/.claude/skills/glyphsteer/SKILL.md",
+            "is reached through the link packages/glyphsteer/.claude/skills")

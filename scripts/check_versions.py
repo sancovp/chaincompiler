@@ -20,7 +20,7 @@ The release version is the newest README changelog entry. Refused, each named wi
     outside distribution without its lower bound;
   - a copy of `bandit-chain-system`, `glyphsteer` or `glyphsteer-dense` — and any other `SKILL.md` under a
     `.claude/skills/` folder or a package's own folder that carries a shipped skill's name — that is not byte-identical
-    to its source, or is a link;
+    to its source, is a link, or is reached through a linked folder;
   - a package folder whose `LICENSE` is missing or differs from the repository's.
 Exit 0 with nothing refused; exit 1 naming every refusal.
 """
@@ -29,6 +29,7 @@ from __future__ import annotations
 import argparse
 import ast
 import json
+import os
 import re
 import shlex
 import sys
@@ -341,6 +342,26 @@ def check_copies(root: Path, r: Report) -> None:
             r.refuse(where, "is missing")
         elif copy.read_bytes() != src.read_bytes():
             r.refuse(where, f"differs from {src.relative_to(root).as_posix()}")
+    # a copy reached through a linked folder — its own or any folder above it: the walks above enter no linked folder, so
+    # this one follows links, each real folder once (a link cycle ends there), and names every SKILL.md it reaches that
+    # carries a shipped skill's name with a link on its path
+    seen = set()
+    for dirpath, dirnames, files in os.walk(root, followlinks=True):
+        rel = Path(dirpath).relative_to(root).parts
+        real = os.path.realpath(dirpath)
+        if real in seen or (rel and rel[0] in ("skills", "personas", ".git")):
+            dirnames[:] = []
+            continue
+        seen.add(real)
+        dirnames[:] = [d for d in dirnames if d not in (".git", "__pycache__", "node_modules")]
+        if "SKILL.md" not in files or not rel or not (".claude" in rel or rel[0] == "packages"):
+            continue
+        link = next((root.joinpath(*rel[:i]) for i in range(1, len(rel) + 1) if root.joinpath(*rel[:i]).is_symlink()),
+                    None)
+        name = skill_name(Path(dirpath) / "SKILL.md")
+        if link is not None and name in shipped:
+            r.refuse(f"{Path(*rel).as_posix()}/SKILL.md", f"is reached through the link {link.relative_to(root).as_posix()}, "
+                                                          f"not a copy of {shipped[name].relative_to(root).as_posix()}")
 
 
 def main(argv: list[str] | None = None) -> int:

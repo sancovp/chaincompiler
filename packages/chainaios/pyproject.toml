@@ -4,19 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chainaios"
-version = "0.3.2"
+version = "0.3.3"
 description = "The Bandit AIOS application on the ChainCompiler stack: mint a domain's AC+CoR+SC and roll them up into persistent BanditChain-system AIOS dirs (GBA/HBA/COG)."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 # The AIOS tier sits ABOVE the cognition-chain stack: it imports the *CC + the CC base. (CC + the *CC
 # never import this — that is what keeps `chaincompiler` the compiler-compiler BASE, DESIGN.md §2.)
-dependencies = ["chaincompiler==0.3.2", "chaincompiler-accc==0.3.2", "corcc==0.3.2", "sccc==0.3.2", "agent-skilltree>=0.4.0", "click", "pyyaml"]
+dependencies = ["chaincompiler==0.3.3", "chaincompiler-accc==0.3.3", "corcc==0.3.3", "sccc==0.3.3", "agent-skilltree>=0.4.0", "click", "pyyaml"]
 
 # A lazy import is an optional extra (DESIGN.md §18): the roll-up writes each persona's GlyphSteer legend only when
 # glyphsteer is present (bandit.py, `_write_persona_aios`).
 [project.optional-dependencies]
-legend = ["glyphsteer==0.3.2"]
+legend = ["glyphsteer==0.3.3"]
 
 # The `chaincompiler` CLI command now lives here (the AIOS commands are *CC-coupled); the command NAME is
 # unchanged so existing `chaincompiler gba/cog/hba/demo …` invocations keep working.

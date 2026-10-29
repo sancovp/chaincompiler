@@ -36,15 +36,15 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [x] Bundle the capability skills (`skills/`) + the SI MCP (`.mcp.json`)
 - [x] Ship `report-missed-skill` (the root skill tree default)
 - [ ] Include slash `commands/` + `agents/` in the plugin
-- [x] `skills/report-missed-skill` is a real file again (v0.1.57) — both entries had dangled since SkillTree left `packages/`; the dev surface links to it inside the folder
+- [x] `skills/report-missed-skill` is a real file again (v0.1.57) — both entries had dangled since SkillTree left `packages/`; the dev surface's `.claude/skills/report-missed-skill` is a copy of it (v0.3.3), which `check_versions.py` holds byte for byte
 
-## P10 — Distribution  `▸`
+## P10 — Distribution  `✓`
 
-- [ ] One-command install / distribute — `claude plugin marketplace add sancovp/chaincompiler` then `claude plugin install chaincompiler@chaincompiler`, install-verified in a clean Claude Code (DESIGN §16)
+- [x] One-command install / distribute — `claude plugin marketplace add sancovp/chaincompiler` then `claude plugin install chaincompiler@chaincompiler`, install-verified in a clean Claude Code by the plugin proof at v0.3.2 (DESIGN §16)
 - [x] **One version line** (v0.3.0) — the release version in `plugin.json`, `marketplace.json`, every package's `pyproject.toml` and `__version__`, `.mcp.json` and every uv line, the line starting at v0.3.0 (DESIGN §18).
 - [x] **`scripts/set_version.py` and `scripts/check_versions.py`** (v0.3.0, planted refusals in `scripts/tests/test_check_versions.py`) — write the release version into every package's `version` and every `__version__` a package defines, both plugin manifests, `.mcp.json`'s pin and every shipped skill's uv line, with every dependency among the fifteen pinned `==`; refuse a tree where any of them differs from the newest changelog entry, or a shipped skill's uv line is missing or misses a distribution its imports come from (DESIGN §16 · §18).
 - [x] **The GBA ships `bandit-chain-system` as package data** (v0.3.0) — `chainaios/data/bandit-chain-system/SKILL.md`, read through `importlib.resources`; a GBA made from a wheel install carries it (DESIGN §8).
-- [ ] **The plugin install brings the Python packages** — `.mcp.json` launches the self-interpreter from `chaincompiler-si==<release>`, and every shipped skill names its uv line (v0.3.0); then prove the plugin install in a clean Claude Code (DESIGN §16).
+- [x] **The plugin install brings the Python packages** — `.mcp.json` launches the self-interpreter from `chaincompiler-si==<release>`, and every shipped skill names its uv line (v0.3.0); the plugin proof at v0.3.2 shows a clean Claude Code running both from PyPI (DESIGN §16).
 - [x] **The plugin's server answers Claude Code inside its thirty seconds** (v0.3.2) — v0.3.1's plugin proof found the
   self-interpreter, launched straight through `uvx`, answering 75.5 s after its start on an empty uv cache, so a new
   user's first session had no server; `server/launch.py` (standard library only) answers `initialize` and `tools/list`
@@ -72,7 +72,11 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
   repository's `LICENSE`, which its wheel ships; the eight packages that had no README get one, and the seven that had
   one say how to install from PyPI; `check_versions.py` refuses a build file without either and a folder without the
   `LICENSE` (DESIGN §0 · §18).
-- [ ] **The plugin proof** — `scripts/plugin_proof.py`: the signed-out install from the marketplace, then a headless session with the cached copy as its only addition that connects the self-interpreter, calls one of its tools and runs a capability skill's Python through its uv line; graded from the transcript and files, with negative controls (DESIGN §16).
+- [x] **The plugin proof** — passing from v0.3.2, the first release whose server answers Claude Code inside its thirty seconds — `scripts/plugin_proof.py`: the signed-out install from the marketplace, then a headless session with the cached copy as its only addition that connects the self-interpreter, calls one of its tools and runs a capability skill's Python through its uv line; graded from the transcript and files, with negative controls (DESIGN §16).
+- [x] **The plugin proof records the seconds from the session's start to the server's answer** (v0.3.3) — `run` writes the start beside the transcript, the init event carrying no timestamp; the grade names which start it used; on v0.3.2's cold seat, graded again, at least 39.8 s from its first timestamped event (DESIGN §16; the goal `chaincompiler-distribution-whole`'s C13 proof holds the grade).
+- [x] **Stage 1 reads PyPI where it answers first** (v0.3.3) — `upload_release.py --whole` reads whether PyPI holds a release from each version's JSON and waits for the simple index, never the project's JSON, which lists a new version minutes after its upload; its tests stand up a PyPI whose project JSON trails (DESIGN §18 · scalable-publishing `DESIGN.md` §4).
+- [x] **The release check** (v0.3.3) — `scripts/release_check.py` runs a release's generated-file diffs, frontmatter sweep, replaced-sentence and configurable greps, publish dry run and tee probe in one command before its PR, each finding named; its tests plant each kind (DESIGN §17).
+- [x] **Every working copy of a shipped skill is a file of its own** (v0.3.3) — `.claude/skills/report-missed-skill` was a link to the shipped skill's folder, which `check_versions.py`'s walks never entered; it is a copy, and the gate refuses a copy reached through a linked folder (DESIGN §16).
 
 ## P8 — GlyphSteer (research)  `▸`
 

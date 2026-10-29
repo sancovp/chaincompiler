@@ -6,12 +6,13 @@ holds, which projects it has) and a fake upload, so no test touches the network.
 """
 from __future__ import annotations
 
+import json
 import sys
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(REPO / "scripts"))
-from upload_release import packages, run, upload_order  # noqa: E402
+from upload_release import packages, run, upload_order, whole  # noqa: E402
 
 PKGS = packages(REPO)
 V = next(iter({p["version"] for p in PKGS.values()}))
@@ -107,3 +108,60 @@ def test_everything_held_uploads_nothing(capsys):
     pypi = FakePyPI(set(PKGS), quota=4)
     code, out = go(pypi, capsys)
     assert code == 0 and pypi.uploads == []
+
+
+class LaggingPyPI:
+    """PyPI's three pages as they stand minutes after an upload (scalable-publishing DESIGN.md §4): each version's JSON
+    holds the release at once, the project's JSON still names the version before it, and the simple index lists the
+    release's files for the names in `indexed` only."""
+    def __init__(self, indexed: set[str], silent: set[str] = frozenset()):
+        self.indexed, self.silent, self.asked = set(indexed), set(silent), []
+
+    def get(self, url: str) -> tuple[int, str]:
+        self.asked.append(url)
+        name = url.split("/")[4]
+        if name in self.silent:
+            return 0, ""
+        if url.endswith(f"/{V}/json"):
+            return 200, json.dumps({"info": {"name": name, "version": V}})
+        if url.endswith(f"/pypi/{name}/json"):
+            return 200, json.dumps({"info": {"name": name, "version": "0.0.1"}, "releases": {"0.0.1": [{}]}})
+        if url.endswith(f"/simple/{name}/"):
+            files = f'<a href="x">{name.replace("-", "_")}-0.0.1.tar.gz</a>'
+            if name in self.indexed:
+                files += f'<a href="y">{name.replace("-", "_")}-{V}-py3-none-any.whl</a>'
+            return 200, files
+        return 404, ""
+
+
+def test_whole_reads_each_versions_json_never_the_projects(capsys):
+    # the project's JSON still names 0.0.1; a reading of it would call the release short
+    web = LaggingPyPI(indexed=set(PKGS))
+    code = whole(REPO, get=web.get)
+    out = capsys.readouterr().out
+    assert code == 0, out
+    assert f"PyPI holds {V} whole" in out
+    assert not [u for u in web.asked if u.endswith("/json") and not u.endswith(f"/{V}/json")]
+
+
+def test_whole_waits_until_the_simple_index_lists_the_release(capsys):
+    web = LaggingPyPI(indexed=set(PKGS) - {"goldenreq"})
+    code = whole(REPO, get=web.get)
+    out = capsys.readouterr().out
+    assert code == 3 and "for goldenreq" in out and "goldenreq" in out and "does not list it" in out
+
+
+def test_a_version_pypi_does_not_hold_is_told_apart_from_the_index_lag(capsys):
+    # a 404 on the version's JSON is an upload that never landed: no wait changes it
+    web = LaggingPyPI(indexed=set(PKGS))
+    real = web.get
+    web.get = lambda url: (404, "") if url.endswith(f"/goldenreq/{V}/json") else real(url)
+    code = whole(REPO, get=web.get)
+    out = capsys.readouterr().out
+    assert code == 4 and f"PyPI does not hold {V} for goldenreq — no wait changes that" in out
+
+
+def test_whole_decides_nothing_without_pypis_answer(capsys):
+    web = LaggingPyPI(indexed=set(PKGS), silent={"honeyc"})
+    code = whole(REPO, get=web.get)
+    assert code == 1 and "no answer for honeyc" in capsys.readouterr().out

@@ -378,6 +378,40 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 
 ## Changelog
 
+### v0.3.3 — 2026-10-29
+- **P10 Distribution is done.** The plugin installs and works on a new machine from PyPI alone: at v0.3.2, PyPI holds
+  all fifteen packages, a fresh environment installs them from PyPI with every check passing against that install, and
+  the plugin proof passes — installed signed out into an empty configuration, then a session at a clean seat on an
+  empty uv cache that connects the self-interpreter, gets `2` from it, and packages a skill through a capability's uv
+  line (DESIGN §16 · §18).
+- **Stage 1 reads PyPI where it answers first.** Right after an upload, each version's own JSON holds it at once, while
+  the project's JSON and the simple index pip and uv read list it minutes later — v0.3.2's project JSON, read 28 s after
+  the upload driver's last upload landed, named the new version for 9 of 15 (the goal `chaincompiler-distribution-whole`'s
+  C26 proof holds the reading). `scripts/upload_release.py --whole`
+  reads each version's JSON and the simple index, never the project's JSON, and the release flow's stage 1 waits on it
+  before the install from PyPI starts; its tests stand up a PyPI whose project JSON trails, which a reader of the
+  project's JSON fails (DESIGN §18 · scalable-publishing `DESIGN.md` §4).
+- **The release check.** `scripts/release_check.py` runs a release's own checks on its tip, in one command, before its
+  PR is opened: the generated files regenerated in a copy and compared, the frontmatter of every `SKILL.md`, the greps
+  for every reading the release replaced and for a machine path, the publish dry run into a local bare copy of the
+  public repository, and the tee probe of the plugin's launcher through Claude Code — each finding named, each kind
+  planted in its tests (DESIGN §17).
+- **The plugin proof records the seconds from the session's start to the server's answer**, as DESIGN §16 asks, where
+  it recorded only each call's own wait; the session's init event carries no timestamp, so `run` writes the start
+  beside the transcript, and the grade names which start it measured from. v0.3.2's cold seat, graded again: at least
+  39.8 s, from its first timestamped event since that run recorded no start, 25.5 s of it the call's own wait while uv
+  installed the server (the goal's C13 proof).
+- **Every working copy of a shipped skill is a file of its own.** `.claude/skills/report-missed-skill` was a link to the
+  shipped skill's folder, which the version gate's walks never entered; it is a copy, and `check_versions.py` refuses
+  a copy reached through a linked folder (DESIGN §16).
+- **Both manifests list what `skills/` holds**: `marketplace.json` now names `glyphsteer-dense` and the two style
+  chain systems, each with its parts and its tree, as `plugin.json` does.
+- **DESIGN §2 states the whole import graph** — what the packages beside the tiers import, as the stack's §4 draws it
+  from the AST walk.
+- Suite: 324 passed in `pytest packages`, 108 in `scripts/tests` (105 and 3 skipped in a clone of the public
+  repository, where the publish dry run's three tests have no source home's publisher beside them), 2 in
+  `examples/nutrition`; every package moves to 0.3.3.
+
 ### v0.3.2 — 2026-10-28
 - **The plugin's server connects on a new machine.** Claude Code gives an MCP server thirty seconds to answer, and a
   plugin cannot give it longer. The plugin launched its self-interpreter straight through `uvx`, and on a machine whose

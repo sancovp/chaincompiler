@@ -55,8 +55,9 @@ flowchart TB
         LAUNCH["server/launch.py — standard library only: answers initialize and tools/list at once (server/tools.json, written by build_server_tools.py from the real server), starts si-server through uv tool run, then passes every message through"]
         VER["one version line — set_version.py writes it; check_versions.py refuses a tree where any line, pin, build-file declaration, uv line or copy is off"]
         PPROOF["plugin_proof.py — the signed-out install from the marketplace, then a headless session at a clean seat given plugin-proof-task.md, graded from its transcript and files"]
-        UPL["upload_release.py — the fifteen to PyPI from a clone at the publish commit, in dependency order (the self-interpreter's closure first), a package only once its siblings are held, within PyPI's four new projects in any 86,400 s, resuming from PyPI's state"]
+        UPL["upload_release.py — the fifteen to PyPI from a clone at the publish commit, in dependency order (the self-interpreter's closure first), a package only once its siblings are held, within PyPI's four new projects in any 86,400 s, resuming from PyPI's state; --whole: each version's JSON holds the release and the simple index lists it"]
         GEN["update_site.py → roadmap SVG · site/data.json · the board (all from roadmap.json + the README changelog)"]
+        RCHK["release_check.py — on a release's committed tip, its own packages imported, before its PR: the generated files regenerated in a copy, the frontmatter sweep, the replaced-sentence and configurable greps, the publish dry run into a local bare copy, the tee probe reading the real server's own output; every finding named"]
     end
     subgraph PUBX["Outside this folder — DESIGN §18"]
         PUB["scalable-publishing · SEAM: publish_unit.sh mirrors the folder to the public repository, with deletes · publish_package.sh uploads each of the fifteen, a chaincompiler-pkg-* manifest unit, built from a clone at the publish commit"]
@@ -100,6 +101,12 @@ flowchart TB
     REL -. runs through .-> VER
     REL -. runs through .-> PPROOF
     REL -. runs through .-> UPL
+    REL -. runs through .-> RCHK
+    RCHK -.-> GEN
+    RCHK -.-> LAUNCH
+    RCHK -.->|"the tee probe's seat"| PPROOF
+    RCHK -.->|"re-applies the GBAs"| CA
+    RCHK -.->|"publish_unit.sh into a local bare copy"| PUB
 ```
 
 ---

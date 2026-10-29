@@ -1,7 +1,7 @@
 {
   "name": "chaincompiler",
-  "description": "A compiler-compiler for cognition: invent a notation, gate it so the model can't malform it, compile it into a loadable skill, compose and organize those skills, and build agents from them. Ships the eight capability skills (make-prompt, make-persona, big-generator, persona-generator, forge-attention-chain, forge-cor, forge-skillchain, construct-language), bandit-chain-system, glyphsteer and glyphsteer-dense, report-missed-skill, bigdog, the skill2framework chapter set, two minted style chain systems (adam-curtis-narration-style, explain-something-fractally), and the Self-Interpreter MCP. Its Python comes from PyPI through uv, pinned to the plugin's release: uv is its one prerequisite, and nothing is installed into your own Python.",
-  "version": "0.3.2",
+  "description": "A compiler-compiler for cognition: invent a notation, gate it so the model can't malform it, compile it into a loadable skill, compose and organize those skills, and build agents from them. Ships the eight capability skills (make-prompt, make-persona, big-generator, persona-generator, forge-attention-chain, forge-cor, forge-skillchain, construct-language), bandit-chain-system, glyphsteer and glyphsteer-dense, report-missed-skill, bigdog, the skill2framework chapter set, two minted style chain systems (adam-curtis-narration-style, explain-something-fractally, each with its parts and its tree), and the Self-Interpreter MCP. Its Python comes from PyPI through uv, pinned to the plugin's release: uv is its one prerequisite, and nothing is installed into your own Python.",
+  "version": "0.3.3",
   "author": {
     "name": "sancovp",
     "url": "https://github.com/sancovp"

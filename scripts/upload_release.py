@@ -2,6 +2,7 @@
 """upload_release.py — THE UPLOAD of a release's fifteen packages to PyPI, in dependency order (DESIGN.md §18).
 
     python3 scripts/upload_release.py --clone DIR --publish-package PATH [--order] [--dry-run]
+    python3 scripts/upload_release.py --clone DIR --whole
 
 `--clone` is a clone of the public repository at the release's publish commit (the release is its packages' version);
 `--publish-package` is scalable-publishing's `bin/publish_package.sh`, which builds one package folder and uploads it
@@ -12,7 +13,12 @@ release; one PyPI already holds is skipped. PyPI creates four new projects a day
 (`429 Too many new projects created`): after that answer no new name is tried again in the run, while a version of a
 project PyPI already holds still uploads. PyPI's state is read afresh on every run, so a run the next day resumes where
 the last one stopped. `--order` prints the order and exits; `--dry-run` decides each package without uploading.
-Exit 0 when PyPI holds all fifteen at the release · 3 when some wait (a sibling, or the day's quota) · 1 on a failure.
+Whether PyPI holds a version is read from that version's own JSON, which answers at once; the project's JSON and the
+simple index list a new version minutes later (scalable-publishing DESIGN.md §4). `--whole` is stage 1's last reading:
+each of the fifteen held by its version's JSON and listed by the simple index, which pip and uv read.
+Exit 0 when PyPI holds all fifteen at the release · 3 when some wait (a sibling, the day's quota, or `--whole`'s simple
+index still behind) · 4 from `--whole`, a version PyPI does not hold, which no wait changes · 1 on a failure, or
+when PyPI gives no answer.
 """
 from __future__ import annotations
 
@@ -84,23 +90,78 @@ def upload_order(clone: Path) -> list[str]:
     return topological(tier1, pkgs) + topological(tier2, pkgs) + topological(tier3, pkgs)
 
 
-def pypi_status(name: str, version: str | None = None) -> int:
-    """PyPI's HTTP status for a project (or one of its versions): 200 held, 404 not; anything else is not an answer."""
-    url = f"https://pypi.org/pypi/{name}/{version}/json" if version else f"https://pypi.org/pypi/{name}/json"
+def fetch(url: str) -> tuple[int, str]:
+    """GET one of PyPI's pages: (its HTTP status, its body); status 0 when PyPI gave no answer."""
     try:
         with urllib.request.urlopen(url, timeout=30) as r:
-            return r.status
+            return r.status, r.read().decode("utf-8", "replace")
     except urllib.error.HTTPError as e:
-        return e.code
+        return e.code, ""
     except (urllib.error.URLError, TimeoutError):
-        return 0
+        return 0, ""
 
 
-def held(name: str, version: str) -> bool:
-    status = pypi_status(name, version)
+def pypi_status(name: str, version: str | None = None, get=fetch) -> int:
+    """PyPI's HTTP status for a project (or one of its versions): 200 held, 404 not; anything else is not an answer."""
+    url = f"https://pypi.org/pypi/{name}/{version}/json" if version else f"https://pypi.org/pypi/{name}/json"
+    return get(url)[0]
+
+
+def held(name: str, version: str, get=fetch) -> bool:
+    """Whether PyPI holds a version, read from that version's own JSON, which answers the moment an upload lands; the
+    project's JSON lists a new version minutes later (scalable-publishing DESIGN.md §4), so it is never read for this."""
+    status = pypi_status(name, version, get)
     if status not in (200, 404):
         raise SystemExit(f"PyPI gave no answer for {name} {version} (HTTP {status or 'none'}): nothing is decided")
     return status == 200
+
+
+def indexed(name: str, version: str, get=fetch) -> bool | None:
+    """Whether PyPI's simple index — what pip and uv read — lists a file of the version (a wheel or the sdist): True,
+    False, or None when PyPI gave no answer. It lists a new version minutes after the version's JSON holds it."""
+    status, body = get(f"https://pypi.org/simple/{name}/")
+    if status == 404:
+        return False
+    if status != 200:
+        return None
+    return re.search(rf"-{re.escape(version)}(?:-|\.tar\.gz)", body) is not None
+
+
+def whole(clone: Path, get=fetch) -> int:
+    """Stage 1's reading of PyPI, before an install from it starts: every one of the fifteen held at the release by its
+    version's JSON, and listed at the release by the simple index. Exit 0 whole · 3 the simple index still behind (read
+    again in a minute) · 4 a version PyPI does not hold, which no wait changes (run the upload again, or treat the name
+    as refused) · 1 no answer, or the fifteen at more than one version."""
+    pkgs, order = packages(clone), upload_order(clone)
+    versions = {p["version"] for p in pkgs.values()}
+    if len(versions) != 1:
+        print(f"the fifteen are at more than one version: {sorted(versions)}")
+        return 1
+    version = versions.pop()
+    lagging, missing, silent = [], [], []
+    print(f"release {version}, read from each version's JSON and the simple index:")
+    for n in order:
+        status = pypi_status(n, version, get)
+        listed = indexed(n, version, get)
+        if status not in (200, 404) or listed is None:
+            silent.append(n)
+        elif status == 404:
+            missing.append(n)
+        elif not listed:
+            lagging.append(n)
+        print(f"  {n:26} version JSON {status or 'no answer'} · simple index "
+              f"{'lists it' if listed else 'does not list it' if listed is False else 'gave no answer'}")
+    if silent:
+        print(f"PyPI gave no answer for {', '.join(silent)}: nothing is decided")
+        return 1
+    if missing:
+        print(f"PyPI does not hold {version} for {', '.join(missing)} — no wait changes that: run the upload again, or "
+              "treat the name as refused")
+        return 4
+    print(f"PyPI holds {version} whole, listed by its simple index" if not lagging else
+          f"PyPI holds {version}, and its simple index does not list it yet for {', '.join(lagging)} — read again in a "
+          "minute")
+    return 3 if lagging else 0
 
 
 def publish(script: str, folder: Path) -> tuple[int, str]:
@@ -175,13 +236,17 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--publish-package", help="scalable-publishing's bin/publish_package.sh")
     ap.add_argument("--order", action="store_true", help="print the upload order and exit")
     ap.add_argument("--dry-run", action="store_true", help="decide each package, upload nothing")
+    ap.add_argument("--whole", action="store_true",
+                    help="read whether PyPI holds the release whole and its simple index lists it; upload nothing")
     a = ap.parse_args(argv)
     clone = Path(a.clone).resolve()
     if a.order:
         print("\n".join(upload_order(clone)))
         return 0
+    if a.whole:
+        return whole(clone)
     if not a.publish_package:
-        ap.error("--publish-package is required unless --order")
+        ap.error("--publish-package is required unless --order or --whole")
     return run(clone, a.publish_package, a.dry_run)
 
 
