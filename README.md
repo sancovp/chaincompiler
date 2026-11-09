@@ -8,6 +8,8 @@
 
 ⭐ 0 stars • 🕑 Updated 2026-10-29
 
+[Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
+
 📦 Auto-published from the monorepo • [CHANGELOG](./CHANGELOG.md) • [sancovp/chaincompiler](https://github.com/sancovp/chaincompiler)
 
 <!-- SCALABLE-PUBLISHING:AUTOGEN END -->
@@ -387,9 +389,10 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
   v0.3.3's reader. v0.3.3's install from PyPI, run again 26 minutes after the upload, passed (the goal
   `chaincompiler-distribution-whole`'s C26 proof; DESIGN §18 · scalable-publishing `DESIGN.md` §4).
 - **What PyPI's pages say after an upload, as measured.** v0.3.3's fifteen were named by each version's JSON and by the
-  HTML pages within 72 s of each upload, in no fixed order — neither the version's JSON at once nor the others minutes
-  later, as v0.3.3's entry, DESIGN §18 and scalable-publishing's `DESIGN.md` §4 said; a version's JSON read 404 in those
-  seconds is read again before it is uploaded again, and `--whole`'s exit 4 says so (DESIGN §18).
+  HTML pages within 72 s of each upload, in no fixed order — contrary to v0.3.3's entry, DESIGN §18 and
+  scalable-publishing's `DESIGN.md` §4, which said the version's JSON names a release at once and the others minutes
+  later; a version's JSON read 404 in those seconds is read again before it is uploaded again, and `--whole`'s exit 4
+  says so (DESIGN §18).
 - Suite: 324 passed in `pytest packages`, 110 in `scripts/tests` (107 and 3 skipped in a clone of the public
   repository, where the publish dry run's three tests have no source home's publisher beside them), 2 in
   `examples/nutrition`; every package moves to 0.3.4.
