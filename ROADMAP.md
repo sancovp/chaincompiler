@@ -99,7 +99,8 @@ headless session that connects the server, calls it and runs a skill's Python th
 checks in one command before its PR (`scripts/release_check.py`), and PyPI's state read from each version's JSON and the
 simple index, never the project's JSON. In v0.3.4: the install from PyPI waits until no cache can still serve pip or uv
 a copy from before the upload — both forms of the simple index listing the release, every upload older than its cache
-life.
+life. In v0.3.5: the release published only by the source home's absorber, which tags its publish commit `v<version>`
+and publishes nothing for a merge that is not a release, and the plugin listed in the `sancrev-marketplace` catalog.
 
 ---
 

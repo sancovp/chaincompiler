@@ -4,9 +4,11 @@
 
 <!-- SCALABLE-PUBLISHING:AUTOGEN START (managed block — do not edit between these markers) -->
 
-![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_11_09-lightgrey.svg)
+![License](https://img.shields.io/badge/license-MIT_License-blue.svg) ![Stars](https://img.shields.io/github/stars/sancovp/chaincompiler.svg?style=social) ![Updated](https://img.shields.io/badge/updated-2026_11_10-lightgrey.svg)
 
-⭐ 0 stars • 🕑 Updated 2026-11-09
+⭐ 0 stars • 🕑 Updated 2026-11-10
+
+[Marketplace](https://github.com/sancovp/sancrev-marketplace) • [Docs](https://sancovp.github.io/aisaac/)
 
 📦 Auto-published from the monorepo • [CHANGELOG](./CHANGELOG.md) • [sancovp/chaincompiler](https://github.com/sancovp/chaincompiler)
 
@@ -346,7 +348,7 @@ chaincompiler/                 # the monorepo (this repo)
     chaincompiler/                                 # the base
     accc/   corcc/   sccc/                         # the chain tier
     chainaios/                                     # the agent tier (owns the `chaincompiler` CLI)
-    personacc/   personapack/   goldenreq/   glyphsteer/   archetype/   framework/   si/
+    personacc/   personapack/   goldenreq/   glyphsteer/   archetype/   skill2framework/   si/
 ```
 
 `./install.sh` wires every package editable. **SkillTree** is published standalone on PyPI as
@@ -375,6 +377,28 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.3.5 — 2026-11-10
+- **The absorber is the one publisher.** The source home's two GitHub workflows that mirrored this folder to the
+  public repository on a merge, `publish-on-main.yml` and `publish-subdir.yml`, are deleted. The folder is now mirrored
+  after each merge by the source home's absorber, which runs every fifteen minutes on the author's own machine from a job
+  file on the OM daemon's calendar (DESIGN §18 · scalable-publishing `DESIGN.md` §1 · §2).
+- **A GitHub tag per release.** The absorber tags the publish commit `v<version>`, the version `plugin.json` states,
+  and never moves a tag it holds. Until this release the public repository held no tags (DESIGN §18).
+- **A merge into the folder that is not a release publishes nothing.** On Nov 9 three manual dispatches mirrored the
+  folder at a commit that carried a README fix and no new changelog version, so the public `deploy-site` has failed
+  since then on that publish commit. ChainCompiler's unit is now `release_per_publish`: the absorber publishes the
+  folder only once its version differs from the one the public repository holds, read at the commit the
+  repository's newest publish names, and otherwise fails its run, publishing nothing (DESIGN §18).
+- **The plugin is in the `sancrev-marketplace` catalog**, beside doc-mirror, promptworld and skilltree. DESIGN §18 now
+  states PyPI's line through every release merged after v0.3.1, and the README's repo layout names `skill2framework/`.
+- **The release flow follows the publisher.** Its publish stage is the absorber's run. Its unit-selection proof runs
+  the absorber's own dry run against the real public repositories, which must name this release's tag and refuse
+  nothing. Its last stage reads the tag. `server/initialize.json` names `fastmcp` 4.1.7, the newest release within
+  `si`'s bound.
+- Suite: 324 passed in `pytest packages`, 110 in `scripts/tests` (107 and 3 skipped in a clone of the public
+  repository, where the publish dry run's three tests have no source home's publisher beside them), 2 in
+  `examples/nutrition`; every package moves to 0.3.5.
 
 ### v0.3.4 — 2026-10-29
 - **The install from PyPI waits until no cache can still serve pip or uv a copy from before the upload.** v0.3.3's first

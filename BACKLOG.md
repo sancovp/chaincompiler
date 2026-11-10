@@ -77,6 +77,12 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
 - [x] **Stage 1 reads PyPI's state from each version's JSON and the simple index** (v0.3.3) — `upload_release.py --whole` reads whether PyPI holds a release from each version's JSON and waits for the simple index, never the project's JSON, which v0.3.2's read, 28 s after the last upload, found naming the old version for six of fifteen; its tests stand up a PyPI whose project JSON trails (DESIGN §18 · scalable-publishing `DESIGN.md` §4).
 - [x] **Stage 1 waits until no cache can still serve pip or uv a copy from before the upload** (v0.3.4) — v0.3.3's first install from PyPI found no `chaincompiler-si==0.3.3` about five minutes after its upload while `--whole` had read it listed: PyPI caches the simple index for up to 600 s, its HTML page and the JSON form pip and uv ask for apart; `--whole` reads both forms and waits until every package was uploaded longer ago than the index's max-age, read from the version's JSON; its tests stand up both, each shown failing on v0.3.3's reader (DESIGN §18 · scalable-publishing `DESIGN.md` §4; the goal `chaincompiler-distribution-whole`'s C26 proof).
 - [x] **The release check** (v0.3.3) — `scripts/release_check.py` runs a release's generated-file diffs, frontmatter sweep, replaced-sentence and configurable greps, publish dry run and tee probe in one command before its PR, each finding named; its tests plant each kind (DESIGN §17).
+- [x] **The absorber is the one publisher, and every release is tagged** (v0.3.5) — the source home's `publish-on-main.yml`
+  and `publish-subdir.yml` are deleted; the absorber mirrors the folder after each merge from its job file on the OM
+  daemon's calendar and tags the publish commit `v<version>`; the unit is `release_per_publish`, so a merge into the
+  folder that is not a release publishes nothing and fails the absorber's run (DESIGN §18).
+- [x] **Listed in the `sancrev-marketplace` catalog** (v0.3.5) — the unit's `marketplace` block, rendered beside
+  doc-mirror, promptworld and skilltree.
 - [x] **Every working copy of a shipped skill is a file of its own** (v0.3.3) — `.claude/skills/report-missed-skill` was a link to the shipped skill's folder, which `check_versions.py`'s walks never entered; it is a copy, and the gate refuses a copy reached through a linked folder (DESIGN §16).
 
 ## P8 — GlyphSteer (research)  `▸`

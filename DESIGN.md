@@ -489,12 +489,17 @@ developing this repository: the rules named in §0 and the skills `chaincompiler
 ## §18 Home, versions and publishing
 
 The source home is the `base/chaincompiler` folder of the author's monorepo. `github.com/sancovp/chaincompiler`
-is its published output, re-synced on every merge that touches the folder by a checksum-compared,
+is its published output, re-synced after every merge that touches the folder by a checksum-compared,
 delete-enabled copy: anything that exists only in the public repository is removed at the next publish,
-so every change is made at the source home. The public repository runs its own workflows — `deploy.yml`
-(on every push to `main`: require a new changelog entry, regenerate the site and the board and fail if either is
-stale, then publish Pages) and `contribute.yml` (§15). A branch of the public repository is never merged there: its
-work is ported to the source home, and the branch is then closed.
+so every change is made at the source home. The copy is made by the source home's absorber, the one publisher, at its
+next run on the author's own machine (scalable-publishing's `DESIGN.md` §1 · §2), which then tags the publish commit
+`v<version>`, the version `plugin.json` states. ChainCompiler's unit is marked `release_per_publish`, so the absorber
+publishes the folder only once that version differs from the one the public repository holds — read at the commit its
+newest publish names — and fails its run otherwise: a merge into the folder that is not a release reaches no public
+commit. The public repository runs its own workflows — `deploy.yml` (on every push to `main`: require a new changelog
+entry, regenerate the site and the board and fail if either is stale, then publish Pages) and `contribute.yml` (§15). A
+branch of the public repository is never merged there: its work is ported to the source home, and the branch is then
+closed.
 
 The folder holds only what publishes. What the author keeps out of the public repository lives in the source home
 outside this folder and is never published: the steward package, which the public repository's release pass removed,
@@ -515,8 +520,9 @@ project's. In a clone, `install.sh` installs the fifteen editable with `--no-dep
 `pydantic-stack-core`, `agent-prompt-engineering` ≥ 0.2.0, `agent-skilltree` ≥ 0.4.0 — from PyPI. A release is proven
 by its release flow (`.claude/rules/22-seq-chaincompiler-release.md`): a clean clone of what publishes with
 `./install.sh`, the wheel proof before the merge, and after it the install from PyPI and the plugin proof (§16, §19).
-PyPI holds all fifteen names as this project's, every one at v0.3.1, the first whole version of the line, at v0.3.2
-and at v0.3.3; v0.3.0 holds fourteen, short of `framework`, a name PyPI does not allow, which v0.3.1 carries as
+PyPI holds all fifteen names as this project's, every one at v0.3.1, the first whole version of the line, and at each
+release merged after it, each uploaded whole after its merge, since the next release merges only once the one before
+it is whole; v0.3.0 holds fourteen, short of `framework`, a name PyPI does not allow, which v0.3.1 carries as
 `skill2framework` (§13).
 
 **One version line.** A release's version, its README changelog entry, is every package's `version`,

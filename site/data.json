@@ -145,11 +145,24 @@
         "the fifteen on PyPI under their names, each a publishing-manifest unit (done, v0.3.1)",
         "the plugin proof: installed signed out, then a session that calls the server and runs a skill (passing, v0.3.2)",
         "a release's own checks in one command before its PR, and PyPI's state read from each version's JSON and the simple index (done, v0.3.3)",
-        "the install from PyPI waits until no cache can still serve pip or uv a copy from before the upload (done, v0.3.4)"
+        "the install from PyPI waits until no cache can still serve pip or uv a copy from before the upload (done, v0.3.4)",
+        "a release published only by the absorber, its publish commit tagged v<version>, and listed in the sancrev-marketplace catalog (done, v0.3.5)"
       ]
     }
   ],
   "changelog": [
+    {
+      "version": "v0.3.5",
+      "date": "2026-11-10",
+      "changes": [
+        "**The absorber is the one publisher.** The source home's two GitHub workflows that mirrored this folder to the",
+        "**A GitHub tag per release.** The absorber tags the publish commit `v<version>`, the version `plugin.json` states,",
+        "**A merge into the folder that is not a release publishes nothing.** On Nov 9 three manual dispatches mirrored the",
+        "**The plugin is in the `sancrev-marketplace` catalog**, beside doc-mirror, promptworld and skilltree. DESIGN \u00a718 now",
+        "**The release flow follows the publisher.** Its publish stage is the absorber's run. Its unit-selection proof runs",
+        "Suite: 324 passed in `pytest packages`, 110 in `scripts/tests` (107 and 3 skipped in a clone of the public"
+      ]
+    },
     {
       "version": "v0.3.4",
       "date": "2026-10-29",

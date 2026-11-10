@@ -60,7 +60,7 @@ flowchart TB
         RCHK["release_check.py — on a release's committed tip, its own packages imported, before its PR: the generated files regenerated in a copy, the frontmatter sweep, the replaced-sentence and configurable greps, the publish dry run into a local bare copy, the tee probe reading the real server's own output; every finding named"]
     end
     subgraph PUBX["Outside this folder — DESIGN §18"]
-        PUB["scalable-publishing · SEAM: publish_unit.sh mirrors the folder to the public repository, with deletes · publish_package.sh uploads each of the fifteen, a chaincompiler-pkg-* manifest unit, built from a clone at the publish commit"]
+        PUB["scalable-publishing · SEAM: its absorber, at its run after each merge, mirrors the folder to the public repository with publish_unit.sh, with deletes, only once the release moved the version, and tags the publish commit v‹release› · publish_package.sh uploads each of the fifteen, a chaincompiler-pkg-* manifest unit, built from a clone at the publish commit"]
         PYPI["PyPI · SEAM: the fifteen at each release's version, uploaded right after its publish commit; uv resolves the plugin's environments from it"]
     end
     TYPE(["THE ONE TYPE — skill dir = name/SKILL.md"])

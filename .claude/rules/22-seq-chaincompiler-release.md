@@ -8,10 +8,12 @@ a change to the `chaincompiler` unit or a `chaincompiler-pkg-*` unit in the sour
 flow: every stage runs every time
 
 PRINCIPLE:[the source home is the only place ChainCompiler is edited · ChainCompiler is published, so every merge that
-touches it is a release, because the publish pipeline mirrors the folder to the public repository on that merge, with
-deletes · the public repository's own gate requires a NEW README changelog version on every publish commit, so a merge
-without one turns the public deploy red · one version line: the release version is every package's version, both
-plugin manifests and every pin, so every release moves the whole line and every release's fifteen packages go to PyPI ·
+touches it is a release, because the absorber mirrors the folder to the public repository after that merge, with
+deletes, and tags the publish commit `v<release>` · the public repository's own gate requires a NEW README changelog
+version on every publish commit, so the unit is `release_per_publish`: a merge without a new version is refused by the
+absorber, which fails its run and publishes nothing, so that merge reaches no one until a release follows it · one
+version line: the release version is every package's version, both plugin manifests and every pin, so every release
+moves the whole line and every release's fifteen packages go to PyPI ·
 a version that does not move keeps every installed plugin on the old payload, because Claude Code pins an installed
 plugin to its `plugin.json` version until that version changes · between the publish commit and the upload the
 published plugin pins a version PyPI does not hold, so the upload is the first thing done after the merge · a package
@@ -42,7 +44,7 @@ error, never dropped]
 | the checks | `examples/_all/run_all.py` · `examples/_all/bandit_self.py` · `examples/_all/test_all.py` · `examples/nutrition/build.py` · `examples/nutrition/test_nutrition_aios.py` · `scripts/tests/` · `scripts/whereimport.py` · `.importlinter` |
 | the plugin proof | `scripts/plugin_proof.py` (`new`, `install`, `run`, `grade`, `remove`; `CAPABILITIES`, `KEEP_ENV`; the `<transcript>.env.json` sidecar `run` writes twice — before its pre-check, then `started_at` just before the session — and `grade` reads) · `scripts/plugin-proof-task.md` · `scripts/tests/test_plugin_proof.py` · the clean seat it keeps: CompiloApe's `DESIGN.md` §1 THE CLEAN SEAT |
 | the release check and the upload driver | `scripts/release_check.py` whole (`extract` · `tree_diff` · `part_generated` · `part_frontmatter` · `history_line` · `part_sentences` · `part_publish` · `WRAPPER` · `read_tee_log` · `part_tee`) · `scripts/tests/test_release_check.py` whole · `scripts/upload_release.py` whole (`fetch` · `max_age` · `uploaded_at` · `held` · `indexed` · `whole` · `run`) · `scripts/tests/test_upload_release.py` whole · and what each part stands in for, read beside it: the public repository's `.github/workflows/deploy.yml` (its staleness gate fails a generated file that differs AND one that is untracked) · `scalable-publishing/bin/publish_unit.sh` and `scalable-publishing/bin/generate_unit_readme.py` (the published README is the source README with a managed badge block) · `server/launch.py`'s `handle`, `pump_out`, `go` and `to_server` (the launcher swallows the client's `notifications/initialized` and sends its own only once the real server answered its `initialize`) · the README's section order (its history is `## Changelog` up to the next `## ` heading; `## Status` and `## License` come after it and are current text) |
-| the publish pipeline (in the source home's repository, outside this folder) | `scalable-publishing/publish-manifest.json` — the `chaincompiler` unit, the fifteen `chaincompiler-pkg-*` units and the `sancrev-marketplace` unit (its `watch_paths`) · `.github/workflows/publish-on-main.yml` · `.github/workflows/publish-subdir.yml` · `scalable-publishing/bin/select_units_for_paths.py` · `scalable-publishing/bin/publish_unit.sh` · `scalable-publishing/bin/publish_package.sh` (it builds a copy of one package folder in a fresh environment and refuses a version PyPI holds) · `scalable-publishing/bin/generate_unit_readme.py` · `scalable-publishing/bin/generate_marketplace.py` · `scalable-publishing/bin/generate_publish_paths.py` · `scalable-publishing/templates/readme-refresh.yml` · its edit flow, the skill `scalable-publishing/skills/edit-scalable-publishing` |
+| the publish pipeline (in the source home's repository, outside this folder) | `scalable-publishing/publish-manifest.json` — the `chaincompiler` unit (its `release_per_publish`), the fifteen `chaincompiler-pkg-*` units and the `sancrev-marketplace` unit (its `watch_paths`) · `scalable-publishing/bin/absorb.py` whole (`run` · `_run` · `ledger_commit` · `unit_version` · `tag_runs` · `tag_held` · `make_tag`: the publish, the release guard and the tag), its job file `scalable-publishing/.cave/automations/absorber.json` and its state folder's `last_run.json` and `runs.jsonl` (scalable-publishing `DESIGN.md` §1 · §2) · `scalable-publishing/bin/select_units_for_paths.py` · `scalable-publishing/bin/publish_unit.sh` · `scalable-publishing/bin/publish_package.sh` (it builds a copy of one package folder in a fresh environment and refuses a version PyPI holds) · `scalable-publishing/bin/generate_unit_readme.py` · `scalable-publishing/bin/generate_marketplace.py` · `scalable-publishing/templates/readme-refresh.yml` · its edit flow, the skill `scalable-publishing/skills/edit-scalable-publishing` |
 | PyPI's state of the fifteen | `https://pypi.org/pypi/<name>/<version>/json` for whether PyPI holds a version (200 once it does, 404 before) and when its files were uploaded (`urls[].upload_time_iso_8601`) · `https://pypi.org/simple/<name>/`, which pip and uv read, in both its forms — the HTML page and the JSON form pip and uv ask for first (`Accept: application/vnd.pypi.simple.v1+json`) — for whether an install can find the version's files · `https://pypi.org/pypi/<name>/json` for which versions it holds and each held release's `requires_dist` — each served through a cache that can still answer as before an upload: the simple index for up to its `cache-control` max-age (600 s), its two forms cached apart, and a version's JSON 404 for up to 72 s after v0.3.3's uploads, so one reader can see a new version the next does not (scalable-publishing `DESIGN.md` §4) |
 | an agent built on this one | CompiloApe's forge flow `base/compiloape/.claude/rules/22-seq-forge-compiloape.md`, whenever the change touches `make_gba`, `construct_into`, `_apply_tree`, `default_rule_blocks`, `check_gba`, `roll_up_algebra` or the `bandit-chain-system` skill |
 | the records above the folder | the source home's project registry, section `base/chaincompiler` · the source home's root `CHANGELOG.md` tail · `scalable-publishing/CHANGELOG.md` tail · THE TOP-LEVEL DESIGN's publishing bridge (the list of published units) · every other project that installs or names the fifteen (the steward project's build file, stack and messages) |
@@ -297,8 +299,9 @@ error, never dropped]
   `grep -nIE '/Users/[A-Za-z]|/home/[A-Za-z]|/private/(tmp|var)/|/var/folders'`, no `~/<name>` other than `~/.claude`,
   and no person named as the user — save a line stating the machine-path pattern itself, as this rule's does, and
   `scripts/release_check.py` and its tests. An author credit is allowed.
-- versions: the new README changelog version is not in the public README, and `plugin.json`'s `version` there
-  (`gh api repos/<owner>/<name>/contents/.claude-plugin/plugin.json`) is an older one.
+- versions: the new README changelog version is not in the public README, `plugin.json`'s `version` there
+  (`gh api repos/<owner>/<name>/contents/.claude-plugin/plugin.json`) is an older one, and the public repository holds no
+  tag `v<release>` (`git ls-remote --tags https://github.com/<owner>/<name> refs/tags/v<release>` prints nothing).
 - the publish dry run, which writes only under a scratch directory and never pushes to the network:
   1. Clone the public repository read-only.
   2. Make a local bare copy of it.
@@ -313,9 +316,13 @@ error, never dropped]
   8. `git show --stat HEAD` lists exactly the intended files.
 - unit selection: `git diff --name-only <merge-base>..<tip> | python3 scalable-publishing/bin/select_units_for_paths.py
   --manifest scalable-publishing/publish-manifest.json` names `chaincompiler` and every other unit the change is meant
-  to republish, and no other — a `chaincompiler-pkg-*` unit never. `generate_publish_paths.py --manifest
-  scalable-publishing/publish-manifest.json --workflow .github/workflows/publish-on-main.yml --check` exits 0 — without
-  `--workflow` it prints the paths and checks nothing.
+  to republish, and no other — a `chaincompiler-pkg-*` unit never. Then the absorber's own dry run, from a detached
+  worktree of the source home at the tip (`git worktree add --detach <scratch> <tip>`), against the real public
+  repositories: `python3 <scratch>/scalable-publishing/bin/absorb.py --checkout <scratch> --state <scratch state>
+  --dry-run --no-fetch --no-upload` lists under `would` a publish of exactly the units the change republishes,
+  `chaincompiler`'s carrying `"tag": "v<release>"`, and under `errors` nothing — the release guard passes because the
+  version the public repository holds, read at the commit its newest publish names, is the release before; the worktree
+  is removed after.
 - the clean install: clone the dry-run result. In a fresh venv made by `python3 -m venv` and given nothing by hand,
   where `command -v python3` is checked to be that venv in the same command, run `./install.sh`, then the full
   source-tree proof above — once on Python 3.11 and once on the newest Python uv offers, since the build files admit
@@ -330,14 +337,17 @@ error, never dropped]
   PYTHONPATH=scripts … -p whereimport` printing every module inside the venv; and in that venv each Python block of the
   eight capability skills, piped alone into its own empty scratch folder, exits 0.
 - after the merge, in this order:
-  0. THE PUBLISH: the source home's `publish-on-main.yml` makes the `Publish base/chaincompiler (<sha>)` commit on the
-     merge. While GitHub Actions starts no job, the session runs that workflow's steps itself, from a clean checkout of
-     the source home at the merge: the units `select_units_for_paths.py` names for the merge's diff, each — the
-     marketplace unit's catalog rendered by `generate_marketplace.py` first — published with
-     `bash scalable-publishing/bin/publish_unit.sh <subdir> https://github.com/<public_repo>.git <short merge sha>
-     <public_repo> '<the unit's readme JSON>'`, `GITHUB_TOKEN` set from `gh auth token` for the README's badges.
+  0. THE PUBLISH: the absorber's next run after the merge — its job file fires every fifteen minutes on the OM daemon's
+     calendar — makes the `Publish base/chaincompiler (<sha>)` commit, `<sha>` the default branch's head it fetched,
+     and tags that commit `v<release>`; its state folder's `last_run.json` names the publish under `published` and the
+     tag under `tagged` (a run whose own code predates a change to the absorber publishes with the code it started with,
+     so the tag can land on the run after). An `errors` entry for `chaincompiler` is the release guard refusing a version
+     that did not move: the release is not on the public repository, and its version line is fixed before anything else
+     here. While the daemon is not running, the session runs one run itself from the absorber's own checkout,
+     `python3 <the absorber's checkout>/scalable-publishing/bin/absorb.py`, which takes the lock a calendar fire takes.
   1. THE UPLOAD, first: once `git ls-remote` shows the `Publish base/chaincompiler (<sha>)` commit whose `<sha>` is the
-     merge, clone the public repository at that commit — the clone kept until PyPI holds the whole release — and run
+     merge or a default-branch commit after it, and the README at that commit heads its changelog with the release,
+     clone the public repository at that commit — the clone kept until PyPI holds the whole release — and run
      `python3 scripts/upload_release.py --clone <the clone> --publish-package scalable-publishing/bin/publish_package.sh`
      (`--order` prints its order, `--dry-run` its plan), which uploads each of the fifteen through `publish_package.sh`
      in dependency order: a package only after every sibling its build file requires (its dependencies among the
@@ -383,7 +393,8 @@ error, never dropped]
      keys without it; after: with it), since the init event carries no timestamp. A transcript whose sidecar has none —
      one `run` wrote before v0.3.3 — is graded from its first timestamped event, which is later than the session's
      start, and the grade names which start it used.
-  4. the public repository: `gh run list -R <owner>/<name>` shows `deploy-site` succeeded on the publish commit, and a
+  4. the public repository: `gh run list -R <owner>/<name>` shows `deploy-site` succeeded on the publish commit,
+     `git ls-remote --tags https://github.com/<owner>/<name> refs/tags/v<release>` names that publish commit, and a
      clean clone of it passes the clean-install proof.
   5. when the release touched what CompiloApe's forge reads, CompiloApe's forge flow runs whole against it.
   6. the records that state PyPI's state (step 11) are rewritten to it once stage 1 is whole.
@@ -391,7 +402,8 @@ error, never dropped]
   a whole, installable line — save a release short only of a package whose name PyPI refuses: stages 2–5, which need all
   fifteen, do not run for it, and the next release, which renames that package, merges and runs them (`DESIGN.md` §18).
 
-NOT:[edit the public repository · add a `CHANGELOG.md` to the source folder · put a `CLAUDE.md` at the folder's root
+NOT:[edit the public repository · publish the folder by anything but the absorber — a hand or dispatched publish of a
+merge that is not a release turns the public deploy red · tag a release by hand · add a `CHANGELOG.md` to the source folder · put a `CLAUDE.md` at the folder's root
 (the plugin carries none; an agent it delivers ships inside its install skill, `DESIGN.md` §16) · hand-edit a generated
 file (site data, roadmap SVG, the board, capability skills, the grade ladder, GBA output) · fix a shipped instruction in
 one copy while its generator or another copy keeps the old reading · leave a second `SKILL.md` under a shipped skill's
@@ -424,7 +436,9 @@ release grain · `.claude/rules/22-seq-mint-attention-chain.md` — the flow for
 `DESIGN.md` §4 — how a package inside this folder reaches PyPI · CompiloApe's forge flow — the agent built on this one ·
 the source home's publishing rule — the manifest is the allowlist, and the public repository is a delete-enabled mirror]
 
-GATE (what would detect a violation):[`scripts/check_versions.py` — the version line, the build files' declarations,
+GATE (what would detect a violation):[`scalable-publishing/bin/absorb.py`'s release guard — a merge into the folder
+whose version did not move, refused as an error of the absorber's run, its job shown failed on the daemon's calendar ·
+`scripts/check_versions.py` — the version line, the build files' declarations,
 the skills' uv lines, and every copy of a shipped skill, every `SKILL.md` under a `.claude/skills/` folder or a
 package's own folder that carries a shipped skill's name among them · `scripts/tests/test_skill_examples.py` — a
 capability skill's Python block that does not run alone · `scripts/upload_release.py` — the upload in dependency order
