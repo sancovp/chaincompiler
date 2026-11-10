@@ -24,7 +24,7 @@
 
 <br/>
 
-![tests](https://img.shields.io/badge/tests-324%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
+![tests](https://img.shields.io/badge/tests-325%20passing-16a34a) ![python](https://img.shields.io/badge/python-3.11%2B-3b6fd4) ![license](https://img.shields.io/badge/license-MIT-3b6fd4) ![type](https://img.shields.io/badge/one%20type-skill%20dir-16a34a) ![status](https://img.shields.io/badge/content%20judged-never-9a9a96)
 
 <br/>
 
@@ -377,6 +377,18 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 ---
 
 ## Changelog
+
+### v0.3.6 — 2026-11-10
+- **The self-interpreter states the release as its version.** With no version of its own, the server answered
+  `initialize` with the version of the `fastmcp` it runs on, so `server/initialize.json`, the plugin's stored copy of
+  that answer, named `fastmcp` 4.1.7. `fastmcp` 4.1.8 reached PyPI during v0.3.5's uploads, so an install of v0.3.5 from
+  PyPI, and a clean clone of its public repository, failed `test_the_stored_answers_are_the_real_servers_own`. The
+  server now states the release (`si.__version__`), the version the launcher already answered Claude Code with, so a
+  `fastmcp` release no longer changes the stored answer. `set_version.py` writes it and `check_versions.py` refuses a
+  stored version other than the release (DESIGN §16).
+- Suite: 325 passed in `pytest packages`, 112 in `scripts/tests` (109 and 3 skipped in a clone of the public
+  repository, where the publish dry run's three tests have no source home's publisher beside them), 2 in
+  `examples/nutrition`; every package moves to 0.3.6.
 
 ### v0.3.5 — 2026-11-10
 - **The absorber is the one publisher.** The source home's two GitHub workflows that mirrored this folder to the
@@ -916,10 +928,10 @@ hierarchicalize    PRODUCES SelfView           (BANDIT rolls the move over its O
 | `glyphsteer` | retrieval steering | 53 |
 | `archetype` | archetype-as-state-machine compiler | 11 |
 | `skill2framework` | the chapter rung | 6 |
-| `si` | the self-interpreter | 12 |
+| `si` | the self-interpreter | 13 |
 | `agent-skilltree` | the organization (published on PyPI, ≥0.4.0; import `skilltree`) | — (its own suite) |
 
-**324 passing** (`pytest packages/`, with SWI-Prolog on the path — without it the two tests that run the emitted Prolog are skipped; the examples are checked separately — `DESIGN.md` §19; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
+**325 passing** (`pytest packages/`, with SWI-Prolog on the path — without it the two tests that run the emitted Prolog are skipped; the examples are checked separately — `DESIGN.md` §19; SkillTree's own suite now lives in the [`agent-skilltree`](https://pypi.org/project/agent-skilltree/) repo). Anchored by two proofs: `csgn-rulecatcher` (rulecatcher catching a real categorical-notation grammar) and the dense-rune origin docs.
 
 ### Not done yet (honestly)
 

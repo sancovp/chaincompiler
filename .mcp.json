@@ -3,7 +3,7 @@
     "self-interpreter": {
       "command": "uv",
       "args": ["run", "--no-project", "--quiet", "${CLAUDE_PLUGIN_ROOT}/server/launch.py",
-               "--from", "chaincompiler-si==0.3.5", "si-server"]
+               "--from", "chaincompiler-si==0.3.6", "si-server"]
     }
   }
 }

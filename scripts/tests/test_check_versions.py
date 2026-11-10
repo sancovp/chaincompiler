@@ -142,6 +142,24 @@ def test_a_plugin_without_its_server_launcher_is_refused(tree):
     refused(tree, "server/tools.json", "launcher is missing")
 
 
+def test_set_version_moves_the_stored_server_version_and_nothing_else_in_it(tree):
+    sys.path.insert(0, str(REPO / "scripts"))
+    from set_version import set_version
+    init = tree / "server" / "initialize.json"
+    before = json.loads(init.read_text(encoding="utf-8"))
+    assert "server/initialize.json" in set_version("9.9.9", tree)
+    after = json.loads(init.read_text(encoding="utf-8"))
+    assert after["serverInfo"]["version"] == "9.9.9"
+    assert {**after, "serverInfo": before["serverInfo"]} == before   # the protocol version and capabilities untouched
+
+
+def test_a_stored_server_version_that_differs_is_refused(tree):
+    # the version a fastmcp release gave the server before the server stated the release as its own
+    init = tree / "server" / "initialize.json"
+    sub(init, f'"version": "{release(tree)}"', '"version": "4.1.7"')
+    refused(tree, "server/initialize.json", "stored version '4.1.7' is not the release")
+
+
 def test_a_skill_whose_code_has_no_uv_line_is_refused(tree):
     p = tree / "skills/forge-cor/SKILL.md"
     p.write_text(re.sub(r"(?m)^\*\*Run its Python\*\*.*\n\n", "", p.read_text(encoding="utf-8")), encoding="utf-8")

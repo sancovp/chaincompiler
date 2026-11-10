@@ -1,5 +1,5 @@
 """The self-interpreter's search door never crashes on what a query holds: one with no word in it finds nothing, and
-an operator word (`NOT`, `AND`) is read as a word.
+an operator word (`NOT`, `AND`) is read as a word. And the server's version is the release, never its `fastmcp`'s.
 
 A query with no word crashes glyphsteer's index (the public repository's bug sweeps, pull requests #1 and #2), and both
 crash SkillTree's search behind this door; the door sends SkillTree the query's words alone.
@@ -8,7 +8,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from si.server import si_search
+from si import __version__
+from si.server import mcp, si_search
+
+
+def test_the_server_states_the_release_as_its_version():
+    # with none of its own, the server answered `initialize` with fastmcp's version, so every fastmcp release changed
+    # the answer the plugin stores for it (v0.3.5's install from PyPI, under fastmcp 4.1.8)
+    assert mcp.version == __version__
 
 
 def _tree(root: Path) -> Path:

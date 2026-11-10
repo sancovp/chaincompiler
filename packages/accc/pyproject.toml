@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "chaincompiler-accc"
-version = "0.3.5"
+version = "0.3.6"
 description = "Attention-Chain Compiler-Compiler — the atom of the cognition-chain stack"
 readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
-dependencies = ["chaincompiler==0.3.5", "honeyc==0.3.5", "rulecatcher==0.3.5", "click"]
+dependencies = ["chaincompiler==0.3.6", "honeyc==0.3.6", "rulecatcher==0.3.6", "click"]
 
 [project.scripts]
 accc = "accc.cli:main"

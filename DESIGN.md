@@ -407,7 +407,10 @@ prerequisite, and nothing is installed into the user's own Python:
   for a newer one, and the one capability it serves, its tools; `tools/list` from the stored list; `ping`. Both stored
   answers, `server/initialize.json` and `server/tools.json`, are the real server's own, written by
   `scripts/build_server_tools.py` (whose `--check` refuses a stale one), and `si`'s build file bounds `fastmcp` to the
-  major they were written under. The probe a newer Claude Code opens with, `server/discover`, is refused at once, so it
+  major they were written under. The real server states the release as its version (`FastMCP("self-interpreter",
+  version=si.__version__)`), the version the launcher answers with too, so the stored `initialize` answer moves with the
+  version line — `set_version.py` writes it, `check_versions.py` refuses one that differs — and a `fastmcp` release
+  inside the bound changes it only by changing a protocol version or a capability. The probe a newer Claude Code opens with, `server/discover`, is refused at once, so it
   goes straight to `initialize` instead of waiting out the probe. The launcher starts the real server behind it as
   `uv tool run --compile-bytecode --from chaincompiler-si==<release> si-server`, in an environment uv resolves from PyPI
   at the release's version (§18), compiles once and caches. Once the real server has answered its own `initialize`,

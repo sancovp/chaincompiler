@@ -14,7 +14,8 @@ The release version is the newest README changelog entry. Refused, each named wi
     release that reads a license written that way;
   - a `.mcp.json` whose self-interpreter is not `uvline.server_launch(<release>)` — uv running the plugin's
     `server/launch.py` with `--from chaincompiler-si==<release> si-server` — or a plugin without that launcher and
-    its `initialize.json` and `tools.json`;
+    its `initialize.json` and `tools.json`, or whose `initialize.json` names a version for the self-interpreter other
+    than the release (the release is the server's version);
   - a shipped skill whose code has no uv line before its first code block, or a uv line that misses a distribution
     the code it runs imports (a lazy or optional import included), pins a sibling to another version, or names an
     outside distribution without its lower bound;
@@ -180,6 +181,11 @@ def check_plugin(root: Path, version: str, r: Report) -> None:
     for part in ("server/launch.py", "server/initialize.json", "server/tools.json"):
         if not (root / part).is_file():
             r.refuse(part, "the plugin's server launcher is missing (DESIGN.md §16)")
+    init = root / "server" / "initialize.json"
+    if init.is_file():
+        stored = json.loads(init.read_text(encoding="utf-8")).get("serverInfo", {}).get("version")
+        if stored != version:
+            r.refuse("server/initialize.json", f"the self-interpreter's stored version {stored!r} is not the release {version}")
 
 
 def blocks(text: str) -> list[tuple[int, str, str]]:

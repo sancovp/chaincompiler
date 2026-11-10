@@ -52,6 +52,10 @@ from [`roadmap.json`](roadmap.json)); this is the concrete, checkable to-do unde
   behind it and passes every message through; measured on an empty cache it answers in 0.4–2.6 s, 12.3 s where uv
   must also download a Python; `check_versions.py` refuses the old launch, and the grader reads a server still
   connecting at the start (`pending`) by what the session then did (DESIGN §16).
+- [x] **The self-interpreter states the release as its version** (v0.3.6) — with none of its own it answered
+  `initialize` with its `fastmcp`'s version, so `fastmcp` 4.1.8, released during v0.3.5's uploads, changed the answer
+  the plugin stores for it and failed v0.3.5's install from PyPI on that one test; `set_version.py` writes the stored
+  version and `check_versions.py` refuses one other than the release (DESIGN §16).
 - [x] **The nutrition test finds its fixtures from its own file** (v0.3.0) — it read them beside dietc's installed module, a folder only an editable install has (DESIGN §19).
 - [x] **Every build file declares what its source imports** (v0.3.0) — `chainaios` declares `agent-skilltree` and the extra `legend` (glyphsteer); `chaincompiler` the extra `persona` (glyphsteer); `glyphsteer`'s `grammar` extra brings `chaincompiler`; `check_versions.py` refuses an undeclared import (DESIGN §18).
 - [x] **rulecatcher's suite tests the installed package** (v0.3.0) — its `tests/conftest.py`, which put the clone's `src/` first on `sys.path`, is gone (DESIGN §19).

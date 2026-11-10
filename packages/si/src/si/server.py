@@ -19,11 +19,13 @@ import re
 
 from fastmcp import FastMCP
 
-from . import runtime
+from . import __version__, runtime
 from .interp import interpret
 from .mcp_tree import tree_to_mcp
 
-mcp = FastMCP("self-interpreter")
+# the release is the server's version, so its answer to `initialize` names the release — what the plugin's launcher
+# answers for it — and never the `fastmcp` it runs on, whose every release would change it
+mcp = FastMCP("self-interpreter", version=__version__)
 
 
 def si_interpret(source: str) -> str:

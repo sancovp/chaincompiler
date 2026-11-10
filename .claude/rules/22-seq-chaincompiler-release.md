@@ -68,9 +68,10 @@ error, never dropped]
      `./install.sh` built from this tree);
    - `python3 scripts/build_server_tools.py`, in that environment, on every release — it writes `server/initialize.json`
      and `server/tools.json` from the real server's own answers to `initialize` (asking for a protocol version newer than
-     any, so it answers its newest) and `tools/list` — with that environment's `fastmcp` first brought to the newest release
-     PyPI's JSON names inside the bound `si`'s build file gives it, because a plugin install resolves `fastmcp` afresh
-     and Claude Code is shown the stored list, never its own server's, for the whole session;
+     any, so it answers its newest, and its version, the release `si.__version__` states) and `tools/list` — with that
+     environment's `fastmcp` first brought to the newest release PyPI's JSON names inside the bound `si`'s build file
+     gives it, because a plugin install resolves `fastmcp` afresh and Claude Code is shown the stored list, never its own
+     server's, for the whole session;
    - each committed GBA under `personas/`, re-applied through `_apply_tree` from its own `gba.json` with its sibling
      `.<name>.src/` present, on every release (the `bandit-chain-system` skill it carries holds the release's uv line)
      and whenever `gba.py`, `hba.py`, `cog.py` or SkillTree changed.

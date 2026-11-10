@@ -152,6 +152,14 @@
   ],
   "changelog": [
     {
+      "version": "v0.3.6",
+      "date": "2026-11-10",
+      "changes": [
+        "**The self-interpreter states the release as its version.** With no version of its own, the server answered",
+        "Suite: 325 passed in `pytest packages`, 112 in `scripts/tests` (109 and 3 skipped in a clone of the public"
+      ]
+    },
+    {
       "version": "v0.3.5",
       "date": "2026-11-10",
       "changes": [

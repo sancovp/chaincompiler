@@ -4,7 +4,8 @@
     python3 scripts/set_version.py 0.3.0
 
 Writes the version into every package's `pyproject.toml` `version` and every `__version__` a package defines, the
-plugin's version in `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`, the pin in `.mcp.json`, and
+plugin's version in `.claude-plugin/plugin.json` and `.claude-plugin/marketplace.json`, the pin in `.mcp.json`, the
+self-interpreter's version in its stored answer `server/initialize.json` (the release is the server's version), and
 every uv-line pin in the shipped skills and their copies (`skills/`, the working copies in `.claude/skills/`, the
 `bandit-chain-system` package data); it pins every dependency among the fifteen, an optional extra's included, with
 `==`. It edits text in place and touches nothing else: the README changelog entry is the author's, and the GBAs under
@@ -81,7 +82,8 @@ def set_version(version: str, root: Path = ROOT) -> list[str]:
     for init in sorted((root / "packages").glob("*/src/*/__init__.py")):
         text = init.read_text(encoding="utf-8")
         write(init, re.sub(r'(?m)^(__version__\s*=\s*)"[^"]*"', rf'\g<1>"{version}"', text), changed, root)
-    for manifest in (root / ".claude-plugin" / "plugin.json", root / ".claude-plugin" / "marketplace.json"):
+    for manifest in (root / ".claude-plugin" / "plugin.json", root / ".claude-plugin" / "marketplace.json",
+                     root / "server" / "initialize.json"):
         text = manifest.read_text(encoding="utf-8")
         write(manifest, re.sub(r'("version"\s*:\s*)"[^"]*"', rf'\g<1>"{version}"', text), changed, root)
     mcp = root / ".mcp.json"
